@@ -1,0 +1,57 @@
+<div class="demo-container">
+  <h2>Cards</h2>
+
+  <div class="cards-grid">
+    <!-- Default Card -->
+    <lib-card>
+      <div libCardHeader>
+        <h3>{{ cardContent.title }}</h3>
+        <p class="subtitle">{{ cardContent.subtitle }}</p>
+      </div>
+      <div libCardMedia>
+        <img [src]="cardContent.imageUrl" alt="Sample card image">
+      </div>
+      <div class="card-content">
+        <p>{{ cardContent.content }}</p>
+      </div>
+      <div libCardFooter>
+        <lib-button variant="primary">Action</lib-button>
+        <lib-button variant="text">Cancel</lib-button>
+      </div>
+    </lib-card>
+
+    <!-- Elevated Card -->
+    <lib-card [elevated]="true">
+      <div libCardHeader>
+        <h3>Elevated Card</h3>
+      </div>
+      <div class="card-content">
+        <p>{{ cardContent.content }}</p>
+      </div>
+    </lib-card>
+
+    <!-- Compact Card -->
+    <lib-card [compact]="true">
+      <div libCardHeader>
+        <h3>Compact Card</h3>
+      </div>
+      <div class="card-content">
+        <p>{{ cardContent.content }}</p>
+      </div>
+    </lib-card>
+
+    <!-- Liquid Card -->
+    <lib-card variant="liquid">
+      <div libCardHeader>
+        <h3>Liquid Card</h3>
+        <p class="subtitle">With animated background</p>
+      </div>
+      <div class="card-content">
+        <p>{{ cardContent.content }}</p>
+      </div>
+      <div libCardFooter>
+        <lib-button variant="text">Action</lib-button>
+      </div>
+    </lib-card>
+  </div>
+</div>

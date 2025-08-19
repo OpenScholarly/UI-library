@@ -1,0 +1,192 @@
+:host {
+  display: inline-flex;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-width: 64px;
+    margin: 0;
+    padding: var(--space-2) var(--space-4);
+    border: none;
+    border-radius: var(--radius-md);
+    background: none;
+    color: inherit;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: all var(--motion-duration-base) var(--motion-easing-standard);
+    -webkit-tap-highlight-color: transparent;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ui-primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Variants
+:host(.lib-btn--primary) button {
+  background-color: var(--ui-primary);
+  color: var(--ui-text-on-primary);
+
+  &:hover {
+    background-color: var(--ui-primary-dark);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+:host(.lib-btn--secondary) button {
+  background-color: var(--ui-secondary);
+  color: var(--ui-text-on-primary);
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+}
+
+:host(.lib-btn--tertiary) button {
+  border: 1px solid var(--ui-primary);
+  color: var(--ui-primary);
+
+  &:hover {
+    background-color: rgba(var(--ui-primary), 0.1);
+  }
+}
+
+:host(.lib-btn--text) button {
+  min-width: auto;
+  padding: var(--space-1) var(--space-2);
+  color: var(--ui-primary);
+
+  &:hover {
+    background-color: rgba(var(--ui-primary), 0.1);
+  }
+}
+
+:host(.lib-btn--ghost) button {
+  color: var(--ui-text-primary);
+
+  &:hover {
+    background-color: rgba(var(--ui-text-primary), 0.1);
+  }
+}
+
+:host(.lib-btn--danger) button {
+  background-color: var(--ui-danger);
+  color: var(--ui-text-on-primary);
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+}
+
+:host(.lib-btn--success) button {
+  background-color: var(--ui-success);
+  color: var(--ui-text-on-primary);
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+}
+
+// Sizes
+:host(.lib-btn--xs) button {
+  min-width: 48px;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+:host(.lib-btn--sm) button {
+  min-width: 56px;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+:host(.lib-btn--lg) button {
+  min-width: 72px;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--font-size-lg);
+}
+
+:host(.lib-btn--xl) button {
+  min-width: 80px;
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-xl);
+}
+
+// States
+:host(.lib-btn--disabled) button,
+:host(.lib-btn--loading) button {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// Loading spinner
+.lib-btn__spinner {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  margin-right: var(--space-2);
+
+  svg {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Icons
+.lib-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lib-btn__icon--left {
+  margin-right: var(--space-2);
+}
+
+.lib-btn__icon--right {
+  margin-left: var(--space-2);
+}
+
+// Focus ripple
+.lib-btn__ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: currentColor;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+button:focus-visible .lib-btn__ripple {
+  opacity: 0.12;
+}

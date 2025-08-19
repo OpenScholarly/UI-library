@@ -1,0 +1,63 @@
+<div class="demo-container">
+  <h2>Form Fields</h2>
+
+  <section class="demo-section">
+    <h3>Form Field States</h3>
+    <div class="controls">
+      <lib-button variant="text" (click)="toggleState('withLabel')">
+        Toggle Label
+      </lib-button>
+      <lib-button variant="text" (click)="toggleState('withHint')">
+        Toggle Hint
+      </lib-button>
+      <lib-button variant="text" (click)="toggleState('withError')">
+        Toggle Error
+      </lib-button>
+      <lib-button variant="text" (click)="toggleState('disabled')">
+        Toggle Disabled
+      </lib-button>
+      <lib-button variant="text" (click)="toggleState('required')">
+        Toggle Required
+      </lib-button>
+    </div>
+
+    <div class="form-demo">
+      <!-- Basic Form Field -->
+      <lib-form-field
+        [label]="formStates.withLabel ? 'Username' : ''"
+        [hint]="formStates.withHint ? 'Enter your username' : ''"
+        [error]="formStates.withError ? 'Username is required' : ''"
+        [required]="formStates.required"
+        [disabled]="formStates.disabled">
+        <input type="text" placeholder="Enter username">
+      </lib-form-field>
+
+      <!-- Form Field with Prefix/Suffix -->
+      <lib-form-field
+        [label]="formStates.withLabel ? 'Email' : ''"
+        [hint]="formStates.withHint ? 'Enter your email address' : ''"
+        [error]="formStates.withError ? 'Invalid email format' : ''"
+        [required]="formStates.required"
+        [disabled]="formStates.disabled">
+        <ng-template #prefix>
+          <i class="material-icons">email</i>
+        </ng-template>
+        <input type="email" placeholder="Enter email">
+        <ng-template #suffix>
+          <lib-button variant="text" size="sm">Verify</lib-button>
+        </ng-template>
+      </lib-form-field>
+
+      <!-- Dense Form Field -->
+      <lib-form-field
+        [label]="formStates.withLabel ? 'Password' : ''"
+        [hint]="formStates.withHint ? 'Enter your password' : ''"
+        [error]="formStates.withError ? 'Password is too short' : ''"
+        [required]="formStates.required"
+        [disabled]="formStates.disabled"
+        [dense]="true">
+        <input type="password" placeholder="Enter password">
+      </lib-form-field>
+    </div>
+  </section>
+</div>

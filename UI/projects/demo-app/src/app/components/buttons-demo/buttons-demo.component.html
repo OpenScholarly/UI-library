@@ -1,0 +1,54 @@
+<div class="demo-container">
+  <h2>Buttons</h2>
+
+  <section class="demo-section">
+    <h3>Button Variants</h3>
+    <div class="demo-row">
+      <lib-button *ngFor="let variant of variants"
+                 [variant]="variant"
+                 [disabled]="disabled"
+                 [loading]="loading">
+        {{ variant }}
+      </lib-button>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h3>Button Sizes</h3>
+    <div class="demo-row">
+      <lib-button *ngFor="let size of sizes"
+                 [size]="size"
+                 [disabled]="disabled"
+                 [loading]="loading">
+        Size {{ size }}
+      </lib-button>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h3>With Icons</h3>
+    <div class="demo-row">
+      <lib-button icon="star" iconPosition="left">
+        Left Icon
+      </lib-button>
+      <lib-button icon="heart" iconPosition="right" variant="secondary">
+        Right Icon
+      </lib-button>
+      <lib-button icon="settings" variant="tertiary">
+        Icon Button
+      </lib-button>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h3>States</h3>
+    <div class="demo-row">
+      <lib-button (click)="toggleLoading()">
+        Toggle Loading
+      </lib-button>
+      <lib-button (click)="toggleDisabled()" variant="secondary">
+        Toggle Disabled
+      </lib-button>
+    </div>
+  </section>
+</div>

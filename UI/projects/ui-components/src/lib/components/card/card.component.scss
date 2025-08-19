@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--ui-surface);
+  transition: all var(--motion-duration-base) var(--motion-easing-standard);
+}
+
+.lib-card__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+// Elevated variant
+:host(.lib-card--elevated) {
+  box-shadow: var(--elevation-2);
+
+  &:hover {
+    box-shadow: var(--elevation-3);
+  }
+}
+
+// Outlined variant
+:host(.lib-card--outlined) {
+  border: 1px solid rgba(var(--ui-text-primary), 0.12);
+}
+
+// Compact variant
+:host(.lib-card--compact) {
+  .lib-card__content {
+    padding: var(--space-2);
+  }
+}
+
+// Default spacing
+.lib-card__header,
+.lib-card__content,
+.lib-card__footer {
+  padding: var(--space-4);
+}
+
+.lib-card__media {
+  position: relative;
+  width: 100%;
+  
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+// Liquid card variant
+:host(.lib-card--liquid) {
+  background: linear-gradient(135deg, var(--ui-primary-light), var(--ui-primary));
+  
+  .lib-card__liquid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    
+    .liquid-shape {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 50%);
+      transform-origin: center;
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 40%);
+        animation: pulse 4s ease-out infinite;
+      }
+    }
+  }
+
+  .lib-card__content {
+    position: relative;
+    z-index: 1;
+    color: var(--ui-text-on-primary);
+  }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+// Dark theme adjustments
+:host-context([data-theme="dark"]) {
+  &.lib-card--outlined {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  
+  &.lib-card--liquid {
+    background: linear-gradient(135deg, 
+      adjust-color(var(--ui-primary), $lightness: -10%), 
+      adjust-color(var(--ui-primary), $lightness: -20%)
+    );
+  }
+}

@@ -1,0 +1,39 @@
+<div class="lib-card__container">
+  <!-- Header slot -->
+  <div class="lib-card__header" *ngIf="!!headerTemplate">
+    <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+  </div>
+
+  <!-- Media slot -->
+  <div class="lib-card__media" *ngIf="!!mediaTemplate">
+    <ng-container *ngTemplateOutlet="mediaTemplate"></ng-container>
+  </div>
+
+  <!-- Content -->
+  <div class="lib-card__content">
+    <ng-content></ng-content>
+  </div>
+
+  <!-- Footer slot -->
+  <div class="lib-card__footer" *ngIf="!!footerTemplate">
+    <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
+  </div>
+
+  <!-- Liquid effect overlay for liquid variant -->
+  <div class="lib-card__liquid-overlay" *ngIf="variant === 'liquid'">
+    <div class="liquid-shape"></div>
+  </div>
+</div>
+
+<!-- Template references -->
+<ng-template #headerTemplate>
+  <ng-content select="[libCardHeader]"></ng-content>
+</ng-template>
+
+<ng-template #mediaTemplate>
+  <ng-content select="[libCardMedia]"></ng-content>
+</ng-template>
+
+<ng-template #footerTemplate>
+  <ng-content select="[libCardFooter]"></ng-content>
+</ng-template>

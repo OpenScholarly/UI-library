@@ -1,0 +1,99 @@
+:host {
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
+.lib-form-field__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.lib-form-field__label {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--ui-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+
+  &.required::after {
+    content: '*';
+    margin-left: var(--space-1);
+    color: var(--ui-danger);
+  }
+}
+
+.lib-form-field__input-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 40px;
+  border: 1px solid rgba(var(--ui-text-primary), 0.2);
+  border-radius: var(--radius-md);
+  background-color: var(--ui-surface);
+  transition: all var(--motion-duration-base) var(--motion-easing-standard);
+
+  &:focus-within {
+    border-color: var(--ui-primary);
+    box-shadow: 0 0 0 2px rgba(var(--ui-primary), 0.2);
+  }
+}
+
+.lib-form-field__prefix,
+.lib-form-field__suffix {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-2);
+  color: var(--ui-text-secondary);
+}
+
+.lib-form-field__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.lib-form-field__subscript {
+  margin-top: var(--space-1);
+  min-height: 20px;
+  font-size: var(--font-size-sm);
+}
+
+.lib-form-field__error {
+  color: var(--ui-danger);
+}
+
+.lib-form-field__hint {
+  color: var(--ui-text-secondary);
+}
+
+// States
+:host(.lib-form-field--disabled) {
+  .lib-form-field__input-container {
+    background-color: rgba(var(--ui-text-primary), 0.05);
+    border-color: rgba(var(--ui-text-primary), 0.1);
+    cursor: not-allowed;
+  }
+
+  .lib-form-field__label {
+    color: var(--ui-text-disabled);
+  }
+}
+
+:host(.lib-form-field--has-error) {
+  .lib-form-field__input-container {
+    border-color: var(--ui-danger);
+
+    &:focus-within {
+      box-shadow: 0 0 0 2px rgba(var(--ui-danger), 0.2);
+    }
+  }
+}
+
+:host(.lib-form-field--dense) {
+  .lib-form-field__input-container {
+    min-height: 32px;
+  }
+
+  .lib-form-field__label {
+    margin-bottom: var(--space-1);
+  }
+}

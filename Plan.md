@@ -1,18 +1,12 @@
-Nice — that’s a great idea. Below I’ll give a practical, “ready-to-implement” checklist: the **components you should include**, and for each one **types / variants / common @Inputs / @Outputs / behaviors** you’ll want. I’ll also include **API patterns**, accessibility notes, theming/design-token guidance, and short code examples (Button + a form input + Modal) you can copy to start your Angular library.
-
 I assume you want a flexible, production-ready library (ControlValueAccessor for form controls, ARIA + keyboard support, CSS variables for theming, content projection for custom templates). If you want fewer components for an MVP, start with the “Core / Essential” group and add the rest later.
 
 # 1 — Core/Essential components (start here)
 
-These cover 80% of UI needs.
-
 ## Button
-
 Variants: `primary`, `secondary`, `tertiary`, `text`, `ghost`, `danger`/`warning`, `success`, `link`
 Sizes: `xs`/`sm`/`md`/`lg`/`xl` (or `small|medium|large`)
 States: `normal`, `hover`, `active`, `focus`, `disabled`, `loading`, `pressed` (for toggle-like)
 Parameters / props:
-
 * `@Input() variant: string = 'primary'`
 * `@Input() size: string = 'md'`
 * `@Input() type: 'button'|'submit'|'reset' = 'button'`
@@ -27,19 +21,15 @@ Parameters / props:
   Notes: support `aria-pressed` for toggle; if `loading` disable click; support `type="submit"`.
 
 ## Form Field primitives
-
 Shared wrapper handling label, hint, error, prefix/suffix icons:
-
 * `label`, `hint`, `error`, `required`, `disabled`, `dense`
 * Slots: `prefix`, `suffix`, `control` (ng-content)
   Used by inputs, selects, radio groups.
 
 ## Input (text)
-
 Variants: `text`, `password`, `search`, `url`, `email`, `tel`, `number`
 Sizes/density, states (disabled, readonly, invalid)
 Props:
-
 * `@Input() type = 'text'`
 * `@Input() value: string`
 * `@Input() placeholder?: string`
@@ -54,16 +44,12 @@ Props:
   Notes: implement `ControlValueAccessor`, send `touched`/`dirty` states.
 
 ## Textarea
-
 Props similar to Input plus:
-
 * `@Input() rows`, `@Input() autosize?: {minRows, maxRows}`, `resizable: boolean`
 
 ## Select (single & multi)
-
 Types: single-select (native/custom), multi-select (chips), creatable (tags)
 Props:
-
 * `@Input() multiple: boolean`
 * `@Input() options: Array<{value:any,label:string,disabled?:boolean}>`
 * `@Input() value`, `@Input() placeholder`
@@ -75,31 +61,24 @@ Props:
   Accessibility: keyboard navigation (arrow keys), type-ahead, aria expanded/owns
 
 ## Checkbox
-
 Variants: default / tristate / custom icons
 Props:
-
 * `@Input() checked: boolean | 'indeterminate'`
 * `@Input() disabled`, `@Input() label?: string`
 * `@Output() checkedChange`
 
 ## Radio Group & Radio
-
 Props:
-
 * Group: `name`, `value`, `valueChange`
 * Radio: `value`, `label`, `disabled`
   Accessibility: arrow-key navigation between radios
 
 ## Toggle / Switch
-
 Props:
-
 * `@Input() checked`, `@Input() disabled`, `size`, `labelOn`, `labelOff`
 * `@Output() checkedChange`
 
 ## Slider / Range input
-
 Props:
 
 * `min`, `max`, `step`, `value` (single or range), `marks`, `orientation`
@@ -435,19 +414,14 @@ If you want to launch quickly:
 * Docs: Storybook/Examples ✅
 * Tests: unit + axe ✅
 
----
-
-If you want, I can:
-
-* generate a **starter component** repository skeleton (Angular components + CSS variables + Storybook config), or
-* produce **detailed API files** (TypeScript interfaces) for a chosen subset (say Button, Input, Select, Modal) so you can start implementing them.
-
-Which subset would you like me to scaffold first?
 
 
 
 
-[![kinsta.com/blog/angular-...](https://images.openai.com/thumbnails/url/sDyip3icu1mUUVJSUGylr5-al1xUWVCSmqJbkpRnoJdeXJJYkpmsl5yfq5-Zm5ieWmxfaAuUsXL0S7F0Tw5JNYp3NA-NMPEpi_cN8TdMdIx0MS9ytXSNT0pK9NNNya3M8zItizeIKjSPyPFNKisyzvEJKnDxyE9RKwYAprgoww)](https://kinsta.com/blog/angular-component-libraries/?utm_source=chatgpt.com)
+
+
+
+<!-- [![kinsta.com/blog/angular-...](https://images.openai.com/thumbnails/url/sDyip3icu1mUUVJSUGylr5-al1xUWVCSmqJbkpRnoJdeXJJYkpmsl5yfq5-Zm5ieWmxfaAuUsXL0S7F0Tw5JNYp3NA-NMPEpi_cN8TdMdIx0MS9ytXSNT0pK9NNNya3M8zItizeIKjSPyPFNKisyzvEJKnDxyE9RKwYAprgoww)](https://kinsta.com/blog/angular-component-libraries/?utm_source=chatgpt.com)
 
 Here are some **real-world screenshots** showing graphical elements from well-known Angular UI component libraries:
 
@@ -567,7 +541,7 @@ Let me know if you'd like more screenshots, API comparisons, or help starting wi
 [9]: https://writtenforcoders.com/blog/best-angular-ui-libraries-for-2023?utm_source=chatgpt.com "Written for Coders"
 [10]: https://www.reddit.com/r/Angular2/comments/1ig4hl8?utm_source=chatgpt.com "Best UI Libraries for Angular Besides Material Design?"
 [11]: https://www.reddit.com/r/Angular2/comments/1gku1jh?utm_source=chatgpt.com "The best UI libraries for Angular"
-
+ -->
 
 
 
@@ -828,6 +802,8 @@ Which of those would help you next?
 [15]: https://www.w3.org/WAI/ARIA/apg/?utm_source=chatgpt.com "ARIA Authoring Practices Guide | APG | WAI - W3C"
 [16]: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/?utm_source=chatgpt.com "Developing a Keyboard Interface | APG | WAI - W3C"
 [17]: https://www.w3.org/WAI/WCAG22/Techniques/css/C39?utm_source=chatgpt.com "C39: Using the CSS reduce-motion query to prevent motion | WAI"
+
+
 
 
 
