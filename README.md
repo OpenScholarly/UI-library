@@ -5,12 +5,18 @@ https://uiverse.io/jeremyssocial/ugly-bullfrog-62
 https://shuffle.dev/marketplace
 
 
+https://animejs.com/
+https://reactbits.dev/text-animations/circular-text
 
+https://icomoon.io/
 
+https://mobbin.com/explore/web/ui-elements/card
+https://mobbin.com/collections/72af2281-5c22-4a5d-ac12-ce6ac37e215d/web/screens
+https://m3.material.io/
+https://getbootstrap.com/docs/5.3/examples/
 
-
-
-
+https://activitypub.rocks/
+https://waapi.readme.io/reference/waapi-api-documentation
 
 
 
