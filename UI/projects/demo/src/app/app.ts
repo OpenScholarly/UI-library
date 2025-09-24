@@ -5,9 +5,16 @@ import {
   CardComponent, 
   AccordionComponent, 
   FooterComponent,
+  InputComponent,
+  BadgeComponent,
+  AvatarComponent,
+  ModalComponent,
+  TooltipComponent,
+  TabsComponent,
   type AccordionItem,
   type FooterSection,
-  type FooterLink
+  type FooterLink,
+  type TabItem
 } from 'ui-components';
 
 @Component({
@@ -17,13 +24,22 @@ import {
     ButtonComponent, 
     CardComponent, 
     AccordionComponent, 
-    FooterComponent
+    FooterComponent,
+    InputComponent,
+    BadgeComponent,
+    AvatarComponent,
+    ModalComponent,
+    TooltipComponent,
+    TabsComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('UI Library Demo');
+  protected readonly title = signal('UI Library Demo - Extended');
+
+  // Demo state
+  protected modalOpen = signal(false);
 
   // Demo data for accordion
   protected accordionItems = signal<AccordionItem[]>([
@@ -44,6 +60,28 @@ export class App {
     }
   ]);
 
+  // Demo data for tabs
+  protected tabItems = signal<TabItem[]>([
+    {
+      id: 'components',
+      label: 'Components',
+      content: 'All UI components with consistent design and accessibility features.',
+      icon: '🧩'
+    },
+    {
+      id: 'utilities',
+      label: 'Utilities',
+      content: 'Powerful utility services for focus management, positioning, and ARIA helpers.',
+      icon: '🛠️'
+    },
+    {
+      id: 'tokens',
+      label: 'Design Tokens',
+      content: 'Comprehensive design token system with colors, spacing, motion, and typography.',
+      icon: '🎨'
+    }
+  ]);
+
   // Demo data for footer
   protected footerSections = signal<FooterSection[]>([
     {
@@ -51,8 +89,9 @@ export class App {
       links: [
         { label: 'Button', href: '#button' },
         { label: 'Card', href: '#card' },
-        { label: 'Accordion', href: '#accordion' },
-        { label: 'Footer', href: '#footer' }
+        { label: 'Input', href: '#input' },
+        { label: 'Modal', href: '#modal' },
+        { label: 'Tabs', href: '#tabs' }
       ]
     },
     {
@@ -77,5 +116,21 @@ export class App {
 
   protected onAccordionToggle(event: { id: string; expanded: boolean }): void {
     console.log('Accordion toggled:', event);
+  }
+
+  protected openModal(): void {
+    this.modalOpen.set(true);
+  }
+
+  protected closeModal(): void {
+    this.modalOpen.set(false);
+  }
+
+  protected onTabChange(tabId: string): void {
+    console.log('Tab changed to:', tabId);
+  }
+
+  protected onBadgeDismiss(): void {
+    console.log('Badge dismissed');
   }
 }
