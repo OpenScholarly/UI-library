@@ -176,7 +176,7 @@ export class SliderComponent implements ControlValueAccessor {
     const min = this.min();
     const max = this.max();
     const value = this.currentValue();
-    return ((value - min) / (max - min)) * 100;
+    return max - min === 0 ? 0 : ((value - min) / (max - min)) * 100;
   });
 
   tickMarks = computed(() => {
