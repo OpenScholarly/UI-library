@@ -1,56 +1,60 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { 
-  ButtonComponent, 
-  CardComponent, 
-  AccordionComponent, 
-  FooterComponent,
-  InputComponent,
-  BadgeComponent,
-  AvatarComponent,
-  ModalComponent,
-  TooltipComponent,
-  TabsComponent,
-  type AccordionItem,
-  type FooterSection,
-  type FooterLink,
-  type TabItem
-} from '../../../../../ui-components/src/public-api';
-// from 'ui-components';
+  ButtonComponent, CardComponent, AccordionComponent, FooterComponent,
+  InputComponent, BadgeComponent, ModalComponent, 
+  TooltipComponent, CheckboxComponent, SelectComponent,
+  ToggleComponent, LoaderComponent, ProgressComponent,
+  BreadcrumbsComponent, PaginationComponent, TextareaComponent,
+  ChipComponent, ToastComponent, SliderComponent, AvatarComponent, TabsComponent,
+  type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem
+} from 'ui-components';
 
 @Component({
-  selector: 'app-root',
-  imports: [ButtonComponent, CardComponent, AccordionComponent, FooterComponent, InputComponent, BadgeComponent, AvatarComponent, ModalComponent, TooltipComponent, TabsComponent],
+  selector: 'app-main',
+  imports: [
+    ReactiveFormsModule,
+    ButtonComponent, CardComponent, AccordionComponent, FooterComponent,
+    InputComponent, BadgeComponent, ModalComponent, 
+    TooltipComponent, CheckboxComponent, SelectComponent,
+    ToggleComponent, LoaderComponent, ProgressComponent,
+    BreadcrumbsComponent, PaginationComponent, TextareaComponent,
+    ChipComponent, ToastComponent, SliderComponent, AvatarComponent, TabsComponent
+  ],
   templateUrl: './main.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainComponent {
-  protected title = signal('UI Component Library');
-  protected lastClicked = signal<string | null>(null);
+  protected title = signal('UI Component Library - 22+ Components Demo');
 
-  // Demo state
-  protected modalOpen = signal(false);
+  // Component states
+  isModalOpen = signal(false);
+  currentPage = signal(1);
+  progressValue = signal(45);
+  showToast = signal(false);
+  sliderValue = signal(50);
 
-  // Demo data for accordion
-  protected accordionItems = signal<AccordionItem[]>([
-    {
-      id: 'design-tokens',
-      title: 'Design Tokens',
-      content: 'Design tokens provide a consistent foundation with colors, spacing, typography, and motion values across all components.'
-    },
-    {
-      id: 'accessibility',
-      title: 'Accessibility Features',
-      content: 'Built-in focus management, screen reader support, and ARIA attributes ensure components meet WCAG 2.1 AA standards.'
-    },
-    {
-      id: 'glass-effects',
-      title: 'Glass & Liquid Effects',
-      content: 'Modern glass morphism effects with backdrop blur and transparency for beautiful, modern interfaces.'
-    }
+  // Form data
+  selectOptions = signal<SelectOption[]>([
+    { value: 'us', label: 'United States' },
+    { value: 'ca', label: 'Canada' },
+    { value: 'uk', label: 'United Kingdom' },
+    { value: 'fr', label: 'France' },
+    { value: 'de', label: 'Germany' }
   ]);
 
-  // Demo data for tabs
-  protected tabItems = signal<TabItem[]>([
+  breadcrumbItems = signal<BreadcrumbItem[]>([
+    { label: 'Home', href: '#' },
+    { label: 'Components', href: '#' },
+    { label: 'Demo' }
+  ]);
+
+  tabItems = signal<TabItem[]>([
+    {
+      id: 'overview',
+      label: 'Overview',
+      content: 'Component library overview and features.',
+      icon: '📋'
+    },
     {
       id: 'components',
       label: 'Components',
@@ -62,65 +66,74 @@ export class MainComponent {
       label: 'Utilities',
       content: 'Powerful utility services for focus management, positioning, and ARIA helpers.',
       icon: '🛠️'
-    },
-    {
-      id: 'tokens',
-      label: 'Design Tokens',
-      content: 'Comprehensive design token system with colors, spacing, motion, and typography.',
-      icon: '🎨'
     }
   ]);
 
-  // Demo data for footer
-  protected footerSections = signal<FooterSection[]>([
+  accordionItems = signal<AccordionItem[]>([
+    {
+      id: 'design-tokens',
+      title: 'Design Tokens System',
+      content: 'Comprehensive design token system with CSS custom properties supporting colors, spacing, typography, motion, and dark theme.'
+    },
+    {
+      id: 'components',
+      title: '22+ Production-Ready Components',
+      content: 'Complete component library with form controls, navigation, feedback, display, and overlay components. All components are fully accessible and follow WCAG 2.1 AA standards.'
+    },
+    {
+      id: 'utilities',
+      title: 'Utility Services',
+      content: 'Focus trap, ARIA helpers, portal, positioning, and dismiss services for building complex UI interactions.'
+    }
+  ]);
+
+  footerSections = signal<FooterSection[]>([
     {
       title: 'Components',
       links: [
-        { label: 'Button', href: '#button' },
-        { label: 'Card', href: '#card' },
-        { label: 'Input', href: '#input' },
-        { label: 'Modal', href: '#modal' },
-        { label: 'Tabs', href: '#tabs' }
+        { label: 'Buttons', href: '#' },
+        { label: 'Forms', href: '#' },
+        { label: 'Navigation', href: '#' }
       ]
     },
     {
-      title: 'Utilities',
+      title: 'Resources',
       links: [
-        { label: 'Focus Trap', href: '#focus-trap' },
-        { label: 'Portal Service', href: '#portal' },
-        { label: 'Positioning', href: '#positioning' },
-        { label: 'ARIA Helpers', href: '#aria' }
+        { label: 'Documentation', href: '#' },
+        { label: 'Examples', href: '#' },
+        { label: 'GitHub', href: '#' }
       ]
     }
   ]);
 
-  protected socialLinks = signal<FooterLink[]>([
-    { label: 'GitHub', href: 'https://github.com', external: true },
-    { label: 'Twitter', href: 'https://twitter.com', external: true }
-  ]);
-
-  protected onButtonClick(buttonName: string): void {
-    this.lastClicked.set(buttonName);
-    console.log(`${buttonName} button clicked`);
+  // Methods
+  openModal() {
+    this.isModalOpen.set(true);
   }
 
-  protected onAccordionToggle(event: { id: string; expanded: boolean }): void {
-    console.log('Accordion toggled:', event);
+  closeModal() {
+    this.isModalOpen.set(false);
   }
 
-  protected openModal(): void {
-    this.modalOpen.set(true);
+  onPageChange(page: number) {
+    this.currentPage.set(page);
   }
 
-  protected closeModal(): void {
-    this.modalOpen.set(false);
+  onSliderChange(value: number) {
+    this.sliderValue.set(value);
   }
 
-  protected onTabChange(tabId: string): void {
+  onTabChange(tabId: string) {
     console.log('Tab changed to:', tabId);
   }
 
-  protected onBadgeDismiss(): void {
-    console.log('Badge dismissed');
+  showToastNotification() {
+    this.showToast.set(true);
+    // Auto hide after 5 seconds
+    setTimeout(() => this.showToast.set(false), 5000);
+  }
+
+  onToastDismiss() {
+    this.showToast.set(false);
   }
 }
