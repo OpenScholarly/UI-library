@@ -54,6 +54,7 @@ export class ButtonComponent {
   protected handleClick(): void {
     if (!this.disabled()) {
       this.clicked.emit();
+      console.log('Button clicked');
     }
   }
 }
