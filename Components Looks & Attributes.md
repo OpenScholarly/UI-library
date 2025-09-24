@@ -474,7 +474,7 @@ private readonly variantClasses = {
 @Input() label?: string
 @Input() labelPosition: 'left'|'right' = 'right'
 @Input() size: 'sm'|'md'|'lg' = 'md'
-@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue' // renamed from `color`
 @Input() customIcon?: string
 @Input() indeterminateIcon?: string
 @Input() rounded: boolean = false
@@ -502,7 +502,7 @@ private readonly variantClasses = {
 @Input() disabled: boolean = false
 @Input() required: boolean = false
 @Input() size: 'sm'|'md'|'lg' = 'md'
-@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue' // renamed from `color`
 @Input() ariaLabel?: string
 @Input() ariaLabelledBy?: string
 @Output() valueChange = new EventEmitter<any>()
@@ -536,7 +536,7 @@ private readonly variantClasses = {
 @Input() checked: boolean = false
 @Input() disabled: boolean = false
 @Input() size: 'sm'|'md'|'lg' = 'md'
-@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue' // renamed from `color`
 @Input() labelOn?: string
 @Input() labelOff?: string
 @Input() showLabels: boolean = false
@@ -578,7 +578,7 @@ private readonly variantClasses = {
 @Input() tooltipPlacement: 'top'|'bottom'|'left'|'right' = 'top'
 @Input() disabled: boolean = false
 @Input() size: 'sm'|'md'|'lg' = 'md'
-@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue' // renamed from `color`
 @Input() trackHeight: number = 4
 @Input() thumbSize: number = 20
 @Input() ariaLabel?: string
@@ -636,6 +636,11 @@ interface TabItem {
 }
 ```
 
+### Accessibility Notes
+- role="tablist" on container, role="tab" on triggers, role="tabpanel" on content.
+- aria-selected, aria-controls, id binding per WAI-ARIA Authoring Practices.
+- Use roving tabindex for horizontal/vertical arrow key navigation.
+
 ### Examples
 [Screenshot placeholder - Tab variants and orientations]
 
@@ -684,6 +689,11 @@ interface MenuItem {
   ariaLabel?: string;
 }
 ```
+
+### Accessibility Notes
+- role="menu" with role="menuitem" (or menuitemcheckbox/menuitemradio) when appropriate.
+- Manage focus with looped arrow key navigation; Esc closes and returns focus to trigger.
+- Leverage aria-activedescendant with active option id.
 
 ### Examples
 [Screenshot placeholder - Menu variants and nested menus]
@@ -1251,7 +1261,7 @@ interface AvatarBadge {
 @Input() variant: 'dot'|'count'|'text'|'status' = 'count'
 @Input() content?: string | number
 @Input() max: number = 99 // for count variant
-@Input() color: 'blue'|'green'|'purple'|'red'|'gray' = 'red'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'red' // renamed from `color`
 @Input() size: 'sm'|'md'|'lg' = 'md'
 @Input() position: 'top-right'|'top-left'|'bottom-right'|'bottom-left'|'inline' = 'top-right'
 @Input() overlap: boolean = true
@@ -1281,7 +1291,7 @@ interface AvatarBadge {
 @Input() clickable: boolean = false
 @Input() selected: boolean = false
 @Input() size: 'sm'|'md'|'lg' = 'md'
-@Input() color: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue' // renamed from `color`
 @Input() icon?: string
 @Input() avatar?: string
 @Input() ariaLabel?: string
@@ -1533,8 +1543,16 @@ interface AvatarBadge {
 
 
 # 7 — Liquid Glass Components
-**Purpose:** Advanced visual effects with glass morphism and liquid animations
-**Figma Design:** [Insert Figma link here]
+- Prefer bg-glass and border-glass-border tokens to keep consistent luminance in light/dark.
+- Respect prefers-reduced-motion by disabling shimmer/float animations when set.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .animate-float, .animate-glass-shimmer, .animate-liquid-ripple {
+    animation: none !important;
+  }
+}
+```
 
 ## Glass Card
 ### Parameters / Props
@@ -2000,6 +2018,6 @@ All components will include interactive examples in Storybook with:
 
 ---
 
-**Last Updated:** September 2025
-**Version:** 1.0.0
+**Last Updated:** September 2025  
+**Version:** 1.0.1
 
