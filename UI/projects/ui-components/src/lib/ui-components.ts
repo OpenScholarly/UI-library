@@ -3,13 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'ui-ui-components',
   imports: [],
-  template: `
-    <p>
-      ui-components works!
-    </p>
-  `,
+  template: ``,
   styles: ``
 })
-export class UiComponents {
-
-}
+export class UiComponents {}

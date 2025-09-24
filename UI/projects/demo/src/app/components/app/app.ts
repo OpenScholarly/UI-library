@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { ButtonComponent, CardComponent } from 'ui-components';
+// import { ButtonComponent, CardComponent } from 'ui-components'; // for production use, import from 'ui-components' package
+import { ButtonComponent } from '../../../../../ui-components/src/lib/components/button/button.component';
+import { CardComponent } from '../../../../../ui-components/src/lib/components/card/card.component';
 
 @Component({
   selector: 'app-root',
