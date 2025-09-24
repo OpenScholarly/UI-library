@@ -1,347 +1,1630 @@
-# 1 — Core/Essential components
+# UI Library Components Specification
+
+Following Material Design 3 principles with custom liquid glass effects, advanced animations, and comprehensive theming support.
+
+---
+
+# 1 — Core/Essential Components
+
 ## Button
-Variants: `primary`, `secondary`, `tertiary`, `text`, `ghost`, `danger`/`warning`, `success`, `link`
-Sizes: `xs`/`sm`/`md`/`lg`/`xl` (or `small|medium|large`)
-States: `normal`, `hover`, `active`, `focus`, `disabled`, `loading`, `pressed` (for toggle-like)
-Parameters / props:
-* `@Input() variant: string = 'primary'`
-* `@Input() size: string = 'md'`
-* `@Input() type: 'button'|'submit'|'reset' = 'button'`
-* `@Input() disabled: boolean`
-* `@Input() loading: boolean`
-* `@Input() icon?: string` (icon name or template)
-* `@Input() iconPosition: 'left'|'right'`
-* `@Input() allowFocusRipple: boolean`
-* `@Input() ariaLabel?: string`
-* `@Output() click = new EventEmitter<Event>()`
-* Content projection for label (supports HTML): `<my-button>Save</my-button>`
-  Notes: support `aria-pressed` for toggle; if `loading` disable click; support `type="submit"`.
+**Purpose:** Primary interactive element for user actions
+**Figma Design:** [Insert Figma link here]
 
-## Form Field primitives
-Shared wrapper handling label, hint, error, prefix/suffix icons:
-* `label`, `hint`, `error`, `required`, `disabled`, `dense`
-* Slots: `prefix`, `suffix`, `control` (ng-content)
-  Used by inputs, selects, radio groups.
+### Variants
+`primary`, `secondary`, `tertiary`, `text`, `ghost`, `danger`, `warning`, `success`, `info`, `link`
 
-## Input (text)
-Variants: `text`, `password`, `search`, `url`, `email`, `tel`, `number`
-Sizes/density, states (disabled, readonly, invalid)
-Props:
-* `@Input() type = 'text'`
-* `@Input() value: string`
-* `@Input() placeholder?: string`
-* `@Input() readonly: boolean`
-* `@Input() disabled: boolean`
-* `@Input() clearable: boolean`
-* `@Input() iconLeft?: string`, `iconRight?: string`
-* `@Input() showPasswordToggle?: boolean` (for password fields)
-* `@Input() maxLength?: number`
-* `@Output() valueChange = new EventEmitter<string>()` (and implement ControlValueAccessor)
-* Events: `focus`, `blur`, `enter` (keyup.enter)
-  Notes: implement `ControlValueAccessor`, send `touched`/`dirty` states.
+### Sizes
+`xs` (28px), `sm` (32px), `md` (40px), `lg` (48px), `xl` (56px)
+
+### States
+`normal`, `hover`, `active`, `focus`, `disabled`, `loading`, `pressed`
+
+### Parameters / Props
+```typescript
+@Input() variant: 'primary'|'secondary'|'tertiary'|'text'|'ghost'|'danger'|'warning'|'success'|'info'|'link' = 'primary'
+@Input() size: 'xs'|'sm'|'md'|'lg'|'xl' = 'md'
+@Input() type: 'button'|'submit'|'reset' = 'button'
+@Input() disabled: boolean = false
+@Input() loading: boolean = false
+@Input() fullWidth: boolean = false
+@Input() icon?: string
+@Input() iconPosition: 'left'|'right' = 'left'
+@Input() iconOnly: boolean = false
+@Input() ripple: boolean = true
+@Input() elevation: 0|1|2|3|4 = 0
+@Input() rounded: 'sm'|'md'|'lg'|'xl'|'full' = 'md'
+@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() glassEffect: boolean = false
+@Input() ariaLabel?: string
+@Input() ariaPressed?: boolean
+@Input() ariaExpanded?: boolean
+@Output() click = new EventEmitter<Event>()
+@Output() focus = new EventEmitter<FocusEvent>()
+@Output() blur = new EventEmitter<FocusEvent>()
+```
+
+### Accessibility Features
+- Minimum 48×48px touch target
+- WCAG 2.1 AA color contrast compliance
+- Keyboard navigation support
+- Screen reader compatible
+- Focus ring visible on `:focus-visible`
+- `aria-pressed` for toggle states
+
+### Examples
+[Screenshot placeholder - Button variants]
+[Screenshot placeholder - Button sizes]
+[Screenshot placeholder - Button states]
+
+---
+
+## Form Field Wrapper
+**Purpose:** Consistent wrapper for all form controls with label, hints, and error handling
+**Figma Design:** [Insert Figma link here]
+
+### Parameters / Props
+```typescript
+@Input() label?: string
+@Input() labelPosition: 'top'|'left'|'floating' = 'top'
+@Input() hint?: string
+@Input() error?: string
+@Input() required: boolean = false
+@Input() disabled: boolean = false
+@Input() dense: boolean = false
+@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() showRequiredMarker: boolean = true
+@Input() prefixIcon?: string
+@Input() suffixIcon?: string
+@Input() ariaDescribedBy?: string
+```
+
+### Content Projection Slots
+- `prefix` - Icon or text before the control
+- `suffix` - Icon or text after the control  
+- `control` - The form control itself
+- `hint` - Helper text below the control
+- `error` - Error message below the control
+
+### Examples
+[Screenshot placeholder - Form field layouts]
+
+---
+
+## Input (Text)
+**Purpose:** Single-line text input with comprehensive validation and styling
+**Figma Design:** [Insert Figma link here]
+
+### Input Types
+`text`, `password`, `search`, `url`, `email`, `tel`, `number`, `hidden`
+
+### Sizes
+`sm` (32px), `md` (40px), `lg` (48px)
+
+### Parameters / Props
+```typescript
+@Input() type: 'text'|'password'|'search'|'url'|'email'|'tel'|'number' = 'text'
+@Input() value: string = ''
+@Input() placeholder?: string
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() readonly: boolean = false
+@Input() disabled: boolean = false
+@Input() autofocus: boolean = false
+@Input() autocomplete?: string
+@Input() spellcheck: boolean = true
+@Input() clearable: boolean = false
+@Input() showPasswordToggle: boolean = false // for password type
+@Input() maxLength?: number
+@Input() minLength?: number
+@Input() pattern?: string
+@Input() step?: number // for number type
+@Input() min?: number // for number type
+@Input() max?: number // for number type
+@Input() debounceTime: number = 0
+@Input() validation?: ValidationFunction[]
+@Input() mask?: string // input masking
+@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() glassEffect: boolean = false
+@Input() ariaLabel?: string
+@Input() ariaDescribedBy?: string
+@Output() valueChange = new EventEmitter<string>()
+@Output() focus = new EventEmitter<FocusEvent>()
+@Output() blur = new EventEmitter<FocusEvent>()
+@Output() enter = new EventEmitter<KeyboardEvent>()
+@Output() escape = new EventEmitter<KeyboardEvent>()
+@Output() clear = new EventEmitter<void>()
+```
+
+### Examples
+[Screenshot placeholder - Input variants and states]
+[Screenshot placeholder - Input with icons and validation]
+
+---
 
 ## Textarea
-Props similar to Input plus:
-* `@Input() rows`, `@Input() autosize?: {minRows, maxRows}`, `resizable: boolean`
+**Purpose:** Multi-line text input with auto-resize capabilities
+**Figma Design:** [Insert Figma link here]
 
-## Select (single & multi)
-Types: single-select (native/custom), multi-select (chips), creatable (tags)
-Props:
-* `@Input() multiple: boolean`
-* `@Input() options: Array<{value:any,label:string,disabled?:boolean}>`
-* `@Input() value`, `@Input() placeholder`
-* `@Input() searchable: boolean`
-* `@Input() clearable: boolean`
-* `@Input() virtualScroll: boolean` (for large lists)
-* `@Output() valueChange = new EventEmitter()`
-* Template slots: `optionTemplate` for custom rendering
-  Accessibility: keyboard navigation (arrow keys), type-ahead, aria expanded/owns
+### Parameters / Props
+```typescript
+// Inherits from Input plus:
+@Input() rows: number = 4
+@Input() autoResize: boolean = false
+@Input() minRows?: number
+@Input() maxRows?: number
+@Input() resizable: 'none'|'vertical'|'horizontal'|'both' = 'vertical'
+@Input() characterCount: boolean = false
+```
+
+### Examples
+[Screenshot placeholder - Textarea variants]
+
+---
+
+## Select (Single & Multi)
+**Purpose:** Dropdown selection with search, multi-select, and virtual scrolling
+**Figma Design:** [Insert Figma link here]
+
+### Types
+- Single select (native/custom)
+- Multi-select with chips
+- Creatable/taggable
+- Grouped options
+
+### Parameters / Props
+```typescript
+@Input() multiple: boolean = false
+@Input() options: SelectOption[] = []
+@Input() value: any
+@Input() placeholder?: string
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() searchable: boolean = false
+@Input() clearable: boolean = false
+@Input() creatable: boolean = false
+@Input() loading: boolean = false
+@Input() virtualScroll: boolean = false
+@Input() virtualScrollItemSize: number = 40
+@Input() maxDisplayedOptions: number = 8
+@Input() closeOnSelect: boolean = true
+@Input() chipRemovable: boolean = true // for multi-select
+@Input() groupBy?: string
+@Input() labelKey: string = 'label'
+@Input() valueKey: string = 'value'
+@Input() disabledKey: string = 'disabled'
+@Input() searchFunction?: (term: string) => Observable<SelectOption[]>
+@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() glassEffect: boolean = false
+@Output() valueChange = new EventEmitter<any>()
+@Output() searchChange = new EventEmitter<string>()
+@Output() open = new EventEmitter<void>()
+@Output() close = new EventEmitter<void>()
+@Output() optionSelect = new EventEmitter<SelectOption>()
+@Output() optionRemove = new EventEmitter<SelectOption>()
+```
+
+### Template Slots
+- `optionTemplate` - Custom option rendering
+- `selectedTemplate` - Custom selected value display
+- `noOptionsTemplate` - No results message
+- `loadingTemplate` - Loading indicator
+
+### Accessibility Features
+- Keyboard navigation with arrow keys
+- Type-ahead search
+- `aria-expanded`, `aria-owns`, `aria-activedescendant`
+- Screen reader announcements
+
+### Examples
+[Screenshot placeholder - Select variants]
+[Screenshot placeholder - Multi-select with chips]
+
+---
 
 ## Checkbox
-Variants: default / tristate / custom icons
-Props:
-* `@Input() checked: boolean | 'indeterminate'`
-* `@Input() disabled`, `@Input() label?: string`
-* `@Output() checkedChange`
+**Purpose:** Binary or tri-state selection control
+**Figma Design:** [Insert Figma link here]
+
+### Variants
+`default`, `tristate`, `custom`
+
+### Parameters / Props
+```typescript
+@Input() checked: boolean | 'indeterminate' = false
+@Input() disabled: boolean = false
+@Input() label?: string
+@Input() labelPosition: 'left'|'right' = 'right'
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() customIcon?: string
+@Input() indeterminateIcon?: string
+@Input() rounded: boolean = false
+@Input() ariaLabel?: string
+@Input() ariaDescribedBy?: string
+@Output() checkedChange = new EventEmitter<boolean | 'indeterminate'>()
+@Output() focus = new EventEmitter<FocusEvent>()
+@Output() blur = new EventEmitter<FocusEvent>()
+```
+
+### Examples
+[Screenshot placeholder - Checkbox states and variants]
+
+---
 
 ## Radio Group & Radio
-Props:
-* Group: `name`, `value`, `valueChange`
-* Radio: `value`, `label`, `disabled`
-  Accessibility: arrow-key navigation between radios
+**Purpose:** Single selection from multiple options
+**Figma Design:** [Insert Figma link here]
+
+### Radio Group Props
+```typescript
+@Input() name: string
+@Input() value: any
+@Input() orientation: 'horizontal'|'vertical' = 'vertical'
+@Input() disabled: boolean = false
+@Input() required: boolean = false
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() ariaLabel?: string
+@Input() ariaLabelledBy?: string
+@Output() valueChange = new EventEmitter<any>()
+```
+
+### Radio Props
+```typescript
+@Input() value: any
+@Input() label?: string
+@Input() disabled: boolean = false
+@Input() ariaLabel?: string
+@Input() ariaDescribedBy?: string
+```
+
+### Accessibility Features
+- Arrow key navigation between options
+- Space key to select
+- Roving tabindex
+
+### Examples
+[Screenshot placeholder - Radio group orientations]
+
+---
 
 ## Toggle / Switch
-Props:
-* `@Input() checked`, `@Input() disabled`, `size`, `labelOn`, `labelOff`
-* `@Output() checkedChange`
+**Purpose:** On/off control with smooth animations
+**Figma Design:** [Insert Figma link here]
 
-## Slider / Range input
-Props:
-* `min`, `max`, `step`, `value` (single or range), `marks`, `orientation`
-* `@Output() valueChange`
+### Parameters / Props
+```typescript
+@Input() checked: boolean = false
+@Input() disabled: boolean = false
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() labelOn?: string
+@Input() labelOff?: string
+@Input() showLabels: boolean = false
+@Input() icons: boolean = false
+@Input() iconOn?: string
+@Input() iconOff?: string
+@Input() ariaLabel?: string
+@Input() ariaDescribedBy?: string
+@Output() checkedChange = new EventEmitter<boolean>()
+@Output() focus = new EventEmitter<FocusEvent>()
+@Output() blur = new EventEmitter<FocusEvent>()
+```
 
+### Examples
+[Screenshot placeholder - Toggle variants and sizes]
 
+---
 
+## Slider / Range Input
+**Purpose:** Numeric input via dragging or touch
+**Figma Design:** [Insert Figma link here]
+
+### Types
+- Single value
+- Range (dual handle)
+- Stepped values
+- With marks/ticks
+
+### Parameters / Props
+```typescript
+@Input() min: number = 0
+@Input() max: number = 100
+@Input() step: number = 1
+@Input() value: number | [number, number]
+@Input() range: boolean = false
+@Input() orientation: 'horizontal'|'vertical' = 'horizontal'
+@Input() marks: SliderMark[] = []
+@Input() showTooltip: boolean = false
+@Input() tooltipPlacement: 'top'|'bottom'|'left'|'right' = 'top'
+@Input() disabled: boolean = false
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() trackHeight: number = 4
+@Input() thumbSize: number = 20
+@Input() ariaLabel?: string
+@Input() ariaValueText?: string
+@Output() valueChange = new EventEmitter<number | [number, number]>()
+@Output() slideStart = new EventEmitter<void>()
+@Output() slideEnd = new EventEmitter<void>()
+```
+
+### Examples
+[Screenshot placeholder - Slider variants and orientations]
+
+---
 
 # 2 — Navigation & Structure
+
 ## Tabs
-Modes: `line`, `box`, `pills`, scrollable
-Props:
-* `@Input() activeIndex`
-* `@Output() activeIndexChange`
-* `lazyLoad: boolean`, orientation, keyboard nav
+**Purpose:** Content organization and switching interface
+**Figma Design:** [Insert Figma link here]
+
+### Variants
+`line`, `pills`, `box`, `segmented`
+
+### Parameters / Props
+```typescript
+@Input() variant: 'line'|'pills'|'box'|'segmented' = 'line'
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() orientation: 'horizontal'|'vertical' = 'horizontal'
+@Input() activeIndex: number = 0
+@Input() scrollable: boolean = false
+@Input() centered: boolean = false
+@Input() fullWidth: boolean = false
+@Input() lazyLoad: boolean = false
+@Input() animateContent: boolean = true
+@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() glassEffect: boolean = false
+@Input() ariaLabel?: string
+@Output() activeIndexChange = new EventEmitter<number>()
+@Output() tabClick = new EventEmitter<{index: number, tab: TabItem}>()
+```
+
+### Tab Item Props
+```typescript
+interface TabItem {
+  label: string;
+  icon?: string;
+  disabled?: boolean;
+  closable?: boolean;
+  badge?: string | number;
+  ariaLabel?: string;
+}
+```
+
+### Examples
+[Screenshot placeholder - Tab variants and orientations]
+
+---
 
 ## Menu / Dropdown
-Options: `context menu`, `menu button`, `split button`
-Props:
-* open/close events, `placement` (top/bottom/left/right), `offset`, `closeOnSelect`, `trapFocus` optional
+**Purpose:** Contextual actions and navigation
+**Figma Design:** [Insert Figma link here]
+
+### Types
+- Context menu
+- Menu button
+- Split button
+- Nested menus
+
+### Parameters / Props
+```typescript
+@Input() trigger: 'click'|'hover'|'contextmenu' = 'click'
+@Input() placement: Placement = 'bottom-start'
+@Input() offset: number = 4
+@Input() closeOnSelect: boolean = true
+@Input() closeOnOutsideClick: boolean = true
+@Input() disabled: boolean = false
+@Input() maxHeight?: number
+@Input() minWidth?: number
+@Input() trapFocus: boolean = true
+@Input() returnFocusOnClose: boolean = true
+@Input() glassEffect: boolean = false
+@Input() elevation: 1|2|3|4 = 2
+@Input() ariaLabel?: string
+@Output() open = new EventEmitter<void>()
+@Output() close = new EventEmitter<void>()
+@Output() itemClick = new EventEmitter<MenuItem>()
+```
+
+### Menu Item Props
+```typescript
+interface MenuItem {
+  label: string;
+  icon?: string;
+  shortcut?: string;
+  disabled?: boolean;
+  divider?: boolean;
+  children?: MenuItem[];
+  action?: () => void;
+  ariaLabel?: string;
+}
+```
+
+### Examples
+[Screenshot placeholder - Menu variants and nested menus]
+
+---
 
 ## Breadcrumb
-Props: `items: Array<{label,href}>` and separator slot.
+**Purpose:** Hierarchical navigation display
+**Figma Design:** [Insert Figma link here]
+
+### Parameters / Props
+```typescript
+@Input() items: BreadcrumbItem[] = []
+@Input() separator: 'slash'|'chevron'|'arrow'|'custom' = 'slash'
+@Input() customSeparator?: string
+@Input() maxItems: number = 0 // 0 = no limit
+@Input() showRoot: boolean = true
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() ariaLabel: string = 'Breadcrumb'
+@Output() itemClick = new EventEmitter<BreadcrumbItem>()
+```
+
+### Breadcrumb Item
+```typescript
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+  icon?: string;
+  disabled?: boolean;
+  ariaLabel?: string;
+}
+```
+
+### Examples
+[Screenshot placeholder - Breadcrumb variants]
+
+---
 
 ## Pagination
-Props:
-* `currentPage`, `pageSize`, `total`, `pageSizeOptions`, `showFirstLast`, `showJumpTo`
-* Events: `pageChange`, `pageSizeChange`
+**Purpose:** Large dataset navigation
+**Figma Design:** [Insert Figma link here]
+
+### Types
+- Standard pagination
+- Simple (previous/next only)
+- Compact (mobile-optimized)
+
+### Parameters / Props
+```typescript
+@Input() currentPage: number = 1
+@Input() pageSize: number = 10
+@Input() total: number = 0
+@Input() pageSizeOptions: number[] = [10, 25, 50, 100]
+@Input() showSizeChanger: boolean = false
+@Input() showQuickJumper: boolean = false
+@Input() showFirstLast: boolean = true
+@Input() showTotal: boolean = true
+@Input() maxPagesDisplay: number = 7
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() simple: boolean = false
+@Input() disabled: boolean = false
+@Input() ariaLabel: string = 'Pagination'
+@Output() pageChange = new EventEmitter<number>()
+@Output() pageSizeChange = new EventEmitter<number>()
+```
+
+### Examples
+[Screenshot placeholder - Pagination variants]
+
+---
 
 ## Sidenav / Drawer
-Props:
-* `mode: 'over'|'push'|'side'`, `opened`, `position: 'left'|'right'`, `backdrop`
+**Purpose:** Side navigation panel with multiple display modes
+**Figma Design:** [Insert Figma link here]
+
+### Modes
+- `over` - Overlays content
+- `push` - Pushes content aside
+- `side` - Side-by-side with content
+
+### Parameters / Props
+```typescript
+@Input() mode: 'over'|'push'|'side' = 'over'
+@Input() position: 'left'|'right' = 'left'
+@Input() opened: boolean = false
+@Input() backdrop: boolean = true
+@Input() backdropClose: boolean = true
+@Input() width: string = '280px'
+@Input() autoFocus: boolean = true
+@Input() restoreFocus: boolean = true
+@Input() trapFocus: boolean = true
+@Input() glassEffect: boolean = false
+@Input() elevation: 1|2|3|4 = 2
+@Input() ariaLabel?: string
+@Output() openedChange = new EventEmitter<boolean>()
+@Output() openedStart = new EventEmitter<void>()
+@Output() closedStart = new EventEmitter<void>()
+@Output() openedEnd = new EventEmitter<void>()
+@Output() closedEnd = new EventEmitter<void>()
+```
+
+### Examples
+[Screenshot placeholder - Drawer modes and positions]
+
+---
 
 ## Navbar / Toolbar
-Simple container with slots.
+**Purpose:** Application header with navigation and actions
+**Figma Design:** [Insert Figma link here]
 
+### Parameters / Props
+```typescript
+@Input() fixed: boolean = false
+@Input() sticky: boolean = false
+@Input() elevated: boolean = false
+@Input() transparent: boolean = false
+@Input() height: string = '64px'
+@Input() maxWidth?: string
+@Input() centerContent: boolean = false
+@Input() glassEffect: boolean = false
+@Input() elevation: 0|1|2|3|4 = 1
+@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() ariaLabel: string = 'Navigation'
+```
 
+### Content Slots
+- `brand` - Logo/brand area
+- `nav` - Navigation links
+- `actions` - Action buttons
+- `mobile-menu` - Mobile menu toggle
 
+### Examples
+[Screenshot placeholder - Navbar variants]
+
+---
 
 # 3 — Feedback & Overlays
+
 ## Tooltip
-Props:
-* `content`, `placement`, `openOnHover`, `delay`, `interactive`
-  Accessibility: `aria-describedby`, proper focus handling.
+**Purpose:** Contextual information on hover/focus
+**Figma Design:** [Insert Figma link here]
+
+### Parameters / Props
+```typescript
+@Input() content: string | TemplateRef<any>
+@Input() placement: Placement = 'top'
+@Input() trigger: 'hover'|'focus'|'click'|'manual' = 'hover'
+@Input() showDelay: number = 200
+@Input() hideDelay: number = 100
+@Input() interactive: boolean = false
+@Input() disabled: boolean = false
+@Input() maxWidth: string = '200px'
+@Input() theme: 'dark'|'light' = 'dark'
+@Input() arrow: boolean = true
+@Input() offset: number = 8
+@Input() ariaLabel?: string
+@Output() show = new EventEmitter<void>()
+@Output() hide = new EventEmitter<void>()
+```
+
+### Examples
+[Screenshot placeholder - Tooltip placements and themes]
+
+---
 
 ## Popover / Popper
-Props similar to tooltip: content slot, header/footer templates, closeOnOutsideClick, trapFocus, placement.
+**Purpose:** Rich contextual content overlay
+**Figma Design:** [Insert Figma link here]
+
+### Parameters / Props
+```typescript
+@Input() trigger: 'click'|'hover'|'focus'|'manual' = 'click'
+@Input() placement: Placement = 'bottom'
+@Input() offset: number = 8
+@Input() closeOnOutsideClick: boolean = true
+@Input() closeOnEscape: boolean = true
+@Input() trapFocus: boolean = false
+@Input() autoFocus: boolean = false
+@Input() returnFocus: boolean = true
+@Input() disabled: boolean = false
+@Input() arrow: boolean = true
+@Input() elevation: 1|2|3|4 = 2
+@Input() glassEffect: boolean = false
+@Input() maxWidth?: string
+@Input() maxHeight?: string
+@Input() ariaLabel?: string
+@Output() open = new EventEmitter<void>()
+@Output() close = new EventEmitter<void>()
+```
+
+### Content Slots
+- `header` - Popover header
+- `content` - Main content area
+- `footer` - Action buttons area
+
+### Examples
+[Screenshot placeholder - Popover variants]
+
+---
 
 ## Modal / Dialog
-Props:
-* `@Input() open`, `@Input() size: 'sm'|'md'|'lg'|'fullscreen'`, `backdrop: boolean | 'static'`, `closable?: boolean`, `escToClose?: boolean`, `trapFocus: boolean`
-* `@Output() openChange` or `onClose` event returning result
-  Accessibility: focus trap, aria-modal, initial focus, restore focus on close, role="dialog", labelledby.
-  Support confirm and custom footers via projection.
+**Purpose:** Modal overlays for important content and actions
+**Figma Design:** [Insert Figma link here]
+
+### Types
+- Standard dialog
+- Alert dialog
+- Confirmation dialog
+- Full-screen modal
+
+### Parameters / Props
+```typescript
+@Input() open: boolean = false
+@Input() size: 'xs'|'sm'|'md'|'lg'|'xl'|'fullscreen' = 'md'
+@Input() centered: boolean = true
+@Input() backdrop: boolean | 'static' = true
+@Input() keyboard: boolean = true
+@Input() focus: boolean = true
+@Input() restoreFocus: boolean = true
+@Input() closeButton: boolean = true
+@Input() scrollable: boolean = false
+@Input() animation: 'fade'|'slide'|'zoom' = 'fade'
+@Input() glassEffect: boolean = false
+@Input() elevation: 1|2|3|4 = 3
+@Input() ariaLabel?: string
+@Input() ariaLabelledBy?: string
+@Input() ariaDescribedBy?: string
+@Output() openChange = new EventEmitter<boolean>()
+@Output() opened = new EventEmitter<void>()
+@Output() closed = new EventEmitter<any>()
+@Output() backdropClick = new EventEmitter<void>()
+@Output() escapeKey = new EventEmitter<void>()
+```
+
+### Content Slots
+- `header` - Modal header with title
+- `body` - Main content area
+- `footer` - Action buttons
+
+### Examples
+[Screenshot placeholder - Modal sizes and types]
+
+---
 
 ## Toast / Snackbar
-Types: `info`, `success`, `error`, `warning`
-Props:
-* `duration`, `pauseOnHover`, `closeable`, `stacking` priority
-  Provide a service-driven API for global use.
+**Purpose:** Non-intrusive notifications
+**Figma Design:** [Insert Figma link here]
 
-## Progress / Spinner / Skeleton
-* Indeterminate/determinate progress bar, circular progress, skeleton blocks for loading.
+### Types
+`info`, `success`, `warning`, `error`, `custom`
 
+### Parameters / Props
+```typescript
+@Input() type: 'info'|'success'|'warning'|'error' = 'info'
+@Input() title?: string
+@Input() message: string
+@Input() duration: number = 5000
+@Input() closable: boolean = true
+@Input() pauseOnHover: boolean = true
+@Input() showProgress: boolean = false
+@Input() position: ToastPosition = 'top-right'
+@Input() icon?: string
+@Input() iconColor?: string
+@Input() actions?: ToastAction[]
+@Input() ariaLabel?: string
+@Output() close = new EventEmitter<void>()
+@Output() actionClick = new EventEmitter<ToastAction>()
+```
 
+### Service API
+```typescript
+interface ToastService {
+  show(config: ToastConfig): ToastRef;
+  success(message: string, title?: string): ToastRef;
+  error(message: string, title?: string): ToastRef;
+  warning(message: string, title?: string): ToastRef;
+  info(message: string, title?: string): ToastRef;
+  clear(): void;
+}
+```
 
+### Examples
+[Screenshot placeholder - Toast types and positions]
 
-# 4 — Data display & complex controls
+---
+
+## Progress Indicators
+**Purpose:** Loading and progress feedback
+**Figma Design:** [Insert Figma link here]
+
+### Types
+- Linear progress bar
+- Circular progress/spinner
+- Skeleton loaders
+
+### Linear Progress Props
+```typescript
+@Input() value?: number // undefined for indeterminate
+@Input() buffer?: number
+@Input() size: 'xs'|'sm'|'md'|'lg' = 'md'
+@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() showLabel: boolean = false
+@Input() label?: string
+@Input() ariaLabel?: string
+```
+
+### Circular Progress Props
+```typescript
+@Input() value?: number // undefined for indeterminate
+@Input() size: number = 40
+@Input() strokeWidth: number = 4
+@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() showLabel: boolean = false
+@Input() ariaLabel?: string
+```
+
+### Skeleton Props
+```typescript
+@Input() variant: 'text'|'rectangular'|'circular' = 'text'
+@Input() width?: string | number
+@Input() height?: string | number
+@Input() animation: 'pulse'|'wave'|'none' = 'pulse'
+@Input() lines?: number // for text variant
+```
+
+### Examples
+[Screenshot placeholder - Progress variants]
+
+---
+
+# 4 — Data Display & Complex Controls
+
 ## Table / Data Grid
-Basic Table API:
-* columns: definitions with `field`, `header`, `sortable`, `filterable`, `cellTemplate`
-* data input, selection modes (single/multi), virtual scroll, pagination, row expansion, column resizing, reordering
-  Events: `rowClick`, `sortChange`, `pageChange`
-  Support template projection for cells and headers.
-  Consider advanced grid (separate package) later.
+**Purpose:** Structured data display with sorting, filtering, and pagination
+**Figma Design:** [Insert Figma link here]
+
+### Features
+- Column sorting and filtering
+- Row selection (single/multi)
+- Virtual scrolling
+- Column resizing and reordering
+- Row expansion
+- Sticky headers
+
+### Parameters / Props
+```typescript
+@Input() columns: TableColumn[] = []
+@Input() data: any[] = []
+@Input() loading: boolean = false
+@Input() selectionMode: 'none'|'single'|'multiple' = 'none'
+@Input() selectedRows: any[] = []
+@Input() sortable: boolean = true
+@Input() filterable: boolean = false
+@Input() resizable: boolean = false
+@Input() reorderable: boolean = false
+@Input() virtualScroll: boolean = false
+@Input() virtualScrollItemSize: number = 48
+@Input() stickyHeader: boolean = false
+@Input() expandable: boolean = false
+@Input() striped: boolean = false
+@Input() bordered: boolean = false
+@Input() hover: boolean = true
+@Input() dense: boolean = false
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() emptyMessage: string = 'No data available'
+@Input() ariaLabel?: string
+@Output() sortChange = new EventEmitter<SortEvent>()
+@Output() filterChange = new EventEmitter<FilterEvent>()
+@Output() selectionChange = new EventEmitter<any[]>()
+@Output() rowClick = new EventEmitter<any>()
+@Output() rowDoubleClick = new EventEmitter<any>()
+@Output() columnResize = new EventEmitter<ColumnResizeEvent>()
+@Output() columnReorder = new EventEmitter<ColumnReorderEvent>()
+```
+
+### Column Definition
+```typescript
+interface TableColumn {
+  field: string;
+  header: string;
+  sortable?: boolean;
+  filterable?: boolean;
+  resizable?: boolean;
+  width?: string;
+  minWidth?: string;
+  maxWidth?: string;
+  sticky?: 'left' | 'right';
+  cellTemplate?: TemplateRef<any>;
+  headerTemplate?: TemplateRef<any>;
+  filterTemplate?: TemplateRef<any>;
+  sortFunction?: (a: any, b: any) => number;
+  filterFunction?: (value: any, filter: any) => boolean;
+}
+```
+
+### Examples
+[Screenshot placeholder - Table variants and features]
+
+---
 
 ## Card
-Slots: header, body, footer, media. Props: `elevated`, `outlined`, `compact`.
+**Purpose:** Content container with optional header, body, and footer
+**Figma Design:** [Insert Figma link here]
 
-## List / Virtual list
-Props: `items`, `itemTemplate`, `virtualScroll`, `loadMore` event.
+### Variants
+`elevated`, `outlined`, `filled`
 
-## Avatar / Badge / Chip / Tag
-Props:
-* avatar: `src`, `alt`, `size`, `shape`
-* badge: `content`, `position`, `dot`
-* chip: removable, clickable, icon
+### Parameters / Props
+```typescript
+@Input() variant: 'elevated'|'outlined'|'filled' = 'elevated'
+@Input() elevation: 0|1|2|3|4 = 1
+@Input() padding: 'none'|'sm'|'md'|'lg' = 'md'
+@Input() clickable: boolean = false
+@Input() disabled: boolean = false
+@Input() loading: boolean = false
+@Input() glassEffect: boolean = false
+@Input() rounded: 'sm'|'md'|'lg'|'xl' = 'md'
+@Input() ariaLabel?: string
+@Output() click = new EventEmitter<Event>()
+@Output() focus = new EventEmitter<FocusEvent>()
+@Output() blur = new EventEmitter<FocusEvent>()
+```
 
-## Tooltip & Popover already above.
+### Content Slots
+- `header` - Card header with title and actions
+- `media` - Image or media content
+- `content` - Main card content
+- `actions` - Action buttons
+- `footer` - Additional footer content
 
+### Examples
+[Screenshot placeholder - Card variants and layouts]
 
+---
 
+## List / Virtual List
+**Purpose:** Efficient display of large data sets
+**Figma Design:** [Insert Figma link here]
 
-# 5 — Forms & Controls (advanced)
-## Datepicker / Timepicker / Datetime
-Features:
-* single date / range / multiple selection
-* keyboard accessible calendar, localisation (i18n), min/max date, disableDates, firstDayOfWeek
-* time picker with 12/24h, step minutes
-* `@Input() startView: 'month'|'year'|'decade'`, custom day cell templates, ControlValueAccessor with `Date | string`
+### Types
+- Simple list
+- Virtual scrolling list
+- Infinite scroll list
+
+### Parameters / Props
+```typescript
+@Input() items: any[] = []
+@Input() trackBy?: TrackByFunction<any>
+@Input() virtualScroll: boolean = false
+@Input() virtualScrollItemSize: number = 48
+@Input() virtualScrollMinBufferPx: number = 100
+@Input() virtualScrollMaxBufferPx: number = 200
+@Input() selectionMode: 'none'|'single'|'multiple' = 'none'
+@Input() selectedItems: any[] = []
+@Input() dividers: boolean = true
+@Input() dense: boolean = false
+@Input() multiline: boolean = false
+@Input() emptyMessage: string = 'No items'
+@Input() loading: boolean = false
+@Input() loadMore: boolean = false
+@Input() ariaLabel?: string
+@Output() itemClick = new EventEmitter<any>()
+@Output() selectionChange = new EventEmitter<any[]>()
+@Output() loadMoreClick = new EventEmitter<void>()
+```
+
+### Item Templates
+- `itemTemplate` - Custom item rendering
+- `emptyTemplate` - Empty state display
+- `loadingTemplate` - Loading indicator
+
+### Examples
+[Screenshot placeholder - List variants]
+
+---
+
+## Avatar
+**Purpose:** User profile image or initials display
+**Figma Design:** [Insert Figma link here]
+
+### Parameters / Props
+```typescript
+@Input() src?: string
+@Input() alt?: string
+@Input() name?: string // for generating initials
+@Input() size: 'xs'|'sm'|'md'|'lg'|'xl'|number = 'md'
+@Input() shape: 'circle'|'square'|'rounded' = 'circle'
+@Input() color?: string // background color for initials
+@Input() textColor?: string
+@Input() clickable: boolean = false
+@Input() badge?: AvatarBadge
+@Input() loading: boolean = false
+@Input() ariaLabel?: string
+@Output() click = new EventEmitter<Event>()
+@Output() error = new EventEmitter<Event>()
+@Output() load = new EventEmitter<Event>()
+```
+
+### Avatar Badge
+```typescript
+interface AvatarBadge {
+  content?: string | number;
+  color?: string;
+  dot?: boolean;
+  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+}
+```
+
+### Examples
+[Screenshot placeholder - Avatar sizes and variants]
+
+---
+
+## Badge
+**Purpose:** Status indicators and counters
+**Figma Design:** [Insert Figma link here]
+
+### Variants
+`dot`, `count`, `text`, `status`
+
+### Parameters / Props
+```typescript
+@Input() variant: 'dot'|'count'|'text'|'status' = 'count'
+@Input() content?: string | number
+@Input() max: number = 99 // for count variant
+@Input() color: 'blue'|'green'|'purple'|'red'|'gray' = 'red'
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() position: 'top-right'|'top-left'|'bottom-right'|'bottom-left'|'inline' = 'top-right'
+@Input() overlap: boolean = true
+@Input() showZero: boolean = false
+@Input() pulse: boolean = false
+@Input() ariaLabel?: string
+```
+
+### Examples
+[Screenshot placeholder - Badge variants and positions]
+
+---
+
+## Chip / Tag
+**Purpose:** Compact elements for filters, selections, and labels
+**Figma Design:** [Insert Figma link here]
+
+### Variants
+`filled`, `outlined`, `text`
+
+### Parameters / Props
+```typescript
+@Input() variant: 'filled'|'outlined'|'text' = 'filled'
+@Input() label: string
+@Input() removable: boolean = false
+@Input() disabled: boolean = false
+@Input() clickable: boolean = false
+@Input() selected: boolean = false
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() color: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
+@Input() icon?: string
+@Input() avatar?: string
+@Input() ariaLabel?: string
+@Output() click = new EventEmitter<Event>()
+@Output() remove = new EventEmitter<Event>()
+@Output() focus = new EventEmitter<FocusEvent>()
+@Output() blur = new EventEmitter<FocusEvent>()
+```
+
+### Examples
+[Screenshot placeholder - Chip variants and states]
+
+---
+
+# 5 — Advanced Form Controls
+
+## Date Picker
+**Purpose:** Date selection with calendar interface
+**Figma Design:** [Insert Figma link here]
+
+### Selection Modes
+- Single date
+- Date range
+- Multiple dates
+
+### Parameters / Props
+```typescript
+@Input() value: Date | DateRange | Date[]
+@Input() selectionMode: 'single'|'range'|'multiple' = 'single'
+@Input() placeholder?: string
+@Input() disabled: boolean = false
+@Input() readonly: boolean = false
+@Input() minDate?: Date
+@Input() maxDate?: Date
+@Input() disabledDates?: Date[] | ((date: Date) => boolean)
+@Input() format: string = 'MM/dd/yyyy'
+@Input() firstDayOfWeek: number = 0 // 0 = Sunday
+@Input() showWeekNumbers: boolean = false
+@Input() showToday: boolean = true
+@Input() showClear: boolean = true
+@Input() inline: boolean = false
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() locale: string = 'en-US'
+@Input() ariaLabel?: string
+@Output() valueChange = new EventEmitter<Date | DateRange | Date[]>()
+@Output() open = new EventEmitter<void>()
+@Output() close = new EventEmitter<void>()
+@Output() focus = new EventEmitter<FocusEvent>()
+@Output() blur = new EventEmitter<FocusEvent>()
+```
+
+### Templates
+- `headerTemplate` - Custom calendar header
+- `dayTemplate` - Custom day cell
+- `footerTemplate` - Custom calendar footer
+
+### Examples
+[Screenshot placeholder - Date picker variants]
+
+---
+
+## Time Picker
+**Purpose:** Time selection interface
+**Figma Design:** [Insert Figma link here]
+
+### Parameters / Props
+```typescript
+@Input() value: string | Date
+@Input() format: '12h'|'24h' = '12h'
+@Input() minuteStep: number = 1
+@Input() secondsEnabled: boolean = false
+@Input() disabled: boolean = false
+@Input() readonly: boolean = false
+@Input() placeholder?: string
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() clearable: boolean = true
+@Input() ariaLabel?: string
+@Output() valueChange = new EventEmitter<string | Date>()
+@Output() focus = new EventEmitter<FocusEvent>()
+@Output() blur = new EventEmitter<FocusEvent>()
+```
+
+### Examples
+[Screenshot placeholder - Time picker variants]
+
+---
 
 ## File Upload
-Props:
-* multiple, accept (MIME/types), maxSize, chunked upload support (optional), drag & drop, preview
+**Purpose:** File selection and upload with preview
+**Figma Design:** [Insert Figma link here]
 
-## Typeahead / Autocomplete
-Props:
-* `asyncSearch`: function returning Observable, `minChars`, `debounceTime`, `highlightMatch`, `template` for display
+### Upload Types
+- Single file
+- Multiple files
+- Drag & drop zone
+- Directory upload
 
-## Form Validation UI
-* error messages component which can read `FormControl` errors or accept an errors object
-* show/hide on touched/dirty logic
+### Parameters / Props
+```typescript
+@Input() multiple: boolean = false
+@Input() directory: boolean = false
+@Input() accept?: string
+@Input() maxSize?: number // in bytes
+@Input() maxFiles?: number
+@Input() disabled: boolean = false
+@Input() dragDrop: boolean = true
+@Input() showPreview: boolean = true
+@Input() showProgress: boolean = true
+@Input() autoUpload: boolean = false
+@Input() uploadUrl?: string
+@Input() uploadHeaders?: { [key: string]: string }
+@Input() customUploadFunction?: (file: File) => Observable<UploadEvent>
+@Input() placeholder: string = 'Drop files here or click to select'
+@Input() ariaLabel?: string
+@Output() filesSelected = new EventEmitter<File[]>()
+@Output() fileRemoved = new EventEmitter<File>()
+@Output() uploadStart = new EventEmitter<File>()
+@Output() uploadProgress = new EventEmitter<UploadProgressEvent>()
+@Output() uploadComplete = new EventEmitter<UploadCompleteEvent>()
+@Output() uploadError = new EventEmitter<UploadErrorEvent>()
+```
 
+### Examples
+[Screenshot placeholder - File upload variants]
 
+---
 
-# 6 — Utilities & Design system primitives
-## Icon system
-* Provide a simple `Icon` component (name or SVG slot). Support icon fonts, inline SVG sprites or Angular components per icon.
+## Autocomplete / Typeahead
+**Purpose:** Search-as-you-type input with suggestions
+**Figma Design:** [Insert Figma link here]
 
-## Typography
-* Provide components or utility classes: `h1..h6`, `body`, `caption`, `label`.
+### Parameters / Props
+```typescript
+@Input() value: string = ''
+@Input() placeholder?: string
+@Input() options: any[] = []
+@Input() optionLabel: string = 'label'
+@Input() optionValue: string = 'value'
+@Input() optionDisabled: string = 'disabled'
+@Input() searchFunction?: (query: string) => Observable<any[]>
+@Input() minChars: number = 1
+@Input() debounceTime: number = 300
+@Input() maxResults: number = 10
+@Input() loading: boolean = false
+@Input() disabled: boolean = false
+@Input() clearable: boolean = true
+@Input() highlightMatch: boolean = true
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() ariaLabel?: string
+@Output() valueChange = new EventEmitter<string>()
+@Output() optionSelect = new EventEmitter<any>()
+@Output() search = new EventEmitter<string>()
+@Output() clear = new EventEmitter<void>()
+```
 
-## Grid / Layout / Flex utilities
-* Container, Row, Col with breakpoint props, or CSS utility classes with helper spacing, display, hide/show, alignment.
+### Templates
+- `optionTemplate` - Custom option display
+- `noResultsTemplate` - No results message
+- `loadingTemplate` - Loading indicator
 
-## Theming & Tokens
-Expose CSS variables for:
-* Colors: `--ui-primary`, `--ui-on-primary`, `--ui-surface`, `--ui-background`, `--ui-danger`, etc.
-* Spacing scale: `--space-1`...`--space-8`
-* Radii, fontsizes, font family, line-height, z-index layers, transitions, elevation shadows
-  Allow switching theme by root class, `data-theme="dark"` or by changing variables.
+### Examples
+[Screenshot placeholder - Autocomplete variants]
 
-## Utilities
-* `sr-only`, `visually-hidden`, `truncate`, `clamp`, `screen-reader-only` helpers.
+---
 
+# 6 — Utilities & System Components
 
+## Icon
+**Purpose:** Scalable vector icons with multiple source support
+**Figma Design:** [Insert Figma link here]
 
-# 7 — Patterns & API design guidelines
-* Use consistent prop names: `size`, `variant`, `disabled`, `loading`, `value`, `placeholder`, `label`.
-* Implement `ControlValueAccessor` for inputs/selects/checkboxes/radios to integrate with Angular Reactive Forms and template-driven forms.
-* Provide `@Output() opened/closed`, `@Output() valueChange` instead of two-way binding unless you also support `[(ngModel)]` or `[(value)]`.
-* Use content projection (`ng-content`) for flexible content (buttons, modal footers, custom table cell templates).
-* Offer both template-driven and programmatic APIs (e.g., ToastService.open(...), ModalService.open(component, options)).
-* Provide templates for customizing complex pieces (optionTemplate, headerTemplate, rowTemplate).
+### Icon Sources
+- Font icons (Material, Phosphor, etc.)
+- SVG sprites
+- Individual SVG files
+- Component-based icons
 
+### Parameters / Props
+```typescript
+@Input() name: string
+@Input() size: 'xs'|'sm'|'md'|'lg'|'xl'|number = 'md'
+@Input() color?: string
+@Input() spin: boolean = false
+@Input() pulse: boolean = false
+@Input() flip: 'horizontal'|'vertical'|'both' = undefined
+@Input() rotate: 0|90|180|270 = 0
+@Input() ariaLabel?: string
+@Input() ariaHidden: boolean = true
+```
 
+### Examples
+[Screenshot placeholder - Icon sizes and effects]
 
-# 8 — Accessibility & Keyboard interactions (must-have)
-* All interactive components must have correct role, `tabindex`, visible focus styles.
-* Dialog/Modal: trap focus, restore focus to trigger, `aria-modal="true"`, labelledby and describedby.
-* Tooltip: not solely relying on hover — show on focus too; use `aria-describedby`.
-* Menus/Selects: arrow keys, Esc to close, Enter to select, Home/End support for lists.
-* Provide aria attributes for state: `aria-checked`, `aria-selected`, `aria-disabled`, `aria-expanded`.
-* Provide screen-reader-only text slots when needed.
+---
 
+## Typography Components
+**Purpose:** Consistent text styling across the application
+**Figma Design:** [Insert Figma link here]
 
+### Text Component Props
+```typescript
+@Input() variant: 'h1'|'h2'|'h3'|'h4'|'h5'|'h6'|'body1'|'body2'|'caption'|'overline' = 'body1'
+@Input() color?: string
+@Input() align: 'left'|'center'|'right'|'justify' = 'left'
+@Input() truncate: boolean = false
+@Input() lines?: number // for line clamping
+@Input() weight: 'light'|'normal'|'medium'|'semibold'|'bold' = 'normal'
+@Input() italic: boolean = false
+@Input() underline: boolean = false
+@Input() strikethrough: boolean = false
+@Input() ariaLabel?: string
+```
 
-# 9 — Events & outputs checklist
-Common events to support:
-* `open`/`opened`, `close`/`closed`
-* `change` / `valueChange`
-* `select` / `deselect`
-* `focus` / `blur`
-* `submit` (for form buttons)
-* `confirm`/`cancel` for dialogs
+### Examples
+[Screenshot placeholder - Typography variants]
 
+---
 
+## Layout Components
+**Purpose:** Responsive grid and flex utilities
+**Figma Design:** [Insert Figma link here]
 
-# 10 — Developer ergonomics & docs
-* Provide Storybook stories for each component and variants. (Essential for adoption.)
-* Provide accessibility tests (axe) and unit tests (Karma/Jest).
-* Provide a component index and API docs (auto-generate with Compodoc or Storybook Docs).
-* Provide usage examples for Angular Reactive Forms.
-* Semantic class names / BEM-like modifiers or use CSS-in-JS? Prefer CSS variables + utility classes.
+### Container Props
+```typescript
+@Input() maxWidth: 'xs'|'sm'|'md'|'lg'|'xl'|'2xl'|'none' = 'lg'
+@Input() fluid: boolean = false
+@Input() gutters: boolean = true
+```
 
+### Grid Props
+```typescript
+@Input() columns: number = 12
+@Input() gap: 'xs'|'sm'|'md'|'lg'|'xl' = 'md'
+@Input() alignItems: 'start'|'center'|'end'|'stretch' = 'stretch'
+@Input() justifyContent: 'start'|'center'|'end'|'between'|'around'|'evenly' = 'start'
+```
 
+### Column Props
+```typescript
+@Input() span: number | ResponsiveValue = 12
+@Input() offset: number | ResponsiveValue = 0
+@Input() order: number | ResponsiveValue = 0
+```
 
-# 11 — Example APIs (copy/paste starter)
-### Button (simple public API)
-```ts
+### Examples
+[Screenshot placeholder - Layout components]
+
+---
+
+## Theme Provider
+**Purpose:** Global theming and design token management
+**Figma Design:** [Insert Figma link here]
+
+### Theme Configuration
+```typescript
+interface ThemeConfig {
+  name: string;
+  colors: {
+    primary: string;
+    secondary: string;
+    success: string;
+    warning: string;
+    error: string;
+    info: string;
+    surface: string;
+    background: string;
+    // ... additional colors
+  };
+  spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  typography: {
+    fontFamily: string;
+    fontSizes: Record<string, string>;
+    fontWeights: Record<string, number>;
+    lineHeights: Record<string, number>;
+  };
+  borderRadius: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  shadows: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  motion: {
+    durations: Record<string, string>;
+    easings: Record<string, string>;
+  };
+}
+```
+
+### Theme Service
+```typescript
+@Injectable()
+export class ThemeService {
+  setTheme(theme: ThemeConfig): void;
+  getTheme(): ThemeConfig;
+  toggleDarkMode(): void;
+  isDarkMode(): boolean;
+  // ... additional methods
+}
+```
+
+### Examples
+[Screenshot placeholder - Theme variants]
+
+---
+
+# 7 — Liquid Glass Components
+**Purpose:** Advanced visual effects with glass morphism and liquid animations
+**Figma Design:** [Insert Figma link here]
+
+## Glass Card
+### Parameters / Props
+```typescript
+@Input() blur: 'sm'|'md'|'lg'|'xl' = 'md'
+@Input() opacity: number = 0.6
+@Input() borderOpacity: number = 0.2
+@Input() colorTint?: string
+@Input() distortion: boolean = false
+@Input() chromaticAberration: boolean = false
+@Input() animation: 'none'|'float'|'pulse'|'shimmer' = 'none'
+@Input() elevation: 1|2|3|4 = 2
+```
+
+## Liquid Button
+### Parameters / Props
+```typescript
+@Input() liquidEffect: 'ripple'|'morph'|'flow' = 'ripple'
+@Input() viscosity: number = 0.5
+@Input() tension: number = 0.3
+@Input() flowDirection: 'horizontal'|'vertical'|'radial' = 'radial'
+```
+
+## Distortion Container
+### Parameters / Props
+```typescript
+@Input() intensity: number = 0.1
+@Input() frequency: number = 2
+@Input() type: 'wave'|'turbulence'|'noise' = 'wave'
+@Input() animated: boolean = false
+@Input() speed: number = 1
+```
+
+### Examples
+[Screenshot placeholder - Liquid glass effects]
+
+---
+
+# 8 — Advanced Patterns
+
+## Command Palette
+**Purpose:** Quick action and navigation interface
+**Figma Design:** [Insert Figma link here]
+
+### Parameters / Props
+```typescript
+@Input() placeholder: string = 'Type a command or search...'
+@Input() commands: Command[] = []
+@Input() recentCommands: Command[] = []
+@Input() maxResults: number = 8
+@Input() showRecent: boolean = true
+@Input() groupByCategory: boolean = true
+@Input() searchFunction?: (query: string) => Observable<Command[]>
+@Input() ariaLabel: string = 'Command palette'
+@Output() commandExecute = new EventEmitter<Command>()
+@Output() close = new EventEmitter<void>()
+```
+
+### Command Interface
+```typescript
+interface Command {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+  category?: string;
+  shortcut?: string;
+  disabled?: boolean;
+  action: () => void | Promise<void>;
+}
+```
+
+## Stepper
+**Purpose:** Multi-step process navigation
+**Figma Design:** [Insert Figma link here]
+
+### Parameters / Props
+```typescript
+@Input() steps: Step[] = []
+@Input() activeStep: number = 0
+@Input() orientation: 'horizontal'|'vertical' = 'horizontal'
+@Input() linear: boolean = true
+@Input() editable: boolean = false
+@Input() showNumbers: boolean = true
+@Input() alternativeLabel: boolean = false
+@Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() ariaLabel: string = 'Step navigation'
+@Output() stepChange = new EventEmitter<number>()
+@Output() stepClick = new EventEmitter<Step>()
+```
+
+### Step Interface
+```typescript
+interface Step {
+  label: string;
+  description?: string;
+  icon?: string;
+  completed?: boolean;
+  error?: boolean;
+  disabled?: boolean;
+  optional?: boolean;
+}
+```
+
+## Data Visualization
+**Purpose:** Chart and graph components for data display
+**Figma Design:** [Insert Figma link here]
+
+### Chart Types
+- Line chart
+- Bar chart  
+- Area chart
+- Pie/Donut chart
+- Scatter plot
+- Heatmap
+
+### Base Chart Props
+```typescript
+@Input() data: ChartData
+@Input() config: ChartConfig
+@Input() responsive: boolean = true
+@Input() maintainAspectRatio: boolean = true
+@Input() theme: 'light'|'dark' = 'light'
+@Input() animation: boolean = true
+@Input() interactive: boolean = true
+@Input() loading: boolean = false
+@Input() height?: number
+@Input() width?: number
+@Output() chartClick = new EventEmitter<ChartEvent>()
+@Output() chartHover = new EventEmitter<ChartEvent>()
+```
+
+### Examples
+[Screenshot placeholder - Chart variants]
+
+---
+
+# 9 — API Design Patterns
+
+## Service-Based Components
+Many components offer both declarative and programmatic APIs:
+
+### Modal Service
+```typescript
+interface ModalService {
+  open<T>(component: ComponentType<T>, config?: ModalConfig): ModalRef<T>;
+  confirm(config: ConfirmConfig): ModalRef<boolean>;
+  alert(config: AlertConfig): ModalRef<void>;
+  closeAll(): void;
+}
+```
+
+### Toast Service
+```typescript
+interface ToastService {
+  show(config: ToastConfig): ToastRef;
+  success(message: string, config?: Partial<ToastConfig>): ToastRef;
+  error(message: string, config?: Partial<ToastConfig>): ToastRef;
+  warning(message: string, config?: Partial<ToastConfig>): ToastRef;
+  info(message: string, config?: Partial<ToastConfig>): ToastRef;
+  clear(): void;
+  clearByType(type: ToastType): void;
+}
+```
+
+## Form Integration
+All form controls implement `ControlValueAccessor` and integrate seamlessly with Angular Reactive Forms:
+
+```typescript
+// Reactive Forms
+this.form = this.fb.group({
+  email: ['', [Validators.required, Validators.email]],
+  password: ['', [Validators.required, Validators.minLength(8)]],
+  preferences: this.fb.group({
+    newsletter: [false],
+    theme: ['light']
+  })
+});
+
+// Template
+<form [formGroup]="form">
+  <ui-input 
+    formControlName="email" 
+    type="email" 
+    label="Email Address"
+    placeholder="Enter your email">
+  </ui-input>
+  
+  <ui-input 
+    formControlName="password" 
+    type="password" 
+    label="Password"
+    showPasswordToggle="true">
+  </ui-input>
+  
+  <ui-toggle 
+    formControlName="preferences.newsletter"
+    label="Subscribe to newsletter">
+  </ui-toggle>
+</form>
+```
+
+---
+
+# 10 — Accessibility Implementation
+
+## WCAG 2.1 AA Compliance Checklist
+- ✅ Color contrast ratios (4.5:1 for normal text, 3:1 for large text/UI components)
+- ✅ Keyboard navigation and focus management
+- ✅ Screen reader support with proper ARIA attributes
+- ✅ Respect for `prefers-reduced-motion`
+- ✅ Touch targets ≥ 44×44px with adequate spacing
+- ✅ Alternative text for images and icons
+- ✅ Logical tab order and focus indicators
+- ✅ Error identification and suggestions
+- ✅ Consistent navigation and identification
+
+## Testing Requirements
+- Automated testing with axe-core
+- Manual keyboard navigation testing
+- Screen reader testing (NVDA, JAWS, VoiceOver)
+- High contrast mode verification
+- Mobile accessibility testing
+- Color blindness simulation
+
+---
+
+# 11 — Development & Documentation
+
+## Storybook Integration
+Each component includes comprehensive Storybook stories:
+- Default state examples
+- All variant demonstrations
+- Interactive property controls
+- Accessibility testing
+- Design token documentation
+- Usage guidelines and best practices
+
+## Component Template Structure
+```typescript
 @Component({
-  selector: 'ui-button',
-  template: `
-    <button
-      class="ui-btn ui-btn--{{variant}} ui-btn--{{size}}"
-      [attr.aria-label]="ariaLabel"
-      [disabled]="disabled || loading"
-      [type]="type"
-      (click)="handleClick($event)">
-      <span *ngIf="loading" class="ui-spinner"></span>
-      <ng-container *ngIf="icon && iconPosition === 'left'">
-        <ui-icon [name]="icon"></ui-icon>
-      </ng-container>
-      <span class="ui-btn__label"><ng-content></ng-content></span>
-      <ng-container *ngIf="icon && iconPosition === 'right'">
-        <ui-icon [name]="icon"></ui-icon>
-      </ng-container>
-    </button>
-  `
+  selector: 'ui-[component-name]',
+  templateUrl: './[component-name].component.html',
+  styleUrls: ['./[component-name].component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+    // ControlValueAccessor for form controls
+  ],
+  host: {
+    'class': 'ui-[component-name]',
+    '[class.ui-[component-name]--disabled]': 'disabled',
+    '[class.ui-[component-name]--loading]': 'loading',
+    '[attr.aria-disabled]': 'disabled || null',
+    // Additional host bindings
+  }
 })
-export class UiButton {
-  @Input() variant: 'primary'|'secondary'|'tertiary'|'text'|'danger' = 'primary';
-  @Input() size: 'sm'|'md'|'lg' = 'md';
-  @Input() type: 'button'|'submit'|'reset' = 'button';
-  @Input() disabled = false;
-  @Input() loading = false;
-  @Input() icon?: string;
-  @Input() iconPosition: 'left'|'right' = 'left';
-  @Input() ariaLabel?: string;
-  @Output() click = new EventEmitter<Event>();
-
-  handleClick(e: Event) {
-    if (this.disabled || this.loading) { e.preventDefault(); return; }
-    this.click.emit(e);
-  }
+export class Ui[ComponentName] implements OnInit, OnDestroy, ControlValueAccessor {
+  // Component implementation
 }
 ```
 
+## Testing Strategy
+- Unit tests for all components with Jest
+- Integration tests for complex interactions
+- Visual regression tests with Chromatic
+- Accessibility tests with axe-core
+- Performance tests for animations and interactions
 
-### Text input (implements ControlValueAccessor — outline)
-```ts
-@Component({ selector: 'ui-input', template: `
-  <div class="ui-form-field" [class.disabled]="disabled">
-    <label *ngIf="label">{{label}} <span *ngIf="required">*</span></label>
-    <input
-      [type]="type"
-      [placeholder]="placeholder"
-      [disabled]="disabled"
-      [value]="value"
-      (input)="onInput($event)"
-      (blur)="onBlur()"
-      (focus)="focus.emit($event)" />
-    <small class="ui-hint" *ngIf="hint">{{hint}}</small>
-    <small class="ui-error" *ngIf="error">{{error}}</small>
-  </div>
-`})
-export class UiInput implements ControlValueAccessor {
-  @Input() type = 'text';
-  @Input() placeholder?: string;
-  @Input() label?: string;
-  @Input() hint?: string;
-  @Input() error?: string;
-  @Input() disabled = false;
-  @Input() required = false;
-  @Output() focus = new EventEmitter();
+---
 
-  value = '';
+# 12 — Examples & Screenshots
 
-  onChange = (_: any) => {};
-  onTouched = () => {};
+## Component Screenshots
+[This section will contain comprehensive screenshots of all components in various states, sizes, and themes]
 
-  writeValue(obj: any) { this.value = obj ?? ''; }
-  registerOnChange(fn: any) { this.onChange = fn; }
-  registerOnTouched(fn: any) { this.onTouched = fn; }
-  setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
+### Buttons
+[Screenshot placeholder - All button variants and states]
 
-  onInput(e: Event) {
-    const v = (e.target as HTMLInputElement).value;
-    this.value = v;
-    this.onChange(v);
-  }
+### Form Controls  
+[Screenshot placeholder - Complete form examples]
 
-  onBlur() { this.onTouched(); }
-}
-```
+### Navigation
+[Screenshot placeholder - Navigation components in context]
 
+### Data Display
+[Screenshot placeholder - Tables, cards, and lists]
 
-### Modal service pattern (sketch)
-* `ModalService.open(ComponentOrTemplate, {size, backdrop, data})` returns `ModalRef` with `afterClosed()` observable and `close(result?)`.
+### Overlays
+[Screenshot placeholder - Modals, tooltips, and dropdowns]
+
+### Liquid Glass Effects
+[Screenshot placeholder - Advanced visual effects]
+
+## Design System Documentation
+**Figma Design System:** [Insert main Figma file link here]
+**Component Library:** [Insert component library Figma link here]
+**Style Guide:** [Insert style guide Figma link here]
+
+## Interactive Examples
+All components will include interactive examples in Storybook with:
+- Live property editing
+- Code snippets
+- Design token integration
+- Accessibility testing tools
+- Responsive preview modes
+
+---
+
+**Last Updated:** January 2024
+**Version:** 1.0.0
+**Maintainer:** UI Library Team
 
