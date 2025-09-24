@@ -1,4 +1,4 @@
-# Design
+# Design References & Guidelines
 ## Overview
 This UI library provides a comprehensive collection of production-ready Angular components with modern design principles, accessibility compliance, and theming support. The components follow Material Design 3 guidelines with custom enhancements for liquid glass effects, advanced animations, and flexible theming.
 
@@ -682,3 +682,5 @@ The library includes advanced "liquid glass" components with:
 - [Angular Style Guide](https://angular.io/guide/styleguide)
 - [CSS Architecture Guidelines](https://cssguidelin.es/)
 - [Performance Best Practices](https://web.dev/performance/)
+
+**Last updated:** September 2025
