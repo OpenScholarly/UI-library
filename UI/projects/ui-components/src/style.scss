@@ -2,21 +2,164 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Only keep essential CSS custom properties for complex cases */
+/* Core design tokens as CSS custom properties */
 @layer base {
   :root {
     /* Focus ring offset for better accessibility */
     --tw-ring-offset-width: 2px;
+    
+    // Colors (using space-separated RGB values for Tailwind alpha support)
+    --ui-primary: 0 102 255;
+    --ui-primary-light: 77 148 255;
+    --ui-primary-dark: 0 71 179;
+    --ui-secondary: 108 117 125;
+    --ui-success: 40 167 69;
+    --ui-danger: 220 53 69;
+    --ui-warning: 255 193 7;
+    --ui-info: 23 162 184;
+    
+    // Surface colors
+    --ui-surface: 255 255 255;
+    --ui-surface-light: 248 249 250;
+    --ui-surface-dark: 52 58 64;
+    --ui-background: 248 249 250;
+    
+    // Text colors
+    --ui-text-primary: 33 37 41;
+    --ui-text-secondary: 108 117 125;
+    --ui-text-disabled: 173 181 189;
+    --ui-text-on-primary: 255 255 255;
+    
+    // Spacing scale
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    
+    // Border radius
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+    
+    // Shadows/Elevations
+    --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    --elevation-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);
+    --elevation-3: 0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10);
+    --elevation-4: 0 15px 25px rgba(0,0,0,0.15), 0 5px 10px rgba(0,0,0,0.05);
+    
+    // Typography
+    --font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-md: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    
+    // Animation/Motion
+    --motion-duration-fast: 100ms;
+    --motion-duration-base: 200ms;
+    --motion-duration-slow: 300ms;
+    --motion-easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+    --motion-easing-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+    --motion-easing-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+    
+    // Z-index layers
+    --z-index-dropdown: 1000;
+    --z-index-sticky: 1020;
+    --z-index-fixed: 1030;
+    --z-index-modal-backdrop: 1040;
+    --z-index-modal: 1050;
+    --z-index-popover: 1060;
+    --z-index-tooltip: 1070;
   }
 
-  .dark {
+  .dark, [data-theme="dark"] {
     color-scheme: dark;
+    
+    // Dark theme color overrides
+    --ui-surface: 33 37 41;
+    --ui-surface-light: 52 58 64;
+    --ui-surface-dark: 26 29 32;
+    --ui-background: 18 20 22;
+    --ui-text-primary: 248 249 250;
+    --ui-text-secondary: 173 181 189;
   }
 }
 
-/* Component-specific utilities if needed */
+/* Component-specific utilities and focus management */
 @layer components {
   .ui-focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+  
+  /* Accessibility utilities */
+  .ui-sr-only {
+    @apply sr-only;
+  }
+  
+  .ui-not-sr-only {
+    @apply not-sr-only;
+  }
+  
+  /* Glass effect utilities */
+  .ui-glass {
+    @apply glass backdrop-blur-md;
+  }
+  
+  .ui-glass-strong {
+    @apply glass-strong backdrop-blur-lg;
+  }
+  
+  /* Enhanced focus states */  
+  .ui-focus-primary {
+    @apply focus-ring;
+  }
+  
+  .ui-focus-danger {
+    @apply focus-ring-danger;
+  }
+  
+  /* Transition utilities */
+  .ui-transition-standard {
+    transition-duration: var(--motion-duration-base);
+    transition-timing-function: var(--motion-easing-standard);
+  }
+  
+  .ui-transition-fast {
+    transition-duration: var(--motion-duration-fast);
+    transition-timing-function: var(--motion-easing-decelerate);
+  }
+  
+  .ui-transition-slow {
+    transition-duration: var(--motion-duration-slow);
+    transition-timing-function: var(--motion-easing-standard);
+  }
+}
+
+/* High contrast and reduced motion support */
+@media (prefers-contrast: high) {
+  :root {
+    --ui-primary: 0 0 0;
+    --ui-danger: 139 0 0;
+    --ui-success: 0 100 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast: 0ms;
+    --motion-duration-base: 0ms;  
+    --motion-duration-slow: 0ms;
+  }
+  
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
