@@ -1,4 +1,10 @@
 # UI-library
+
+Requirements:
+- Angular 20+
+- TailwindCSS 3.4+
+
+
 Release plan (https://excalidraw.com/)
 https://www.perplexity.ai/search/can-you-help-me-build-a-flexib-6TWeLvLoQk6rnoh3iXADJA
 

@@ -211,6 +211,7 @@ export class SelectComponent implements ControlValueAccessor {
 
   constructor() {
     // Handle click outside to close dropdown
+    //TODO DismissService for better handling
     effect(() => {
       if (this.isOpen()) {
         const handleClickOutside = (event: Event) => {
