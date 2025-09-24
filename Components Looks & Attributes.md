@@ -1,6 +1,156 @@
 # UI Library Components Specification
 
-Following Material Design 3 principles with custom liquid glass effects, advanced animations, and comprehensive theming support.
+Following Material Design 3 principles with Tailwind CSS theming, liquid glass effects, advanced animations, and comprehensive design token support.
+
+---
+
+# Tailwind Theme Integration
+
+## Theme Configuration
+The UI library leverages Tailwind's theme system with custom design tokens:
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: 'rgb(var(--color-primary-50) / <alpha-value>)',
+          100: 'rgb(var(--color-primary-100) / <alpha-value>)',
+          // ... through 950
+        },
+        surface: {
+          DEFAULT: 'rgb(var(--color-surface) / <alpha-value>)',
+          variant: 'rgb(var(--color-surface-variant) / <alpha-value>)',
+        },
+        glass: {
+          DEFAULT: 'rgb(var(--color-glass-bg) / <alpha-value>)',
+          border: 'rgb(var(--color-glass-border) / <alpha-value>)',
+        }
+      },
+      spacing: {
+        'ui-xs': 'var(--spacing-xs)',
+        'ui-sm': 'var(--spacing-sm)',
+        'ui-md': 'var(--spacing-md)',
+        'ui-lg': 'var(--spacing-lg)',
+        'ui-xl': 'var(--spacing-xl)',
+      },
+      borderRadius: {
+        'ui-sm': 'var(--radius-sm)',
+        'ui-md': 'var(--radius-md)',
+        'ui-lg': 'var(--radius-lg)',
+        'ui-xl': 'var(--radius-xl)',
+      },
+      backdropBlur: {
+        'glass-sm': 'var(--blur-sm)',
+        'glass-md': 'var(--blur-md)',
+        'glass-lg': 'var(--blur-lg)',
+        'glass-xl': 'var(--blur-xl)',
+      },
+      animation: {
+        'liquid-ripple': 'liquid-ripple 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+        'glass-shimmer': 'glass-shimmer 2s infinite',
+        'float': 'float 3s ease-in-out infinite',
+      }
+    }
+  }
+}
+```
+
+## CSS Custom Properties
+```css
+:root {
+  /* Colors - Light Theme */
+  --color-primary-50: 240 249 255;
+  --color-primary-500: 59 130 246;
+  --color-primary-950: 23 37 84;
+  
+  /* Surface Colors */
+  --color-surface: 255 255 255;
+  --color-surface-variant: 248 250 252;
+  
+  /* Glass Effect Colors */
+  --color-glass-bg: 255 255 255;
+  --color-glass-border: 255 255 255;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  
+  /* Glass Blur */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+}
+
+[data-theme="dark"] {
+  --color-surface: 15 23 42;
+  --color-surface-variant: 30 41 59;
+  --color-glass-bg: 15 23 42;
+  --color-glass-border: 71 85 105;
+}
+```
+
+### Theme Configuration
+```typescript
+interface ThemeConfig {
+  name: string;
+  colors: {
+    primary: string;
+    secondary: string;
+    success: string;
+    warning: string;
+    error: string;
+    info: string;
+    surface: string;
+    background: string;
+    // ... additional colors
+  };
+  spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  typography: {
+    fontFamily: string;
+    fontSizes: Record<string, string>;
+    fontWeights: Record<string, number>;
+    lineHeights: Record<string, number>;
+  };
+  borderRadius: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  shadows: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  motion: {
+    durations: Record<string, string>;
+    easings: Record<string, string>;
+  };
+}
+```
+
+
+
 
 ---
 
@@ -11,17 +161,17 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 **Figma Design:** [Insert Figma link here]
 
 ### Variants
-`primary`, `secondary`, `tertiary`, `text`, `ghost`, `danger`, `warning`, `success`, `info`, `link`
+`primary`, `secondary`, `tertiary`, `ghost`, `outline`, `danger`, `warning`, `success`, `info`, `link`
 
 ### Sizes
-`xs` (28px), `sm` (32px), `md` (40px), `lg` (48px), `xl` (56px)
+`xs`, `sm`, `md`, `lg`, `xl`
 
 ### States
 `normal`, `hover`, `active`, `focus`, `disabled`, `loading`, `pressed`
 
 ### Parameters / Props
 ```typescript
-@Input() variant: 'primary'|'secondary'|'tertiary'|'text'|'ghost'|'danger'|'warning'|'success'|'info'|'link' = 'primary'
+@Input() variant: 'primary'|'secondary'|'tertiary'|'ghost'|'outline'|'danger'|'warning'|'success'|'info'|'link' = 'primary'
 @Input() size: 'xs'|'sm'|'md'|'lg'|'xl' = 'md'
 @Input() type: 'button'|'submit'|'reset' = 'button'
 @Input() disabled: boolean = false
@@ -33,8 +183,9 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 @Input() ripple: boolean = true
 @Input() elevation: 0|1|2|3|4 = 0
 @Input() rounded: 'sm'|'md'|'lg'|'xl'|'full' = 'md'
-@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
 @Input() glassEffect: boolean = false
+@Input() customClasses?: string // Additional Tailwind classes
 @Input() ariaLabel?: string
 @Input() ariaPressed?: boolean
 @Input() ariaExpanded?: boolean
@@ -51,10 +202,45 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 - Focus ring visible on `:focus-visible`
 - `aria-pressed` for toggle states
 
+
+### Tailwind Classes Applied
+```typescript
+// Base classes
+private readonly baseClasses = [
+  'inline-flex', 'items-center', 'justify-center',
+  'font-medium', 'transition-all', 'duration-200',
+  'focus:outline-none', 'focus:ring-2', 'focus:ring-offset-2',
+  'disabled:opacity-50', 'disabled:cursor-not-allowed'
+];
+
+// Size classes
+private readonly sizeClasses = {
+  xs: ['h-7', 'px-2', 'text-xs', 'gap-1'],
+  sm: ['h-8', 'px-3', 'text-sm', 'gap-1.5'],
+  md: ['h-10', 'px-4', 'text-sm', 'gap-2'],
+  lg: ['h-12', 'px-6', 'text-base', 'gap-2'],
+  xl: ['h-14', 'px-8', 'text-lg', 'gap-2.5']
+};
+
+// Variant classes with color scheme integration
+private readonly variantClasses = {
+  primary: (scheme: string) => [
+    `bg-${scheme}-500`, `hover:bg-${scheme}-600`, `active:bg-${scheme}-700`,
+    'text-white', `focus:ring-${scheme}-500`
+  ],
+  outline: (scheme: string) => [
+    'bg-transparent', `border-2`, `border-${scheme}-500`,
+    `text-${scheme}-600`, `hover:bg-${scheme}-50`, `focus:ring-${scheme}-500`
+  ],
+  ghost: (scheme: string) => [
+    'bg-transparent', `text-${scheme}-600`,
+    `hover:bg-${scheme}-50`, `active:bg-${scheme}-100`, `focus:ring-${scheme}-500`
+  ]
+};
+```
+
 ### Examples
-[Screenshot placeholder - Button variants]
-[Screenshot placeholder - Button sizes]
-[Screenshot placeholder - Button states]
+[Screenshot placeholder - Button variants with Tailwind theming]
 
 ---
 
@@ -71,10 +257,11 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 @Input() required: boolean = false
 @Input() disabled: boolean = false
 @Input() dense: boolean = false
-@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
 @Input() showRequiredMarker: boolean = true
 @Input() prefixIcon?: string
 @Input() suffixIcon?: string
+@Input() customClasses?: string
 @Input() ariaDescribedBy?: string
 ```
 
@@ -85,8 +272,26 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 - `hint` - Helper text below the control
 - `error` - Error message below the control
 
-### Examples
-[Screenshot placeholder - Form field layouts]
+### Tailwind Classes Applied
+```typescript
+private readonly wrapperClasses = [
+  'space-y-1', // Default spacing between label and input
+];
+
+private readonly labelClasses = {
+  top: ['block', 'text-sm', 'font-medium', 'text-gray-700', 'dark:text-gray-300'],
+  left: ['flex', 'items-center', 'text-sm', 'font-medium', 'text-gray-700', 'dark:text-gray-300'],
+  floating: ['absolute', 'text-sm', 'text-gray-500', 'transition-all', 'pointer-events-none']
+};
+
+private readonly errorClasses = [
+  'text-sm', 'text-red-600', 'dark:text-red-400'
+];
+
+private readonly hintClasses = [
+  'text-sm', 'text-gray-500', 'dark:text-gray-400'
+];
+```
 
 ---
 
@@ -112,7 +317,7 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 @Input() autocomplete?: string
 @Input() spellcheck: boolean = true
 @Input() clearable: boolean = false
-@Input() showPasswordToggle: boolean = false // for password type
+@Input() showPasswordToggle: boolean = false
 @Input() maxLength?: number
 @Input() minLength?: number
 @Input() pattern?: string
@@ -121,9 +326,10 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 @Input() max?: number // for number type
 @Input() debounceTime: number = 0
 @Input() validation?: ValidationFunction[]
-@Input() mask?: string // input masking
-@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
-@Input() glassEffect: boolean = false
+@Input() mask?: string
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
+@Input() variant: 'outline'|'filled'|'glass' = 'outline'
+@Input() customClasses?: string
 @Input() ariaLabel?: string
 @Input() ariaDescribedBy?: string
 @Output() valueChange = new EventEmitter<string>()
@@ -134,9 +340,41 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 @Output() clear = new EventEmitter<void>()
 ```
 
-### Examples
-[Screenshot placeholder - Input variants and states]
-[Screenshot placeholder - Input with icons and validation]
+### Tailwind Classes Applied
+```typescript
+private readonly baseInputClasses = [
+  'w-full', 'transition-all', 'duration-200',
+  'placeholder:text-gray-400', 'dark:placeholder:text-gray-500',
+  'focus:outline-none', 'disabled:opacity-50', 'disabled:cursor-not-allowed'
+];
+
+private readonly sizeClasses = {
+  sm: ['h-8', 'px-3', 'text-sm'],
+  md: ['h-10', 'px-4', 'text-sm'],
+  lg: ['h-12', 'px-6', 'text-base']
+};
+
+private readonly variantClasses = {
+  outline: (scheme: string, hasError: boolean) => [
+    'border', 'rounded-ui-md', 'bg-white', 'dark:bg-gray-800',
+    hasError ? 'border-red-500' : 'border-gray-300',
+    'dark:border-gray-600',
+    `focus:border-${scheme}-500`, `focus:ring-1`, `focus:ring-${scheme}-500`
+  ],
+  filled: (scheme: string, hasError: boolean) => [
+    'border-0', 'rounded-ui-md', 'bg-gray-100', 'dark:bg-gray-700',
+    hasError ? 'ring-1 ring-red-500' : '',
+    `focus:bg-white`, 'dark:focus:bg-gray-800',
+    `focus:ring-2`, `focus:ring-${scheme}-500`
+  ],
+  glass: (scheme: string, hasError: boolean) => [
+    'border', 'rounded-ui-md', 'backdrop-blur-glass-md',
+    'bg-glass/60', 'border-glass-border/20',
+    hasError ? 'border-red-500/50' : 'border-glass-border/20',
+    `focus:border-${scheme}-500/50`, `focus:ring-1`, `focus:ring-${scheme}-500/30`
+  ]
+};
+```
 
 ---
 
@@ -191,8 +429,11 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 @Input() valueKey: string = 'value'
 @Input() disabledKey: string = 'disabled'
 @Input() searchFunction?: (term: string) => Observable<SelectOption[]>
-@Input() theme: 'blue'|'green'|'purple'|'red' = 'blue'
-@Input() glassEffect: boolean = false
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
+@Input() variant: 'outline'|'filled'|'glass' = 'outline'
+@Input() customClasses?: string
+@Input() customOptionClasses?: string
+@Input() customDropdownClasses?: string
 @Output() valueChange = new EventEmitter<any>()
 @Output() searchChange = new EventEmitter<string>()
 @Output() open = new EventEmitter<void>()
@@ -359,11 +600,11 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 **Figma Design:** [Insert Figma link here]
 
 ### Variants
-`line`, `pills`, `box`, `segmented`
+`line`, `pills`, `box`, `segmented`, `glass`
 
 ### Parameters / Props
 ```typescript
-@Input() variant: 'line'|'pills'|'box'|'segmented' = 'line'
+@Input() variant: 'line'|'pills'|'box'|'segmented'|'glass' = 'line'
 @Input() size: 'sm'|'md'|'lg' = 'md'
 @Input() orientation: 'horizontal'|'vertical' = 'horizontal'
 @Input() activeIndex: number = 0
@@ -372,9 +613,13 @@ Following Material Design 3 principles with custom liquid glass effects, advance
 @Input() fullWidth: boolean = false
 @Input() lazyLoad: boolean = false
 @Input() animateContent: boolean = true
-@Input() color: 'blue'|'green'|'purple'|'red' = 'blue'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
 @Input() glassEffect: boolean = false
+@Input() tabs: TabItem[] = []
 @Input() ariaLabel?: string
+@Input() customClasses?: string
+@Input() customTabClasses?: string
+@Input() customPanelClasses?: string
 @Output() activeIndexChange = new EventEmitter<number>()
 @Output() tabClick = new EventEmitter<{index: number, tab: TabItem}>()
 ```
@@ -663,9 +908,14 @@ interface BreadcrumbItem {
 @Input() animation: 'fade'|'slide'|'zoom' = 'fade'
 @Input() glassEffect: boolean = false
 @Input() elevation: 1|2|3|4 = 3
+@Input() variant: 'standard'|'glass'|'gradient' = 'standard'
+@Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
 @Input() ariaLabel?: string
 @Input() ariaLabelledBy?: string
 @Input() ariaDescribedBy?: string
+@Input() customClasses?: string
+@Input() customBackdropClasses?: string
+@Input() customContentClasses?: string
 @Output() openChange = new EventEmitter<boolean>()
 @Output() opened = new EventEmitter<void>()
 @Output() closed = new EventEmitter<any>()
@@ -679,7 +929,44 @@ interface BreadcrumbItem {
 - `footer` - Action buttons
 
 ### Examples
-[Screenshot placeholder - Modal sizes and types]
+[Screenshot placeholder - Modal sizes and types] 
+### Tailwind Classes Applied
+```typescript
+private readonly backdropClasses = [
+  'fixed', 'inset-0', 'z-50',
+  'bg-black/50', 'backdrop-blur-sm',
+  'flex', 'items-center', 'justify-center',
+  'p-4'
+];
+
+private readonly variantClasses = {
+  standard: [
+    'bg-white', 'dark:bg-gray-800',
+    'rounded-ui-lg', 'shadow-2xl',
+    'border', 'border-gray-200', 'dark:border-gray-700'
+  ],
+  glass: [
+    'backdrop-blur-glass-lg', 'bg-glass/80',
+    'rounded-ui-lg', 'shadow-2xl',
+    'border', 'border-glass-border/30'
+  ],
+  gradient: (scheme: string) => [
+    'bg-gradient-to-br', `from-${scheme}-50`, `to-${scheme}-100`,
+    `dark:from-${scheme}-900/20`, `dark:to-${scheme}-800/20`,
+    'rounded-ui-lg', 'shadow-2xl',
+    'border', `border-${scheme}-200/50`, `dark:border-${scheme}-700/50`
+  ]
+};
+
+private readonly sizeClasses = {
+  xs: ['max-w-xs'],
+  sm: ['max-w-sm'],
+  md: ['max-w-md'],
+  lg: ['max-w-lg'],
+  xl: ['max-w-xl'],
+  fullscreen: ['w-full', 'h-full', 'max-w-none', 'rounded-none']
+};
+```
 
 ---
 
@@ -1244,73 +1531,6 @@ interface AvatarBadge {
 
 ---
 
-## Theme Provider
-**Purpose:** Global theming and design token management
-**Figma Design:** [Insert Figma link here]
-
-### Theme Configuration
-```typescript
-interface ThemeConfig {
-  name: string;
-  colors: {
-    primary: string;
-    secondary: string;
-    success: string;
-    warning: string;
-    error: string;
-    info: string;
-    surface: string;
-    background: string;
-    // ... additional colors
-  };
-  spacing: {
-    xs: string;
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-  };
-  typography: {
-    fontFamily: string;
-    fontSizes: Record<string, string>;
-    fontWeights: Record<string, number>;
-    lineHeights: Record<string, number>;
-  };
-  borderRadius: {
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-  };
-  shadows: {
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-  };
-  motion: {
-    durations: Record<string, string>;
-    easings: Record<string, string>;
-  };
-}
-```
-
-### Theme Service
-```typescript
-@Injectable()
-export class ThemeService {
-  setTheme(theme: ThemeConfig): void;
-  getTheme(): ThemeConfig;
-  toggleDarkMode(): void;
-  isDarkMode(): boolean;
-  // ... additional methods
-}
-```
-
-### Examples
-[Screenshot placeholder - Theme variants]
-
----
 
 # 7 — Liquid Glass Components
 **Purpose:** Advanced visual effects with glass morphism and liquid animations
@@ -1519,7 +1739,178 @@ this.form = this.fb.group({
 
 ---
 
-# 10 — Accessibility Implementation
+
+## Theme Provider
+**Purpose:** Global theming and design token management
+**Figma Design:** [Insert Figma link here]
+
+### Theme Service
+```typescript
+@Injectable({
+  providedIn: 'root'
+})
+export class ThemeService {
+  private currentTheme = signal<ThemeConfig>(defaultTheme);
+  private isDark = signal<boolean>(false);
+
+  setTheme(theme: ThemeConfig): void {
+    this.currentTheme.set(theme);
+    this.applyThemeVariables(theme);
+  }
+
+  toggleDarkMode(): void {
+    this.isDark.update(dark => !dark);
+    document.documentElement.setAttribute('data-theme', this.isDark() ? 'dark' : 'light');
+  }
+
+  private applyThemeVariables(theme: ThemeConfig): void {
+    const root = document.documentElement;
+    
+    // Apply color variables
+    Object.entries(theme.colors).forEach(([key, value]) => {
+      if (typeof value === 'object') {
+        Object.entries(value).forEach(([shade, color]) => {
+          root.style.setProperty(`--color-${key}-${shade}`, this.hexToRgb(color));
+        });
+      } else {
+        root.style.setProperty(`--color-${key}`, this.hexToRgb(value));
+      }
+    });
+
+    // Apply spacing, radius, etc.
+    Object.entries(theme.spacing).forEach(([key, value]) => {
+      root.style.setProperty(`--spacing-${key}`, value);
+    });
+  }
+
+  getColorClasses(scheme: string): ColorClasses {
+    return {
+      bg: `bg-${scheme}-500`,
+      bgHover: `hover:bg-${scheme}-600`,
+      text: `text-${scheme}-600`,
+      border: `border-${scheme}-500`,
+      ring: `ring-${scheme}-500`,
+    };
+  }
+}
+
+interface ColorClasses {
+  bg: string;
+  bgHover: string;
+  text: string;
+  border: string;
+  ring: string;
+}
+```
+
+### Usage Examples
+```typescript
+// Component usage with theme integration
+@Component({
+  template: `
+    <ui-button 
+      [colorScheme]="themeService.currentScheme()"
+      variant="primary"
+      customClasses="shadow-lg hover:shadow-xl">
+      Themed Button
+    </ui-button>
+    
+    <ui-card 
+      variant="glass"
+      [colorScheme]="themeService.currentScheme()"
+      customClasses="backdrop-blur-glass-lg">
+      Glass morphism card with theme integration
+    </ui-card>
+  `
+})
+export class ExampleComponent {
+  constructor(public themeService: ThemeService) {}
+}
+```
+
+### Tailwind Configuration Extension
+```javascript
+// tailwind.config.js - Extended for UI library
+module.exports = {
+  content: [
+    './src/**/*.{html,ts}',
+    './projects/ui-lib/**/*.{html,ts}'
+  ],
+  darkMode: ['class', '[data-theme="dark"]'],
+  theme: {
+    extend: {
+      // ...existing code...
+      
+      // Component-specific utilities
+      utilities: {
+        '.ui-focus': {
+          '@apply focus:outline-none focus:ring-2 focus:ring-offset-2': {},
+        },
+        '.ui-transition': {
+          '@apply transition-all duration-200 ease-in-out': {},
+        },
+        '.ui-glass': {
+          '@apply backdrop-blur-glass-md bg-glass/60 border border-glass-border/20': {},
+        },
+        '.ui-liquid-hover': {
+          '@apply relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-radial before:from-current/20 before:to-transparent before:opacity-0 before:transition-opacity hover:before:opacity-100': {},
+        }
+      }
+    }
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    // Custom plugin for UI library utilities
+    function({ addUtilities, theme }) {
+      addUtilities({
+        '.ui-focus': {
+          '&:focus': {
+            outline: 'none',
+            'box-shadow': `0 0 0 2px ${theme('colors.blue.500')}`,
+          }
+        }
+      });
+    }
+  ]
+}
+```
+
+---
+
+## Component Base Class
+```typescript
+export abstract class UiComponentBase {
+  @Input() colorScheme: ColorScheme = 'blue';
+  @Input() customClasses?: string;
+  
+  protected getColorClasses(scheme: ColorScheme = this.colorScheme): Record<string, string> {
+    return {
+      primary: `bg-${scheme}-500 hover:bg-${scheme}-600 text-white`,
+      secondary: `bg-${scheme}-100 hover:bg-${scheme}-200 text-${scheme}-800`,
+      outline: `border-${scheme}-500 text-${scheme}-600 hover:bg-${scheme}-50`,
+      ghost: `text-${scheme}-600 hover:bg-${scheme}-50`,
+      text: `bg-${scheme}-500 text-white`,
+      ring: `ring-${scheme}-500 focus:ring-${scheme}-500`,
+    };
+  }
+  
+  protected combineClasses(...classes: (string | string[] | undefined)[]): string {
+    return classes
+      .flat()
+      .filter(Boolean)
+      .join(' ');
+  }
+}
+
+type ColorScheme = 'blue' | 'green' | 'purple' | 'red' | 'gray';
+```
+
+
+
+---
+
+# 11 — Accessibility Implementation
 
 ## WCAG 2.1 AA Compliance Checklist
 - ✅ Color contrast ratios (4.5:1 for normal text, 3:1 for large text/UI components)
@@ -1624,7 +2015,6 @@ All components will include interactive examples in Storybook with:
 
 ---
 
-**Last Updated:** January 2024
+**Last Updated:** September 2025
 **Version:** 1.0.0
-**Maintainer:** UI Library Team
 
