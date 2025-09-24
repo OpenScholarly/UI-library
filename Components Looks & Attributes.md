@@ -150,6 +150,115 @@ interface ThemeConfig {
 ```
 
 
+---
+
+# Component List
+- [ ] Button
+- [ ] Form Field Wrapper
+- [ ] Input (Text, Password, Email, Number, Search, OTP, validators, masks)
+- [ ] Textarea
+- [ ] Select (Single & Multi)
+- [ ] Checkbox
+- [ ] Radio Group & Radio
+- [ ] Toggle / Switch
+- [ ] Slider / Range Input
+- [ ] Tabs
+- [ ] Menu / Dropdown
+- [ ] Breadcrumbs
+- [ ] Pagination
+- [ ] Sidebar / Drawer
+- [ ] Tooltip
+- [ ] Popover
+- [ ] Modal / Dialog
+- [ ] Toast / Snackbar
+- [ ] Progress Indicators
+- [ ] Table / Data Grid
+- [ ] Card
+- [ ] List
+- [ ] Avatar
+- [ ] Badge
+- [ ] Chip / Tag / Pill
+- [ ] Date Picker
+- [ ] Time Picker
+- [ ] File Upload
+- [ ] Autocomplete / Typeahead
+- [ ] Tree View
+- [ ] Button groups
+- [ ] Extended Floating Action Button
+- [ ] Floating Action Button Menu
+- [ ] Floating Action Button
+- [ ] Icon Button
+- [ ] Segmented Button
+- [ ] Split Button
+- [ ] Loading Indicator
+- [ ] Progress Indicator
+- [ ] Navigation Drawer
+- [ ] Navigation Rail
+- [ ] Navbar
+- [ ] Bottom Navigation / Dock
+- [ ] Bottom Sheets
+- [ ] Side Sheets
+- [ ] App Bars
+- [ ] Carousel
+- [ ] Dividers
+- [ ] Lists
+- [ ] Search
+- [ ] Slider
+- [ ] Snackbar
+- [ ] Switch
+- [ ] Tabs
+- [ ] Text Field
+- [ ] Toolbar
+- [ ] Tooltips
+- [ ] Accordion
+- [ ] Heading
+- [ ] Image
+- [ ] Flyout Menu
+- [ ] Banner
+- [ ] Table
+- [ ] Feed
+- [ ] Combo Box
+- [ ] Pagination
+- [ ] Notification
+- [ ] Container
+- [ ] Loader
+- [ ] Footer
+- [ ] SlideOver
+- [ ] Command Menu
+- [ ] Scroll Area
+- [ ] Action Sheet
+- [ ] Avatar / Avatar Group (with a ring/status)
+- [ ] Backdrop
+- [ ] Reorder
+- [ ] Row
+- [ ] Column
+- [ ] Grid
+- [ ] Skeleton (for loading states)
+- [ ] Badge
+- [ ] Rating
+- [ ] Swap (text, icon, hamburger menu)
+- [ ] Diff (iamge, text)
+- [ ] Keyboard shortcuts
+- [ ] Stats
+- [ ] Status
+- [ ] Timeline
+- [ ] Link
+- [ ] Steps
+
+
+
+List sources:
+[Material components](https://m3.material.io/components)
+[LiftKit](https://github.com/Chainlift/liftkit)
+[Tailwind UI](https://tailwindui.com/)
+[PrimeNG](https://primeblocks.org/)
+[Ionic Framework Components](https://github.com/ionic-team/ionic-framework/tree/main/core/src/components)
+[Flowbite Components](https://flowbite.com/#components)
+[Meraki UI Components](https://merakiui.com/components)
+[DaisyUI Videos](https://daisyui.com/docs/install/angular/)
+
+
+
 
 
 ---
@@ -184,6 +293,8 @@ interface ThemeConfig {
 @Input() elevation: 0|1|2|3|4 = 0
 @Input() rounded: 'sm'|'md'|'lg'|'xl'|'full' = 'md'
 @Input() colorScheme: 'blue'|'green'|'purple'|'red'|'gray' = 'blue'
+/** Material alias support */
+@Input() mdVariantAlias?: 'filled'|'outlined'|'text'|'tonal' // optional, maps to current variant presets
 @Input() glassEffect: boolean = false
 @Input() customClasses?: string // Additional Tailwind classes
 @Input() ariaLabel?: string
@@ -193,6 +304,14 @@ interface ThemeConfig {
 @Output() focus = new EventEmitter<FocusEvent>()
 @Output() blur = new EventEmitter<FocusEvent>()
 ```
+
+### Material Variant Aliases
+- filled -> primary (solid) button
+- outlined -> outline
+- text -> link/ghost (no container)
+- tonal -> secondary (use container/onContainer tokens)
+
+Implementation hint: When mdVariantAlias is set, map to your existing variantClasses using Material tokens for container/label colors.
 
 ### Accessibility Features
 - Minimum 48×48px touch target
@@ -339,6 +458,10 @@ private readonly hintClasses = [
 @Output() escape = new EventEmitter<KeyboardEvent>()
 @Output() clear = new EventEmitter<void>()
 ```
+
+### Accessibility note (Material)
+- role="textbox" and aria-invalid on error.
+- Describe with aria-describedby for hint and error; update dynamically.
 
 ### Tailwind Classes Applied
 ```typescript
@@ -521,6 +644,8 @@ private readonly variantClasses = {
 - Arrow key navigation between options
 - Space key to select
 - Roving tabindex
+- role="combobox" with aria-expanded/aria-controls; popup list role="listbox" with option items role="option".
+- Manage active option via aria-activedescendant.
 
 ### Examples
 [Screenshot placeholder - Radio group orientations]
@@ -640,6 +765,7 @@ interface TabItem {
 - role="tablist" on container, role="tab" on triggers, role="tabpanel" on content.
 - aria-selected, aria-controls, id binding per WAI-ARIA Authoring Practices.
 - Use roving tabindex for horizontal/vertical arrow key navigation.
+- Follow WAI-ARIA APG: roving tabindex, aria-selected on active tab, aria-controls/id linkage.
 
 ### Examples
 [Screenshot placeholder - Tab variants and orientations]
@@ -937,6 +1063,11 @@ interface BreadcrumbItem {
 - `header` - Modal header with title
 - `body` - Main content area
 - `footer` - Action buttons
+
+### Accessibility (Material Dialog)
+- role="dialog" or role="alertdialog" with aria-modal="true".
+- Focus trap on open; return focus to trigger on close.
+- Label via aria-labelledby or aria-label; describe via aria-describedby.
 
 ### Examples
 [Screenshot placeholder - Modal sizes and types] 
@@ -2019,5 +2150,5 @@ All components will include interactive examples in Storybook with:
 ---
 
 **Last Updated:** September 2025  
-**Version:** 1.0.1
+**Version:** 1.0.2
 

@@ -507,6 +507,8 @@ The library includes advanced "liquid glass" components with:
 - [GSAP](https://greensock.com/gsap/)
 - [Framer Motion](https://www.framer.com/motion/)
 
+Use ["spring" physics](https://m3.material.io/styles/motion/overview/how-it-works) for micro-interactions (buttons, toggles) and standard easing for transitions.
+
 ### Motion Tokens
 ```css
 :root {
@@ -636,7 +638,7 @@ The library includes advanced "liquid glass" components with:
 - [Tailwind UI](https://tailwindui.com/)
 - [Windy Toolbox](https://windytoolbox.com/)
 - [Material Design Components](https://m3.material.io/components)
-- [PrimeNG](https://www.primefaces.org/primeng/)
+- [PrimeNG](https://primeblocks.org/)
 - [Bootstrap Components](https://getbootstrap.com/docs/5.3/components/)
 - [Bootstrap Examples](https://getbootstrap.com/docs/5.3/examples/)
 - [Ionic Framework Components](https://github.com/ionic-team/ionic-framework/tree/main/core/src/components)
@@ -644,7 +646,7 @@ The library includes advanced "liquid glass" components with:
 - [Shuffle Marketplace](https://shuffle.dev/marketplace)
 - [Flowbite Components](https://flowbite.com/#components)
 - [Meraki UI Components](https://merakiui.com/components)
-- [DaisyUI Videos](https://daisyui.com/resources/videos/fast-beautiful-uis-angular-daisyui-x5l6lsj6ekw/)
+- [DaisyUI Videos](https://daisyui.com/docs/install/angular/)
 - [Soft UI Design System Presentation](https://demos.creative-tim.com/soft-ui-design-system/presentation.html)
 - [Lbegey Templates](https://lbegey.fr/templates-tailwind.html)
 
