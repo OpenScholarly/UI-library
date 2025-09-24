@@ -152,98 +152,107 @@ interface ThemeConfig {
 
 ---
 
-# Component List
+# Component Roadmap
+1. Foundation (already in theme section)
+- [ ] Design tokens (colors, radius, spacing, motion)
+- [ ] Tailwind theme + utilities (focus ring, glass, transitions)
+- [ ] A11y utilities (focus trap, aria helpers)
+- [ ] Overlay/positioning primitives (portal, z-layers, dismiss, positioning)
+
+2. Primitives & Layout
+- [ ] Container
+- [ ] Grid / Row / Column
+- [ ] Dividers
+- [ ] Typography (Heading, Text)
+- [ ] Icon
+- [ ] Link
+- [ ] Image
+- [ ] Scroll Area
+
+3. Button Family
 - [ ] Button
-- [ ] Form Field Wrapper
-- [ ] Input (Text, Password, Email, Number, Search, OTP, validators, masks)
-- [ ] Textarea
-- [ ] Select (Single & Multi)
-- [ ] Checkbox
-- [ ] Radio Group & Radio
-- [ ] Toggle / Switch
-- [ ] Slider / Range Input
-- [ ] Tabs
-- [ ] Menu / Dropdown
-- [ ] Breadcrumbs
-- [ ] Pagination
-- [ ] Sidebar / Drawer
-- [ ] Tooltip
-- [ ] Popover
-- [ ] Modal / Dialog
-- [ ] Toast / Snackbar
-- [ ] Progress Indicators
-- [ ] Table / Data Grid
-- [ ] Card
-- [ ] List
-- [ ] Avatar
-- [ ] Badge
-- [ ] Chip / Tag / Pill
-- [ ] Date Picker
-- [ ] Time Picker
-- [ ] File Upload
-- [ ] Autocomplete / Typeahead
-- [ ] Tree View
-- [ ] Button groups
-- [ ] Extended Floating Action Button
-- [ ] Floating Action Button Menu
-- [ ] Floating Action Button
 - [ ] Icon Button
 - [ ] Segmented Button
 - [ ] Split Button
-- [ ] Loading Indicator
-- [ ] Progress Indicator
-- [ ] Navigation Drawer
-- [ ] Navigation Rail
-- [ ] Navbar
-- [ ] Bottom Navigation / Dock
-- [ ] Bottom Sheets
-- [ ] Side Sheets
-- [ ] App Bars
-- [ ] Carousel
-- [ ] Dividers
-- [ ] Lists
-- [ ] Search
-- [ ] Slider
-- [ ] Snackbar
-- [ ] Switch
-- [ ] Tabs
-- [ ] Text Field
-- [ ] Toolbar
-- [ ] Tooltips
-- [ ] Accordion
-- [ ] Heading
-- [ ] Image
-- [ ] Flyout Menu
-- [ ] Banner
-- [ ] Table
+- [ ] Button Groups
+- [ ] Floating Action Button (FAB)
+- [ ] Extended FAB
+- [ ] FAB Menu
+
+4. Form Infrastructure
+- [ ] Form Field Wrapper
+
+5. Basic Inputs (non-overlay)
+- [ ] Text Field / Input (text, password, email, number, search, masks/validators/OTP)
+- [ ] Textarea
+- [ ] Checkbox
+- [ ] Radio Group & Radio
+- [ ] Toggle / Switch
+- [ ] Slider / Range
+
+6. Overlay-based Inputs (requires overlay primitives)
+- [ ] Select (Single & Multi)
+- [ ] Autocomplete / Combo Box / Typeahead
+- [ ] Date Picker
+- [ ] Time Picker
+- [ ] File Upload
+- [ ] Search (composite of input + list/command menu)
+
+7. Feedback & Status
+- [ ] Loading Indicator / Loader
+- [ ] Progress Indicators (linear + circular)
+- [ ] Badge / Status
+- [ ] Chip / Tag / Pill
+- [ ] Toast / Snackbar
+- [ ] Notification (alias or wrapper of Toast system)
+
+8. Surfaces & Data Display
+- [ ] Card
+- [ ] List (incl. virtual list)
+- [ ] Avatar / Avatar Group (with ring/status)
+- [ ] Table / Data Grid
 - [ ] Feed
-- [ ] Combo Box
-- [ ] Pagination
-- [ ] Notification
-- [ ] Container
-- [ ] Loader
-- [ ] Footer
-- [ ] SlideOver
-- [ ] Command Menu
-- [ ] Scroll Area
-- [ ] Action Sheet
-- [ ] Avatar / Avatar Group (with a ring/status)
-- [ ] Backdrop
-- [ ] Reorder
-- [ ] Row
-- [ ] Column
-- [ ] Grid
-- [ ] Skeleton (for loading states)
-- [ ] Badge
-- [ ] Rating
-- [ ] Swap (text, icon, hamburger menu)
-- [ ] Diff (iamge, text)
-- [ ] Keyboard shortcuts
 - [ ] Stats
-- [ ] Status
 - [ ] Timeline
-- [ ] Link
-- [ ] Steps
+- [ ] Banner
+- [ ] Carousel
+- [ ] Skeleton (after Card/Container)
+- [ ] Footer / Copyright
+
+9. Navigation
+- [ ] Tabs
+- [ ] Breadcrumbs
+- [ ] Pagination
+- [ ] Steps / Stepper
+- [ ] Navbar / App Bar / Toolbar
+- [ ] Sidebar / Drawer / SlideOver / Side Sheets / Navigation Drawer
+- [ ] Navigation Rail
+- [ ] Bottom Navigation / Dock
+- [ ] Menu / Dropdown / Flyout Menu
+- [ ] Command Menu / Command Palette
+- [ ] Accordion
+- [ ] Tree View
+- [ ] Reorder (drag to reorder)
+- [ ] Keyboard Shortcuts (service; used by Command Menu)
+
+10. Overlays
+- [ ] Tooltip
+- [ ] Popover
+- [ ] Modal / Dialog (alert/confirm/fullscreen)
+- [ ] Bottom Sheets
+- [ ] Action Sheet
+- [ ] Backdrop
+
+1.  Liquid Glass Suite
+- [ ] Glass Card
+- [ ] Liquid Button
+- [ ] Distortion Container
+
+1.  Misc Utilities
+- [ ] Swap (icon/text/hamburger)
+- [ ] Diff (image, text)
+- [ ] Rating
+- [ ] Link (advanced states/variants)
 
 
 
