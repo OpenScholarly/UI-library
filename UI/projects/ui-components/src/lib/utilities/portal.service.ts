@@ -187,8 +187,15 @@ export class PortalService {
   /**
    * Generate a unique portal ID
    */
+  private static _portalIdCounter = 0;
+
   private generatePortalId(): string {
-    return `portal-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return `portal-${crypto.randomUUID()}`;
+    } else {
+      // Fallback: use a counter to ensure uniqueness
+      return `portal-fallback-${PortalService._portalIdCounter++}`;
+    }
   }
 
   /**

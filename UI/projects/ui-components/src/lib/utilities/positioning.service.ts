@@ -24,7 +24,6 @@ export interface PositionOptions {
 
 /**
  * Service for positioning floating elements relative to reference elements
- * Basic implementation - for production, consider using @floating-ui/dom
  */
 @Injectable({
   providedIn: 'root'
