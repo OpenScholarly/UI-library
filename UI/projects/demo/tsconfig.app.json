@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/demo",
+    "types": [],
+    "paths": {
+      "ui-components": [
+        "../../dist/ui-components",
+        "../../projects/ui-components/src/public-api"
+      ]
+    }
+  },
+  "files": [
+    "src/main.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
