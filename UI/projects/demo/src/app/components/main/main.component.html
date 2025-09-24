@@ -1,0 +1,203 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ title() }}</h1>
+      <div class="flex justify-center space-x-4">
+        <ui-badge variant="primary" size="md">22+ Components</ui-badge>
+        <ui-badge variant="success" size="md">Production Ready</ui-badge>
+        <ui-badge variant="info" size="md">TypeScript</ui-badge>
+      </div>
+    </header>
+
+    <!-- Component Showcase Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+      
+      <!-- Buttons Section -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Buttons</h3>
+          <div class="space-y-3">
+            <div class="flex flex-wrap gap-2">
+              <ui-button variant="primary" size="sm">Primary</ui-button>
+              <ui-button variant="secondary" size="sm">Secondary</ui-button>
+              <ui-button variant="outline" size="sm">Outline</ui-button>
+              <ui-button variant="ghost" size="sm">Ghost</ui-button>
+              <ui-button variant="destructive" size="sm">Destructive</ui-button>
+              <ui-button variant="glass" size="sm">Glass</ui-button>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Form Controls -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Form Controls</h3>
+          <div class="space-y-4">
+            <ui-input
+              label="Name"
+              placeholder="Enter your name"
+              size="sm">
+            </ui-input>
+            
+            <ui-select
+              label="Country"
+              placeholder="Select a country"
+              [options]="selectOptions()"
+              size="sm">
+            </ui-select>
+            
+            <ui-checkbox
+              label="Subscribe to updates"
+              description="Get notified about new features">
+            </ui-checkbox>
+
+            <ui-toggle
+              label="Enable notifications">
+            </ui-toggle>
+
+            <ui-textarea
+              label="Message"
+              placeholder="Enter your message"
+              size="sm">
+            </ui-textarea>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Badges & Chips -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Badges & Chips</h3>
+          <div class="space-y-3">
+            <div class="flex flex-wrap gap-2">
+              <ui-badge variant="default" size="sm">Default</ui-badge>
+              <ui-badge variant="primary" size="sm">Primary</ui-badge>
+              <ui-badge variant="success" size="sm">Success</ui-badge>
+              <ui-badge variant="warning" size="sm">Warning</ui-badge>
+              <ui-badge variant="danger" size="sm">Danger</ui-badge>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <ui-chip label="JavaScript" variant="primary" size="sm"></ui-chip>
+              <ui-chip label="TypeScript" variant="success" size="sm"></ui-chip>
+              <ui-chip label="Angular" variant="info" size="sm"></ui-chip>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Progress & Loading -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Progress & Loading</h3>
+          <div class="space-y-4">
+            <ui-progress [value]="75" variant="primary" size="sm"></ui-progress>
+            <ui-slider
+              label="Volume"
+              [min]="0"
+              [max]="100"
+              (valueChange)="onSliderChange($event)">
+            </ui-slider>
+            <div class="flex items-center space-x-4">
+              <ui-loader type="spinner" variant="primary" size="sm"></ui-loader>
+              <ui-loader type="dots" variant="success" size="sm"></ui-loader>
+              <ui-loader type="pulse" variant="warning" size="sm"></ui-loader>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Navigation -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Navigation</h3>
+          <div class="space-y-4">
+            <ui-breadcrumbs 
+              [items]="breadcrumbItems()"
+              size="sm">
+            </ui-breadcrumbs>
+            
+            <ui-tabs [tabs]="tabItems()" variant="pills" size="sm" (tabChanged)="onTabChange($event)"></ui-tabs>
+            
+            <ui-pagination
+              [currentPage]="currentPage()"
+              [totalItems]="100"
+              [pageSize]="10"
+              variant="simple"
+              size="sm"
+              (pageChange)="onPageChange($event)">
+            </ui-pagination>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Interactive Components -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Interactive</h3>
+          <div class="space-y-4">
+            <ui-button (clicked)="openModal()">Open Modal</ui-button>
+            
+            <ui-tooltip content="This is a helpful tooltip!">
+              <ui-button variant="outline">Hover for Tooltip</ui-button>
+            </ui-tooltip>
+            
+            <ui-button (clicked)="showToastNotification()">Show Toast</ui-button>
+
+            <div class="flex items-center space-x-4">
+              <ui-avatar name="John Doe" size="sm"></ui-avatar>
+              <ui-avatar name="Jane Smith" size="sm" status="online"></ui-avatar>
+              <ui-avatar name="Bob Wilson" size="sm" status="busy" badge="3"></ui-avatar>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+    </div>
+
+    <!-- Accordion Section -->
+    <div class="mt-12">
+      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Key Features</h2>
+      <ui-accordion 
+        [items]="accordionItems()">
+      </ui-accordion>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-16">
+      <ui-footer
+        [sections]="footerSections()"
+        copyright="© 2024 UI Component Library. All rights reserved.">
+      </ui-footer>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <ui-modal
+    [open]="isModalOpen()"
+    title="Component Library"
+    (close)="closeModal()">
+    <div class="space-y-4">
+      <p class="text-gray-600 dark:text-gray-400">
+        This comprehensive UI component library includes 22+ production-ready components.
+      </p>
+      <div class="flex justify-end space-x-3">
+        <ui-button variant="outline" (clicked)="closeModal()">Close</ui-button>
+        <ui-button variant="primary">Get Started</ui-button>
+      </div>
+    </div>
+  </ui-modal>
+
+  <!-- Toast -->
+  @if (showToast()) {
+    <div class="fixed top-4 right-4 z-50">
+      <ui-toast
+        title="Success!"
+        message="Component library demo is working perfectly!"
+        variant="success"
+        (dismiss)="onToastDismiss()">
+      </ui-toast>
+    </div>
+  }
+</div>

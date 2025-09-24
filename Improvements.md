@@ -1,0 +1,1 @@
+Look at established frameworks like daisyUI for their color scheme, component attributes, and overall design principles. This can provide inspiration and guidance for creating a cohesive and user-friendly UI library.
