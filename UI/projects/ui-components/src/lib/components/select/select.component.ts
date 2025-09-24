@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy, input, output, computed, signal, effect, ViewChild, ElementRef, forwardRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output, computed, signal, effect, ViewChild, ElementRef, forwardRef, inject, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DismissService } from '../../utilities/dismiss.service';
 
 export interface SelectOption {
   value: any;
@@ -32,7 +33,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
     '[attr.data-size]': 'size()'
   },
   template: `
-    <div class="ui-select__wrapper relative">
+    <div class="ui-select__wrapper relative" #selectWrapper>
       <!-- Label -->
       @if (label()) {
         <label 
@@ -85,6 +86,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
         <!-- Dropdown -->
         @if (isOpen()) {
           <div 
+            #dropdown
             class="ui-select__dropdown absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto"
             role="listbox"
             [attr.aria-labelledby]="selectId">
@@ -152,7 +154,9 @@ export type SelectSize = 'sm' | 'md' | 'lg';
 
       <!-- Helper Text -->
       @if (helperText() && !hasError()) {
-        <p class="ui-select__helper-text mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <p 
+          class="ui-select__helper-text mt-1 text-sm text-gray-500 dark:text-gray-400"
+          [id]="selectId + '-helper'">
           {{ helperText() }}
         </p>
       }
@@ -169,9 +173,14 @@ export type SelectSize = 'sm' | 'md' | 'lg';
     </div>
   `
 })
-export class SelectComponent implements ControlValueAccessor {
+export class SelectComponent implements ControlValueAccessor, OnDestroy {
+  @ViewChild('selectWrapper') selectWrapper!: ElementRef<HTMLElement>;
   @ViewChild('selectButton') selectButton!: ElementRef<HTMLButtonElement>;
+  @ViewChild('dropdown') dropdown?: ElementRef<HTMLElement>;
   @ViewChild('searchInput') searchInput?: ElementRef<HTMLInputElement>;
+
+  private dismissService = inject(DismissService);
+  private dismissId = `select-${Math.random().toString(36).substr(2, 9)}`;
 
   // Inputs
   options = input<SelectOption[]>([]);
@@ -210,23 +219,33 @@ export class SelectComponent implements ControlValueAccessor {
   private onTouched = () => {};
 
   constructor() {
-    // Handle click outside to close dropdown
-    //TODO DismissService for better handling
+    // Handle dropdown open/close with dismiss service
     effect(() => {
       if (this.isOpen()) {
-        const handleClickOutside = (event: Event) => {
-          const target = event.target as Element;
-          if (!this.selectButton.nativeElement.contains(target) && 
-              !target.closest('.ui-select__dropdown')) {
-            this.closeDropdown();
+        // Register dismiss behavior when dropdown opens
+        setTimeout(() => {
+          if (this.dropdown) {
+            this.dismissService.register(
+              this.dismissId,
+              this.dropdown.nativeElement,
+              () => this.closeDropdown(),
+              {
+                clickOutside: true,
+                escapeKey: true,
+                ignoreElements: [this.selectWrapper.nativeElement]
+              }
+            );
           }
-        };
-
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
+        });
+      } else {
+        // Unregister when dropdown closes
+        this.dismissService.unregister(this.dismissId);
       }
-      return undefined;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.dismissService.unregister(this.dismissId);
   }
 
   // Computed properties
