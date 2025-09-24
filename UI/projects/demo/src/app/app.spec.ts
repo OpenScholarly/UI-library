@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
 
+
+//TODO for e2e test of the ui library
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
