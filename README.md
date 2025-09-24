@@ -115,3 +115,7 @@ https://waapi.readme.io/reference/waapi-api-documentation
 - Order tailwind classes (luke display > position > ... > hover > focus)
 - Use SwPush for notifications on desktop and mobile
 - ionic angular https://github.com/ionic-team/ionic-framework/tree/main/core/src/components + PWA
+
+
+
+`npm install -g web-codegen-scorer`
