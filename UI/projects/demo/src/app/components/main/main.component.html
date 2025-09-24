@@ -1,287 +1,203 @@
-<div class="min-h-screen bg-background">
-  <!-- Header -->
-  <header class="bg-surface border-b border-gray-200 px-4 py-8">
-    <div class="max-w-6xl mx-auto">
-      <h1 class="text-3xl font-bold text-text-primary mb-2">{{ title() }}</h1>
-      <p class="text-text-secondary">
-        Comprehensive UI component library with design tokens, accessibility features, and modern
-        styling.
-      </p>
-    </div>
-  </header>
-
-  <!-- Main content -->
-  <main class="max-w-6xl mx-auto px-4 py-12 space-y-16">
-    <!-- Input Components -->
-    <section id="inputs">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Input Components</h2>
-      <ui-card variant="outlined" padding="lg">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <ui-input
-            label="Email Address"
-            type="email"
-            placeholder="Enter your email"
-            helperText="We'll never share your email address"
-            prefixIcon="📧"
-          >
-          </ui-input>
-
-          <ui-input
-            label="Password"
-            type="password"
-            placeholder="Enter password"
-            helperText="Must be at least 8 characters"
-          >
-          </ui-input>
-
-          <ui-input
-            label="Search"
-            type="search"
-            placeholder="Search components..."
-            prefixIcon="🔍"
-            variant="filled"
-          >
-          </ui-input>
-
-          <ui-input
-            label="Phone Number"
-            type="tel"
-            placeholder="+1 (555) 000-0000"
-            variant="outlined"
-            suffixIcon="📱"
-          >
-          </ui-input>
-        </div>
-      </ui-card>
-    </section>
-
-    <!-- Avatar & Badge Components -->
-    <section id="avatars-badges">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Avatars & Badges</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Avatars -->
-        <ui-card variant="elevated" padding="lg">
-          <h3 class="font-medium text-text-primary mb-4">Avatar Component</h3>
-          <div class="flex items-center space-x-4 mb-4">
-            <ui-avatar name="John Doe" size="sm"></ui-avatar>
-            <ui-avatar name="Jane Smith" size="md" status="online"></ui-avatar>
-            <ui-avatar name="Bob Wilson" size="lg" status="busy" badge="3"></ui-avatar>
-            <ui-avatar name="Alice Johnson" size="xl" shape="rounded"></ui-avatar>
-          </div>
-          <p class="text-sm text-text-secondary">
-            Avatars with status indicators, badges, and various shapes and sizes.
-          </p>
-        </ui-card>
-
-        <!-- Badges -->
-        <ui-card variant="elevated" padding="lg">
-          <h3 class="font-medium text-text-primary mb-4">Badge Component</h3>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <ui-badge variant="default">Default</ui-badge>
-            <ui-badge variant="primary">Primary</ui-badge>
-            <ui-badge variant="success" [dot]="true">Success</ui-badge>
-            <ui-badge variant="warning">Warning</ui-badge>
-            <ui-badge variant="danger" [dismissible]="true" (dismissed)="onBadgeDismiss()"
-              >Danger</ui-badge
-            >
-            <ui-badge variant="info" shape="pill">Info</ui-badge>
-          </div>
-          <p class="text-sm text-text-secondary">
-            Badges with variants, dots, and dismissible functionality.
-          </p>
-        </ui-card>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ title() }}</h1>
+      <div class="flex justify-center space-x-4">
+        <ui-badge variant="primary" size="md">22+ Components</ui-badge>
+        <ui-badge variant="success" size="md">Production Ready</ui-badge>
+        <ui-badge variant="info" size="md">TypeScript</ui-badge>
       </div>
-    </section>
+    </header>
 
-    <!-- Modal Component -->
-    <section id="modal">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Modal Component</h2>
-      <ui-card variant="outlined" padding="lg">
-        <div class="space-y-4">
-          <p class="text-text-secondary">
-            Modal dialogs with focus management, backdrop dismissal, and glass effects.
-          </p>
-          <div class="flex gap-3">
-            <ui-button variant="primary" (clicked)="openModal()"> Open Modal </ui-button>
-          </div>
-        </div>
-      </ui-card>
-
-      <!-- Modal -->
-      <ui-modal
-        [open]="modalOpen()"
-        title="Example Modal"
-        variant="glass"
-        size="md"
-        (closed)="closeModal()"
-      >
-        <p class="mb-4">
-          This is an example modal with glass morphism effects. It includes proper focus management,
-          keyboard navigation, and accessibility features.
-        </p>
-        <p class="text-sm text-text-secondary">Press Escape or click the backdrop to close.</p>
-
-        <div slot="footer" class="flex justify-end space-x-3">
-          <ui-button variant="secondary" (clicked)="closeModal()"> Cancel </ui-button>
-          <ui-button variant="primary" (clicked)="closeModal()"> Confirm </ui-button>
-        </div>
-      </ui-modal>
-    </section>
-
-    <!-- Tooltip Component -->
-    <section id="tooltips">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Tooltip Component</h2>
-      <ui-card variant="outlined" padding="lg">
-        <div class="space-y-4">
-          <p class="text-text-secondary mb-4">Tooltips with various triggers and placements.</p>
-          <div class="flex flex-wrap gap-4">
-            <ui-tooltip content="This is a hover tooltip" placement="top">
-              <ui-button variant="outline">Hover me</ui-button>
-            </ui-tooltip>
-
-            <ui-tooltip
-              content="Focus tooltip with keyboard navigation"
-              trigger="focus"
-              placement="bottom"
-            >
-              <ui-button variant="outline">Focus me</ui-button>
-            </ui-tooltip>
-
-            <ui-tooltip
-              content="Click to toggle tooltip"
-              trigger="click"
-              placement="right"
-              variant="dark"
-            >
-              <ui-button variant="outline">Click me</ui-button>
-            </ui-tooltip>
-          </div>
-        </div>
-      </ui-card>
-    </section>
-
-    <!-- Tabs Component -->
-    <section id="tabs">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Tabs Component</h2>
-      <ui-card variant="outlined" padding="lg">
-        <ui-tabs [tabs]="tabItems()" variant="pills" (tabChanged)="onTabChange($event)"> </ui-tabs>
-      </ui-card>
-    </section>
-
-    <!-- Button Variants (Enhanced) -->
-    <section id="buttons">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Button Components</h2>
-      <ui-card variant="outlined" padding="lg">
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-          <ui-button variant="primary" (clicked)="onButtonClick('primary')">Primary</ui-button>
-          <ui-button variant="secondary" (clicked)="onButtonClick('secondary')">Secondary</ui-button>
-          <ui-button variant="outline" (clicked)="onButtonClick('outline')">Outline</ui-button>
-          <ui-button variant="ghost" (clicked)="onButtonClick('ghost')">Ghost</ui-button>
-          <ui-button variant="destructive" (clicked)="onButtonClick('destructive')">Destructive</ui-button>
-          <ui-button variant="glass" (clicked)="onButtonClick('glass')">Glass Effect</ui-button>
-        </div>
-
-        <div class="pt-6 border-t border-gray-200">
-          <h4 class="text-sm font-medium text-text-primary mb-3">Sizes</h4>
-          <div class="flex items-center gap-3">
-            <ui-button variant="primary" size="sm">Small</ui-button>
-            <ui-button variant="primary" size="md">Medium</ui-button>
-            <ui-button variant="primary" size="lg">Large</ui-button>
-          </div>
-        </div>
-      </ui-card>
-      @if (lastClicked()) {
-        <ui-card padding="sm" shadow="sm">
-          <div class="bg-green-50 border border-green-200 rounded-md p-3">
-            <p class="text-green-800 text-sm">
-              Last clicked: <strong>{{ lastClicked() }}</strong>
-            </p>
-          </div>
-        </ui-card>
-      }
-    </section>
-
-    <!-- Accordion Component -->
-    <section id="accordion">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Accordion Component</h2>
-      <ui-card variant="outlined" padding="none">
-        <div class="p-6 border-b border-gray-200">
-          <h3 class="font-medium text-text-primary mb-2">Features & Capabilities</h3>
-          <p class="text-text-secondary text-sm">
-            Fully accessible accordion with ARIA support and keyboard navigation.
-          </p>
-        </div>
+    <!-- Component Showcase Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+      
+      <!-- Buttons Section -->
+      <ui-card>
         <div class="p-6">
-          <ui-accordion
-            [items]="accordionItems()"
-            [allowMultiple]="true"
-            [collapsible]="true"
-            (itemToggled)="onAccordionToggle($event)"
-          >
-          </ui-accordion>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Buttons</h3>
+          <div class="space-y-3">
+            <div class="flex flex-wrap gap-2">
+              <ui-button variant="primary" size="sm">Primary</ui-button>
+              <ui-button variant="secondary" size="sm">Secondary</ui-button>
+              <ui-button variant="outline" size="sm">Outline</ui-button>
+              <ui-button variant="ghost" size="sm">Ghost</ui-button>
+              <ui-button variant="destructive" size="sm">Destructive</ui-button>
+              <ui-button variant="glass" size="sm">Glass</ui-button>
+            </div>
+          </div>
         </div>
       </ui-card>
-    </section>
 
-    <!-- Card Variants -->
-    <section id="cards">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Card Components</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <ui-card variant="default" padding="md">
-          <h3 class="font-medium text-text-primary mb-2">Default Card</h3>
-          <p class="text-text-secondary text-sm">Standard card with border and background.</p>
-        </ui-card>
+      <!-- Form Controls -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Form Controls</h3>
+          <div class="space-y-4">
+            <ui-input
+              label="Name"
+              placeholder="Enter your name"
+              size="sm">
+            </ui-input>
+            
+            <ui-select
+              label="Country"
+              placeholder="Select a country"
+              [options]="selectOptions()"
+              size="sm">
+            </ui-select>
+            
+            <ui-checkbox
+              label="Subscribe to updates"
+              description="Get notified about new features">
+            </ui-checkbox>
 
-        <ui-card variant="elevated" padding="md">
-          <h3 class="font-medium text-text-primary mb-2">Elevated Card</h3>
-          <p class="text-text-secondary text-sm">Card with elevation shadow.</p>
-        </ui-card>
+            <ui-toggle
+              label="Enable notifications">
+            </ui-toggle>
 
-        <ui-card variant="glass" padding="md">
-          <h3 class="font-medium text-white mb-2">Glass Card</h3>
-          <p class="text-white/80 text-sm">Translucent card with blur effect.</p>
-        </ui-card>
-      </div>
-    </section>
+            <ui-textarea
+              label="Message"
+              placeholder="Enter your message"
+              size="sm">
+            </ui-textarea>
+          </div>
+        </div>
+      </ui-card>
 
-    <!-- Utilities Section -->
-    <section id="utilities">
-      <h2 class="text-2xl font-semibold text-text-primary mb-6">Utility Services</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ui-card variant="elevated" padding="md">
-          <h3 class="font-medium text-text-primary mb-3">A11y Utilities</h3>
-          <ul class="text-sm text-text-secondary space-y-1">
-            <li>• Focus trap service</li>
-            <li>• ARIA helpers</li>
-            <li>• Screen reader announcements</li>
-            <li>• Keyboard navigation</li>
-          </ul>
-        </ui-card>
+      <!-- Badges & Chips -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Badges & Chips</h3>
+          <div class="space-y-3">
+            <div class="flex flex-wrap gap-2">
+              <ui-badge variant="default" size="sm">Default</ui-badge>
+              <ui-badge variant="primary" size="sm">Primary</ui-badge>
+              <ui-badge variant="success" size="sm">Success</ui-badge>
+              <ui-badge variant="warning" size="sm">Warning</ui-badge>
+              <ui-badge variant="danger" size="sm">Danger</ui-badge>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <ui-chip label="JavaScript" variant="primary" size="sm"></ui-chip>
+              <ui-chip label="TypeScript" variant="success" size="sm"></ui-chip>
+              <ui-chip label="Angular" variant="info" size="sm"></ui-chip>
+            </div>
+          </div>
+        </div>
+      </ui-card>
 
-        <ui-card variant="elevated" padding="md">
-          <h3 class="font-medium text-text-primary mb-3">Overlay Primitives</h3>
-          <ul class="text-sm text-text-secondary space-y-1">
-            <li>• Portal service</li>
-            <li>• Positioning utilities</li>
-            <li>• Dismiss handling</li>
-            <li>• Z-layer management</li>
-          </ul>
-        </ui-card>
-      </div>
-    </section>
-  </main>
-  
-  <!-- Footer -->
-  <ui-footer
-    [sections]="footerSections()"
-    [socialLinks]="socialLinks()"
-    copyright="© 2024 UI Library Extended. Built with comprehensive component system."
-  >
-    <div class="text-center">
-      <p class="text-text-secondary text-sm mb-4">
-        This demo showcases the extended component library with 10+ components, design tokens, and
-        accessibility features.
-      </p>
+      <!-- Progress & Loading -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Progress & Loading</h3>
+          <div class="space-y-4">
+            <ui-progress [value]="75" variant="primary" size="sm"></ui-progress>
+            <ui-slider
+              label="Volume"
+              [min]="0"
+              [max]="100"
+              (valueChange)="onSliderChange($event)">
+            </ui-slider>
+            <div class="flex items-center space-x-4">
+              <ui-loader type="spinner" variant="primary" size="sm"></ui-loader>
+              <ui-loader type="dots" variant="success" size="sm"></ui-loader>
+              <ui-loader type="pulse" variant="warning" size="sm"></ui-loader>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Navigation -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Navigation</h3>
+          <div class="space-y-4">
+            <ui-breadcrumbs 
+              [items]="breadcrumbItems()"
+              size="sm">
+            </ui-breadcrumbs>
+            
+            <ui-tabs [tabs]="tabItems()" variant="pills" size="sm" (tabChanged)="onTabChange($event)"></ui-tabs>
+            
+            <ui-pagination
+              [currentPage]="currentPage()"
+              [totalItems]="100"
+              [pageSize]="10"
+              variant="simple"
+              size="sm"
+              (pageChange)="onPageChange($event)">
+            </ui-pagination>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Interactive Components -->
+      <ui-card>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Interactive</h3>
+          <div class="space-y-4">
+            <ui-button (clicked)="openModal()">Open Modal</ui-button>
+            
+            <ui-tooltip content="This is a helpful tooltip!">
+              <ui-button variant="outline">Hover for Tooltip</ui-button>
+            </ui-tooltip>
+            
+            <ui-button (clicked)="showToastNotification()">Show Toast</ui-button>
+
+            <div class="flex items-center space-x-4">
+              <ui-avatar name="John Doe" size="sm"></ui-avatar>
+              <ui-avatar name="Jane Smith" size="sm" status="online"></ui-avatar>
+              <ui-avatar name="Bob Wilson" size="sm" status="busy" badge="3"></ui-avatar>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
     </div>
-  </ui-footer>
+
+    <!-- Accordion Section -->
+    <div class="mt-12">
+      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Key Features</h2>
+      <ui-accordion 
+        [items]="accordionItems()">
+      </ui-accordion>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-16">
+      <ui-footer
+        [sections]="footerSections()"
+        copyright="© 2024 UI Component Library. All rights reserved.">
+      </ui-footer>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <ui-modal
+    [open]="isModalOpen()"
+    title="Component Library"
+    (close)="closeModal()">
+    <div class="space-y-4">
+      <p class="text-gray-600 dark:text-gray-400">
+        This comprehensive UI component library includes 22+ production-ready components.
+      </p>
+      <div class="flex justify-end space-x-3">
+        <ui-button variant="outline" (clicked)="closeModal()">Close</ui-button>
+        <ui-button variant="primary">Get Started</ui-button>
+      </div>
+    </div>
+  </ui-modal>
+
+  <!-- Toast -->
+  @if (showToast()) {
+    <div class="fixed top-4 right-4 z-50">
+      <ui-toast
+        title="Success!"
+        message="Component library demo is working perfectly!"
+        variant="success"
+        (dismiss)="onToastDismiss()">
+      </ui-toast>
+    </div>
+  }
 </div>
