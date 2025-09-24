@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
+export type CardVariant = 'default' | 'elevated' | 'outlined' | 'glass';
+
 @Component({
   selector: 'ui-card',
   template: `
@@ -10,12 +12,19 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardComponent {
+  variant = input<CardVariant>('default');
   padding = input<'none' | 'sm' | 'md' | 'lg'>('md');
-  shadow = input<'none' | 'sm' | 'md' | 'lg'>('md');
   rounded = input<'none' | 'sm' | 'md' | 'lg'>('md');
 
   protected cardClasses = computed(() => {
-    const baseClasses = 'bg-white border border-gray-200';
+    const baseClasses = 'bg-surface transition-all duration-200';
+
+    const variants = {
+      default: 'border border-gray-200',
+      elevated: 'shadow-2 border border-gray-100',
+      outlined: 'border-2 border-gray-300',
+      glass: 'ui-glass border border-white/20'
+    };
 
     const paddings = {
       none: '',
@@ -24,20 +33,17 @@ export class CardComponent {
       lg: 'p-8'
     };
 
-    const shadows = {
-      none: '',
-      sm: 'shadow-sm',
-      md: 'shadow-md',
-      lg: 'shadow-lg'
-    };
-
     const roundedClasses = {
       none: '',
       sm: 'rounded-sm',
-      md: 'rounded-lg',
-      lg: 'rounded-xl'
+      md: 'rounded-md',
+      lg: 'rounded-lg'
     };
 
-    return `${baseClasses} ${paddings[this.padding()]} ${shadows[this.shadow()]} ${roundedClasses[this.rounded()]}`;
+    const variantClass = variants[this.variant()];
+    const paddingClass = paddings[this.padding()];
+    const roundedClass = roundedClasses[this.rounded()];
+
+    return `${baseClasses} ${variantClass} ${paddingClass} ${roundedClass}`;
   });
 }

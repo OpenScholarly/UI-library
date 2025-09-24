@@ -1,0 +1,487 @@
+import { Component, ChangeDetectionStrategy, input, output, computed, signal, effect, ViewChild, ElementRef, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+export interface SelectOption {
+  value: any;
+  label: string;
+  disabled?: boolean;
+  description?: string;
+}
+
+export type SelectVariant = 'default' | 'filled' | 'outlined';
+export type SelectSize = 'sm' | 'md' | 'lg';
+
+@Component({
+  selector: 'ui-select',
+  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectComponent),
+      multi: true
+    }
+  ],
+  host: {
+    'class': 'ui-select block',
+    '[class.ui-select--disabled]': 'disabled()',
+    '[class.ui-select--error]': 'hasError()',
+    '[class.ui-select--open]': 'isOpen()',
+    '[attr.data-variant]': 'variant()',
+    '[attr.data-size]': 'size()'
+  },
+  template: `
+    <div class="ui-select__wrapper relative">
+      <!-- Label -->
+      @if (label()) {
+        <label 
+          [for]="selectId"
+          class="ui-select__label block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          [class.text-red-600]="hasError()"
+          [class.dark:text-red-400]="hasError()">
+          {{ label() }}
+          @if (required()) {
+            <span class="text-red-500 ml-1" aria-label="required">*</span>
+          }
+        </label>
+      }
+
+      <!-- Select Container -->
+      <div class="ui-select__container relative">
+        <button
+          #selectButton
+          type="button"
+          [id]="selectId"
+          [disabled]="disabled()"
+          [attr.aria-expanded]="isOpen()"
+          [attr.aria-haspopup]="'listbox'"
+          [attr.aria-labelledby]="label() ? selectId + '-label' : null"
+          [attr.aria-describedby]="getAriaDescribedBy()"
+          class="ui-select__trigger w-full text-left bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-400 dark:focus:border-primary-400 transition-colors duration-200"
+          [class]="getTriggerClasses()"
+          (click)="toggleDropdown()"
+          (keydown)="onTriggerKeydown($event)">
+          
+          <span class="ui-select__value flex items-center justify-between">
+            <span class="truncate">
+              @if (selectedOption(); as option) {
+                {{ option.label }}
+              } @else {
+                <span class="text-gray-500 dark:text-gray-400">{{ placeholder() }}</span>
+              }
+            </span>
+            <svg 
+              class="ui-select__chevron w-5 h-5 text-gray-400 transition-transform duration-200"
+              [class.rotate-180]="isOpen()"
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+
+        <!-- Dropdown -->
+        @if (isOpen()) {
+          <div 
+            class="ui-select__dropdown absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto"
+            role="listbox"
+            [attr.aria-labelledby]="selectId">
+            
+            @if (searchable()) {
+              <div class="ui-select__search p-2 border-b border-gray-200 dark:border-gray-600">
+                <input
+                  #searchInput
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  [placeholder]="searchPlaceholder()"
+                  [value]="searchQuery()"
+                  (input)="onSearchInput($event)"
+                  (keydown)="onSearchKeydown($event)">
+              </div>
+            }
+
+            @if (filteredOptions().length === 0) {
+              <div class="ui-select__empty px-3 py-2 text-gray-500 dark:text-gray-400 text-sm">
+                {{ noOptionsText() }}
+              </div>
+            } @else {
+              @for (option of filteredOptions(); track option.value; let i = $index) {
+                <button
+                  type="button"
+                  role="option"
+                  [disabled]="option.disabled"
+                  [attr.aria-selected]="selectedOption()?.value === option.value"
+                  [class]="getOptionClasses(option, i === highlightedIndex())"
+                  (click)="selectOption(option)"
+                  (mouseenter)="setHighlightedIndex(i)">
+                  
+                  <div class="flex items-center">
+                    @if (multiple()) {
+                      <input
+                        type="checkbox"
+                        class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-3"
+                        [checked]="isOptionSelected(option)"
+                        tabindex="-1">
+                    }
+                    
+                    <div class="flex-1 min-w-0">
+                      <div class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        {{ option.label }}
+                      </div>
+                      @if (option.description) {
+                        <div class="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          {{ option.description }}
+                        </div>
+                      }
+                    </div>
+
+                    @if (!multiple() && selectedOption()?.value === option.value) {
+                      <svg class="w-4 h-4 text-primary-600 dark:text-primary-400 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                      </svg>
+                    }
+                  </div>
+                </button>
+              }
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Helper Text -->
+      @if (helperText() && !hasError()) {
+        <p class="ui-select__helper-text mt-1 text-sm text-gray-500 dark:text-gray-400">
+          {{ helperText() }}
+        </p>
+      }
+
+      <!-- Error Message -->
+      @if (hasError() && errorMessage()) {
+        <p 
+          class="ui-select__error-message mt-1 text-sm text-red-600 dark:text-red-400"
+          [id]="selectId + '-error'"
+          role="alert">
+          {{ errorMessage() }}
+        </p>
+      }
+    </div>
+  `
+})
+export class SelectComponent implements ControlValueAccessor {
+  @ViewChild('selectButton') selectButton!: ElementRef<HTMLButtonElement>;
+  @ViewChild('searchInput') searchInput?: ElementRef<HTMLInputElement>;
+
+  // Inputs
+  options = input<SelectOption[]>([]);
+  label = input<string>('');
+  placeholder = input<string>('Select an option');
+  variant = input<SelectVariant>('default');
+  size = input<SelectSize>('md');
+  disabled = input<boolean>(false);
+  required = input<boolean>(false);
+  multiple = input<boolean>(false);
+  searchable = input<boolean>(false);
+  searchPlaceholder = input<string>('Search options...');
+  noOptionsText = input<string>('No options available');
+  helperText = input<string>('');
+  errorMessage = input<string>('');
+
+  // Outputs
+  change = output<any>();
+  search = output<string>();
+  open = output<void>();
+  close = output<void>();
+
+  // State
+  private value = signal<any>(null);
+  private selectedValues = signal<any[]>([]);
+  isOpen = signal<boolean>(false);
+  searchQuery = signal<string>('');
+  highlightedIndex = signal<number>(-1);
+  hasError = signal<boolean>(false);
+
+  // Generate unique ID
+  selectId = `ui-select-${Math.random().toString(36).substr(2, 9)}`;
+
+  // ControlValueAccessor
+  private onChange = (value: any) => {};
+  private onTouched = () => {};
+
+  constructor() {
+    // Handle click outside to close dropdown
+    //TODO DismissService for better handling
+    effect(() => {
+      if (this.isOpen()) {
+        const handleClickOutside = (event: Event) => {
+          const target = event.target as Element;
+          if (!this.selectButton.nativeElement.contains(target) && 
+              !target.closest('.ui-select__dropdown')) {
+            this.closeDropdown();
+          }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+      }
+      return undefined;
+    });
+  }
+
+  // Computed properties
+  selectedOption = computed(() => {
+    if (this.multiple()) return null;
+    return this.options().find(opt => opt.value === this.value()) || null;
+  });
+
+  filteredOptions = computed(() => {
+    const query = this.searchQuery().toLowerCase();
+    if (!query) return this.options();
+    
+    return this.options().filter(option => 
+      option.label.toLowerCase().includes(query) ||
+      option.description?.toLowerCase().includes(query)
+    );
+  });
+
+  // Methods
+  toggleDropdown(): void {
+    if (this.disabled()) return;
+    
+    if (this.isOpen()) {
+      this.closeDropdown();
+    } else {
+      this.openDropdown();
+    }
+  }
+
+  openDropdown(): void {
+    this.isOpen.set(true);
+    this.highlightedIndex.set(-1);
+    this.open.emit();
+    
+    // Focus search input if searchable
+    if (this.searchable()) {
+      setTimeout(() => this.searchInput?.nativeElement.focus(), 0);
+    }
+  }
+
+  closeDropdown(): void {
+    this.isOpen.set(false);
+    this.searchQuery.set('');
+    this.highlightedIndex.set(-1);
+    this.onTouched();
+    this.close.emit();
+  }
+
+  selectOption(option: SelectOption): void {
+    if (option.disabled) return;
+
+    if (this.multiple()) {
+      const values = [...this.selectedValues()];
+      const index = values.findIndex(v => v === option.value);
+      
+      if (index >= 0) {
+        values.splice(index, 1);
+      } else {
+        values.push(option.value);
+      }
+      
+      this.selectedValues.set(values);
+      this.onChange(values);
+      this.change.emit(values);
+    } else {
+      this.value.set(option.value);
+      this.onChange(option.value);
+      this.change.emit(option.value);
+      this.closeDropdown();
+    }
+  }
+
+  isOptionSelected(option: SelectOption): boolean {
+    if (this.multiple()) {
+      return this.selectedValues().includes(option.value);
+    }
+    return this.value() === option.value;
+  }
+
+  setHighlightedIndex(index: number): void {
+    this.highlightedIndex.set(index);
+  }
+
+  onTriggerKeydown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        this.toggleDropdown();
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        if (!this.isOpen()) {
+          this.openDropdown();
+        } else {
+          this.moveHighlight(1);
+        }
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        if (this.isOpen()) {
+          this.moveHighlight(-1);
+        }
+        break;
+      case 'Escape':
+        if (this.isOpen()) {
+          event.preventDefault();
+          this.closeDropdown();
+        }
+        break;
+    }
+  }
+
+  onSearchInput(event: Event): void {
+    const query = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(query);
+    this.search.emit(query);
+    this.highlightedIndex.set(-1);
+  }
+
+  onSearchKeydown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        this.moveHighlight(1);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        this.moveHighlight(-1);
+        break;
+      case 'Enter':
+        event.preventDefault();
+        if (this.highlightedIndex() >= 0) {
+          const option = this.filteredOptions()[this.highlightedIndex()];
+          this.selectOption(option);
+        }
+        break;
+      case 'Escape':
+        event.preventDefault();
+        this.closeDropdown();
+        break;
+    }
+  }
+
+  private moveHighlight(direction: number): void {
+    const options = this.filteredOptions();
+    if (options.length === 0) return;
+
+    let newIndex = this.highlightedIndex() + direction;
+    
+    if (newIndex < 0) {
+      newIndex = options.length - 1;
+    } else if (newIndex >= options.length) {
+      newIndex = 0;
+    }
+
+    this.highlightedIndex.set(newIndex);
+  }
+
+  getTriggerClasses(): string {
+    const classes: string[] = [];
+    
+    switch (this.variant()) {
+      case 'filled':
+        classes.push('bg-gray-100 dark:bg-gray-700 border-transparent');
+        break;
+      case 'outlined':
+        classes.push('bg-transparent border-2');
+        break;
+    }
+
+    switch (this.size()) {
+      case 'sm':
+        classes.push('px-2 py-1 text-sm');
+        break;
+      case 'lg':
+        classes.push('px-4 py-3 text-lg');
+        break;
+    }
+
+    if (this.disabled()) {
+      classes.push('opacity-50 cursor-not-allowed');
+    }
+
+    if (this.hasError()) {
+      classes.push('border-red-500 dark:border-red-400 focus:ring-red-500 focus:border-red-500');
+    }
+
+    return classes.join(' ');
+  }
+
+  getOptionClasses(option: SelectOption, isHighlighted: boolean): string {
+    const classes = [
+      'ui-select__option',
+      'w-full text-left px-3 py-2 cursor-pointer transition-colors duration-150'
+    ];
+
+    if (option.disabled) {
+      classes.push('opacity-50 cursor-not-allowed');
+    } else if (isHighlighted) {
+      classes.push('bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300');
+    } else if (this.isOptionSelected(option)) {
+      classes.push('bg-primary-100 dark:bg-primary-900/40 text-primary-800 dark:text-primary-200');
+    } else {
+      classes.push('text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700');
+    }
+
+    return classes.join(' ');
+  }
+
+  getAriaDescribedBy(): string {
+    const ids: string[] = [];
+    
+    if (this.helperText()) {
+      ids.push(`${this.selectId}-helper`);
+    }
+    
+    if (this.hasError() && this.errorMessage()) {
+      ids.push(`${this.selectId}-error`);
+    }
+    
+    return ids.length > 0 ? ids.join(' ') : '';
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: any): void {
+    if (this.multiple()) {
+      this.selectedValues.set(Array.isArray(value) ? value : []);
+    } else {
+      this.value.set(value);
+    }
+  }
+
+  registerOnChange(fn: (value: any) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    // The disabled state is handled by the disabled input
+  }
+
+  // Public API methods
+  focus(): void {
+    this.selectButton.nativeElement.focus();
+  }
+
+  blur(): void {
+    this.selectButton.nativeElement.blur();
+  }
+
+  setError(hasError: boolean): void {
+    this.hasError.set(hasError);
+  }
+}
