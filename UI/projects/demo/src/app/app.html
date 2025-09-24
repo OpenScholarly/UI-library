@@ -1,1 +1,160 @@
+<div class="min-h-screen bg-background">
+  <!-- Header -->
+  <header class="bg-surface border-b border-gray-200 px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold text-text-primary mb-2">{{ title() }}</h1>
+      <p class="text-text-secondary">
+        Showcasing design tokens, utilities, and modern components with glass effects and accessibility features.
+      </p>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="max-w-4xl mx-auto px-4 py-12 space-y-16">
+    
+    <!-- Design Tokens Section -->
+    <section id="design-tokens">
+      <h2 class="text-2xl font-semibold text-text-primary mb-6">Design Tokens & Theme</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Color tokens -->
+        <ui-card variant="elevated" padding="md">
+          <h3 class="text-lg font-medium text-text-primary mb-4">Color System</h3>
+          <div class="space-y-2">
+            <div class="flex items-center gap-3">
+              <div class="w-6 h-6 bg-primary-500 rounded"></div>
+              <span class="text-sm text-text-secondary">Primary</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-6 h-6 bg-red-600 rounded"></div>
+              <span class="text-sm text-text-secondary">Danger</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-6 h-6 bg-green-600 rounded"></div>
+              <span class="text-sm text-text-secondary">Success</span>
+            </div>
+          </div>
+        </ui-card>
+
+        <!-- Glass effects -->
+        <ui-card variant="glass" padding="md">
+          <h3 class="text-lg font-medium text-white mb-4">Glass Morphism</h3>
+          <p class="text-white/80 text-sm mb-4">
+            Beautiful glass effects with backdrop blur and transparency.
+          </p>
+          <ui-button variant="glass" size="sm">Glass Button</ui-button>
+        </ui-card>
+      </div>
+    </section>
+
+    <!-- Button Variants -->
+    <section id="buttons">
+      <h2 class="text-2xl font-semibold text-text-primary mb-6">Button Components</h2>
+      <ui-card variant="outlined" padding="lg">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <ui-button 
+            variant="primary" 
+            (clicked)="onButtonClick()">
+            Primary
+          </ui-button>
+          <ui-button variant="secondary">Secondary</ui-button>
+          <ui-button variant="outline">Outline</ui-button>
+          <ui-button variant="ghost">Ghost</ui-button>
+          <ui-button variant="destructive">Destructive</ui-button>
+          <ui-button variant="glass">Glass Effect</ui-button>
+        </div>
+        
+        <div class="mt-6 pt-6 border-t border-gray-200">
+          <h4 class="text-sm font-medium text-text-primary mb-3">Sizes</h4>
+          <div class="flex items-center gap-3">
+            <ui-button variant="primary" size="sm">Small</ui-button>
+            <ui-button variant="primary" size="md">Medium</ui-button>
+            <ui-button variant="primary" size="lg">Large</ui-button>
+          </div>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Card Variants -->
+    <section id="cards">
+      <h2 class="text-2xl font-semibold text-text-primary mb-6">Card Components</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ui-card variant="default" padding="md">
+          <h3 class="font-medium text-text-primary mb-2">Default Card</h3>
+          <p class="text-text-secondary text-sm">Standard card with border and background.</p>
+        </ui-card>
+        
+        <ui-card variant="elevated" padding="md">
+          <h3 class="font-medium text-text-primary mb-2">Elevated Card</h3>
+          <p class="text-text-secondary text-sm">Card with elevation shadow.</p>
+        </ui-card>
+
+        <ui-card variant="glass" padding="md">
+          <h3 class="font-medium text-white mb-2">Glass Card</h3>
+          <p class="text-white/80 text-sm">Translucent card with blur effect.</p>
+        </ui-card>
+      </div>
+    </section>
+
+    <!-- Accordion Component -->
+    <section id="accordion">
+      <h2 class="text-2xl font-semibold text-text-primary mb-6">Accordion Component</h2>
+      <ui-card variant="outlined" padding="none">
+        <div class="p-6 border-b border-gray-200">
+          <h3 class="font-medium text-text-primary mb-2">Features & Capabilities</h3>
+          <p class="text-text-secondary text-sm">
+            Fully accessible accordion with ARIA support and keyboard navigation.
+          </p>
+        </div>
+        <div class="p-6">
+          <ui-accordion 
+            [items]="accordionItems()"
+            [allowMultiple]="true"
+            [collapsible]="true"
+            (itemToggled)="onAccordionToggle($event)">
+          </ui-accordion>
+        </div>
+      </ui-card>
+    </section>
+
+    <!-- Utilities Section -->
+    <section id="utilities">
+      <h2 class="text-2xl font-semibold text-text-primary mb-6">Utility Services</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ui-card variant="elevated" padding="md">
+          <h3 class="font-medium text-text-primary mb-3">A11y Utilities</h3>
+          <ul class="text-sm text-text-secondary space-y-1">
+            <li>• Focus trap service</li>
+            <li>• ARIA helpers</li>
+            <li>• Screen reader announcements</li>
+            <li>• Keyboard navigation</li>
+          </ul>
+        </ui-card>
+
+        <ui-card variant="elevated" padding="md">
+          <h3 class="font-medium text-text-primary mb-3">Overlay Primitives</h3>
+          <ul class="text-sm text-text-secondary space-y-1">
+            <li>• Portal service</li>
+            <li>• Positioning utilities</li>
+            <li>• Dismiss handling</li>
+            <li>• Z-layer management</li>
+          </ul>
+        </ui-card>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <ui-footer 
+    [sections]="footerSections()"
+    [socialLinks]="socialLinks()"
+    copyright="© 2024 UI Library. Built with design tokens and accessibility in mind.">
+    <div class="text-center">
+      <p class="text-text-secondary text-sm mb-4">
+        This demo showcases the design tokens, utilities, and components with modern glass effects.
+      </p>
+    </div>
+  </ui-footer>
+</div>
+
 <router-outlet></router-outlet>
