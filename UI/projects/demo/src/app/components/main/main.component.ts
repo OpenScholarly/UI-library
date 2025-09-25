@@ -10,7 +10,9 @@ import {
   ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
   HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
   IconButtonComponent, ButtonGroupComponent, FabComponent,
-  type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem
+  SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, LayoutComponent,
+  type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
+  type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem
 } from 'ui-components';
 
 @Component({
@@ -25,7 +27,8 @@ import {
     ChipComponent, ToastComponent, SliderComponent, AvatarComponent, TabsComponent,
     ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
     HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
-    IconButtonComponent, ButtonGroupComponent, FabComponent
+    IconButtonComponent, ButtonGroupComponent, FabComponent,
+    SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, LayoutComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -125,6 +128,37 @@ export class MainComponent {
     this.currentPage.set(page);
   }
 
+  // New components data
+  segmentedOptions = signal<SegmentedButtonOption[]>([
+    { value: 'list', label: 'List View', icon: '📋' },
+    { value: 'grid', label: 'Grid View', icon: '⊞' },
+    { value: 'card', label: 'Card View', icon: '📃' }
+  ]);
+
+  splitButtonActions = signal<SplitButtonAction[]>([
+    { value: 'save-as', label: 'Save As...', icon: '💾' },
+    { value: 'export', label: 'Export', icon: '📤' },
+    { value: 'share', label: 'Share', icon: '🔗' }
+  ]);
+
+  autocompleteOptions = signal<AutocompleteOption[]>([
+    { value: 'react', label: 'React' },
+    { value: 'angular', label: 'Angular' },
+    { value: 'vue', label: 'Vue.js' },
+    { value: 'svelte', label: 'Svelte' },
+    { value: 'next', label: 'Next.js' },
+    { value: 'nuxt', label: 'Nuxt.js' }
+  ]);
+
+  searchResults = signal<SearchResult[]>([]);
+
+  navigationItems = signal<NavigationItem[]>([
+    { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '#' },
+    { id: 'components', label: 'Components', icon: '🧩', href: '#', badge: '38' },
+    { id: 'docs', label: 'Documentation', icon: '📚', href: '#' },
+    { id: 'settings', label: 'Settings', icon: '⚙️', href: '#' }
+  ]);
+
   onSliderChange(value: number) {
     this.sliderValue.set(value);
   }
@@ -141,5 +175,43 @@ export class MainComponent {
 
   onToastDismiss() {
     this.showToast.set(false);
+  }
+
+  onSegmentedChange(value: string) {
+    console.log('Segmented button changed to:', value);
+  }
+
+  onSplitButtonAction() {
+    console.log('Split button main action clicked');
+  }
+
+  onSplitButtonActionSelected(action: SplitButtonAction) {
+    console.log('Split button action selected:', action);
+  }
+
+  onAutocompleteChange(value: string) {
+    console.log('Autocomplete changed to:', value);
+  }
+
+  onSearchChange(term: string) {
+    // Simulate search API call
+    if (term.length > 2) {
+      const mockResults: SearchResult[] = [
+        { id: '1', title: `Results for "${term}"`, description: 'Sample search result', category: 'Component' },
+        { id: '2', title: `${term} Documentation`, description: 'Related documentation', category: 'Docs' },
+        { id: '3', title: `${term} Examples`, description: 'Code examples and tutorials', category: 'Examples' }
+      ];
+      this.searchResults.set(mockResults);
+    } else {
+      this.searchResults.set([]);
+    }
+  }
+
+  onSearchResultSelected(result: SearchResult) {
+    console.log('Search result selected:', result);
+  }
+
+  onNavItemClicked(item: NavigationItem) {
+    console.log('Navigation item clicked:', item);
   }
 }
