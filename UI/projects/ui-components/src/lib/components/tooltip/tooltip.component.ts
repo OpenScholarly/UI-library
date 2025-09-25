@@ -8,8 +8,9 @@ export type TooltipVariant = 'default' | 'dark' | 'light' | 'error' | 'warning' 
 
 @Component({
   selector: 'ui-tooltip',
+  standalone: true,
   template: `
-    <div 
+    <div
       #triggerElement
       [class]="wrapperClasses()"
       [attr.aria-describedby]="isOpen() ? tooltipId() : null"
@@ -20,7 +21,7 @@ export type TooltipVariant = 'default' | 'dark' | 'light' | 'error' | 'warning' 
       (click)="onClick()">
       <ng-content />
     </div>
-    
+
     @if (isOpen()) {
       <div
         #tooltipElement
@@ -82,7 +83,7 @@ export class TooltipComponent {
 
   protected tooltipClasses = computed(() => {
     const baseClasses = 'absolute px-2 py-1 text-sm rounded shadow-lg z-tooltip max-w-xs pointer-events-none';
-    
+
     const variantClasses = {
       default: 'bg-gray-900 text-white',
       dark: 'bg-gray-800 text-white',
@@ -97,7 +98,7 @@ export class TooltipComponent {
 
   protected arrowClasses = computed(() => {
     const baseClasses = 'absolute w-2 h-2 transform rotate-45';
-    
+
     const variantClasses = {
       default: 'bg-gray-900',
       dark: 'bg-gray-800',

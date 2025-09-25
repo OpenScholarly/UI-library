@@ -5,8 +5,9 @@ export type IconVariant = 'default' | 'primary' | 'secondary' | 'success' | 'war
 
 @Component({
   selector: 'ui-icon',
+  standalone: true,
   template: `
-    <svg 
+    <svg
       [class]="iconClasses()"
       [attr.width]="sizeValue()"
       [attr.height]="sizeValue()"
@@ -35,7 +36,7 @@ export class IconComponent {
   protected sizeValue = computed(() => {
     const sizes = {
       xs: '12',
-      sm: '16', 
+      sm: '16',
       md: '20',
       lg: '24',
       xl: '32',

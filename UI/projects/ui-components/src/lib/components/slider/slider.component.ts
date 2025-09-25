@@ -7,6 +7,7 @@ export type SliderSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-slider',
+  standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -26,7 +27,7 @@ export type SliderSize = 'sm' | 'md' | 'lg';
     <div class="ui-slider__wrapper">
       <!-- Label -->
       @if (label()) {
-        <label 
+        <label
           [for]="sliderId"
           class="ui-slider__label block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           {{ label() }}
@@ -39,11 +40,11 @@ export type SliderSize = 'sm' | 'md' | 'lg';
       <!-- Slider Container -->
       <div class="ui-slider__container relative" [class]="getContainerClasses()">
         <!-- Track -->
-        <div 
+        <div
           class="ui-slider__track absolute rounded-full bg-gray-200 dark:bg-gray-700"
           [class]="getTrackClasses()">
           <!-- Fill -->
-          <div 
+          <div
             class="ui-slider__fill absolute rounded-full transition-all duration-200"
             [class]="getFillClasses()"
             [style.width.%]="fillPercentage()">
@@ -71,11 +72,11 @@ export type SliderSize = 'sm' | 'md' | 'lg';
           (change)="onChangeEvent($event)">
 
         <!-- Thumb -->
-        <div 
+        <div
           class="ui-slider__thumb absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 rounded-full border-2 border-white dark:border-gray-800 shadow-sm transition-all duration-200"
           [class]="getThumbClasses()"
           [style.left.%]="fillPercentage()">
-          
+
           @if (showValue()) {
             <div class="ui-slider__value-tooltip absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded whitespace-nowrap">
               {{ formatValue()(currentValue()) }}
@@ -88,10 +89,10 @@ export type SliderSize = 'sm' | 'md' | 'lg';
         @if (showTicks()) {
           <div class="ui-slider__ticks absolute w-full" [class]="getTicksContainerClasses()">
             @for (tick of tickMarks(); track tick.value) {
-              <div 
+              <div
                 class="ui-slider__tick absolute transform -translate-x-1/2"
                 [style.left.%]="tick.percentage">
-                <div 
+                <div
                   class="ui-slider__tick-mark w-1 h-1 rounded-full bg-gray-400 dark:bg-gray-500"
                   [class]="getTickMarkClasses(tick.value)">
                 </div>
@@ -124,7 +125,7 @@ export type SliderSize = 'sm' | 'md' | 'lg';
 
       <!-- Error Message -->
       @if (hasError() && errorMessage()) {
-        <p 
+        <p
           class="ui-slider__error-message mt-1 text-sm text-red-600 dark:text-red-400"
           [id]="sliderId + '-error'"
           role="alert">
@@ -369,15 +370,15 @@ export class SliderComponent implements ControlValueAccessor {
 
   getAriaDescribedBy(): string {
     const ids: string[] = [];
-    
+
     if (this.helperText()) {
       ids.push(`${this.sliderId}-helper`);
     }
-    
+
     if (this.hasError() && this.errorMessage()) {
       ids.push(`${this.sliderId}-error`);
     }
-    
+
     return ids.length > 0 ? ids.join(' ') : '';
   }
 

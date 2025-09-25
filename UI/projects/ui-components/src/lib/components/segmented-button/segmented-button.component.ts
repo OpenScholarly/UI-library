@@ -12,6 +12,7 @@ export type SegmentedButtonVariant = 'default' | 'filled' | 'outlined';
 
 @Component({
   selector: 'ui-segmented-button',
+  standalone: true,
   template: `
     <div [class]="containerClasses()" role="group" [attr.aria-label]="ariaLabel()">
       @for (option of options(); track option.value) {

@@ -6,6 +6,7 @@ export type RowGap = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 @Component({
   selector: 'ui-row',
+  standalone: true,
   template: `
     <div [class]="rowClasses()">
       <ng-content />

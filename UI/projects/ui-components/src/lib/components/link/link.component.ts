@@ -5,6 +5,7 @@ export type LinkSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 @Component({
   selector: 'ui-link',
+  standalone: true,
   template: `
     <a
       [class]="linkClasses()"

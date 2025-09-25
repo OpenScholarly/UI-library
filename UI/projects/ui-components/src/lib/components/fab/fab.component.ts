@@ -6,6 +6,7 @@ export type FabPosition = 'bottom-right' | 'bottom-left' | 'top-right' | 'top-le
 
 @Component({
   selector: 'ui-fab',
+  standalone: true,
   template: `
     <button
       [class]="buttonClasses()"

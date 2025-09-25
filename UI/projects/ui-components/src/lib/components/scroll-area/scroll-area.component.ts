@@ -26,6 +26,7 @@ export type ScrollAreaSize = 'sm' | 'md' | 'lg' | 'full';
  */
 @Component({
   selector: 'ui-scroll-area',
+  standalone: true,
   template: `
     <div [class]="containerClasses()">
       <div

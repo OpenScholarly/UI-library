@@ -12,6 +12,7 @@ export type SplitButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-split-button',
+  standalone: true,
   template: `
     <div [class]="containerClasses()">
       <!-- Main Action Button -->
@@ -133,7 +134,7 @@ export class SplitButtonComponent {
   protected menuItemClasses = (action: SplitButtonAction) => {
     const baseClasses = 'w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 transition-colors duration-200 flex items-center';
     const disabledClasses = action.disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '';
-    
+
     return `${baseClasses} ${disabledClasses}`;
   };
 
@@ -159,7 +160,7 @@ export class SplitButtonComponent {
   protected handleDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     const component = (event.currentTarget as HTMLElement);
-    
+
     if (!component.contains(target)) {
       this.isOpen.set(false);
     }

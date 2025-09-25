@@ -5,6 +5,7 @@ export type GridGap = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 @Component({
   selector: 'ui-grid',
+  standalone: true,
   template: `
     <div [class]="gridClasses()">
       <ng-content />

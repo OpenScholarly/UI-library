@@ -15,6 +15,7 @@ export type LayoutSidebarBehavior = 'fixed' | 'overlay' | 'push';
 
 @Component({
   selector: 'ui-layout',
+  standalone: true,
   template: `
     <div [class]="layoutClasses()">
       <!-- Navbar -->
@@ -55,7 +56,7 @@ export type LayoutSidebarBehavior = 'fixed' | 'overlay' | 'push';
         @if (showSidebar()) {
           <!-- Overlay for mobile -->
           @if (isSidebarOpen() && sidebarBehavior() === 'overlay') {
-            <div 
+            <div
               class="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
               (click)="closeSidebar()">
             </div>
@@ -93,7 +94,7 @@ export type LayoutSidebarBehavior = 'fixed' | 'overlay' | 'push';
                           [class]="navItemClasses(item)"
                           [href]="item.href || '#'"
                           (click)="handleNavItemClick(item, $event)">
-                          
+
                           <div class="flex items-center gap-3">
                             @if (item.icon) {
                               <span class="text-lg">{{ item.icon }}</span>
@@ -184,7 +185,7 @@ export class LayoutComponent {
 
   protected sidebarClasses = computed(() => {
     const baseClasses = 'bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out';
-    
+
     const positionClasses = {
       left: 'left-0',
       right: 'right-0'
@@ -199,20 +200,20 @@ export class LayoutComponent {
     const widthClass = `w-[${this.sidebarWidth()}]`;
     const positionClass = positionClasses[this.sidebarPosition()];
     const behaviorClass = behaviorClasses[this.sidebarBehavior()];
-    
+
     // Handle mobile responsive behavior
-    const mobileClasses = this.sidebarBehavior() === 'overlay' 
-      ? this.isSidebarOpen() 
-        ? 'translate-x-0' 
-        : this.sidebarPosition() === 'left' 
-          ? '-translate-x-full' 
+    const mobileClasses = this.sidebarBehavior() === 'overlay'
+      ? this.isSidebarOpen()
+        ? 'translate-x-0'
+        : this.sidebarPosition() === 'left'
+          ? '-translate-x-full'
           : 'translate-x-full'
       : '';
 
-    const heightClass = this.sidebarBehavior() === 'overlay' 
-      ? 'h-full' 
-      : this.showNavbar() 
-        ? `h-[calc(100vh-${this.navbarHeight()})]` 
+    const heightClass = this.sidebarBehavior() === 'overlay'
+      ? 'h-full'
+      : this.showNavbar()
+        ? `h-[calc(100vh-${this.navbarHeight()})]`
         : 'h-full';
 
     return `${baseClasses} ${behaviorClass} ${positionClass} ${widthClass} ${heightClass} ${mobileClasses} lg:translate-x-0`;
@@ -220,10 +221,10 @@ export class LayoutComponent {
 
   protected mainClasses = computed(() => {
     const baseClasses = 'flex-1 overflow-auto bg-gray-50 dark:bg-gray-900';
-    
+
     // Add padding when sidebar is visible and not overlay
-    const paddingClass = this.showSidebar() && this.sidebarBehavior() !== 'overlay' 
-      ? '' 
+    const paddingClass = this.showSidebar() && this.sidebarBehavior() !== 'overlay'
+      ? ''
       : '';
 
     return `${baseClasses} ${paddingClass}`;
@@ -231,13 +232,13 @@ export class LayoutComponent {
 
   protected navItemClasses = (item: NavigationItem) => {
     const baseClasses = 'flex items-center w-full px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500';
-    
+
     const activeClasses = this.activeNavItemId() === item.id
       ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/20 dark:text-primary-300'
       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700';
 
-    const disabledClasses = item.disabled 
-      ? 'opacity-50 cursor-not-allowed pointer-events-none' 
+    const disabledClasses = item.disabled
+      ? 'opacity-50 cursor-not-allowed pointer-events-none'
       : '';
 
     return `${baseClasses} ${activeClasses} ${disabledClasses}`;
@@ -245,13 +246,13 @@ export class LayoutComponent {
 
   protected subNavItemClasses = (item: NavigationItem) => {
     const baseClasses = 'flex items-center w-full px-3 py-1.5 text-sm rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500';
-    
+
     const activeClasses = this.activeNavItemId() === item.id
       ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/10 dark:text-primary-400'
       : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800';
 
-    const disabledClasses = item.disabled 
-      ? 'opacity-50 cursor-not-allowed pointer-events-none' 
+    const disabledClasses = item.disabled
+      ? 'opacity-50 cursor-not-allowed pointer-events-none'
       : '';
 
     return `${baseClasses} ${activeClasses} ${disabledClasses}`;
@@ -280,7 +281,7 @@ export class LayoutComponent {
     // Handle expansion for items with children
     if (item.children && item.children.length > 0) {
       event.preventDefault();
-      
+
       this.expandedNavItems.update(expanded => {
         const newExpanded = new Set(expanded);
         if (newExpanded.has(item.id)) {

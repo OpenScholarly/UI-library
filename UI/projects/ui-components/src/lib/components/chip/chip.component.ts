@@ -6,6 +6,7 @@ export type ChipSize = 'xs' | 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-chip',
+  standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -24,8 +25,8 @@ export type ChipSize = 'xs' | 'sm' | 'md' | 'lg';
     @if (leadingIcon() || avatar()) {
       <span class="ui-chip__leading flex-shrink-0" [class]="getLeadingClasses()">
         @if (avatar()) {
-          <img 
-            [src]="avatar()" 
+          <img
+            [src]="avatar()"
             [alt]="avatarAlt()"
             class="ui-chip__avatar rounded-full object-cover"
             [class]="getAvatarClasses()">
@@ -185,7 +186,7 @@ export class ChipComponent {
     // Interactive states
     if (this.clickable() && !this.disabled()) {
       classes.push('cursor-pointer');
-      
+
       switch (this.variant()) {
         case 'primary':
           classes.push('hover:bg-primary-200', 'dark:hover:bg-primary-900/30');
@@ -317,7 +318,7 @@ export class ChipComponent {
     const classes: string[] = [];
 
     // Add any label-specific styling if needed
-    
+
     return classes.join(' ');
   }
 

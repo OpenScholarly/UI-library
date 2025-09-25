@@ -12,6 +12,7 @@ export type AutocompleteSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-autocomplete',
+  standalone: true,
   template: `
     <div [class]="containerClasses()">
       <!-- Input Field -->
@@ -31,7 +32,7 @@ export type AutocompleteSize = 'sm' | 'md' | 'lg';
           (keydown)="handleKeydown($event)"
           type="text"
         />
-        
+
         @if (loading()) {
           <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
             <div class="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent"></div>
@@ -117,7 +118,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
     effect(() => {
       const term = this.searchTerm();
       this.searchChange.emit(term);
-      
+
       if (term.length >= this.minSearchLength()) {
         this.isOpen.set(true);
         this.highlightedIndex.set(0);
@@ -135,8 +136,8 @@ export class AutocompleteComponent implements ControlValueAccessor {
   protected filteredOptions = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
     if (!term || term.length < this.minSearchLength()) return [];
-    
-    return this.options().filter(option => 
+
+    return this.options().filter(option =>
       option.label.toLowerCase().includes(term) && !option.disabled
     );
   });
@@ -147,7 +148,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
 
   protected inputClasses = computed(() => {
     const baseClasses = 'w-full border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors';
-    
+
     const sizeClasses = {
       sm: 'px-3 py-2 text-sm',
       md: 'px-4 py-2.5 text-sm',
@@ -168,16 +169,16 @@ export class AutocompleteComponent implements ControlValueAccessor {
     const baseClasses = 'px-4 py-2 text-sm cursor-pointer select-none';
     const highlightedClasses = this.highlightedIndex() === index ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700';
     const selectedClasses = this.selectedValue() === option.value ? 'bg-primary-100 dark:bg-primary-900/30' : '';
-    
+
     return `${baseClasses} ${highlightedClasses} ${selectedClasses}`;
   };
 
   protected handleInput(event: Event): void {
     const target = event.target as HTMLInputElement;
     const value = target.value;
-    
+
     this.searchTerm.set(value);
-    
+
     // Clear selection if input doesn't match any option
     const matchingOption = this.options().find(opt => opt.label === value);
     if (!matchingOption) {
@@ -202,26 +203,26 @@ export class AutocompleteComponent implements ControlValueAccessor {
 
   protected handleKeydown(event: KeyboardEvent): void {
     const filteredOpts = this.filteredOptions();
-    
+
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
         if (!this.isOpen()) {
           this.isOpen.set(true);
         } else {
-          this.highlightedIndex.update(i => 
+          this.highlightedIndex.update(i =>
             i < filteredOpts.length - 1 ? i + 1 : 0
           );
         }
         break;
-        
+
       case 'ArrowUp':
         event.preventDefault();
-        this.highlightedIndex.update(i => 
+        this.highlightedIndex.update(i =>
           i > 0 ? i - 1 : filteredOpts.length - 1
         );
         break;
-        
+
       case 'Enter':
         event.preventDefault();
         const highlighted = filteredOpts[this.highlightedIndex()];
@@ -229,7 +230,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
           this.selectOption(highlighted);
         }
         break;
-        
+
       case 'Escape':
         this.isOpen.set(false);
         this.highlightedIndex.set(-1);
@@ -239,12 +240,12 @@ export class AutocompleteComponent implements ControlValueAccessor {
 
   protected selectOption(option: AutocompleteOption): void {
     if (option.disabled) return;
-    
+
     this.selectedValue.set(option.value);
     this.searchTerm.set(option.label);
     this.isOpen.set(false);
     this.highlightedIndex.set(-1);
-    
+
     this.onChange(option.value);
     this.valueChange.emit(option.value);
     this.selectionChange.emit(option);
@@ -254,7 +255,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
     this.selectedValue.set('');
     this.searchTerm.set('');
     this.isOpen.set(false);
-    
+
     this.onChange('');
     this.valueChange.emit('');
     this.selectionChange.emit(null);
@@ -263,7 +264,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
   protected handleDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     const component = event.currentTarget as HTMLElement;
-    
+
     if (!component.contains(target)) {
       this.isOpen.set(false);
     }

@@ -14,6 +14,7 @@ export type SearchVariant = 'default' | 'filled' | 'minimal';
 
 @Component({
   selector: 'ui-search',
+  standalone: true,
   template: `
     <div [class]="containerClasses()">
       <!-- Search Input -->
@@ -74,7 +75,7 @@ export type SearchVariant = 'default' | 'filled' | 'minimal';
                   (click)="selectResult(result)"
                   (mouseenter)="highlightedIndex.set(i)"
                   role="option">
-                  
+
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2">
                       <h4 class="font-medium text-gray-900 dark:text-white truncate">
@@ -86,7 +87,7 @@ export type SearchVariant = 'default' | 'filled' | 'minimal';
                         </span>
                       }
                     </div>
-                    
+
                     @if (result.description) {
                       <p class="text-sm text-gray-600 dark:text-gray-400 truncate mt-1">
                         {{ result.description }}
@@ -170,7 +171,7 @@ export class SearchComponent {
     // Debounced search
     effect(() => {
       const term = this.searchTerm();
-      
+
       if (this.debounceTimeout) {
         clearTimeout(this.debounceTimeout);
       }
@@ -190,8 +191,8 @@ export class SearchComponent {
   }
 
   protected showNoResults = computed(() => {
-    return this.searchTerm().length >= this.minSearchLength() && 
-           this.results().length === 0 && 
+    return this.searchTerm().length >= this.minSearchLength() &&
+           this.results().length === 0 &&
            !this.loading();
   });
 
@@ -201,7 +202,7 @@ export class SearchComponent {
 
   protected inputClasses = computed(() => {
     const baseClasses = 'w-full pl-10 pr-10 border focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-200';
-    
+
     const variantClasses = {
       default: 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md',
       filled: 'border-transparent bg-gray-100 dark:bg-gray-800 rounded-md focus:bg-white dark:focus:bg-gray-700',
@@ -215,7 +216,7 @@ export class SearchComponent {
     };
 
     const disabledClasses = this.disabled() ? 'opacity-50 cursor-not-allowed' : '';
-    
+
     const variantClass = variantClasses[this.variant()];
     const sizeClass = sizeClasses[this.size()];
 
@@ -228,17 +229,17 @@ export class SearchComponent {
 
   protected resultClasses = (result: SearchResult, index: number) => {
     const baseClasses = 'px-4 py-3 cursor-pointer select-none flex items-start gap-3 transition-colors duration-150';
-    const highlightedClasses = this.highlightedIndex() === index 
-      ? 'bg-primary-50 dark:bg-primary-900/20' 
+    const highlightedClasses = this.highlightedIndex() === index
+      ? 'bg-primary-50 dark:bg-primary-900/20'
       : 'hover:bg-gray-100 dark:hover:bg-gray-700';
-    
+
     return `${baseClasses} ${highlightedClasses}`;
   };
 
   protected handleInput(event: Event): void {
     const target = event.target as HTMLInputElement;
     const value = target.value;
-    
+
     this.searchTerm.set(value);
     this.isOpen.set(true);
   }
@@ -254,26 +255,26 @@ export class SearchComponent {
 
   protected handleKeydown(event: KeyboardEvent): void {
     const currentResults = this.results();
-    
+
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
         if (currentResults.length > 0) {
-          this.highlightedIndex.update(i => 
+          this.highlightedIndex.update(i =>
             i < currentResults.length - 1 ? i + 1 : 0
           );
         }
         break;
-        
+
       case 'ArrowUp':
         event.preventDefault();
         if (currentResults.length > 0) {
-          this.highlightedIndex.update(i => 
+          this.highlightedIndex.update(i =>
             i > 0 ? i - 1 : currentResults.length - 1
           );
         }
         break;
-        
+
       case 'Enter':
         event.preventDefault();
         const highlighted = currentResults[this.highlightedIndex()];
@@ -281,7 +282,7 @@ export class SearchComponent {
           this.selectResult(highlighted);
         }
         break;
-        
+
       case 'Escape':
         this.isOpen.set(false);
         this.highlightedIndex.set(-1);
@@ -309,7 +310,7 @@ export class SearchComponent {
   protected handleDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     const component = event.currentTarget as HTMLElement;
-    
+
     if (!component.contains(target)) {
       this.isOpen.set(false);
     }

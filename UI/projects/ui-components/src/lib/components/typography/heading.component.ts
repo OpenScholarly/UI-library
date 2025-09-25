@@ -7,6 +7,7 @@ export type HeadingWeight = 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabo
 
 @Component({
   selector: 'ui-heading',
+  standalone: true,
   imports: [NgSwitch, NgSwitchCase],
   template: `
     <ng-container [ngSwitch]="level()">

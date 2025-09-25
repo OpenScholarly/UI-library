@@ -5,6 +5,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-button',
+  standalone: true,
   template: `
     <button
       [class]="buttonClasses()"

@@ -5,6 +5,7 @@ export type ImageRounded = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 @Component({
   selector: 'ui-image',
+  standalone: true,
   template: `
     <div [class]="containerClasses()">
       @if (showImage()) {
@@ -19,7 +20,7 @@ export type ImageRounded = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
           (error)="onError()"
         />
       }
-      
+
       @if (showPlaceholder()) {
         <div [class]="placeholderClasses()">
           <ng-content select="[slot=placeholder]">
@@ -69,7 +70,7 @@ export class ImageComponent {
 
   protected containerClasses = computed(() => {
     const baseClasses = 'relative overflow-hidden bg-gray-100 dark:bg-gray-800';
-    
+
     const roundedClasses = {
       none: '',
       sm: 'rounded-sm',
