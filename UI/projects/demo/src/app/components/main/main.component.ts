@@ -11,8 +11,10 @@ import {
   HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
   IconButtonComponent, ButtonGroupComponent, FabComponent,
   SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, LayoutComponent,
+  TableComponent, MenuComponent, SkeletonComponent, ThemeSwitcherComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
-  type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem
+  type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
+  type TableColumn, type MenuItem, type ThemeMode
 } from 'ui-components';
 
 @Component({
@@ -28,7 +30,8 @@ import {
     ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
     HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
     IconButtonComponent, ButtonGroupComponent, FabComponent,
-    SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, LayoutComponent
+    SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, LayoutComponent,
+    TableComponent, MenuComponent, SkeletonComponent, ThemeSwitcherComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -154,9 +157,43 @@ export class MainComponent {
 
   navigationItems = signal<NavigationItem[]>([
     { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '#' },
-    { id: 'components', label: 'Components', icon: '🧩', href: '#', badge: '38' },
+    { id: 'components', label: 'Components', icon: '🧩', href: '#', badge: '42' },
     { id: 'docs', label: 'Documentation', icon: '📚', href: '#' },
     { id: 'settings', label: 'Settings', icon: '⚙️', href: '#' }
+  ]);
+
+  // Table data
+  tableColumns = signal<TableColumn[]>([
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'role', label: 'Role', sortable: true },
+    { key: 'status', label: 'Status', align: 'center' },
+    { key: 'lastLogin', label: 'Last Login', sortable: true, align: 'right' }
+  ]);
+
+  tableData = signal([
+    { id: 1, name: 'John Doe', role: 'Admin', status: '🟢 Active', lastLogin: '2024-01-15' },
+    { id: 2, name: 'Jane Smith', role: 'Editor', status: '🟢 Active', lastLogin: '2024-01-14' },
+    { id: 3, name: 'Bob Johnson', role: 'Viewer', status: '🟡 Pending', lastLogin: '2024-01-10' },
+    { id: 4, name: 'Alice Brown', role: 'Editor', status: '🔴 Inactive', lastLogin: '2024-01-05' }
+  ]);
+
+  // Menu data
+  menuItems = signal<MenuItem[]>([
+    { id: 'edit', label: 'Edit', icon: '✏️' },
+    { id: 'copy', label: 'Copy', icon: '📋' },
+    { id: 'separator1', label: '', separator: true },
+    { 
+      id: 'share', 
+      label: 'Share', 
+      icon: '🔗',
+      children: [
+        { id: 'email', label: 'Email', icon: '📧' },
+        { id: 'social', label: 'Social Media', icon: '📱' },
+        { id: 'link', label: 'Copy Link', icon: '🔗' }
+      ]
+    },
+    { id: 'separator2', label: '', separator: true },
+    { id: 'delete', label: 'Delete', icon: '🗑️' }
   ]);
 
   onSliderChange(value: number) {
@@ -213,5 +250,21 @@ export class MainComponent {
 
   onNavItemClicked(item: NavigationItem) {
     console.log('Navigation item clicked:', item);
+  }
+
+  onTableRowClicked(event: { row: any; index: number }) {
+    console.log('Table row clicked:', event);
+  }
+
+  onTableSortChanged(event: { column: string; direction: any }) {
+    console.log('Table sort changed:', event);
+  }
+
+  onMenuItemSelected(item: MenuItem) {
+    console.log('Menu item selected:', item);
+  }
+
+  onThemeChanged(theme: ThemeMode) {
+    console.log('Theme changed to:', theme);
   }
 }
