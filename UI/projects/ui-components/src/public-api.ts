@@ -7,6 +7,8 @@ export * from './lib/ui-components';
 export * from './lib/components/button/button.component';
 export * from './lib/components/icon-button/icon-button.component';
 export * from './lib/components/button-group/button-group.component';
+export * from './lib/components/segmented-button/segmented-button.component';
+export * from './lib/components/split-button/split-button.component';
 export * from './lib/components/fab/fab.component';
 export * from './lib/components/card/card.component';
 export * from './lib/components/accordion/accordion.component';
@@ -18,6 +20,7 @@ export * from './lib/components/grid/grid.component';
 export * from './lib/components/grid/row.component';
 export * from './lib/components/grid/column.component';
 export * from './lib/components/divider/divider.component';
+export * from './lib/components/layout/layout.component';
 
 // Typography components
 export * from './lib/components/typography/heading.component';
@@ -31,6 +34,8 @@ export * from './lib/components/scroll-area/scroll-area.component';
 
 // Form components
 export * from './lib/components/input/input.component';
+export * from './lib/components/autocomplete/autocomplete.component';
+export * from './lib/components/search/search.component';
 export * from './lib/components/checkbox/checkbox.component';
 export * from './lib/components/radio-group/radio-group.component';
 export * from './lib/components/toggle/toggle.component';

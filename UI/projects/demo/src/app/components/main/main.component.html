@@ -271,6 +271,126 @@
                 <ui-fab variant="extended" size="md" position="static" label="Create New" ariaLabel="Create">📝</ui-fab>
               </div>
             </div>
+
+            <ui-divider />
+
+            <!-- Segmented Button -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Segmented Button</ui-text>
+              <div class="space-y-3">
+                <ui-segmented-button 
+                  [options]="segmentedOptions()" 
+                  value="list"
+                  (valueChange)="onSegmentedChange($event)"
+                  size="md">
+                </ui-segmented-button>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Split Button -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Split Button</ui-text>
+              <div class="space-y-3">
+                <ui-split-button 
+                  mainLabel="Save Document"
+                  mainIcon="💾"
+                  [actions]="splitButtonActions()"
+                  variant="primary"
+                  size="md"
+                  (mainAction)="onSplitButtonAction()"
+                  (actionSelected)="onSplitButtonActionSelected($event)">
+                </ui-split-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- New Advanced Components Section -->
+      <ui-card>
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Advanced Components</ui-heading>
+          <div class="space-y-6">
+            <!-- Autocomplete -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Autocomplete</ui-text>
+              <ui-autocomplete 
+                [options]="autocompleteOptions()"
+                placeholder="Search frameworks..."
+                size="md"
+                (valueChange)="onAutocompleteChange($event)"
+                class="max-w-xs">
+              </ui-autocomplete>
+            </div>
+
+            <ui-divider />
+
+            <!-- Search -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Search</ui-text>
+              <ui-search 
+                placeholder="Search components..."
+                [results]="searchResults()"
+                [recentSearches]="['Button', 'Input', 'Modal']"
+                size="md"
+                (search)="onSearchChange($event)"
+                (resultSelected)="onSearchResultSelected($event)"
+                class="max-w-md">
+              </ui-search>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Layout Demo -->
+      <ui-card class="col-span-full">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Layout Component</ui-heading>
+          <ui-text color="secondary" class="mb-4">Complete application layout with navbar, sidebar, and main content</ui-text>
+          
+          <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden" style="height: 400px;">
+            <ui-layout 
+              [navigationItems]="navigationItems()"
+              sidebarTitle="Navigation"
+              activeNavItemId="components"
+              sidebarBehavior="fixed"
+              (navItemClicked)="onNavItemClicked($event)">
+              
+              <!-- Navbar Brand -->
+              <div slot="navbar-brand" class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-primary-500 rounded flex items-center justify-center text-white font-bold">UI</div>
+                <span class="font-semibold text-gray-900 dark:text-white">Component Library</span>
+              </div>
+
+              <!-- Navbar Actions -->
+              <div slot="navbar-actions" class="flex items-center gap-2">
+                <ui-icon-button variant="ghost" size="sm" ariaLabel="Notifications">🔔</ui-icon-button>
+                <ui-avatar name="User" size="sm"></ui-avatar>
+              </div>
+
+              <!-- Main Content -->
+              <div class="p-6">
+                <ui-heading level="h4" size="xl" class="mb-4">Main Content Area</ui-heading>
+                <ui-text>This is the main content area of the application. It automatically adjusts based on the sidebar state and provides a responsive layout.</ui-text>
+                
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <ui-card variant="outlined" class="p-4">
+                    <ui-text weight="semibold" class="mb-2">Feature 1</ui-text>
+                    <ui-text color="secondary" size="sm">Description of the first feature</ui-text>
+                  </ui-card>
+                  <ui-card variant="outlined" class="p-4">
+                    <ui-text weight="semibold" class="mb-2">Feature 2</ui-text>
+                    <ui-text color="secondary" size="sm">Description of the second feature</ui-text>
+                  </ui-card>
+                  <ui-card variant="outlined" class="p-4">
+                    <ui-text weight="semibold" class="mb-2">Feature 3</ui-text>
+                    <ui-text color="secondary" size="sm">Description of the third feature</ui-text>
+                  </ui-card>
+                </div>
+              </div>
+            </ui-layout>
           </div>
         </div>
       </ui-card>
