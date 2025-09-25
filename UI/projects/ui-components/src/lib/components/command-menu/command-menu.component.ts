@@ -158,7 +158,7 @@ export class CommandMenuComponent {
     // Focus search input when opened
     effect(() => {
       if (this.isOpen()) {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           const input = this.elementRef.nativeElement.querySelector('input');
           if (input) input.focus();
         });
