@@ -7,6 +7,8 @@ import {
   ToggleComponent, LoaderComponent, ProgressComponent,
   BreadcrumbsComponent, PaginationComponent, TextareaComponent,
   ChipComponent, ToastComponent, SliderComponent, AvatarComponent, TabsComponent,
+  ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
+  HeadingComponent, TextComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem
 } from 'ui-components';
 
@@ -19,7 +21,9 @@ import {
     TooltipComponent, CheckboxComponent, SelectComponent,
     ToggleComponent, LoaderComponent, ProgressComponent,
     BreadcrumbsComponent, PaginationComponent, TextareaComponent,
-    ChipComponent, ToastComponent, SliderComponent, AvatarComponent, TabsComponent
+    ChipComponent, ToastComponent, SliderComponent, AvatarComponent, TabsComponent,
+    ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
+    HeadingComponent, TextComponent
   ],
   templateUrl: './main.component.html',
 })

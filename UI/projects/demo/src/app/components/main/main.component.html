@@ -1,17 +1,130 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-  <div class="max-w-7xl mx-auto">
+  <ui-container size="2xl">
     <!-- Header -->
     <header class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ title() }}</h1>
+      <ui-heading level="h1" size="4xl" color="primary">{{ title() }}</ui-heading>
+      <ui-text color="secondary" size="lg" class="mt-4 mb-6">A comprehensive Angular UI component library</ui-text>
       <div class="flex justify-center space-x-4">
-        <ui-badge variant="primary" size="md">22+ Components</ui-badge>
+        <ui-badge variant="primary" size="md">25+ Components</ui-badge>
         <ui-badge variant="success" size="md">Production Ready</ui-badge>
         <ui-badge variant="info" size="md">TypeScript</ui-badge>
       </div>
     </header>
 
+    <!-- New Components Section -->
+    <div class="mb-12">
+      <ui-heading level="h2" size="2xl" color="primary" class="mb-8">New Components</ui-heading>
+      
+      <!-- Layout Components Demo -->
+      <ui-card class="mb-8">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Layout Components</ui-heading>
+          
+          <div class="space-y-6">
+            <!-- Container Demo -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Container</ui-text>
+              <ui-container size="md" class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded">
+                <ui-text>This content is in a medium-sized container</ui-text>
+              </ui-container>
+            </div>
+
+            <ui-divider />
+
+            <!-- Grid Demo -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Grid System</ui-text>
+              <ui-grid cols="3" gap="md">
+                <ui-column span="1">
+                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                    <ui-text>Column 1</ui-text>
+                  </div>
+                </ui-column>
+                <ui-column span="1">
+                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                    <ui-text>Column 2</ui-text>
+                  </div>
+                </ui-column>
+                <ui-column span="1">
+                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                    <ui-text>Column 3</ui-text>
+                  </div>
+                </ui-column>
+              </ui-grid>
+            </div>
+
+            <ui-divider />
+
+            <!-- Row Demo -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Row Layout</ui-text>
+              <ui-row justify="between" align="center" gap="md">
+                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                  <ui-text>Left Item</ui-text>
+                </div>
+                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                  <ui-text>Center Item</ui-text>
+                </div>
+                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                  <ui-text>Right Item</ui-text>
+                </div>
+              </ui-row>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Typography Demo -->
+      <ui-card class="mb-8">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Typography</ui-heading>
+          
+          <div class="space-y-4">
+            <!-- Headings -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Headings</ui-text>
+              <div class="space-y-2">
+                <ui-heading level="h1" size="3xl">Heading 1 - Large</ui-heading>
+                <ui-heading level="h2" size="2xl">Heading 2 - Medium</ui-heading>
+                <ui-heading level="h3" size="xl">Heading 3 - Small</ui-heading>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Text Variants -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Text Variants</ui-text>
+              <div class="space-y-2">
+                <ui-text variant="body" size="lg">Large body text for important content</ui-text>
+                <ui-text variant="body" size="md">Regular body text for general content</ui-text>
+                <ui-text variant="caption" size="sm">Caption text for descriptions</ui-text>
+                <ui-text variant="overline" size="xs">OVERLINE TEXT FOR LABELS</ui-text>
+                <ui-text variant="code" size="sm">code text for technical content</ui-text>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Text Colors -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Text Colors</ui-text>
+              <div class="space-y-1">
+                <ui-text color="primary">Primary text color</ui-text>
+                <ui-text color="secondary">Secondary text color</ui-text>
+                <ui-text color="muted">Muted text color</ui-text>
+                <ui-text color="success">Success text color</ui-text>
+                <ui-text color="warning">Warning text color</ui-text>
+                <ui-text color="error">Error text color</ui-text>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+    </div>
+
     <!-- Component Showcase Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+    <ui-grid cols="3" gap="lg" [responsive]="true">
       
       <!-- Buttons Section -->
       <ui-card>
@@ -154,11 +267,11 @@
         </div>
       </ui-card>
 
-    </div>
+    </ui-grid>
 
     <!-- Accordion Section -->
     <div class="mt-12">
-      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Key Features</h2>
+      <ui-heading level="h2" size="2xl" color="primary" class="mb-6">Key Features</ui-heading>
       <ui-accordion 
         [items]="accordionItems()">
       </ui-accordion>
@@ -171,7 +284,7 @@
         copyright="© 2024 UI Component Library. All rights reserved.">
       </ui-footer>
     </div>
-  </div>
+  </ui-container>
 
   <!-- Modal -->
   <ui-modal
