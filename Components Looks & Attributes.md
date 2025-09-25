@@ -172,8 +172,8 @@ interface ThemeConfig {
 3. Button Family
 - [x] Button
 - [x] Icon Button
-- [ ] Segmented Button
-- [ ] Split Button
+- [x] Segmented Button
+- [x] Split Button
 - [x] Button Groups
 - [x] Floating Action Button (FAB)
 - [x] Extended FAB
@@ -192,11 +192,11 @@ interface ThemeConfig {
 
 6. Overlay-based Inputs (requires overlay primitives)
 - [x] Select (Single & Multi)
-- [ ] Autocomplete / Combo Box / Typeahead
+- [x] Autocomplete / Combo Box / Typeahead
 - [ ] Date Picker
 - [ ] Time Picker
 - [ ] File Upload
-- [ ] Search (composite of input + list/command menu)
+- [x] Search (composite of input + list/command menu)
 
 7. Feedback & Status
 - [x] Loading Indicator / Loader
@@ -242,6 +242,7 @@ interface ThemeConfig {
 - [ ] Bottom Sheets
 - [ ] Action Sheet
 - [ ] Backdrop
+- [x] Layout
 
 1.  Liquid Glass Suite
 - [ ] Glass Card
