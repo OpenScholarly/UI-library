@@ -5,6 +5,9 @@ export * from './lib/ui-components';
 
 // Foundation components
 export * from './lib/components/button/button.component';
+export * from './lib/components/icon-button/icon-button.component';
+export * from './lib/components/button-group/button-group.component';
+export * from './lib/components/fab/fab.component';
 export * from './lib/components/card/card.component';
 export * from './lib/components/accordion/accordion.component';
 export * from './lib/components/footer/footer.component';

@@ -211,15 +211,65 @@
       <!-- Buttons Section -->
       <ui-card>
         <div class="p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Buttons</h3>
-          <div class="space-y-3">
-            <div class="flex flex-wrap gap-2">
-              <ui-button variant="primary" size="sm">Primary</ui-button>
-              <ui-button variant="secondary" size="sm">Secondary</ui-button>
-              <ui-button variant="outline" size="sm">Outline</ui-button>
-              <ui-button variant="ghost" size="sm">Ghost</ui-button>
-              <ui-button variant="destructive" size="sm">Destructive</ui-button>
-              <ui-button variant="glass" size="sm">Glass</ui-button>
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Button Family</ui-heading>
+          <div class="space-y-4">
+            <!-- Regular Buttons -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Regular Buttons</ui-text>
+              <div class="flex flex-wrap gap-2">
+                <ui-button variant="primary" size="sm">Primary</ui-button>
+                <ui-button variant="secondary" size="sm">Secondary</ui-button>
+                <ui-button variant="outline" size="sm">Outline</ui-button>
+                <ui-button variant="ghost" size="sm">Ghost</ui-button>
+                <ui-button variant="destructive" size="sm">Destructive</ui-button>
+                <ui-button variant="glass" size="sm">Glass</ui-button>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Icon Buttons -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Icon Buttons</ui-text>
+              <div class="flex flex-wrap gap-2 items-center">
+                <ui-icon-button variant="primary" size="sm" ariaLabel="Settings" shape="circle">⚙️</ui-icon-button>
+                <ui-icon-button variant="secondary" size="md" ariaLabel="Edit" shape="rounded">✏️</ui-icon-button>
+                <ui-icon-button variant="outline" size="lg" ariaLabel="Delete" shape="square">🗑️</ui-icon-button>
+                <ui-icon-button variant="ghost" size="md" ariaLabel="Info" shape="circle">ℹ️</ui-icon-button>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Button Groups -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Button Groups</ui-text>
+              <div class="space-y-3">
+                <!-- Horizontal group -->
+                <ui-button-group orientation="horizontal" variant="default">
+                  <ui-button variant="outline" size="sm">Left</ui-button>
+                  <ui-button variant="outline" size="sm">Center</ui-button>
+                  <ui-button variant="outline" size="sm">Right</ui-button>
+                </ui-button-group>
+                
+                <!-- Spaced group -->
+                <ui-button-group orientation="horizontal" spacing="sm">
+                  <ui-button variant="primary" size="sm">Action</ui-button>
+                  <ui-button variant="secondary" size="sm">Cancel</ui-button>
+                </ui-button-group>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Floating Action Buttons -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Floating Action Buttons</ui-text>
+              <div class="flex flex-wrap gap-4 items-center">
+                <ui-fab variant="primary" size="sm" position="static" ariaLabel="Add">➕</ui-fab>
+                <ui-fab variant="secondary" size="md" position="static" ariaLabel="Edit">✏️</ui-fab>
+                <ui-fab variant="extended" size="md" position="static" label="Create New" ariaLabel="Create">📝</ui-fab>
+              </div>
             </div>
           </div>
         </div>

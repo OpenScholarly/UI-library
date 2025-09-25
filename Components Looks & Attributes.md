@@ -160,23 +160,23 @@ interface ThemeConfig {
 - [x] Overlay/positioning primitives (portal, z-layers, dismiss, positioning)
 
 2. Primitives & Layout
-- [ ] Container
-- [ ] Grid / Row / Column
-- [ ] Dividers
-- [ ] Typography (Heading, Text)
-- [ ] Icon
-- [ ] Link
-- [ ] Image
-- [ ] Scroll Area
+- [x] Container
+- [x] Grid / Row / Column
+- [x] Dividers
+- [x] Typography (Heading, Text)
+- [x] Icon
+- [x] Link
+- [x] Image
+- [x] Scroll Area
 
 3. Button Family
 - [x] Button
-- [ ] Icon Button
+- [x] Icon Button
 - [ ] Segmented Button
 - [ ] Split Button
-- [ ] Button Groups
-- [ ] Floating Action Button (FAB)
-- [ ] Extended FAB
+- [x] Button Groups
+- [x] Floating Action Button (FAB)
+- [x] Extended FAB
 - [ ] FAB Menu
 
 4. Form Infrastructure
