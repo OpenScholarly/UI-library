@@ -20,6 +20,12 @@ export * from './lib/components/divider/divider.component';
 export * from './lib/components/typography/heading.component';
 export * from './lib/components/typography/text.component';
 
+// Media and utility components
+export * from './lib/components/icon/icon.component';
+export * from './lib/components/link/link.component';
+export * from './lib/components/image/image.component';
+export * from './lib/components/scroll-area/scroll-area.component';
+
 // Form components
 export * from './lib/components/input/input.component';
 export * from './lib/components/checkbox/checkbox.component';

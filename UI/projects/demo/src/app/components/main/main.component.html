@@ -118,6 +118,88 @@
                 <ui-text color="error">Error text color</ui-text>
               </div>
             </div>
+            <ui-divider />
+
+            <!-- Media Components Demo -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Media & Utility Components</ui-text>
+              <div class="space-y-4">
+                <!-- Icons -->
+                <div>
+                  <ui-text variant="caption" class="mb-1">Icons (placeholder)</ui-text>
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                      <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center">
+                        <ui-text size="xs" color="primary">✓</ui-text>
+                      </div>
+                      <ui-text size="sm">Check Icon</ui-text>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <div class="w-5 h-5 bg-primary-100 rounded-full flex items-center justify-center">
+                        <ui-text size="sm" color="primary">⏰</ui-text>
+                      </div>
+                      <ui-text size="sm">Clock Icon</ui-text>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                        <ui-text size="md" color="success">✅</ui-text>
+                      </div>
+                      <ui-text size="sm">Success Icon</ui-text>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                  <ui-text variant="caption" class="mb-1">Links</ui-text>
+                  <div class="flex flex-wrap gap-4">
+                    <ui-link href="#" variant="primary">Primary Link</ui-link>
+                    <ui-link href="#" variant="secondary" underline="always">Secondary Link</ui-link>
+                    <ui-link href="#" variant="muted" size="sm">Muted Link</ui-link>
+                    <ui-link href="#" variant="success" [external]="true">External Link</ui-link>
+                  </div>
+                </div>
+
+                <!-- Images -->
+                <div>
+                  <ui-text variant="caption" class="mb-1">Images</ui-text>
+                  <div class="flex gap-4">
+                    <ui-image 
+                      src="https://picsum.photos/100/100?random=1"
+                      alt="Sample image"
+                      width="100"
+                      height="100"
+                      rounded="md"
+                      class="w-24 h-24">
+                    </ui-image>
+                    <ui-image 
+                      src="https://picsum.photos/100/100?random=2"
+                      alt="Rounded image"
+                      width="100"
+                      height="100"
+                      rounded="full"
+                      class="w-24 h-24">
+                    </ui-image>
+                  </div>
+                </div>
+
+                <!-- Scroll Area -->
+                <div>
+                  <ui-text variant="caption" class="mb-1">Scroll Area</ui-text>
+                  <ui-scroll-area size="sm" class="border border-gray-200 dark:border-gray-700 p-4">
+                    <div class="space-y-2">
+                      <ui-text>This is a scrollable area with custom content.</ui-text>
+                      <ui-text>It can contain any amount of content.</ui-text>
+                      <ui-text>When content overflows, it becomes scrollable.</ui-text>
+                      <ui-text>The scrollbar can be styled with Tailwind.</ui-text>
+                      <ui-text>This makes it perfect for constrained layouts.</ui-text>
+                      <ui-text>Such as sidebars, dropdowns, or content areas.</ui-text>
+                      <ui-text>That need to show a lot of information in limited space.</ui-text>
+                    </div>
+                  </ui-scroll-area>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </ui-card>
