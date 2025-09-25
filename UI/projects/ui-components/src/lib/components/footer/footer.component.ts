@@ -13,10 +13,11 @@ export interface FooterSection {
 
 @Component({
   selector: 'ui-footer',
+  standalone: true,
   template: `
     <footer [class]="footerClasses()" role="contentinfo">
       <div [class]="containerClasses()">
-        
+
         <!-- Main content -->
         @if (sections().length > 0) {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -28,7 +29,7 @@ export interface FooterSection {
                 <ul class="space-y-2">
                   @for (link of section.links; track link.href) {
                     <li>
-                      <a 
+                      <a
                         [href]="link.href"
                         [target]="link.external ? '_blank' : undefined"
                         [rel]="link.external ? 'noopener noreferrer' : undefined"
@@ -67,7 +68,7 @@ export interface FooterSection {
           @if (socialLinks().length > 0) {
             <div class="flex space-x-4">
               @for (social of socialLinks(); track social.href) {
-                <a 
+                <a
                   [href]="social.href"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -95,7 +96,7 @@ export class FooterComponent {
 
   protected footerClasses = computed(() => {
     const baseClasses = 'ui-footer';
-    
+
     const variants = {
       default: 'bg-surface border-t border-gray-200',
       dark: 'bg-gray-900 text-white',
@@ -108,14 +109,14 @@ export class FooterComponent {
   protected containerClasses = computed(() => {
     const baseClasses = 'py-12';
     const containerClasses = this.fluid() ? 'px-4' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
-    
+
     return `${baseClasses} ${containerClasses}`;
   });
 
   protected bottomBarClasses = computed(() => {
     const baseClasses = 'pt-8 border-t border-gray-200';
     const layoutClasses = 'flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0';
-    
+
     return `${baseClasses} ${layoutClasses}`;
   });
 }

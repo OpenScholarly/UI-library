@@ -6,6 +6,7 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
 
 @Component({
   selector: 'ui-badge',
+  standalone: true,
   template: `
     <span [class]="badgeClasses()" [attr.aria-label]="ariaLabel()">
       @if (dot()) {
@@ -39,7 +40,7 @@ export class BadgeComponent {
 
   protected badgeClasses = computed(() => {
     const baseClasses = 'inline-flex items-center font-medium ui-transition-standard';
-    
+
     const sizeClasses = {
       xs: 'px-1.5 py-0.5 text-xs',
       sm: 'px-2 py-0.5 text-xs',
@@ -71,7 +72,7 @@ export class BadgeComponent {
 
   protected dotClasses = computed(() => {
     const baseClasses = 'inline-block rounded-full mr-1.5';
-    
+
     const sizeClasses = {
       xs: 'w-1 h-1',
       sm: 'w-1.5 h-1.5',

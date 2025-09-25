@@ -1,31 +1,398 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-  <div class="max-w-7xl mx-auto">
+  <ui-container size="2xl">
     <!-- Header -->
     <header class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ title() }}</h1>
+      <div class="flex justify-between items-center mb-6">
+        <div></div>
+        <ui-theme-switcher size="sm" (themeChanged)="onThemeChanged($event)"></ui-theme-switcher>
+      </div>
+      <ui-heading level="h1" size="4xl" color="primary">{{ title() }}</ui-heading>
+      <ui-text color="secondary" size="lg" class="mt-4 mb-6">A comprehensive Angular UI component library</ui-text>
       <div class="flex justify-center space-x-4">
-        <ui-badge variant="primary" size="md">22+ Components</ui-badge>
+        <ui-badge variant="primary" size="md">42+ Components</ui-badge>
         <ui-badge variant="success" size="md">Production Ready</ui-badge>
         <ui-badge variant="info" size="md">TypeScript</ui-badge>
       </div>
     </header>
 
+    <!-- New Components Section -->
+    <div class="mb-12">
+      <ui-heading level="h2" size="2xl" color="primary" class="mb-8">New Components</ui-heading>
+
+      <!-- Layout Components Demo -->
+      <ui-card class="mb-8">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Layout Components</ui-heading>
+
+          <div class="space-y-6">
+            <!-- Container Demo -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Container</ui-text>
+              <ui-container size="md" class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded">
+                <ui-text>This content is in a medium-sized container</ui-text>
+              </ui-container>
+            </div>
+
+            <ui-divider />
+
+            <!-- Grid Demo -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Grid System</ui-text>
+              <ui-grid cols="3" gap="md">
+                <ui-column span="1">
+                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                    <ui-text>Column 1</ui-text>
+                  </div>
+                </ui-column>
+                <ui-column span="1">
+                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                    <ui-text>Column 2</ui-text>
+                  </div>
+                </ui-column>
+                <ui-column span="1">
+                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                    <ui-text>Column 3</ui-text>
+                  </div>
+                </ui-column>
+              </ui-grid>
+            </div>
+
+            <ui-divider />
+
+            <!-- Row Demo -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Row Layout</ui-text>
+              <ui-row justify="between" align="center" gap="md">
+                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                  <ui-text>Left Item</ui-text>
+                </div>
+                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                  <ui-text>Center Item</ui-text>
+                </div>
+                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                  <ui-text>Right Item</ui-text>
+                </div>
+              </ui-row>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Typography Demo -->
+      <ui-card class="mb-8">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Typography</ui-heading>
+
+          <div class="space-y-4">
+            <!-- Headings -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Headings</ui-text>
+              <div class="space-y-2">
+                <ui-heading level="h1" size="3xl">Heading 1 - Large</ui-heading>
+                <ui-heading level="h2" size="2xl">Heading 2 - Medium</ui-heading>
+                <ui-heading level="h3" size="xl">Heading 3 - Small</ui-heading>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Text Variants -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Text Variants</ui-text>
+              <div class="space-y-2">
+                <ui-text variant="body" size="lg">Large body text for important content</ui-text>
+                <ui-text variant="body" size="md">Regular body text for general content</ui-text>
+                <ui-text variant="caption" size="sm">Caption text for descriptions</ui-text>
+                <ui-text variant="overline" size="xs">OVERLINE TEXT FOR LABELS</ui-text>
+                <ui-text variant="code" size="sm">code text for technical content</ui-text>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Text Colors -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Text Colors</ui-text>
+              <div class="space-y-1">
+                <ui-text color="primary">Primary text color</ui-text>
+                <ui-text color="secondary">Secondary text color</ui-text>
+                <ui-text color="muted">Muted text color</ui-text>
+                <ui-text color="success">Success text color</ui-text>
+                <ui-text color="warning">Warning text color</ui-text>
+                <ui-text color="error">Error text color</ui-text>
+              </div>
+            </div>
+            <ui-divider />
+
+            <!-- Media Components Demo -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Media & Utility Components</ui-text>
+              <div class="space-y-4">
+                <!-- Icons -->
+                <div>
+                  <ui-text variant="caption" class="mb-1">Icons</ui-text>
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                      <ui-icon size="sm" color="primary">✓</ui-icon>
+                      <ui-text size="sm">Check Icon</ui-text>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <ui-icon size="md" color="secondary">⏰</ui-icon>
+                      <ui-text size="sm">Clock Icon</ui-text>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <ui-icon size="lg" color="success">✅</ui-icon>
+                      <ui-text size="sm">Success Icon</ui-text>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <ui-icon size="xl" color="error">❌</ui-icon>
+                      <ui-text size="sm">Error Icon</ui-text>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                  <ui-text variant="caption" class="mb-1">Links</ui-text>
+                  <div class="flex flex-wrap gap-4">
+                    <ui-link href="#" variant="primary">Primary Link</ui-link>
+                    <ui-link href="#" variant="secondary" underline="always">Secondary Link</ui-link>
+                    <ui-link href="#" variant="muted" size="sm">Muted Link</ui-link>
+                    <ui-link href="#" variant="success" [external]="true">External Link</ui-link>
+                  </div>
+                </div>
+
+                <!-- Images -->
+                <div>
+                  <ui-text variant="caption" class="mb-1">Images</ui-text>
+                  <div class="flex gap-4">
+                    <ui-image
+                      src="https://picsum.photos/100/100?random=1"
+                      alt="Sample image"
+                      width="100"
+                      height="100"
+                      rounded="md"
+                      class="w-24 h-24">
+                    </ui-image>
+                    <ui-image
+                      src="https://picsum.photos/100/100?random=2"
+                      alt="Rounded image"
+                      width="100"
+                      height="100"
+                      rounded="full"
+                      class="w-24 h-24">
+                    </ui-image>
+                  </div>
+                </div>
+
+                <!-- Scroll Area -->
+                <div>
+                  <ui-text variant="caption" class="mb-1">Scroll Area</ui-text>
+                  <ui-scroll-area size="sm" class="border border-gray-200 dark:border-gray-700 p-4">
+                    <div class="space-y-2">
+                      <ui-text>This is a scrollable area with custom content.</ui-text>
+                      <ui-text>It can contain any amount of content.</ui-text>
+                      <ui-text>When content overflows, it becomes scrollable.</ui-text>
+                      <ui-text>The scrollbar can be styled with Tailwind.</ui-text>
+                      <ui-text>This makes it perfect for constrained layouts.</ui-text>
+                      <ui-text>Such as sidebars, dropdowns, or content areas.</ui-text>
+                      <ui-text>That need to show a lot of information in limited space.</ui-text>
+                    </div>
+                  </ui-scroll-area>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+    </div>
+
     <!-- Component Showcase Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-      
+    <ui-grid cols="3" gap="lg" [responsive]="true">
+
       <!-- Buttons Section -->
       <ui-card>
         <div class="p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Buttons</h3>
-          <div class="space-y-3">
-            <div class="flex flex-wrap gap-2">
-              <ui-button variant="primary" size="sm">Primary</ui-button>
-              <ui-button variant="secondary" size="sm">Secondary</ui-button>
-              <ui-button variant="outline" size="sm">Outline</ui-button>
-              <ui-button variant="ghost" size="sm">Ghost</ui-button>
-              <ui-button variant="destructive" size="sm">Destructive</ui-button>
-              <ui-button variant="glass" size="sm">Glass</ui-button>
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Button Family</ui-heading>
+          <div class="space-y-4">
+            <!-- Regular Buttons -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Regular Buttons</ui-text>
+              <div class="flex flex-wrap gap-2">
+                <ui-button variant="primary" size="sm">Primary</ui-button>
+                <ui-button variant="secondary" size="sm">Secondary</ui-button>
+                <ui-button variant="outline" size="sm">Outline</ui-button>
+                <ui-button variant="ghost" size="sm">Ghost</ui-button>
+                <ui-button variant="destructive" size="sm">Destructive</ui-button>
+                <ui-button variant="glass" size="sm">Glass</ui-button>
+              </div>
             </div>
+
+            <ui-divider />
+
+            <!-- Icon Buttons -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Icon Buttons</ui-text>
+              <div class="flex flex-wrap gap-2 items-center">
+                <ui-icon-button variant="primary" size="sm" ariaLabel="Settings" shape="circle">⚙️</ui-icon-button>
+                <ui-icon-button variant="secondary" size="md" ariaLabel="Edit" shape="rounded">✏️</ui-icon-button>
+                <ui-icon-button variant="outline" size="lg" ariaLabel="Delete" shape="square">🗑️</ui-icon-button>
+                <ui-icon-button variant="ghost" size="md" ariaLabel="Info" shape="circle">ℹ️</ui-icon-button>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Button Groups -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Button Groups</ui-text>
+              <div class="space-y-3">
+                <!-- Horizontal group -->
+                <ui-button-group orientation="horizontal" variant="default">
+                  <ui-button variant="outline" size="sm">Left</ui-button>
+                  <ui-button variant="outline" size="sm">Center</ui-button>
+                  <ui-button variant="outline" size="sm">Right</ui-button>
+                </ui-button-group>
+
+                <!-- Spaced group -->
+                <ui-button-group orientation="horizontal" spacing="sm">
+                  <ui-button variant="primary" size="sm">Action</ui-button>
+                  <ui-button variant="secondary" size="sm">Cancel</ui-button>
+                </ui-button-group>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Floating Action Buttons -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Floating Action Buttons</ui-text>
+              <div class="flex flex-wrap gap-4 items-center">
+                <ui-fab variant="primary" size="sm" position="static" ariaLabel="Add">➕</ui-fab>
+                <ui-fab variant="secondary" size="md" position="static" ariaLabel="Edit">✏️</ui-fab>
+                <ui-fab variant="extended" size="md" position="static" label="Create New" ariaLabel="Create">📝</ui-fab>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Segmented Button -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Segmented Button</ui-text>
+              <div class="space-y-3">
+                <ui-segmented-button
+                  [options]="segmentedOptions()"
+                  value="list"
+                  (valueChange)="onSegmentedChange($event)"
+                  size="md">
+                </ui-segmented-button>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Split Button -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Split Button</ui-text>
+              <div class="space-y-3">
+                <ui-split-button
+                  mainLabel="Save Document"
+                  mainIcon="💾"
+                  [actions]="splitButtonActions()"
+                  variant="primary"
+                  size="md"
+                  (mainAction)="onSplitButtonAction()"
+                  (actionSelected)="onSplitButtonActionSelected($event)">
+                </ui-split-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- New Advanced Components Section -->
+      <ui-card>
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Advanced Components</ui-heading>
+          <div class="space-y-6">
+            <!-- Autocomplete -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Autocomplete</ui-text>
+              <ui-autocomplete
+                [options]="autocompleteOptions()"
+                placeholder="Search frameworks..."
+                size="md"
+                (valueChange)="onAutocompleteChange($event)"
+                class="max-w-xs">
+              </ui-autocomplete>
+            </div>
+
+            <ui-divider />
+
+            <!-- Search -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Search</ui-text>
+              <ui-search
+                placeholder="Search components..."
+                [results]="searchResults()"
+                [recentSearches]="['Button', 'Input', 'Modal']"
+                size="md"
+                (search)="onSearchChange($event)"
+                (resultSelected)="onSearchResultSelected($event)"
+                class="max-w-md">
+              </ui-search>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Layout Demo -->
+      <ui-card class="col-span-full">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Layout Component</ui-heading>
+          <ui-text color="secondary" class="mb-4">Complete application layout with navbar, sidebar, and main content</ui-text>
+
+          <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden" style="height: 400px;">
+            <ui-layout
+              [navigationItems]="navigationItems()"
+              sidebarTitle="Navigation"
+              activeNavItemId="components"
+              sidebarBehavior="fixed"
+              (navItemClicked)="onNavItemClicked($event)">
+
+              <!-- Navbar Brand -->
+              <div slot="navbar-brand" class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-primary-500 rounded flex items-center justify-center text-white font-bold">UI</div>
+                <span class="font-semibold text-gray-900 dark:text-white">Component Library</span>
+              </div>
+
+              <!-- Navbar Actions -->
+              <div slot="navbar-actions" class="flex items-center gap-2">
+                <ui-icon-button variant="ghost" size="sm" ariaLabel="Notifications">🔔</ui-icon-button>
+                <ui-avatar name="User" size="sm"></ui-avatar>
+              </div>
+
+              <!-- Main Content -->
+              <div class="p-6">
+                <ui-heading level="h4" size="xl" class="mb-4">Main Content Area</ui-heading>
+                <ui-text>This is the main content area of the application. It automatically adjusts based on the sidebar state and provides a responsive layout.</ui-text>
+
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <ui-card variant="outlined" class="p-4">
+                    <ui-text weight="semibold" class="mb-2">Feature 1</ui-text>
+                    <ui-text color="secondary" size="sm">Description of the first feature</ui-text>
+                  </ui-card>
+                  <ui-card variant="outlined" class="p-4">
+                    <ui-text weight="semibold" class="mb-2">Feature 2</ui-text>
+                    <ui-text color="secondary" size="sm">Description of the second feature</ui-text>
+                  </ui-card>
+                  <ui-card variant="outlined" class="p-4">
+                    <ui-text weight="semibold" class="mb-2">Feature 3</ui-text>
+                    <ui-text color="secondary" size="sm">Description of the third feature</ui-text>
+                  </ui-card>
+                </div>
+              </div>
+            </ui-layout>
           </div>
         </div>
       </ui-card>
@@ -40,18 +407,27 @@
               placeholder="Enter your name"
               size="sm">
             </ui-input>
-            
+
             <ui-select
               label="Country"
               placeholder="Select a country"
               [options]="selectOptions()"
               size="sm">
             </ui-select>
-            
+
             <ui-checkbox
               label="Subscribe to updates"
               description="Get notified about new features">
             </ui-checkbox>
+
+            <ui-radio-group
+              name="rating"
+              label="Rate your experience"
+              description="How would you rate our component library?"
+              [options]="radioOptions()"
+              value="good"
+              (valueChange)="onRadioGroupChange($event)">
+            </ui-radio-group>
 
             <ui-toggle
               label="Enable notifications">
@@ -113,13 +489,13 @@
         <div class="p-6">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Navigation</h3>
           <div class="space-y-4">
-            <ui-breadcrumbs 
+            <ui-breadcrumbs
               [items]="breadcrumbItems()"
               size="sm">
             </ui-breadcrumbs>
-            
+
             <ui-tabs [tabs]="tabItems()" variant="pills" size="sm" (tabChanged)="onTabChange($event)"></ui-tabs>
-            
+
             <ui-pagination
               [currentPage]="currentPage()"
               [totalItems]="100"
@@ -138,11 +514,11 @@
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Interactive</h3>
           <div class="space-y-4">
             <ui-button (clicked)="openModal()">Open Modal</ui-button>
-            
+
             <ui-tooltip content="This is a helpful tooltip!">
               <ui-button variant="outline">Hover for Tooltip</ui-button>
             </ui-tooltip>
-            
+
             <ui-button (clicked)="showToastNotification()">Show Toast</ui-button>
 
             <div class="flex items-center space-x-4">
@@ -154,14 +530,233 @@
         </div>
       </ui-card>
 
-    </div>
+    </ui-grid>
 
     <!-- Accordion Section -->
     <div class="mt-12">
-      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Key Features</h2>
-      <ui-accordion 
+      <ui-heading level="h2" size="2xl" color="primary" class="mb-6">Key Features</ui-heading>
+      <ui-accordion
         [items]="accordionItems()">
       </ui-accordion>
+    </div>
+
+    <!-- New Components Section -->
+    <ui-card class="mb-8">
+      <div class="p-6">
+        <ui-heading level="h3" size="lg" color="primary" class="mb-4">New Components Showcase</ui-heading>
+        <div class="space-y-8">
+
+          <!-- Theme Switcher -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Theme Switcher</ui-text>
+            <div class="flex items-center gap-4">
+              <ui-theme-switcher
+                size="md"
+                (themeChanged)="onThemeChanged($event)">
+              </ui-theme-switcher>
+              <ui-text color="secondary" size="sm">3-way toggle: System, Light, Dark</ui-text>
+            </div>
+          </div>
+
+          <ui-divider />
+
+          <!-- Table / Data Grid -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Table / Data Grid</ui-text>
+            <ui-table
+              [columns]="tableColumns()"
+              [data]="tableData()"
+              variant="striped"
+              size="md"
+              [hover]="true"
+              [selectable]="true"
+              (rowClicked)="onTableRowClicked($event)"
+              (sortChanged)="onTableSortChanged($event)">
+            </ui-table>
+          </div>
+
+          <ui-divider />
+
+          <!-- Menu / Dropdown -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Menu / Dropdown</ui-text>
+            <div class="flex gap-4">
+              <ui-menu
+                [items]="menuItems()"
+                trigger="click"
+                placement="bottom-start"
+                (itemSelected)="onMenuItemSelected($event)">
+                <ui-button slot="trigger" variant="outline">
+                  Actions ⌄
+                </ui-button>
+              </ui-menu>
+
+              <ui-menu
+                [items]="menuItems()"
+                trigger="hover"
+                placement="bottom-start"
+                (itemSelected)="onMenuItemSelected($event)">
+                <ui-button slot="trigger" variant="secondary">
+                  Hover Menu
+                </ui-button>
+              </ui-menu>
+            </div>
+          </div>
+
+          <ui-divider />
+
+          <!-- Skeleton Loading -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Skeleton Loading States</ui-text>
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <ui-skeleton variant="circular" width="40px" height="40px"></ui-skeleton>
+                <div class="flex-1 space-y-2">
+                  <ui-skeleton variant="text" width="200px" height="16px"></ui-skeleton>
+                  <ui-skeleton variant="text" width="150px" height="12px"></ui-skeleton>
+                </div>
+              </div>
+              <ui-skeleton variant="rectangular" width="100%" height="120px"></ui-skeleton>
+              <div class="grid grid-cols-3 gap-4">
+                <ui-skeleton variant="rounded" height="80px"></ui-skeleton>
+                <ui-skeleton variant="rounded" height="80px"></ui-skeleton>
+                <ui-skeleton variant="rounded" height="80px"></ui-skeleton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ui-card>
+
+    <!-- ADVANCED COMPONENTS SHOWCASE -->
+    <div class="mb-12">
+      <ui-heading level="h2" size="2xl" color="primary" class="mb-8">🔥 Advanced Components</ui-heading>
+
+      <!-- Navigation & Interface -->
+      <ui-card class="mb-8">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-6">Navigation & Interface</ui-heading>
+
+          <!-- Navbar Demo -->
+          <div class="mb-8">
+            <ui-text weight="semibold" class="mb-3">Navbar</ui-text>
+            <ui-navbar
+              brandText="Demo App"
+              brandIcon="🚀"
+              [items]="navbarItems()"
+              variant="default"
+              (itemClick)="onNavbarItemClick($event)">
+              <div slot="actions" class="flex items-center gap-2">
+                <ui-button variant="outline" size="sm">Login</ui-button>
+                <ui-button variant="primary" size="sm">Sign Up</ui-button>
+              </div>
+            </ui-navbar>
+          </div>
+
+          <!-- Command Menu -->
+          <div class="mb-8">
+            <ui-text weight="semibold" class="mb-3">Command Menu</ui-text>
+            <ui-button variant="outline" (clicked)="openCommandMenu()">
+              Open Command Palette (⌘K)
+            </ui-button>
+          </div>
+
+          <!-- Tree View -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Tree View</ui-text>
+            <ui-tree-view
+              [nodes]="treeNodes()"
+              [selectable]="true"
+              (nodeClick)="onTreeNodeClick($event)"
+              (nodeSelect)="onTreeNodeSelect($event)">
+            </ui-tree-view>
+          </div>
+        </div>
+      </ui-card>
+
+      <!-- Content & Data Display -->
+      <ui-card class="mb-8">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-6">Content & Data Display</ui-heading>
+
+          <!-- Feed Component -->
+          <div class="mb-8">
+            <ui-text weight="semibold" class="mb-3">Social Feed</ui-text>
+            <ui-feed
+              [items]="feedItems()"
+              variant="default"
+              (like)="onFeedLike($event)"
+              (comment)="onFeedComment($event)"
+              (share)="onFeedShare($event)"
+              (bookmark)="onFeedBookmark($event)">
+            </ui-feed>
+          </div>
+
+          <!-- Stats Component -->
+          <div class="mb-8">
+            <ui-text weight="semibold" class="mb-3">Statistics Dashboard</ui-text>
+            <ui-stats
+              [stats]="statsItems()"
+              variant="card"
+              [columns]="4">
+            </ui-stats>
+          </div>
+
+          <!-- Timeline Component -->
+          <div class="mb-8">
+            <ui-text weight="semibold" class="mb-3">Timeline</ui-text>
+            <ui-timeline
+              [items]="timelineItems()"
+              [clickable]="true"
+              (itemClick)="onTimelineItemClick($event)">
+            </ui-timeline>
+          </div>
+
+          <!-- Banner Component -->
+          <div class="mb-8">
+            <ui-text weight="semibold" class="mb-3">Banners</ui-text>
+            <div class="space-y-4">
+              <ui-banner
+                title="Welcome to the Component Library!"
+                message="Discover 50+ production-ready components for your next project."
+                icon="🎉"
+                variant="info"
+                [actions]="bannerActions()"
+                [dismissible]="true"
+                (action)="onBannerAction($event)"
+                (dismiss)="onBannerDismiss()">
+              </ui-banner>
+
+              <ui-banner
+                message="This is a success banner with automatic dismiss."
+                icon="✅"
+                variant="success"
+                size="sm">
+              </ui-banner>
+
+              <ui-banner
+                title="Important Update"
+                message="Please update to the latest version for security improvements."
+                icon="⚠️"
+                variant="warning"
+                [dismissible]="true">
+              </ui-banner>
+            </div>
+          </div>
+
+          <!-- Carousel Component -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Image Carousel</ui-text>
+            <ui-carousel
+              [items]="carouselItems()"
+              [autoplay]="true"
+              [autoplayInterval]="4000"
+              aspectRatio="16:9"
+              (slideChange)="onCarouselSlideChange($event)">
+            </ui-carousel>
+          </div>
+        </div>
+      </ui-card>
     </div>
 
     <!-- Footer -->
@@ -171,7 +766,7 @@
         copyright="© 2024 UI Component Library. All rights reserved.">
       </ui-footer>
     </div>
-  </div>
+  </ui-container>
 
   <!-- Modal -->
   <ui-modal
@@ -200,4 +795,12 @@
       </ui-toast>
     </div>
   }
+
+  <!-- Command Menu Overlay -->
+  <ui-command-menu
+    [items]="commandItems()"
+    [isOpen]="isCommandMenuOpen()"
+    (select)="onCommandSelect($event)"
+    (close)="closeCommandMenu()">
+  </ui-command-menu>
 </div>
