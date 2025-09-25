@@ -211,11 +211,11 @@ interface ThemeConfig {
 - [ ] List (incl. virtual list)
 - [?] Avatar / Avatar Group (with ring/status) *(avatar ready; group pending)*
 - [x] Table / Data Grid
-- [ ] Feed
-- [ ] Stats
-- [ ] Timeline
-- [ ] Banner
-- [ ] Carousel
+- [x] Feed
+- [x] Stats
+- [x] Timeline
+- [x] Banner
+- [x] Carousel
 - [x] Skeleton (after Card/Container)
 - [x] Footer / Copyright
 
@@ -224,14 +224,14 @@ interface ThemeConfig {
 - [x] Breadcrumbs
 - [x] Pagination
 - [ ] Steps / Stepper
-- [ ] Navbar / App Bar / Toolbar
+- [x] Navbar / App Bar / Toolbar
 - [ ] Sidebar / Drawer / SlideOver / Side Sheets / Navigation Drawer
 - [ ] Navigation Rail
 - [ ] Bottom Navigation / Dock
 - [x] Menu / Dropdown / Flyout Menu
-- [ ] Command Menu / Command Palette
+- [x] Command Menu / Command Palette
 - [x] Accordion
-- [ ] Tree View
+- [x] Tree View
 - [ ] Reorder (drag to reorder)
 - [ ] Keyboard Shortcuts (service; used by Command Menu)
 
