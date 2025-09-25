@@ -13,14 +13,14 @@ export type ThemeMode = 'system' | 'light' | 'dark';
       <!-- System Theme Option -->
       <span class="h-full">
         <input
-          [id]="systemId()"
+          [id]="systemId"
           type="radio"
           value="system"
           [checked]="currentTheme() === 'system'"
           (change)="handleThemeChange('system')"
           [attr.aria-label]="systemLabel()"
           class="sr-only" />
-        <label [for]="systemId()" [class]="buttonClasses()">
+        <label [for]="systemId" [class]="buttonClasses()">
           <span class="sr-only">{{ systemLabel() }}</span>
           <svg
             [attr.height]="iconSize()"
@@ -42,14 +42,14 @@ export type ThemeMode = 'system' | 'light' | 'dark';
       <!-- Light Theme Option -->
       <span class="h-full">
         <input
-          [id]="lightId()"
+          [id]="lightId"
           type="radio"
           value="light"
           [checked]="currentTheme() === 'light'"
           (change)="handleThemeChange('light')"
           [attr.aria-label]="lightLabel()"
           class="sr-only" />
-        <label [for]="lightId()" [class]="buttonClasses()">
+        <label [for]="lightId" [class]="buttonClasses()">
           <span class="sr-only">{{ lightLabel() }}</span>
           <svg
             [attr.height]="iconSize()"
@@ -71,14 +71,14 @@ export type ThemeMode = 'system' | 'light' | 'dark';
       <!-- Dark Theme Option -->
       <span class="h-full">
         <input
-          [id]="darkId()"
+          [id]="darkId"
           type="radio"
           value="dark"
           [checked]="currentTheme() === 'dark'"
           (change)="handleThemeChange('dark')"
           [attr.aria-label]="darkLabel()"
           class="sr-only" />
-        <label [for]="darkId()" [class]="buttonClasses()">
+        <label [for]="darkId" [class]="buttonClasses()">
           <span class="sr-only">{{ darkLabel() }}</span>
           <svg
             [attr.height]="iconSize()"
