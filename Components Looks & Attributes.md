@@ -237,7 +237,7 @@ interface ThemeConfig {
 
 10. Overlays
 - [x] Tooltip
-- [ ] Popover
+- [ ] Popover / Pop-up
 - [x] Modal / Dialog (alert/confirm/fullscreen)
 - [ ] Bottom Sheets
 - [ ] Action Sheet
@@ -257,6 +257,24 @@ interface ThemeConfig {
 - [ ] Diff (image, text)
 - [ ] Rating
 - [x] Link (advanced states/variants)
+
+
+**Inputs**
+Label
+Spinbox
+Line editor
+Editor
+ComboBox
+IconChooser
+Loading Panel
+Calendar
+Selection chips
+Selection chips editor
+
+**Containers / Layout**
+Accordion
+Expander
+Contextual Menu
 
 
 
