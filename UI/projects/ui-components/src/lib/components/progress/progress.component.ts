@@ -6,6 +6,7 @@ export type ProgressVariant = 'default' | 'primary' | 'secondary' | 'success' | 
 
 @Component({
   selector: 'ui-progress',
+  standalone: true,
   template: `
     @if (type() === 'linear') {
       <div [class]="linearWrapperClasses()">
@@ -17,7 +18,7 @@ export type ProgressVariant = 'default' | 'primary' | 'secondary' | 'success' | 
             }
           </div>
         }
-        
+
         <div [class]="linearTrackClasses()" [attr.role]="'progressbar'" [attr.aria-valuenow]="value()" [attr.aria-valuemin]="0" [attr.aria-valuemax]="100" [attr.aria-label]="ariaLabel()">
           <div [class]="linearBarClasses()" [style.width.%]="value()">
             @if (animated()) {
@@ -25,7 +26,7 @@ export type ProgressVariant = 'default' | 'primary' | 'secondary' | 'success' | 
             }
           </div>
         </div>
-        
+
         @if (description()) {
           <p [class]="descriptionClasses()">{{ description() }}</p>
         }
@@ -35,14 +36,14 @@ export type ProgressVariant = 'default' | 'primary' | 'secondary' | 'success' | 
         <div [class]="circularContainerClasses()">
           <svg [class]="circularSvgClasses()" viewBox="0 0 36 36">
             <!-- Background circle -->
-            <path 
+            <path
               [class]="circularBackgroundClasses()"
               d="M18 2.0845
                 a 15.9155 15.9155 0 0 1 0 31.831
                 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
             <!-- Progress circle -->
-            <path 
+            <path
               [class]="circularProgressClasses()"
               [style.stroke-dasharray]="getStrokeDasharray()"
               d="M18 2.0845
@@ -50,7 +51,7 @@ export type ProgressVariant = 'default' | 'primary' | 'secondary' | 'success' | 
                 a 15.9155 15.9155 0 0 1 0 -31.831"
             />
           </svg>
-          
+
           @if (showPercentage() || label()) {
             <div [class]="circularContentClasses()">
               @if (showPercentage()) {
@@ -62,7 +63,7 @@ export type ProgressVariant = 'default' | 'primary' | 'secondary' | 'success' | 
             </div>
           }
         </div>
-        
+
         @if (description()) {
           <p [class]="descriptionClasses()">{{ description() }}</p>
         }
@@ -248,12 +249,12 @@ export class ProgressComponent {
     if (this.indeterminate()) {
       return '25 75'; // Animated indeterminate state
     }
-    
+
     // Calculate stroke dash array for progress
     const circumference = 100; // This matches our SVG path
     const progress = Math.max(0, Math.min(100, this.value()));
     const dashArray = (progress / 100) * circumference;
-    
+
     return `${dashArray} ${circumference}`;
   }
 

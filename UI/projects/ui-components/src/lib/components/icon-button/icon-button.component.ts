@@ -6,6 +6,7 @@ export type IconButtonShape = 'square' | 'rounded' | 'circle';
 
 @Component({
   selector: 'ui-icon-button',
+  standalone: true,
   template: `
     <button
       [class]="buttonClasses()"

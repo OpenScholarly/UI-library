@@ -15,6 +15,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-select',
+  standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -36,7 +37,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
     <div class="ui-select__wrapper relative" #selectWrapper>
       <!-- Label -->
       @if (label()) {
-        <label 
+        <label
           [for]="selectId"
           class="ui-select__label block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
           [class.text-red-600]="hasError()"
@@ -63,7 +64,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
           [class]="getTriggerClasses()"
           (click)="toggleDropdown()"
           (keydown)="onTriggerKeydown($event)">
-          
+
           <span class="ui-select__value flex items-center justify-between">
             <span class="truncate">
               @if (selectedOption(); as option) {
@@ -72,11 +73,11 @@ export type SelectSize = 'sm' | 'md' | 'lg';
                 <span class="text-gray-500 dark:text-gray-400">{{ placeholder() }}</span>
               }
             </span>
-            <svg 
+            <svg
               class="ui-select__chevron w-5 h-5 text-gray-400 transition-transform duration-200"
               [class.rotate-180]="isOpen()"
-              fill="none" 
-              stroke="currentColor" 
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
@@ -85,12 +86,12 @@ export type SelectSize = 'sm' | 'md' | 'lg';
 
         <!-- Dropdown -->
         @if (isOpen()) {
-          <div 
+          <div
             #dropdown
             class="ui-select__dropdown absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto"
             role="listbox"
             [attr.aria-labelledby]="selectId">
-            
+
             @if (searchable()) {
               <div class="ui-select__search p-2 border-b border-gray-200 dark:border-gray-600">
                 <input
@@ -118,7 +119,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
                   [class]="getOptionClasses(option, i === highlightedIndex())"
                   (click)="selectOption(option)"
                   (mouseenter)="setHighlightedIndex(i)">
-                  
+
                   <div class="flex items-center">
                     @if (multiple()) {
                       <input
@@ -127,7 +128,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
                         [checked]="isOptionSelected(option)"
                         tabindex="-1">
                     }
-                    
+
                     <div class="flex-1 min-w-0">
                       <div class="text-sm font-medium text-gray-900 dark:text-white truncate">
                         {{ option.label }}
@@ -154,7 +155,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
 
       <!-- Helper Text -->
       @if (helperText() && !hasError()) {
-        <p 
+        <p
           class="ui-select__helper-text mt-1 text-sm text-gray-500 dark:text-gray-400"
           [id]="selectId + '-helper'">
           {{ helperText() }}
@@ -163,7 +164,7 @@ export type SelectSize = 'sm' | 'md' | 'lg';
 
       <!-- Error Message -->
       @if (hasError() && errorMessage()) {
-        <p 
+        <p
           class="ui-select__error-message mt-1 text-sm text-red-600 dark:text-red-400"
           [id]="selectId + '-error'"
           role="alert">
@@ -257,8 +258,8 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
   filteredOptions = computed(() => {
     const query = this.searchQuery().toLowerCase();
     if (!query) return this.options();
-    
-    return this.options().filter(option => 
+
+    return this.options().filter(option =>
       option.label.toLowerCase().includes(query) ||
       option.description?.toLowerCase().includes(query)
     );
@@ -267,7 +268,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
   // Methods
   toggleDropdown(): void {
     if (this.disabled()) return;
-    
+
     if (this.isOpen()) {
       this.closeDropdown();
     } else {
@@ -279,7 +280,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
     this.isOpen.set(true);
     this.highlightedIndex.set(-1);
     this.open.emit();
-    
+
     // Focus search input if searchable
     if (this.searchable()) {
       setTimeout(() => this.searchInput?.nativeElement.focus(), 0);
@@ -300,13 +301,13 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
     if (this.multiple()) {
       const values = [...this.selectedValues()];
       const index = values.findIndex(v => v === option.value);
-      
+
       if (index >= 0) {
         values.splice(index, 1);
       } else {
         values.push(option.value);
       }
-      
+
       this.selectedValues.set(values);
       this.onChange(values);
       this.change.emit(values);
@@ -395,7 +396,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
     if (options.length === 0) return;
 
     let newIndex = this.highlightedIndex() + direction;
-    
+
     if (newIndex < 0) {
       newIndex = options.length - 1;
     } else if (newIndex >= options.length) {
@@ -407,7 +408,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
 
   getTriggerClasses(): string {
     const classes: string[] = [];
-    
+
     switch (this.variant()) {
       case 'filled':
         classes.push('bg-gray-100 dark:bg-gray-700 border-transparent');
@@ -458,15 +459,15 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
 
   getAriaDescribedBy(): string {
     const ids: string[] = [];
-    
+
     if (this.helperText()) {
       ids.push(`${this.selectId}-helper`);
     }
-    
+
     if (this.hasError() && this.errorMessage()) {
       ids.push(`${this.selectId}-error`);
     }
-    
+
     return ids.length > 0 ? ids.join(' ') : '';
   }
 

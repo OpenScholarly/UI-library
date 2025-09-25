@@ -4,6 +4,7 @@ export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
 
 @Component({
   selector: 'ui-skeleton',
+  standalone: true,
   template: `
     <div [class]="skeletonClasses()" [style]="skeletonStyles()"></div>
   `,
@@ -17,7 +18,7 @@ export class SkeletonComponent {
 
   protected skeletonClasses = computed(() => {
     const baseClasses = 'bg-gray-300 dark:bg-gray-700';
-    
+
     const variantClasses = {
       text: 'rounded',
       circular: 'rounded-full',

@@ -8,10 +8,11 @@ export type InputVariant = 'default' | 'filled' | 'outlined';
 
 @Component({
   selector: 'ui-input',
+  standalone: true,
   template: `
     <div [class]="wrapperClasses()">
       @if (label()) {
-        <label 
+        <label
           [for]="inputId()"
           [class]="labelClasses()">
           {{ label() }}
@@ -20,14 +21,14 @@ export type InputVariant = 'default' | 'filled' | 'outlined';
           }
         </label>
       }
-      
+
       <div [class]="inputContainerClasses()">
         @if (prefixIcon()) {
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <span [class]="iconClasses()">{{ prefixIcon() }}</span>
           </div>
         }
-        
+
         <input
           #inputElement
           [id]="inputId()"
@@ -50,13 +51,13 @@ export type InputVariant = 'default' | 'filled' | 'outlined';
           (focus)="onFocus()"
           (keydown)="onKeyDown($event)"
         />
-        
+
         @if (suffixIcon()) {
           <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <span [class]="iconClasses()">{{ suffixIcon() }}</span>
           </div>
         }
-        
+
         @if (type() === 'password' && showPasswordToggle()) {
           <button
             type="button"
@@ -69,13 +70,13 @@ export type InputVariant = 'default' | 'filled' | 'outlined';
           </button>
         }
       </div>
-      
+
       @if (helperText() && !invalid()) {
         <p [id]="helperId()" [class]="helperTextClasses()">
           {{ helperText() }}
         </p>
       }
-      
+
       @if (invalid() && errorMessage()) {
         <p [id]="errorId()" [class]="errorTextClasses()" role="alert">
           {{ errorMessage() }}
@@ -109,7 +110,7 @@ export class InputComponent implements ControlValueAccessor {
   invalid = input(false);
   showPasswordToggle = input(true);
   fullWidth = input(true);
-  
+
   // HTML input attributes
   min = input<string | number>('');
   max = input<string | number>('');
@@ -161,8 +162,8 @@ export class InputComponent implements ControlValueAccessor {
 
   protected labelClasses = computed(() => {
     const baseClasses = 'block text-sm font-medium mb-1';
-    const colorClasses = this.disabled() 
-      ? 'text-text-disabled' 
+    const colorClasses = this.disabled()
+      ? 'text-text-disabled'
       : 'text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });
@@ -173,7 +174,7 @@ export class InputComponent implements ControlValueAccessor {
 
   protected inputClasses = computed(() => {
     const baseClasses = 'ui-focus-primary ui-transition-standard w-full';
-    
+
     const sizeClasses = {
       sm: 'px-3 py-1.5 text-sm',
       md: 'px-3 py-2 text-base',
@@ -204,14 +205,14 @@ export class InputComponent implements ControlValueAccessor {
   protected iconClasses = computed(() => {
     const sizeClasses = {
       sm: 'w-4 h-4',
-      md: 'w-5 h-5', 
+      md: 'w-5 h-5',
       lg: 'w-6 h-6'
     };
-    
-    const colorClasses = this.disabled() 
-      ? 'text-text-disabled' 
+
+    const colorClasses = this.disabled()
+      ? 'text-text-disabled'
       : 'text-text-secondary';
-      
+
     return `${sizeClasses[this.size()]} ${colorClasses}`;
   });
 
@@ -226,7 +227,7 @@ export class InputComponent implements ControlValueAccessor {
   private getPaddingClasses(): string {
     const hasPrefix = !!this.prefixIcon();
     const hasSuffix = !!this.suffixIcon() || (this.type() === 'password' && this.showPasswordToggle());
-    
+
     if (hasPrefix && hasSuffix) {
       return this.size() === 'sm' ? 'pl-9 pr-9' : this.size() === 'lg' ? 'pl-12 pr-12' : 'pl-10 pr-10';
     } else if (hasPrefix) {

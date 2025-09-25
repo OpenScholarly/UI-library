@@ -5,6 +5,7 @@ export type DividerVariant = 'solid' | 'dashed' | 'dotted';
 
 @Component({
   selector: 'ui-divider',
+  standalone: true,
   template: `
     <div [class]="dividerClasses()" [attr.aria-orientation]="orientation()">
       <ng-content select="[slot=label]" />

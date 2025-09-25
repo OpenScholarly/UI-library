@@ -9,13 +9,14 @@ export type ModalVariant = 'default' | 'centered' | 'glass';
 
 @Component({
   selector: 'ui-modal',
+  standalone: true,
   template: `
     @if (open()) {
-      <div 
+      <div
         [class]="backdropClasses()"
         [attr.aria-hidden]="true"
         (click)="onBackdropClick($event)">
-        <div 
+        <div
           #modalElement
           [class]="modalClasses()"
           [attr.role]="'dialog'"
@@ -23,7 +24,7 @@ export type ModalVariant = 'default' | 'centered' | 'glass';
           [attr.aria-labelledby]="titleId()"
           [attr.aria-describedby]="descriptionId()"
           (click)="$event.stopPropagation()">
-          
+
           <!-- Header -->
           @if (showHeader()) {
             <div [class]="headerClasses()">
@@ -33,7 +34,7 @@ export type ModalVariant = 'default' | 'centered' | 'glass';
                   {{ title() }}
                 }
               </h2>
-              
+
               @if (closable()) {
                 <button
                   type="button"
@@ -47,12 +48,12 @@ export type ModalVariant = 'default' | 'centered' | 'glass';
               }
             </div>
           }
-          
+
           <!-- Body -->
           <div [class]="bodyClasses()" [id]="descriptionId()">
             <ng-content />
           </div>
-          
+
           <!-- Footer -->
           @if (hasFooterState()) {
             <div [class]="footerClasses()">
@@ -124,13 +125,13 @@ export class ModalComponent {
       centered: 'bg-black/50 flex items-center justify-center',
       glass: 'backdrop-blur-sm bg-black/30'
     };
-    
+
     return `${baseClasses} ${variantClasses[this.variant()]}`;
   });
 
   protected modalClasses = computed(() => {
     const baseClasses = 'relative ui-transition-transform-opacity bg-white rounded-lg shadow-4 max-h-full overflow-hidden';
-    
+
     const sizeClasses = {
       sm: 'w-full max-w-sm',
       md: 'w-full max-w-md',
@@ -145,8 +146,8 @@ export class ModalComponent {
       glass: 'ui-glass mx-4 my-8'
     };
 
-    const positionClasses = this.variant() === 'centered' 
-      ? '' 
+    const positionClasses = this.variant() === 'centered'
+      ? ''
       : 'fixed top-0 left-1/2 transform -translate-x-1/2';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${variantClasses[this.variant()]} ${positionClasses}`;
@@ -204,7 +205,7 @@ export class ModalComponent {
       const modalEl = this.modalElement()?.nativeElement;
       if (modalEl) {
         this.focusTrap.trapFocus(modalEl);
-        
+
         // Setup dismiss handlers
         this.dismissService.register(
           this.dismissId(),

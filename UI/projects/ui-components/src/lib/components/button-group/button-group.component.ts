@@ -6,6 +6,7 @@ export type ButtonGroupVariant = 'default' | 'contained' | 'outlined';
 
 @Component({
   selector: 'ui-button-group',
+  standalone: true,
   template: `
     <div [class]="groupClasses()" role="group" [attr.aria-label]="ariaLabel()">
       <ng-content />
@@ -47,7 +48,7 @@ export class ButtonGroupComponent {
     const fullWidthClass = this.fullWidth() ? 'w-full [&>*]:flex-1' : '';
 
     // Vertical orientation adjustments for connected buttons
-    const verticalAdjustments = this.orientation() === 'vertical' && this.spacing() === 'none' 
+    const verticalAdjustments = this.orientation() === 'vertical' && this.spacing() === 'none'
       ? '[&>*:not(:first-child):not(:last-child)]:rounded-none [&>*:first-child]:rounded-b-none [&>*:last-child]:rounded-t-none [&>*:not(:first-child)]:-mt-px'
       : '';
 

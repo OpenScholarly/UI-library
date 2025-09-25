@@ -6,27 +6,28 @@ export type LoaderVariant = 'default' | 'primary' | 'secondary' | 'success' | 'w
 
 @Component({
   selector: 'ui-loader',
+  standalone: true,
   template: `
     <div [class]="wrapperClasses()" [attr.aria-label]="ariaLabel()" role="status">
       @switch (type()) {
         @case ('spinner') {
           <svg [class]="spinnerClasses()" fill="none" viewBox="0 0 24 24">
-            <circle 
-              [class]="spinnerCircleClasses()" 
-              cx="12" 
-              cy="12" 
-              r="10" 
-              stroke="currentColor" 
+            <circle
+              [class]="spinnerCircleClasses()"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
               stroke-width="4">
             </circle>
-            <path 
-              [class]="spinnerPathClasses()" 
-              fill="currentColor" 
+            <path
+              [class]="spinnerPathClasses()"
+              fill="currentColor"
               d="m12 2a10 10 0 0 1 10 10h-4a6 6 0 0 0-6-6z">
             </path>
           </svg>
         }
-        
+
         @case ('dots') {
           <div [class]="dotsContainerClasses()">
             <div [class]="dotClasses()" style="animation-delay: 0ms"></div>
@@ -34,11 +35,11 @@ export type LoaderVariant = 'default' | 'primary' | 'secondary' | 'success' | 'w
             <div [class]="dotClasses()" style="animation-delay: 300ms"></div>
           </div>
         }
-        
+
         @case ('pulse') {
           <div [class]="pulseClasses()"></div>
         }
-        
+
         @case ('bars') {
           <div [class]="barsContainerClasses()">
             <div [class]="barClasses()" style="animation-delay: 0ms"></div>
@@ -47,7 +48,7 @@ export type LoaderVariant = 'default' | 'primary' | 'secondary' | 'success' | 'w
             <div [class]="barClasses()" style="animation-delay: 450ms"></div>
           </div>
         }
-        
+
         @case ('ring') {
           <div [class]="ringClasses()">
             <div></div>
@@ -57,11 +58,11 @@ export type LoaderVariant = 'default' | 'primary' | 'secondary' | 'success' | 'w
           </div>
         }
       }
-      
+
       @if (label()) {
         <span [class]="labelClasses()">{{ label() }}</span>
       }
-      
+
       <span class="sr-only">{{ screenReaderText() }}</span>
     </div>
   `,
@@ -137,7 +138,7 @@ export class LoaderComponent {
     const baseClasses = 'relative';
     const sizeClasses = this.getRingSizeClasses();
     const colorClasses = this.getColorClasses();
-    
+
     return `${baseClasses} ${sizeClasses} ${colorClasses}`;
   });
 

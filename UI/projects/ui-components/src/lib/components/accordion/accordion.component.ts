@@ -11,6 +11,7 @@ export interface AccordionItem {
 
 @Component({
   selector: 'ui-accordion',
+  standalone: true,
   template: `
     <div [class]="accordionClasses()" role="tablist">
       @for (item of items(); track item.id) {
@@ -26,11 +27,11 @@ export interface AccordionItem {
               type="button"
               role="tab">
               <span class="flex-1 text-left">{{ item.title }}</span>
-              <svg 
+              <svg
                 [class]="getIconClasses(item.id)"
-                width="16" 
-                height="16" 
-                viewBox="0 0 16 16" 
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true">
@@ -73,7 +74,7 @@ export class AccordionComponent {
 
   protected accordionClasses = computed(() => {
     const baseClasses = 'ui-accordion border border-gray-200 rounded-md overflow-hidden';
-    
+
     const variants = {
       default: '',
       bordered: 'border-2',
@@ -86,7 +87,7 @@ export class AccordionComponent {
   protected getButtonClasses(item: AccordionItem): string {
     const baseClasses = 'w-full flex items-center justify-between p-4 text-left font-medium ui-transition-standard ui-focus-primary hover:bg-gray-50';
     const disabledClasses = item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
-    
+
     return `${baseClasses} ${disabledClasses}`;
   }
 
@@ -94,7 +95,7 @@ export class AccordionComponent {
     const isOpen = this.isExpanded(itemId);
     const baseClasses = 'overflow-hidden ui-transition-slow';
     const heightClasses = isOpen ? 'max-h-none opacity-100' : 'max-h-0 opacity-0';
-    
+
     return `${baseClasses} ${heightClasses}`;
   }
 
@@ -102,7 +103,7 @@ export class AccordionComponent {
     const isOpen = this.isExpanded(itemId);
     const baseClasses = 'transform ui-transition-fast';
     const rotationClasses = isOpen ? 'rotate-180' : 'rotate-0';
-    
+
     return `${baseClasses} ${rotationClasses}`;
   }
 
@@ -147,11 +148,11 @@ export class AccordionComponent {
    */
   expand(itemId: string): void {
     const currentExpanded = new Set(this.expandedItems());
-    
+
     if (!this.allowMultiple()) {
       currentExpanded.clear();
     }
-    
+
     currentExpanded.add(itemId);
     this.expandedItems.set(currentExpanded);
   }

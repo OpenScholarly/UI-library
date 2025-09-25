@@ -14,6 +14,7 @@ export type RadioOrientation = 'horizontal' | 'vertical';
 
 @Component({
   selector: 'ui-radio-group',
+  standalone: true,
   template: `
     <fieldset [class]="fieldsetClasses()">
       @if (legend()) {
@@ -24,13 +25,13 @@ export type RadioOrientation = 'horizontal' | 'vertical';
           }
         </legend>
       }
-      
+
       @if (description()) {
         <p [id]="descriptionId()" [class]="descriptionClasses()">
           {{ description() }}
         </p>
       }
-      
+
       <div [class]="radioGroupClasses()">
         @for (option of options(); track option.value) {
           <label [class]="getRadioWrapperClasses(option)">
@@ -46,18 +47,18 @@ export type RadioOrientation = 'horizontal' | 'vertical';
               (focus)="onFocus(option.value)"
               (blur)="onBlur()"
             />
-            
+
             <div [class]="getRadioClasses(option)">
               @if (selectedValue() === option.value) {
                 <div [class]="radioDotClasses()"></div>
               }
             </div>
-            
+
             <div class="flex-1 min-w-0">
               <span [class]="getLabelClasses(option)">
                 {{ option.label }}
               </span>
-              
+
               @if (option.description) {
                 <p [class]="getOptionDescriptionClasses(option)">
                   {{ option.description }}
@@ -67,7 +68,7 @@ export type RadioOrientation = 'horizontal' | 'vertical';
           </label>
         }
       </div>
-      
+
       @if (invalid() && errorMessage()) {
         <p [id]="errorId()" [class]="errorClasses()" role="alert">
           {{ errorMessage() }}
@@ -96,7 +97,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
   disabled = input(false);
   required = input(false);
   invalid = input(false);
-  
+
   // Outputs
   valueChanged = output<string | number>();
   focused = output<string | number>();
@@ -136,16 +137,16 @@ export class RadioGroupComponent implements ControlValueAccessor {
 
   protected radioGroupClasses = computed(() => {
     const baseClasses = 'flex';
-    const orientationClasses = this.orientation() === 'horizontal' 
-      ? 'flex-row space-x-4' 
+    const orientationClasses = this.orientation() === 'horizontal'
+      ? 'flex-row space-x-4'
       : 'flex-col space-y-3';
     return `${baseClasses} ${orientationClasses}`;
   });
 
   protected getRadioWrapperClasses(option: RadioOption): string {
     const baseClasses = 'flex items-start gap-2 cursor-pointer';
-    const disabledClasses = (this.disabled() || option.disabled) 
-      ? 'cursor-not-allowed opacity-50' 
+    const disabledClasses = (this.disabled() || option.disabled)
+      ? 'cursor-not-allowed opacity-50'
       : '';
     return `${baseClasses} ${disabledClasses}`.trim();
   }
@@ -156,7 +157,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
 
   protected getRadioClasses(option: RadioOption): string {
     const baseClasses = 'flex items-center justify-center rounded-full ui-transition-standard border-2';
-    
+
     const sizeClasses = {
       sm: 'w-4 h-4',
       md: 'w-5 h-5',
@@ -169,7 +170,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
       : this.getUnselectedClasses();
 
     const focusClasses = 'ui-focus-primary';
-    
+
     return `${baseClasses} ${sizeClasses[this.size()]} ${stateClasses} ${focusClasses}`;
   }
 
@@ -179,14 +180,14 @@ export class RadioGroupComponent implements ControlValueAccessor {
       md: 'w-2 h-2',
       lg: 'w-2.5 h-2.5'
     };
-    
+
     return `bg-white rounded-full ${sizeClasses[this.size()]}`;
   });
 
   protected getLabelClasses(option: RadioOption): string {
     const baseClasses = 'text-sm font-medium select-none';
     const colorClasses = (this.disabled() || option.disabled)
-      ? 'text-text-disabled' 
+      ? 'text-text-disabled'
       : 'text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   }
@@ -194,7 +195,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
   protected getOptionDescriptionClasses(option: RadioOption): string {
     const baseClasses = 'text-xs mt-1 select-none';
     const colorClasses = (this.disabled() || option.disabled)
-      ? 'text-text-disabled' 
+      ? 'text-text-disabled'
       : 'text-text-secondary';
     return `${baseClasses} ${colorClasses}`;
   }
@@ -217,8 +218,8 @@ export class RadioGroupComponent implements ControlValueAccessor {
 
   private getUnselectedClasses(): string {
     const baseClasses = 'bg-white';
-    const borderClasses = this.invalid() 
-      ? 'border-red-500' 
+    const borderClasses = this.invalid()
+      ? 'border-red-500'
       : 'border-gray-300 hover:border-gray-400';
     return `${baseClasses} ${borderClasses}`;
   }
@@ -237,7 +238,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
   // Event handlers
   protected onRadioChange(value: string | number): void {
     if (this.disabled()) return;
-    
+
     this.selectedValueState.set(value);
     this.valueChanged.emit(value);
     this.onChange(value);

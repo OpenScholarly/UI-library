@@ -6,6 +6,7 @@ export type TextVariant = 'body' | 'caption' | 'overline' | 'code';
 
 @Component({
   selector: 'ui-text',
+  standalone: true,
   template: `
     <span [class]="textClasses()">
       <ng-content />

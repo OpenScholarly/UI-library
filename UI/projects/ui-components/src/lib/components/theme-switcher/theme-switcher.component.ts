@@ -5,10 +5,11 @@ export type ThemeMode = 'system' | 'light' | 'dark';
 
 @Component({
   selector: 'ui-theme-switcher',
+  standalone: true,
   template: `
     <fieldset [class]="containerClasses()" [attr.data-small]="size() === 'sm' ? '' : null">
       <legend class="sr-only">Select a display theme:</legend>
-      
+
       <!-- System Theme Option -->
       <span class="h-full">
         <input
@@ -105,14 +106,14 @@ export class ThemeSwitcherComponent {
   systemLabel = input('System');
   lightLabel = input('Light');
   darkLabel = input('Dark');
-  
+
   themeChanged = output<ThemeMode>();
 
   private document = inject(DOCUMENT);
   private mediaQuery = this.document.defaultView?.matchMedia('(prefers-color-scheme: dark)');
-  
+
   protected currentTheme = signal<ThemeMode>('system');
-  
+
   // Generate unique IDs for radio buttons
   protected systemId = computed(() => `theme-switch-system-${Math.random().toString(36).substr(2, 9)}`);
   protected lightId = computed(() => `theme-switch-light-${Math.random().toString(36).substr(2, 9)}`);
@@ -123,14 +124,14 @@ export class ThemeSwitcherComponent {
   protected containerClasses = computed(() => {
     const baseClasses = 'border-0 rounded-full w-fit h-8 m-0 p-0 flex shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800';
     const sizeClasses = this.size() === 'sm' ? 'h-7' : 'h-8';
-    
+
     return `${baseClasses} ${sizeClasses}`;
   });
 
   protected buttonClasses = computed(() => {
     const baseClasses = 'cursor-pointer w-8 h-8 text-gray-600 dark:text-gray-400 bg-transparent rounded-full justify-center items-center m-0 flex relative transition-all duration-200';
     const sizeClasses = this.size() === 'sm' ? 'w-7 h-7' : 'w-8 h-8';
-    
+
     return `${baseClasses} ${sizeClasses} hover:text-gray-900 dark:hover:text-gray-100`;
   });
 
@@ -149,7 +150,7 @@ export class ThemeSwitcherComponent {
           this.applyTheme('system');
         }
       };
-      
+
       if (this.mediaQuery.addEventListener) {
         this.mediaQuery.addEventListener('change', handleSystemChange);
       } else {
@@ -168,11 +169,11 @@ export class ThemeSwitcherComponent {
 
   private applyTheme(theme: ThemeMode): void {
     const root = this.document.documentElement;
-    
+
     // Remove existing theme classes
     root.classList.remove('dark');
     root.removeAttribute('data-theme');
-    
+
     if (theme === 'dark') {
       root.classList.add('dark');
     } else if (theme === 'light') {
