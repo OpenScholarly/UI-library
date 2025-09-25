@@ -114,10 +114,10 @@ export class ThemeSwitcherComponent {
 
   protected currentTheme = signal<ThemeMode>('system');
 
-  // Generate unique IDs for radio buttons
-  protected systemId = computed(() => `theme-switch-system-${Math.random().toString(36).substr(2, 9)}`);
-  protected lightId = computed(() => `theme-switch-light-${Math.random().toString(36).substr(2, 9)}`);
-  protected darkId = computed(() => `theme-switch-dark-${Math.random().toString(36).substr(2, 9)}`);
+  // Generate unique IDs for radio buttons (generated once per instance)
+  protected readonly systemId = `theme-switch-system-${Math.random().toString(36).substr(2, 9)}`;
+  protected readonly lightId = `theme-switch-light-${Math.random().toString(36).substr(2, 9)}`;
+  protected readonly darkId = `theme-switch-dark-${Math.random().toString(36).substr(2, 9)}`;
 
   protected iconSize = computed(() => this.size() === 'sm' ? '14' : '16');
 
