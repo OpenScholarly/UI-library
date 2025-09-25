@@ -47,11 +47,14 @@ export * from './lib/components/slider/slider.component';
 export * from './lib/components/badge/badge.component';
 export * from './lib/components/avatar/avatar.component';
 export * from './lib/components/chip/chip.component';
+export * from './lib/components/table/table.component';
+export * from './lib/components/skeleton/skeleton.component';
 
 // Overlay components
 export * from './lib/components/modal/modal.component';
 export * from './lib/components/tooltip/tooltip.component';
 export * from './lib/components/toast/toast.component';
+export * from './lib/components/menu/menu.component';
 
 // Navigation components
 export * from './lib/components/tabs/tabs.component';
@@ -61,6 +64,9 @@ export * from './lib/components/pagination/pagination.component';
 // Feedback components
 export * from './lib/components/loader/loader.component';
 export * from './lib/components/progress/progress.component';
+
+// Utility components
+export * from './lib/components/theme-switcher/theme-switcher.component';
 
 // Design tokens and utilities
 export * from './lib/design-tokens';
