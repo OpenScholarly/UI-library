@@ -68,6 +68,18 @@ export * from './lib/components/progress/progress.component';
 // Utility components
 export * from './lib/components/theme-switcher/theme-switcher.component';
 
+// NEW COMPONENTS - Data Display & Content
+export * from './lib/components/feed/feed.component';
+export * from './lib/components/stats/stats.component';
+export * from './lib/components/timeline/timeline.component';
+export * from './lib/components/banner/banner.component';
+export * from './lib/components/carousel/carousel.component';
+
+// NEW COMPONENTS - Navigation
+export * from './lib/components/navbar/navbar.component';
+export * from './lib/components/command-menu/command-menu.component';
+export * from './lib/components/tree-view/tree-view.component';
+
 // Design tokens and utilities
 export * from './lib/design-tokens';
 export * from './lib/utilities';
