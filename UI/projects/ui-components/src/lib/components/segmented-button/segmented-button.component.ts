@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal, OnInit, effect } from '@angular/core';
 
 export interface SegmentedButtonOption {
   value: string;
@@ -43,11 +43,18 @@ export class SegmentedButtonComponent implements OnInit {
   valueChange = output<string>();
   selectionChange = output<SegmentedButtonOption | null>();
 
-  private selectedValue = signal(this.value());
+  private selectedValue = signal('');
+
+  constructor() {
+    // Sync internal state when input value changes
+    effect(() => {
+      this.selectedValue.set(this.value());
+    });
+  }
 
   protected containerClasses = computed(() => {
     const baseClasses = 'inline-flex rounded-md';
-    
+
     const variantClasses = {
       default: 'bg-gray-100 dark:bg-gray-800 p-1',
       filled: 'border border-gray-300 dark:border-gray-600 overflow-hidden rounded-md',
@@ -60,7 +67,7 @@ export class SegmentedButtonComponent implements OnInit {
 
   protected buttonClasses = (option: SegmentedButtonOption) => {
     const baseClasses = 'relative inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1';
-    
+
     const sizeClasses = {
       sm: 'px-3 py-1.5 text-sm rounded-sm',
       md: 'px-4 py-2 text-sm rounded-md',
@@ -72,7 +79,7 @@ export class SegmentedButtonComponent implements OnInit {
 
     let variantClasses = '';
     if (this.variant() === 'default') {
-      variantClasses = isSelected 
+      variantClasses = isSelected
         ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
         : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white';
     } else if (this.variant() === 'filled') {
@@ -85,8 +92,8 @@ export class SegmentedButtonComponent implements OnInit {
         : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700';
     }
 
-    const disabledClasses = isDisabled 
-      ? 'opacity-50 cursor-not-allowed pointer-events-none' 
+    const disabledClasses = isDisabled
+      ? 'opacity-50 cursor-not-allowed pointer-events-none'
       : 'cursor-pointer';
 
     const sizeClass = sizeClasses[this.size()];
@@ -103,11 +110,11 @@ export class SegmentedButtonComponent implements OnInit {
 
     const currentValue = this.selectedValue();
     const newValue = currentValue === value && this.allowEmpty() ? '' : value;
-    
+
     this.selectedValue.set(newValue);
-    
+
     const selectedOption = this.options().find(opt => opt.value === newValue) || null;
-    
+
     this.valueChange.emit(newValue);
     this.selectionChange.emit(selectedOption);
   }
