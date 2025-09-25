@@ -16,7 +16,7 @@ export interface CarouselItem {
     <div [class]="containerClasses()" [attr.aria-label]="ariaLabel() || 'Carousel'">
       <!-- Main carousel content -->
       <div class="relative overflow-hidden rounded-lg">
-        <div 
+        <div
           class="flex transition-transform duration-300 ease-in-out"
           [style.transform]="'translateX(-' + (currentIndex() * 100) + '%)'"
         >
@@ -24,8 +24,8 @@ export interface CarouselItem {
             <div class="w-full flex-shrink-0" [attr.aria-hidden]="index !== currentIndex()">
               @if (item.image) {
                 <div class="relative">
-                  <img 
-                    [src]="item.image" 
+                  <img
+                    [src]="item.image"
                     [alt]="item.title || 'Carousel item'"
                     [class]="imageClasses()"
                   >
@@ -64,7 +64,7 @@ export interface CarouselItem {
             </div>
           }
         </div>
-        
+
         <!-- Navigation arrows -->
         @if (showArrows() && items().length > 1) {
           <button
@@ -77,7 +77,7 @@ export interface CarouselItem {
           >
             <span class="text-lg">‹</span>
           </button>
-          
+
           <button
             type="button"
             class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 text-gray-900 dark:text-white shadow-lg hover:bg-white dark:hover:bg-gray-800 transition-colors"
@@ -90,7 +90,7 @@ export interface CarouselItem {
           </button>
         }
       </div>
-      
+
       <!-- Indicators -->
       @if (showIndicators() && items().length > 1) {
         <div class="flex justify-center gap-2 mt-4">
@@ -108,7 +108,7 @@ export interface CarouselItem {
           }
         </div>
       }
-      
+
       @if (items().length === 0) {
         <div class="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div class="text-6xl mb-4">🎠</div>
@@ -124,7 +124,7 @@ export interface CarouselItem {
 })
 export class CarouselComponent {
   private elementRef = inject(ElementRef);
-  
+
   items = input<CarouselItem[]>([]);
   autoplay = input<boolean>(false);
   autoplayInterval = input<number>(5000);
@@ -133,9 +133,9 @@ export class CarouselComponent {
   showIndicators = input<boolean>(true);
   aspectRatio = input<'16:9' | '4:3' | '1:1' | 'auto'>('16:9');
   ariaLabel = input<string>();
-  
-  onSlideChange = output<{ index: number; item: CarouselItem }>();
-  
+
+  slideChange = output<{ index: number; item: CarouselItem }>();
+
   currentIndex = signal(0);
   private autoplayTimer: number | null = null;
 
@@ -207,9 +207,9 @@ export class CarouselComponent {
 
   goToSlide(index: number) {
     if (index >= 0 && index < this.items().length) {
-      this.currentIndex.set(index);
-      const item = this.items()[index];
-      this.onSlideChange.emit({ index, item });
+  this.currentIndex.set(index);
+  const item = this.items()[index];
+  this.slideChange.emit({ index, item });
     }
   }
 

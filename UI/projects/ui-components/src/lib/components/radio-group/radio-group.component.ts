@@ -99,7 +99,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
   invalid = input(false);
 
   // Outputs
-  valueChanged = output<string | number>();
+  valueChange = output<string | number>();
   focused = output<string | number>();
   blurred = output<void>();
 
@@ -240,7 +240,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
     if (this.disabled()) return;
 
     this.selectedValueState.set(value);
-    this.valueChanged.emit(value);
+  this.valueChange.emit(value);
     this.onChange(value);
   }
 
@@ -281,7 +281,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
   clearSelection(): void {
     if (!this.disabled()) {
       this.selectedValueState.set(null);
-      this.valueChanged.emit(null as any);
+  this.valueChange.emit(null as any);
       this.onChange(null as any);
     }
   }

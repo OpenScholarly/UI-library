@@ -30,8 +30,8 @@ export interface FeedItem {
           <div class="flex items-center gap-3 mb-3">
             <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
               @if (item.author.avatar) {
-                <img 
-                  [src]="item.author.avatar" 
+                <img
+                  [src]="item.author.avatar"
                   [alt]="item.author.name"
                   class="w-full h-full object-cover"
                 >
@@ -55,12 +55,12 @@ export interface FeedItem {
           <!-- Content -->
           <div class="mb-4">
             <p class="text-gray-900 dark:text-white whitespace-pre-wrap">{{ item.content }}</p>
-            
+
             @if (item.images && item.images.length > 0) {
               <div class="mt-3 grid gap-2" [class]="getImageGridClass(item.images.length)">
                 @for (image of item.images; track image) {
-                  <img 
-                    [src]="image" 
+                  <img
+                    [src]="image"
                     alt="Post image"
                     class="rounded-lg object-cover w-full h-48"
                   >
@@ -71,54 +71,54 @@ export interface FeedItem {
 
           <!-- Actions -->
           <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-700">
-            <button 
+            <button
               type="button"
               class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
               [class.text-red-500]="item.isLiked"
               [class.dark:text-red-400]="item.isLiked"
-              (click)="onLike.emit(item.id)"
+              (click)="like.emit(item.id)"
             >
               <span class="text-lg">{{ item.isLiked ? '❤️' : '🤍' }}</span>
               @if (item.likes) {
                 <span>{{ item.likes }}</span>
               }
             </button>
-            
-            <button 
+
+            <button
               type="button"
               class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-              (click)="onComment.emit(item.id)"
+              (click)="comment.emit(item.id)"
             >
               <span class="text-lg">💬</span>
               @if (item.comments) {
                 <span>{{ item.comments }}</span>
               }
             </button>
-            
-            <button 
+
+            <button
               type="button"
               class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 transition-colors"
-              (click)="onShare.emit(item.id)"
+              (click)="share.emit(item.id)"
             >
               <span class="text-lg">🔄</span>
               @if (item.shares) {
                 <span>{{ item.shares }}</span>
               }
             </button>
-            
-            <button 
+
+            <button
               type="button"
               class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors ml-auto"
               [class.text-yellow-500]="item.isBookmarked"
               [class.dark:text-yellow-400]="item.isBookmarked"
-              (click)="onBookmark.emit(item.id)"
+              (click)="bookmark.emit(item.id)"
             >
               <span class="text-lg">{{ item.isBookmarked ? '🔖' : '📑' }}</span>
             </button>
           </div>
         </article>
       }
-      
+
       @if (items().length === 0) {
         <div class="text-center py-12">
           <div class="text-6xl mb-4">📰</div>
@@ -135,11 +135,11 @@ export interface FeedItem {
 export class FeedComponent {
   items = input<FeedItem[]>([]);
   variant = input<'default' | 'compact' | 'minimal'>('default');
-  
-  onLike = output<string>();
-  onComment = output<string>();
-  onShare = output<string>();
-  onBookmark = output<string>();
+
+  like = output<string>();
+  comment = output<string>();
+  share = output<string>();
+  bookmark = output<string>();
 
   containerClasses = computed(() => [
     'space-y-6',
@@ -177,7 +177,7 @@ export class FeedComponent {
     if (minutes < 60) return `${minutes}m`;
     if (hours < 24) return `${hours}h`;
     if (days < 7) return `${days}d`;
-    
+
     return timestamp.toLocaleDateString();
   }
 

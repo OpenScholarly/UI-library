@@ -32,7 +32,7 @@ export interface NavbarItem {
                 }
               </div>
             }
-            
+
             <!-- Desktop Navigation -->
             @if (items().length > 0) {
               <div class="hidden md:ml-6 md:flex md:space-x-8">
@@ -44,7 +44,7 @@ export interface NavbarItem {
                         type="button"
                         [class]="navItemClasses(item)"
                         [disabled]="item.disabled"
-                        (click)="onItemClick.emit(item)"
+                        (click)="itemClick.emit(item)"
                       >
                         @if (item.icon) {
                           <span class="mr-2">{{ item.icon }}</span>
@@ -71,7 +71,7 @@ export interface NavbarItem {
                           {{ item.label }}
                           <span class="ml-1 text-sm">{{ isDropdownOpen(item.id) ? '▲' : '▼' }}</span>
                         </button>
-                        
+
                         @if (isDropdownOpen(item.id)) {
                           <div class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 z-50">
                             @for (child of item.children; track child.id) {
@@ -81,7 +81,7 @@ export interface NavbarItem {
                                 [class.bg-gray-100]="child.active"
                                 [class.dark:bg-gray-700]="child.active"
                                 [disabled]="child.disabled"
-                                (click)="onItemClick.emit(child)"
+                                (click)="itemClick.emit(child)"
                               >
                                 @if (child.icon) {
                                   <span class="mr-2">{{ child.icon }}</span>
@@ -103,11 +103,11 @@ export interface NavbarItem {
               </div>
             }
           </div>
-          
+
           <!-- Right section - Actions -->
           <div class="flex items-center gap-4">
             <ng-content select="[slot=actions]"></ng-content>
-            
+
             <!-- Mobile menu button -->
             @if (items().length > 0) {
               <button
@@ -122,7 +122,7 @@ export interface NavbarItem {
           </div>
         </div>
       </div>
-      
+
       <!-- Mobile Navigation -->
       @if (mobileMenuOpen() && items().length > 0) {
         <div class="md:hidden border-t border-gray-200 dark:border-gray-700">
@@ -135,7 +135,7 @@ export interface NavbarItem {
                   [class.bg-gray-100]="item.active"
                   [class.dark:bg-gray-700]="item.active"
                   [disabled]="item.disabled"
-                  (click)="onItemClick.emit(item)"
+                  (click)="itemClick.emit(item)"
                 >
                   @if (item.icon) {
                     <span class="mr-2">{{ item.icon }}</span>
@@ -160,7 +160,7 @@ export interface NavbarItem {
                     {{ item.label }}
                     <span class="ml-1 text-sm">{{ isMobileDropdownOpen(item.id) ? '▲' : '▼' }}</span>
                   </button>
-                  
+
                   @if (isMobileDropdownOpen(item.id)) {
                     <div class="ml-4 mt-1 space-y-1">
                       @for (child of item.children; track child.id) {
@@ -170,7 +170,7 @@ export interface NavbarItem {
                           [class.bg-gray-100]="child.active"
                           [class.dark:bg-gray-700]="child.active"
                           [disabled]="child.disabled"
-                          (click)="onItemClick.emit(child)"
+                          (click)="itemClick.emit(child)"
                         >
                           @if (child.icon) {
                             <span class="mr-2">{{ child.icon }}</span>
@@ -203,10 +203,10 @@ export class NavbarComponent {
   items = input<NavbarItem[]>([]);
   variant = input<'default' | 'glass' | 'solid'>('default');
   sticky = input<boolean>(false);
-  
-  onItemClick = output<NavbarItem>();
-  onBrandClick = output<void>();
-  
+
+  itemClick = output<NavbarItem>();
+  brandClick = output<void>();
+
   mobileMenuOpen = signal(false);
   openDropdowns = signal<Set<string>>(new Set());
   openMobileDropdowns = signal<Set<string>>(new Set());

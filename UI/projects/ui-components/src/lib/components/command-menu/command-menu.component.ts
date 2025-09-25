@@ -19,11 +19,11 @@ export interface CommandItem {
     @if (isOpen()) {
       <div class="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">
         <!-- Backdrop -->
-        <div 
-          class="fixed inset-0 bg-black/50 backdrop-blur-sm" 
-          (click)="close()"
+        <div
+          class="fixed inset-0 bg-black/50 backdrop-blur-sm"
+          (click)="requestClose()"
         ></div>
-        
+
         <!-- Command menu -->
         <div [class]="menuClasses()" role="dialog" [attr.aria-label]="'Command menu'">
           <!-- Search input -->
@@ -50,7 +50,7 @@ export interface CommandItem {
               }
             </div>
           </div>
-          
+
           <!-- Results -->
           <div class="max-h-80 overflow-y-auto">
             @if (groupedResults().length > 0) {
@@ -113,7 +113,7 @@ export interface CommandItem {
               </div>
             }
           </div>
-          
+
           <!-- Footer -->
           <div class="border-t border-gray-200 dark:border-gray-700 px-4 py-3">
             <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
@@ -143,14 +143,14 @@ export interface CommandItem {
 })
 export class CommandMenuComponent {
   private elementRef = inject(ElementRef);
-  
+
   items = input<CommandItem[]>([]);
   isOpen = input<boolean>(false);
   placeholder = input<string>('Search commands...');
-  
-  onSelect = output<CommandItem>();
-  onClose = output<void>();
-  
+
+  select = output<CommandItem>();
+  close = output<void>();
+
   searchQuery = signal('');
   selectedIndex = signal(0);
 
@@ -189,8 +189,8 @@ export class CommandMenuComponent {
   filteredItems = computed(() => {
     const query = this.searchQuery().toLowerCase();
     if (!query) return this.items();
-    
-    return this.items().filter(item => 
+
+    return this.items().filter(item =>
       item.label.toLowerCase().includes(query) ||
       item.description?.toLowerCase().includes(query) ||
       item.group?.toLowerCase().includes(query)
@@ -200,7 +200,7 @@ export class CommandMenuComponent {
   groupedResults = computed(() => {
     const filtered = this.filteredItems();
     const groups = new Map<string, CommandItem[]>();
-    
+
     filtered.forEach(item => {
       const groupName = item.group || '';
       if (!groups.has(groupName)) {
@@ -208,7 +208,7 @@ export class CommandMenuComponent {
       }
       groups.get(groupName)!.push(item);
     });
-    
+
     return Array.from(groups.entries()).map(([name, items]) => ({
       name,
       items
@@ -223,7 +223,7 @@ export class CommandMenuComponent {
 
   onKeyDown(event: KeyboardEvent) {
     const results = this.groupedResults().flatMap(g => g.items);
-    
+
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
@@ -242,19 +242,19 @@ export class CommandMenuComponent {
         break;
       case 'Escape':
         event.preventDefault();
-        this.close();
+        this.requestClose();
         break;
     }
   }
 
   selectItem(item: CommandItem) {
     if (item.disabled) return;
-    
+
     if (item.action) {
       item.action();
     }
-    this.onSelect.emit(item);
-    this.close();
+    this.select.emit(item);
+    this.requestClose();
   }
 
   setSelectedIndex(index: number) {
@@ -266,11 +266,11 @@ export class CommandMenuComponent {
     this.selectedIndex.set(0);
   }
 
-  close() {
-    this.onClose.emit();
-  }
-
   parseShortcut(shortcut: string): string[] {
     return shortcut.split('+').map(key => key.trim());
+  }
+
+  requestClose() {
+    this.close.emit();
   }
 }

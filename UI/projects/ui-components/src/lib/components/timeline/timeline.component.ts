@@ -22,10 +22,10 @@ export interface TimelineItem {
     <div class="relative">
       <!-- Timeline line -->
       <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700"></div>
-      
+
       <div class="space-y-6">
         @for (item of items(); track item.id; let isLast = $last) {
-          <div class="relative flex items-start gap-4" (click)="onItemClick.emit(item.id)">
+          <div class="relative flex items-start gap-4" (click)="itemClick.emit(item.id)">
             <!-- Timeline marker -->
             <div [class]="markerClasses(item.status)">
               @if (item.icon) {
@@ -34,7 +34,7 @@ export interface TimelineItem {
                 <div class="w-1.5 h-1.5 rounded-full bg-current"></div>
               }
             </div>
-            
+
             <!-- Content -->
             <div [class]="contentClasses()" class="flex-1 min-w-0">
               <div class="flex items-start justify-between gap-4">
@@ -50,7 +50,7 @@ export interface TimelineItem {
                   @if (item.user) {
                     <div class="flex items-center gap-2 mt-2">
                       @if (item.user.avatar) {
-                        <img 
+                        <img
                           [src]="item.user.avatar"
                           [alt]="item.user.name"
                           class="w-4 h-4 rounded-full"
@@ -62,12 +62,12 @@ export interface TimelineItem {
                     </div>
                   }
                 </div>
-                
+
                 <time class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
                   {{ formatTime(item.timestamp) }}
                 </time>
               </div>
-              
+
               @if (item.metadata && showMetadata()) {
                 <div class="mt-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                   <div class="grid grid-cols-2 gap-2 text-xs">
@@ -84,7 +84,7 @@ export interface TimelineItem {
           </div>
         }
       </div>
-      
+
       @if (items().length === 0) {
         <div class="text-center py-12">
           <div class="text-6xl mb-4">📋</div>
@@ -103,8 +103,8 @@ export class TimelineComponent {
   variant = input<'default' | 'compact' | 'detailed'>('default');
   showMetadata = input<boolean>(false);
   clickable = input<boolean>(false);
-  
-  onItemClick = output<string>();
+
+  itemClick = output<string>();
 
   markerClasses = (status?: string) => [
     'flex items-center justify-center w-12 h-12 rounded-full border-4 border-white dark:border-gray-900 z-10',
@@ -145,7 +145,7 @@ export class TimelineComponent {
     if (minutes < 60) return `${minutes}m ago`;
     if (hours < 24) return `${hours}h ago`;
     if (days < 7) return `${days}d ago`;
-    
+
     return timestamp.toLocaleDateString();
   }
 
