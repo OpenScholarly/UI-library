@@ -6,11 +6,11 @@ export type LinkSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 @Component({
   selector: 'ui-link',
   template: `
-    <a 
+    <a
       [class]="linkClasses()"
       [href]="href()"
       [target]="target()"
-      [rel]="rel()"
+      [rel]="computedRel()"
       [attr.aria-disabled]="disabled()"
       (click)="handleClick($event)">
       <ng-content />
@@ -29,6 +29,24 @@ export class LinkComponent {
   external = input(false);
 
   clicked = output<Event>();
+
+  protected computedRel = computed(() => {
+    const userRel = this.rel();
+    const isBlankTarget = this.target() === '_blank';
+
+    // If user provided rel, use it as-is
+    if (userRel) {
+      return userRel;
+    }
+
+    // If target is _blank and no rel provided, apply security defaults
+    if (isBlankTarget) {
+      return 'noopener noreferrer';
+    }
+
+    // For other targets or when rel is explicitly empty, return empty string
+    return '';
+  });
 
   protected linkClasses = computed(() => {
     const baseClasses = 'ui-transition-standard ui-focus-primary';
@@ -57,12 +75,12 @@ export class LinkComponent {
       always: 'underline'
     };
 
-    const disabledClasses = this.disabled() 
-      ? 'opacity-50 cursor-not-allowed pointer-events-none' 
+    const disabledClasses = this.disabled()
+      ? 'opacity-50 cursor-not-allowed pointer-events-none'
       : '';
 
-    const externalClasses = this.external() 
-      ? 'inline-flex items-center gap-1' 
+    const externalClasses = this.external()
+      ? 'inline-flex items-center gap-1'
       : '';
 
     const variantClass = variantClasses[this.variant()];
