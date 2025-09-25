@@ -18,12 +18,12 @@
     <!-- New Components Section -->
     <div class="mb-12">
       <ui-heading level="h2" size="2xl" color="primary" class="mb-8">New Components</ui-heading>
-      
+
       <!-- Layout Components Demo -->
       <ui-card class="mb-8">
         <div class="p-6">
           <ui-heading level="h3" size="lg" color="primary" class="mb-4">Layout Components</ui-heading>
-          
+
           <div class="space-y-6">
             <!-- Container Demo -->
             <div>
@@ -82,7 +82,7 @@
       <ui-card class="mb-8">
         <div class="p-6">
           <ui-heading level="h3" size="lg" color="primary" class="mb-4">Typography</ui-heading>
-          
+
           <div class="space-y-4">
             <!-- Headings -->
             <div>
@@ -166,7 +166,7 @@
                 <div>
                   <ui-text variant="caption" class="mb-1">Images</ui-text>
                   <div class="flex gap-4">
-                    <ui-image 
+                    <ui-image
                       src="https://picsum.photos/100/100?random=1"
                       alt="Sample image"
                       width="100"
@@ -174,7 +174,7 @@
                       rounded="md"
                       class="w-24 h-24">
                     </ui-image>
-                    <ui-image 
+                    <ui-image
                       src="https://picsum.photos/100/100?random=2"
                       alt="Rounded image"
                       width="100"
@@ -209,7 +209,7 @@
 
     <!-- Component Showcase Grid -->
     <ui-grid cols="3" gap="lg" [responsive]="true">
-      
+
       <!-- Buttons Section -->
       <ui-card>
         <div class="p-6">
@@ -253,7 +253,7 @@
                   <ui-button variant="outline" size="sm">Center</ui-button>
                   <ui-button variant="outline" size="sm">Right</ui-button>
                 </ui-button-group>
-                
+
                 <!-- Spaced group -->
                 <ui-button-group orientation="horizontal" spacing="sm">
                   <ui-button variant="primary" size="sm">Action</ui-button>
@@ -280,8 +280,8 @@
             <div>
               <ui-text weight="semibold" class="mb-2">Segmented Button</ui-text>
               <div class="space-y-3">
-                <ui-segmented-button 
-                  [options]="segmentedOptions()" 
+                <ui-segmented-button
+                  [options]="segmentedOptions()"
                   value="list"
                   (valueChange)="onSegmentedChange($event)"
                   size="md">
@@ -295,7 +295,7 @@
             <div>
               <ui-text weight="semibold" class="mb-2">Split Button</ui-text>
               <div class="space-y-3">
-                <ui-split-button 
+                <ui-split-button
                   mainLabel="Save Document"
                   mainIcon="💾"
                   [actions]="splitButtonActions()"
@@ -318,7 +318,7 @@
             <!-- Autocomplete -->
             <div>
               <ui-text weight="semibold" class="mb-2">Autocomplete</ui-text>
-              <ui-autocomplete 
+              <ui-autocomplete
                 [options]="autocompleteOptions()"
                 placeholder="Search frameworks..."
                 size="md"
@@ -332,7 +332,7 @@
             <!-- Search -->
             <div>
               <ui-text weight="semibold" class="mb-2">Search</ui-text>
-              <ui-search 
+              <ui-search
                 placeholder="Search components..."
                 [results]="searchResults()"
                 [recentSearches]="['Button', 'Input', 'Modal']"
@@ -351,15 +351,15 @@
         <div class="p-6">
           <ui-heading level="h3" size="lg" color="primary" class="mb-4">Layout Component</ui-heading>
           <ui-text color="secondary" class="mb-4">Complete application layout with navbar, sidebar, and main content</ui-text>
-          
+
           <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden" style="height: 400px;">
-            <ui-layout 
+            <ui-layout
               [navigationItems]="navigationItems()"
               sidebarTitle="Navigation"
               activeNavItemId="components"
               sidebarBehavior="fixed"
               (navItemClicked)="onNavItemClicked($event)">
-              
+
               <!-- Navbar Brand -->
               <div slot="navbar-brand" class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-primary-500 rounded flex items-center justify-center text-white font-bold">UI</div>
@@ -376,7 +376,7 @@
               <div class="p-6">
                 <ui-heading level="h4" size="xl" class="mb-4">Main Content Area</ui-heading>
                 <ui-text>This is the main content area of the application. It automatically adjusts based on the sidebar state and provides a responsive layout.</ui-text>
-                
+
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <ui-card variant="outlined" class="p-4">
                     <ui-text weight="semibold" class="mb-2">Feature 1</ui-text>
@@ -407,14 +407,14 @@
               placeholder="Enter your name"
               size="sm">
             </ui-input>
-            
+
             <ui-select
               label="Country"
               placeholder="Select a country"
               [options]="selectOptions()"
               size="sm">
             </ui-select>
-            
+
             <ui-checkbox
               label="Subscribe to updates"
               description="Get notified about new features">
@@ -489,13 +489,13 @@
         <div class="p-6">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Navigation</h3>
           <div class="space-y-4">
-            <ui-breadcrumbs 
+            <ui-breadcrumbs
               [items]="breadcrumbItems()"
               size="sm">
             </ui-breadcrumbs>
-            
+
             <ui-tabs [tabs]="tabItems()" variant="pills" size="sm" (tabChanged)="onTabChange($event)"></ui-tabs>
-            
+
             <ui-pagination
               [currentPage]="currentPage()"
               [totalItems]="100"
@@ -514,11 +514,11 @@
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Interactive</h3>
           <div class="space-y-4">
             <ui-button (clicked)="openModal()">Open Modal</ui-button>
-            
+
             <ui-tooltip content="This is a helpful tooltip!">
               <ui-button variant="outline">Hover for Tooltip</ui-button>
             </ui-tooltip>
-            
+
             <ui-button (clicked)="showToastNotification()">Show Toast</ui-button>
 
             <div class="flex items-center space-x-4">
@@ -535,7 +535,7 @@
     <!-- Accordion Section -->
     <div class="mt-12">
       <ui-heading level="h2" size="2xl" color="primary" class="mb-6">Key Features</ui-heading>
-      <ui-accordion 
+      <ui-accordion
         [items]="accordionItems()">
       </ui-accordion>
     </div>
@@ -545,12 +545,12 @@
       <div class="p-6">
         <ui-heading level="h3" size="lg" color="primary" class="mb-4">New Components Showcase</ui-heading>
         <div class="space-y-8">
-          
+
           <!-- Theme Switcher -->
           <div>
             <ui-text weight="semibold" class="mb-3">Theme Switcher</ui-text>
             <div class="flex items-center gap-4">
-              <ui-theme-switcher 
+              <ui-theme-switcher
                 size="md"
                 (themeChanged)="onThemeChanged($event)">
               </ui-theme-switcher>
@@ -563,7 +563,7 @@
           <!-- Table / Data Grid -->
           <div>
             <ui-text weight="semibold" class="mb-3">Table / Data Grid</ui-text>
-            <ui-table 
+            <ui-table
               [columns]="tableColumns()"
               [data]="tableData()"
               variant="striped"
@@ -581,7 +581,7 @@
           <div>
             <ui-text weight="semibold" class="mb-3">Menu / Dropdown</ui-text>
             <div class="flex gap-4">
-              <ui-menu 
+              <ui-menu
                 [items]="menuItems()"
                 trigger="click"
                 placement="bottom-start"
@@ -590,8 +590,8 @@
                   Actions ⌄
                 </ui-button>
               </ui-menu>
-              
-              <ui-menu 
+
+              <ui-menu
                 [items]="menuItems()"
                 trigger="hover"
                 placement="bottom-start"
@@ -631,12 +631,12 @@
     <!-- ADVANCED COMPONENTS SHOWCASE -->
     <div class="mb-12">
       <ui-heading level="h2" size="2xl" color="primary" class="mb-8">🔥 Advanced Components</ui-heading>
-      
+
       <!-- Navigation & Interface -->
       <ui-card class="mb-8">
         <div class="p-6">
           <ui-heading level="h3" size="lg" color="primary" class="mb-6">Navigation & Interface</ui-heading>
-          
+
           <!-- Navbar Demo -->
           <div class="mb-8">
             <ui-text weight="semibold" class="mb-3">Navbar</ui-text>
@@ -678,7 +678,7 @@
       <ui-card class="mb-8">
         <div class="p-6">
           <ui-heading level="h3" size="lg" color="primary" class="mb-6">Content & Data Display</ui-heading>
-          
+
           <!-- Feed Component -->
           <div class="mb-8">
             <ui-text weight="semibold" class="mb-3">Social Feed</ui-text>
@@ -726,14 +726,14 @@
                 (action)="onBannerAction($event)"
                 (dismiss)="onBannerDismiss()">
               </ui-banner>
-              
+
               <ui-banner
                 message="This is a success banner with automatic dismiss."
                 icon="✅"
                 variant="success"
                 size="sm">
               </ui-banner>
-              
+
               <ui-banner
                 title="Important Update"
                 message="Please update to the latest version for security improvements."

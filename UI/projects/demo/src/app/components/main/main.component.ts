@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { 
+import {
   ButtonComponent, CardComponent, AccordionComponent, FooterComponent,
-  InputComponent, BadgeComponent, ModalComponent, 
+  InputComponent, BadgeComponent, ModalComponent,
   TooltipComponent, CheckboxComponent, RadioGroupComponent, SelectComponent,
   ToggleComponent, LoaderComponent, ProgressComponent,
   BreadcrumbsComponent, PaginationComponent, TextareaComponent,
@@ -25,7 +25,7 @@ import {
   imports: [
     ReactiveFormsModule,
     ButtonComponent, CardComponent, AccordionComponent, FooterComponent,
-    InputComponent, BadgeComponent, ModalComponent, 
+    InputComponent, BadgeComponent, ModalComponent,
     TooltipComponent, CheckboxComponent, RadioGroupComponent, SelectComponent,
     ToggleComponent, LoaderComponent, ProgressComponent,
     BreadcrumbsComponent, PaginationComponent, TextareaComponent,
@@ -371,9 +371,9 @@ export class MainComponent {
     { id: 'edit', label: 'Edit', icon: '✏️' },
     { id: 'copy', label: 'Copy', icon: '📋' },
     { id: 'separator1', label: '', separator: true },
-    { 
-      id: 'share', 
-      label: 'Share', 
+    {
+      id: 'share',
+      label: 'Share',
       icon: '🔗',
       children: [
         { id: 'email', label: 'Email', icon: '📧' },
@@ -457,7 +457,7 @@ export class MainComponent {
     console.log('Theme changed to:', theme);
   }
 
-  onRadioGroupChange(value: string) {
+  onRadioGroupChange(value: string | number) {
     console.log('Radio group value changed to:', value);
   }
 
@@ -465,9 +465,9 @@ export class MainComponent {
   // Feed handlers
   onFeedLike(itemId: string) {
     console.log('Liked item:', itemId);
-    this.feedItems.update(items => 
-      items.map(item => 
-        item.id === itemId 
+    this.feedItems.update(items =>
+      items.map(item =>
+        item.id === itemId
           ? { ...item, isLiked: !item.isLiked, likes: (item.likes || 0) + (item.isLiked ? -1 : 1) }
           : item
       )
@@ -484,9 +484,9 @@ export class MainComponent {
 
   onFeedBookmark(itemId: string) {
     console.log('Bookmark item:', itemId);
-    this.feedItems.update(items => 
-      items.map(item => 
-        item.id === itemId 
+    this.feedItems.update(items =>
+      items.map(item =>
+        item.id === itemId
           ? { ...item, isBookmarked: !item.isBookmarked }
           : item
       )

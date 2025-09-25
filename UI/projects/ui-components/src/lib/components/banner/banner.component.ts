@@ -18,7 +18,7 @@ export interface BannerAction {
             <span class="text-lg">{{ icon() }}</span>
           </div>
         }
-        
+
         <div class="flex-1 min-w-0">
           @if (title()) {
             <h3 [class]="titleClasses()">
@@ -30,7 +30,7 @@ export interface BannerAction {
               {{ message() }}
             </p>
           }
-          
+
           @if (actions() && actions().length > 0) {
             <div class="flex items-center gap-3 mt-3">
               @for (action of actions(); track action.label) {
@@ -45,12 +45,12 @@ export interface BannerAction {
             </div>
           }
         </div>
-        
+
         @if (dismissible()) {
           <button
             type="button"
             class="flex-shrink-0 p-1 text-current hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors"
-            (click)="onDismiss.emit()"
+            (click)="dismiss.emit()"
             [attr.aria-label]="dismissLabel() || 'Dismiss banner'"
           >
             <span class="text-lg">✕</span>
@@ -72,9 +72,9 @@ export class BannerComponent {
   dismissible = input<boolean>(false);
   dismissLabel = input<string>();
   actions = input<BannerAction[]>([]);
-  
-  onDismiss = output<void>();
-  onAction = output<BannerAction>();
+
+  dismiss = output<void>();
+  action = output<BannerAction>();
 
   containerClasses = computed(() => [
     'px-4 py-3 rounded-lg border transition-colors',
@@ -181,6 +181,6 @@ export class BannerComponent {
     if (action.handler) {
       action.handler();
     }
-    this.onAction.emit(action);
+    this.action.emit(action);
   }
 }
