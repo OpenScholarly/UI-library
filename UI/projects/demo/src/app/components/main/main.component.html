@@ -130,25 +130,23 @@
               <div class="space-y-4">
                 <!-- Icons -->
                 <div>
-                  <ui-text variant="caption" class="mb-1">Icons (placeholder)</ui-text>
+                  <ui-text variant="caption" class="mb-1">Icons</ui-text>
                   <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2">
-                      <div class="w-4 h-4 bg-gray-400 rounded-full flex items-center justify-center">
-                        <ui-text size="xs" color="primary">✓</ui-text>
-                      </div>
+                      <ui-icon size="sm" color="primary">✓</ui-icon>
                       <ui-text size="sm">Check Icon</ui-text>
                     </div>
                     <div class="flex items-center gap-2">
-                      <div class="w-5 h-5 bg-primary-100 rounded-full flex items-center justify-center">
-                        <ui-text size="sm" color="primary">⏰</ui-text>
-                      </div>
+                      <ui-icon size="md" color="secondary">⏰</ui-icon>
                       <ui-text size="sm">Clock Icon</ui-text>
                     </div>
                     <div class="flex items-center gap-2">
-                      <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                        <ui-text size="md" color="success">✅</ui-text>
-                      </div>
+                      <ui-icon size="lg" color="success">✅</ui-icon>
                       <ui-text size="sm">Success Icon</ui-text>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <ui-icon size="xl" color="error">❌</ui-icon>
+                      <ui-text size="sm">Error Icon</ui-text>
                     </div>
                   </div>
                 </div>
@@ -421,6 +419,15 @@
               label="Subscribe to updates"
               description="Get notified about new features">
             </ui-checkbox>
+
+            <ui-radio-group
+              name="rating"
+              label="Rate your experience"
+              description="How would you rate our component library?"
+              [options]="radioOptions()"
+              value="good"
+              (valueChange)="onRadioGroupChange($event)">
+            </ui-radio-group>
 
             <ui-toggle
               label="Enable notifications">
