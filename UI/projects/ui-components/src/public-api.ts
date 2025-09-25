@@ -9,6 +9,17 @@ export * from './lib/components/card/card.component';
 export * from './lib/components/accordion/accordion.component';
 export * from './lib/components/footer/footer.component';
 
+// Layout components
+export * from './lib/components/container/container.component';
+export * from './lib/components/grid/grid.component';
+export * from './lib/components/grid/row.component';
+export * from './lib/components/grid/column.component';
+export * from './lib/components/divider/divider.component';
+
+// Typography components
+export * from './lib/components/typography/heading.component';
+export * from './lib/components/typography/text.component';
+
 // Form components
 export * from './lib/components/input/input.component';
 export * from './lib/components/checkbox/checkbox.component';
