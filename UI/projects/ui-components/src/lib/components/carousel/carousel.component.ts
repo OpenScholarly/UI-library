@@ -207,9 +207,9 @@ export class CarouselComponent {
 
   goToSlide(index: number) {
     if (index >= 0 && index < this.items().length) {
-  this.currentIndex.set(index);
-  const item = this.items()[index];
-  this.slideChange.emit({ index, item });
+      this.currentIndex.set(index);
+      const item = this.items()[index];
+      this.slideChange.emit({ index, item });
     }
   }
 
