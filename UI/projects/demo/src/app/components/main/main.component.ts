@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { 
   ButtonComponent, CardComponent, AccordionComponent, FooterComponent,
   InputComponent, BadgeComponent, ModalComponent, 
-  TooltipComponent, CheckboxComponent, SelectComponent,
+  TooltipComponent, CheckboxComponent, RadioGroupComponent, SelectComponent,
   ToggleComponent, LoaderComponent, ProgressComponent,
   BreadcrumbsComponent, PaginationComponent, TextareaComponent,
   ChipComponent, ToastComponent, SliderComponent, AvatarComponent, TabsComponent,
@@ -17,7 +17,7 @@ import {
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
-  type BannerAction, type CarouselItem, type NavbarItem, type CommandItem, type TreeNode
+  type BannerAction, type CarouselItem, type NavbarItem, type CommandItem, type TreeNode, type RadioOption
 } from 'ui-components';
 
 @Component({
@@ -26,7 +26,7 @@ import {
     ReactiveFormsModule,
     ButtonComponent, CardComponent, AccordionComponent, FooterComponent,
     InputComponent, BadgeComponent, ModalComponent, 
-    TooltipComponent, CheckboxComponent, SelectComponent,
+    TooltipComponent, CheckboxComponent, RadioGroupComponent, SelectComponent,
     ToggleComponent, LoaderComponent, ProgressComponent,
     BreadcrumbsComponent, PaginationComponent, TextareaComponent,
     ChipComponent, ToastComponent, SliderComponent, AvatarComponent, TabsComponent,
@@ -234,6 +234,13 @@ export class MainComponent {
     { value: 'uk', label: 'United Kingdom' },
     { value: 'fr', label: 'France' },
     { value: 'de', label: 'Germany' }
+  ]);
+
+  radioOptions = signal<RadioOption[]>([
+    { value: 'poor', label: 'Poor', description: 'Needs significant improvement' },
+    { value: 'fair', label: 'Fair', description: 'Could be better' },
+    { value: 'good', label: 'Good', description: 'Meets expectations' },
+    { value: 'excellent', label: 'Excellent', description: 'Exceeds expectations' }
   ]);
 
   breadcrumbItems = signal<BreadcrumbItem[]>([
@@ -448,6 +455,10 @@ export class MainComponent {
 
   onThemeChanged(theme: ThemeMode) {
     console.log('Theme changed to:', theme);
+  }
+
+  onRadioGroupChange(value: string) {
+    console.log('Radio group value changed to:', value);
   }
 
   // NEW COMPONENT EVENT HANDLERS
