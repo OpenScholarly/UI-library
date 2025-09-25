@@ -256,7 +256,7 @@ interface ThemeConfig {
 - [ ] Swap (icon/text/hamburger)
 - [ ] Diff (image, text)
 - [ ] Rating
-- [ ] Link (advanced states/variants)
+- [x] Link (advanced states/variants)
 
 
 
