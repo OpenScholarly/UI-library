@@ -6,6 +6,7 @@ export type ToggleVariant = 'default' | 'primary' | 'success' | 'warning' | 'dan
 
 @Component({
   selector: 'ui-toggle',
+  standalone: true,
   template: `
     <div [class]="wrapperClasses()">
       <label [class]="labelWrapperClasses()">
@@ -22,7 +23,7 @@ export type ToggleVariant = 'default' | 'primary' | 'success' | 'warning' | 'dan
           (focus)="onFocus()"
           (blur)="onBlur()"
         />
-        
+
         <div [class]="toggleTrackClasses()">
           <div [class]="toggleThumbClasses()">
             @if (showIcons()) {
@@ -36,7 +37,7 @@ export type ToggleVariant = 'default' | 'primary' | 'success' | 'warning' | 'dan
             }
           </div>
         </div>
-        
+
         @if (label()) {
           <span [class]="labelClasses()">
             {{ label() }}
@@ -46,13 +47,13 @@ export type ToggleVariant = 'default' | 'primary' | 'success' | 'warning' | 'dan
           </span>
         }
       </label>
-      
+
       @if (description()) {
         <p [id]="descriptionId()" [class]="descriptionClasses()">
           {{ description() }}
         </p>
       }
-      
+
       @if (invalid() && errorMessage()) {
         <p [id]="errorId()" [class]="errorClasses()" role="alert">
           {{ errorMessage() }}
@@ -80,7 +81,7 @@ export class ToggleComponent implements ControlValueAccessor {
   required = input(false);
   invalid = input(false);
   showIcons = input(false);
-  
+
   // Outputs
   toggled = output<boolean>();
   focused = output<void>();
@@ -121,7 +122,7 @@ export class ToggleComponent implements ControlValueAccessor {
 
   protected toggleTrackClasses = computed(() => {
     const baseClasses = 'relative inline-flex items-center rounded-full ui-transition-standard ui-focus-primary';
-    
+
     const sizeClasses = {
       sm: 'h-5 w-9',
       md: 'h-6 w-11',
@@ -131,13 +132,13 @@ export class ToggleComponent implements ControlValueAccessor {
     const stateClasses = this.checked()
       ? this.getCheckedTrackClasses()
       : this.getUncheckedTrackClasses();
-    
+
     return `${baseClasses} ${sizeClasses[this.size()]} ${stateClasses}`;
   });
 
   protected toggleThumbClasses = computed(() => {
     const baseClasses = 'absolute flex items-center justify-center bg-white rounded-full shadow-sm ui-transition-transform';
-    
+
     const sizeClasses = {
       sm: 'h-4 w-4',
       md: 'h-5 w-5',
@@ -147,7 +148,7 @@ export class ToggleComponent implements ControlValueAccessor {
     const positionClasses = this.checked()
       ? this.getCheckedThumbPosition()
       : 'translate-x-0.5';
-    
+
     return `${baseClasses} ${sizeClasses[this.size()]} ${positionClasses}`;
   });
 
@@ -157,18 +158,18 @@ export class ToggleComponent implements ControlValueAccessor {
       md: 'w-3 h-3',
       lg: 'w-3.5 h-3.5'
     };
-    
-    const colorClasses = this.checked() 
-      ? 'text-white' 
+
+    const colorClasses = this.checked()
+      ? 'text-white'
       : 'text-gray-400';
-    
+
     return `${sizeClasses[this.size()]} ${colorClasses}`;
   });
 
   protected labelClasses = computed(() => {
     const baseClasses = 'text-sm font-medium select-none';
-    const colorClasses = this.disabled() 
-      ? 'text-text-disabled' 
+    const colorClasses = this.disabled()
+      ? 'text-text-disabled'
       : 'text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });

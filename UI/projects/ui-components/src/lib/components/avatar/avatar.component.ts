@@ -6,6 +6,7 @@ export type AvatarStatus = 'online' | 'offline' | 'away' | 'busy' | 'dnd';
 
 @Component({
   selector: 'ui-avatar',
+  standalone: true,
   template: `
     <div [class]="wrapperClasses()">
       <div [class]="avatarClasses()" [attr.aria-label]="getAriaLabel()">
@@ -28,13 +29,13 @@ export type AvatarStatus = 'online' | 'offline' | 'away' | 'busy' | 'dnd';
           </svg>
         }
       </div>
-      
+
       @if (status()) {
         <div [class]="statusClasses()" [attr.aria-label]="getStatusLabel()">
           <div [class]="statusDotClasses()"></div>
         </div>
       }
-      
+
       @if (badge()) {
         <div [class]="badgeClasses()">
           {{ badge() }}
@@ -62,7 +63,7 @@ export class AvatarComponent {
 
   protected avatarClasses = computed(() => {
     const baseClasses = 'flex items-center justify-center overflow-hidden bg-gray-100 text-gray-600';
-    
+
     const sizeClasses = {
       xs: 'w-6 h-6 text-xs',
       sm: 'w-8 h-8 text-sm',
@@ -111,7 +112,7 @@ export class AvatarComponent {
 
   protected statusClasses = computed(() => {
     const baseClasses = 'absolute flex items-center justify-center bg-white rounded-full';
-    
+
     const positionClasses = {
       xs: 'w-2 h-2 -bottom-0 -right-0',
       sm: 'w-2.5 h-2.5 -bottom-0 -right-0',
@@ -126,7 +127,7 @@ export class AvatarComponent {
 
   protected statusDotClasses = computed(() => {
     const baseClasses = 'rounded-full';
-    
+
     const sizeClasses = {
       xs: 'w-1 h-1',
       sm: 'w-1.5 h-1.5',
@@ -151,7 +152,7 @@ export class AvatarComponent {
 
   protected badgeClasses = computed(() => {
     const baseClasses = 'absolute flex items-center justify-center bg-red-500 text-white text-xs font-medium rounded-full min-w-0';
-    
+
     const positionClasses = {
       xs: 'w-4 h-4 -top-1 -right-1',
       sm: 'w-4 h-4 -top-1 -right-1',
@@ -166,12 +167,12 @@ export class AvatarComponent {
 
   protected getInitials(): string {
     if (!this.name()) return '';
-    
+
     const names = this.name().trim().split(' ');
     if (names.length === 1) {
       return names[0].charAt(0).toUpperCase();
     }
-    
+
     return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
   }
 
@@ -193,7 +194,7 @@ export class AvatarComponent {
       busy: 'Busy',
       dnd: 'Do not disturb'
     };
-    
+
     return this.status() ? statusLabels[this.status()!] : '';
   }
 

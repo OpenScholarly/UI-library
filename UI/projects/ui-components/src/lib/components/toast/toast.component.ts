@@ -19,6 +19,7 @@ export interface ToastData {
 
 @Component({
   selector: 'ui-toast',
+  standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -106,7 +107,7 @@ export interface ToastData {
       <!-- Progress Bar -->
       @if (!persistent() && showProgress()) {
         <div class="ui-toast__progress absolute bottom-0 left-0 right-0 h-1 bg-black/10 dark:bg-white/10">
-          <div 
+          <div
             class="ui-toast__progress-bar h-full transition-all duration-100 ease-linear"
             [class]="getProgressBarClasses()"
             [style.width.%]="progressPercentage()">
@@ -178,7 +179,7 @@ export class ToastComponent implements OnInit, OnDestroy {
 
   private startDismissTimer(): void {
     this.startTime = Date.now();
-    
+
     if (this.showProgress()) {
       this.startProgressTimer();
     }
@@ -190,12 +191,12 @@ export class ToastComponent implements OnInit, OnDestroy {
 
   private startProgressTimer(): void {
     const duration = this.duration();
-    
+
     this.progressInterval = window.setInterval(() => {
       const elapsed = Date.now() - this.startTime;
       const percentage = Math.max(0, 100 - (elapsed / duration) * 100);
       this.progressPercentage.set(percentage);
-      
+
       if (percentage <= 0) {
         this.clearProgressTimer();
       }
@@ -290,7 +291,7 @@ export class ToastComponent implements OnInit, OnDestroy {
 
   getMessageClasses(): string {
     const classes = ['text-gray-500', 'dark:text-gray-400'];
-    
+
     if (!this.title()) {
       classes.push('text-gray-900', 'dark:text-white');
     }

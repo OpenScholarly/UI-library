@@ -3,5 +3,7 @@
   "dest": "../../dist/ui-components",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "assets": [
+  ]
 }

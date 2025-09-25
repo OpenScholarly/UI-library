@@ -4,6 +4,7 @@ export type CardVariant = 'default' | 'elevated' | 'outlined' | 'glass';
 
 @Component({
   selector: 'ui-card',
+  standalone: true,
   template: `
     <div [class]="cardClasses()">
       <ng-content />

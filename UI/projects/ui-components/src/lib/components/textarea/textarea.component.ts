@@ -7,10 +7,11 @@ export type TextareaResize = 'none' | 'vertical' | 'horizontal' | 'both';
 
 @Component({
   selector: 'ui-textarea',
+  standalone: true,
   template: `
     <div [class]="wrapperClasses()">
       @if (label()) {
-        <label 
+        <label
           [for]="textareaId()"
           [class]="labelClasses()">
           {{ label() }}
@@ -19,7 +20,7 @@ export type TextareaResize = 'none' | 'vertical' | 'horizontal' | 'both';
           }
         </label>
       }
-      
+
       <div [class]="textareaContainerClasses()">
         <textarea
           #textareaElement
@@ -41,20 +42,20 @@ export type TextareaResize = 'none' | 'vertical' | 'horizontal' | 'both';
           (keydown)="onKeyDown($event)"
           (paste)="onPaste($event)"
         ></textarea>
-        
+
         @if (showCharacterCount() && maxlength()) {
           <div [class]="characterCountClasses()">
             {{ currentLength() }}/{{ maxlength() }}
           </div>
         }
       </div>
-      
+
       @if (helperText() && !invalid()) {
         <p [id]="helperId()" [class]="helperTextClasses()">
           {{ helperText() }}
         </p>
       }
-      
+
       @if (invalid() && errorMessage()) {
         <p [id]="errorId()" [class]="errorTextClasses()" role="alert">
           {{ errorMessage() }}
@@ -87,7 +88,7 @@ export class TextareaComponent implements ControlValueAccessor {
   autoResize = input(false);
   showCharacterCount = input(false);
   fullWidth = input(true);
-  
+
   // HTML textarea attributes
   rows = input<number>(4);
   cols = input<number>();
@@ -131,8 +132,8 @@ export class TextareaComponent implements ControlValueAccessor {
 
   protected labelClasses = computed(() => {
     const baseClasses = 'block text-sm font-medium mb-1';
-    const colorClasses = this.disabled() 
-      ? 'text-text-disabled' 
+    const colorClasses = this.disabled()
+      ? 'text-text-disabled'
       : 'text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });
@@ -143,7 +144,7 @@ export class TextareaComponent implements ControlValueAccessor {
 
   protected textareaClasses = computed(() => {
     const baseClasses = 'ui-focus-primary ui-transition-standard w-full';
-    
+
     const sizeClasses = {
       sm: 'px-3 py-1.5 text-sm',
       md: 'px-3 py-2 text-base',
@@ -178,8 +179,8 @@ export class TextareaComponent implements ControlValueAccessor {
 
   protected characterCountClasses = computed(() => {
     const baseClasses = 'absolute bottom-2 right-2 text-xs pointer-events-none';
-    const colorClasses = this.isAtMaxLength() 
-      ? 'text-red-500' 
+    const colorClasses = this.isAtMaxLength()
+      ? 'text-red-500'
       : 'text-text-secondary';
     return `${baseClasses} ${colorClasses}`;
   });
@@ -249,7 +250,7 @@ export class TextareaComponent implements ControlValueAccessor {
 
   protected onPaste(event: ClipboardEvent): void {
     this.pasted.emit(event);
-    
+
     // Adjust height after paste if auto-resize is enabled
     if (this.autoResize()) {
       setTimeout(() => this.adjustHeight(), 0);
@@ -271,7 +272,7 @@ export class TextareaComponent implements ControlValueAccessor {
 
     // Reset height to recalculate
     textarea.style.height = 'auto';
-    
+
     // Set height to scroll height
     const newHeight = Math.max(textarea.scrollHeight, this.getMinHeight());
     textarea.style.height = `${newHeight}px`;
@@ -338,7 +339,7 @@ export class TextareaComponent implements ControlValueAccessor {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const currentValue = this.textareaValue();
-    
+
     const newValue = currentValue.slice(0, start) + text + currentValue.slice(end);
     this.textareaValue.set(newValue);
     this.valueChanged.emit(newValue);
@@ -361,7 +362,7 @@ export class TextareaComponent implements ControlValueAccessor {
     this.textareaValue.set('');
     this.valueChanged.emit('');
     this.onChange('');
-    
+
     const textarea = this.textareaElement()?.nativeElement;
     if (textarea) {
       textarea.value = '';

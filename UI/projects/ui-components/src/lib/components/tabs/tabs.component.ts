@@ -16,10 +16,11 @@ export type TabsOrientation = 'horizontal' | 'vertical';
 
 @Component({
   selector: 'ui-tabs',
+  standalone: true,
   template: `
     <div [class]="tabsWrapperClasses()">
       <!-- Tab List -->
-      <div 
+      <div
         [class]="tabListClasses()"
         role="tablist"
         [attr.aria-orientation]="orientation()">
@@ -34,13 +35,13 @@ export type TabsOrientation = 'horizontal' | 'vertical';
             type="button"
             (click)="selectTab(tab.id)"
             (keydown)="onKeyDown($event, tab.id)">
-            
+
             @if (tab.icon) {
               <span [class]="iconClasses()">{{ tab.icon }}</span>
             }
-            
+
             <span>{{ tab.label }}</span>
-            
+
             @if (tab.badge) {
               <span [class]="badgeClasses()">{{ tab.badge }}</span>
             }
@@ -58,7 +59,7 @@ export type TabsOrientation = 'horizontal' | 'vertical';
             [attr.hidden]="getActiveTab() !== tab.id"
             role="tabpanel"
             tabindex="0">
-            
+
             @if (tab.content) {
               {{ tab.content }}
             } @else {
@@ -108,9 +109,9 @@ export class TabsComponent {
 
   protected tabListClasses = computed(() => {
     const baseClasses = 'flex';
-    
-    const orientationClasses = this.orientation() === 'vertical' 
-      ? 'flex-col space-y-1 mr-4' 
+
+    const orientationClasses = this.orientation() === 'vertical'
+      ? 'flex-col space-y-1 mr-4'
       : 'space-x-1';
 
     const variantClasses = {
@@ -120,8 +121,8 @@ export class TabsComponent {
       card: 'bg-gray-100 p-1 rounded-lg'
     };
 
-    const widthClasses = this.fullWidth() && this.orientation() === 'horizontal' 
-      ? 'w-full' 
+    const widthClasses = this.fullWidth() && this.orientation() === 'horizontal'
+      ? 'w-full'
       : '';
 
     return `${baseClasses} ${orientationClasses} ${variantClasses[this.variant()]} ${widthClasses}`;
@@ -129,7 +130,7 @@ export class TabsComponent {
 
   protected getTabButtonClasses(tab: TabItem): string {
     const baseClasses = 'relative flex items-center gap-2 ui-transition-standard ui-focus-primary';
-    
+
     const sizeClasses = {
       sm: 'px-3 py-1.5 text-sm',
       md: 'px-4 py-2 text-base',
@@ -140,7 +141,7 @@ export class TabsComponent {
     const isDisabled = tab.disabled;
 
     const variantClasses = {
-      default: isActive 
+      default: isActive
         ? 'text-primary-600 border-b-2 border-primary-600 -mb-px'
         : 'text-gray-500 hover:text-gray-700 border-b-2 border-transparent hover:border-gray-300',
       pills: isActive
@@ -171,7 +172,7 @@ export class TabsComponent {
       md: 'w-5 h-5',
       lg: 'w-6 h-6'
     };
-    
+
     return `${sizeClasses[this.size()]}`;
   });
 
@@ -201,7 +202,7 @@ export class TabsComponent {
 
     this.activeTabId.set(tabId);
     this.tabChanged.emit(tabId);
-    
+
     if (tab) {
       this.tabClicked.emit({ tabId, tab });
     }
@@ -245,7 +246,7 @@ export class TabsComponent {
     if (targetIndex !== currentIndex) {
       const targetTab = tabs[targetIndex];
       this.selectTab(targetTab.id);
-      
+
       // Focus the target tab button
       setTimeout(() => {
         const tabButton = document.getElementById(`tab-${targetTab.id}`);

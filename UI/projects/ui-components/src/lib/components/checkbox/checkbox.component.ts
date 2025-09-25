@@ -6,6 +6,7 @@ export type CheckboxVariant = 'default' | 'primary' | 'success' | 'warning' | 'd
 
 @Component({
   selector: 'ui-checkbox',
+  standalone: true,
   template: `
     <label [class]="wrapperClasses()">
       <input
@@ -22,7 +23,7 @@ export type CheckboxVariant = 'default' | 'primary' | 'success' | 'warning' | 'd
         (focus)="onFocus()"
         (blur)="onBlur()"
       />
-      
+
       <div [class]="checkboxClasses()">
         @if (checked() || indeterminate()) {
           <svg [class]="iconClasses()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,7 +35,7 @@ export type CheckboxVariant = 'default' | 'primary' | 'success' | 'warning' | 'd
           </svg>
         }
       </div>
-      
+
       @if (label()) {
         <span [class]="labelClasses()">
           {{ label() }}
@@ -43,14 +44,14 @@ export type CheckboxVariant = 'default' | 'primary' | 'success' | 'warning' | 'd
           }
         </span>
       }
-      
+
       @if (description()) {
         <span [id]="descriptionId()" [class]="descriptionClasses()">
           {{ description() }}
         </span>
       }
     </label>
-    
+
     @if (invalid() && errorMessage()) {
       <p [id]="errorId()" [class]="errorClasses()" role="alert">
         {{ errorMessage() }}
@@ -77,7 +78,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   required = input(false);
   invalid = input(false);
   indeterminate = input(false);
-  
+
   // Outputs
   changed = output<boolean>();
   focused = output<void>();
@@ -114,7 +115,7 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   protected checkboxClasses = computed(() => {
     const baseClasses = 'flex items-center justify-center rounded ui-transition-standard';
-    
+
     const sizeClasses = {
       sm: 'w-4 h-4',
       md: 'w-5 h-5',
@@ -126,7 +127,7 @@ export class CheckboxComponent implements ControlValueAccessor {
       : this.getUncheckedClasses();
 
     const focusClasses = 'ui-focus-primary';
-    
+
     return `${baseClasses} ${sizeClasses[this.size()]} ${stateClasses} ${focusClasses}`;
   });
 
@@ -136,22 +137,22 @@ export class CheckboxComponent implements ControlValueAccessor {
       md: 'w-3.5 h-3.5',
       lg: 'w-4 h-4'
     };
-    
+
     return `text-white ${sizeClasses[this.size()]}`;
   });
 
   protected labelClasses = computed(() => {
     const baseClasses = 'text-sm font-medium select-none';
-    const colorClasses = this.disabled() 
-      ? 'text-text-disabled' 
+    const colorClasses = this.disabled()
+      ? 'text-text-disabled'
       : 'text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });
 
   protected descriptionClasses = computed(() => {
     const baseClasses = 'text-xs mt-1 select-none';
-    const colorClasses = this.disabled() 
-      ? 'text-text-disabled' 
+    const colorClasses = this.disabled()
+      ? 'text-text-disabled'
       : 'text-text-secondary';
     return `${baseClasses} ${colorClasses}`;
   });
@@ -174,8 +175,8 @@ export class CheckboxComponent implements ControlValueAccessor {
 
   private getUncheckedClasses(): string {
     const baseClasses = 'bg-white border-2';
-    const borderClasses = this.invalid() 
-      ? 'border-red-500' 
+    const borderClasses = this.invalid()
+      ? 'border-red-500'
       : 'border-gray-300 hover:border-gray-400';
     return `${baseClasses} ${borderClasses}`;
   }

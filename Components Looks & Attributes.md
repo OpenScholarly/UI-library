@@ -160,23 +160,23 @@ interface ThemeConfig {
 - [x] Overlay/positioning primitives (portal, z-layers, dismiss, positioning)
 
 2. Primitives & Layout
-- [ ] Container
-- [ ] Grid / Row / Column
-- [ ] Dividers
-- [ ] Typography (Heading, Text)
-- [ ] Icon
-- [ ] Link
-- [ ] Image
-- [ ] Scroll Area
+- [x] Container
+- [x] Grid / Row / Column
+- [x] Dividers
+- [x] Typography (Heading, Text)
+- [x] Icon
+- [x] Link
+- [x] Image
+- [x] Scroll Area
 
 3. Button Family
 - [x] Button
-- [ ] Icon Button
-- [ ] Segmented Button
-- [ ] Split Button
-- [ ] Button Groups
-- [ ] Floating Action Button (FAB)
-- [ ] Extended FAB
+- [x] Icon Button
+- [x] Segmented Button
+- [x] Split Button
+- [x] Button Groups
+- [x] Floating Action Button (FAB)
+- [x] Extended FAB
 - [ ] FAB Menu
 
 4. Form Infrastructure
@@ -192,11 +192,11 @@ interface ThemeConfig {
 
 6. Overlay-based Inputs (requires overlay primitives)
 - [x] Select (Single & Multi)
-- [ ] Autocomplete / Combo Box / Typeahead
+- [x] Autocomplete / Combo Box / Typeahead
 - [ ] Date Picker
 - [ ] Time Picker
 - [ ] File Upload
-- [ ] Search (composite of input + list/command menu)
+- [x] Search (composite of input + list/command menu)
 
 7. Feedback & Status
 - [x] Loading Indicator / Loader
@@ -210,13 +210,13 @@ interface ThemeConfig {
 - [x] Card
 - [ ] List (incl. virtual list)
 - [?] Avatar / Avatar Group (with ring/status) *(avatar ready; group pending)*
-- [ ] Table / Data Grid
-- [ ] Feed
-- [ ] Stats
-- [ ] Timeline
-- [ ] Banner
-- [ ] Carousel
-- [ ] Skeleton (after Card/Container)
+- [x] Table / Data Grid
+- [x] Feed
+- [x] Stats
+- [x] Timeline
+- [x] Banner
+- [x] Carousel
+- [x] Skeleton (after Card/Container)
 - [x] Footer / Copyright
 
 9. Navigation
@@ -224,26 +224,30 @@ interface ThemeConfig {
 - [x] Breadcrumbs
 - [x] Pagination
 - [ ] Steps / Stepper
-- [ ] Navbar / App Bar / Toolbar
+- [x] Navbar / App Bar / Toolbar
 - [ ] Sidebar / Drawer / SlideOver / Side Sheets / Navigation Drawer
 - [ ] Navigation Rail
 - [ ] Bottom Navigation / Dock
-- [ ] Menu / Dropdown / Flyout Menu
-- [ ] Command Menu / Command Palette
+- [x] Menu / Dropdown / Flyout Menu
+- [x] Command Menu / Command Palette
 - [x] Accordion
-- [ ] Tree View
+- [x] Tree View
 - [ ] Reorder (drag to reorder)
 - [ ] Keyboard Shortcuts (service; used by Command Menu)
 
 10. Overlays
 - [x] Tooltip
-- [ ] Popover
+- [ ] Popover / Pop-up
 - [x] Modal / Dialog (alert/confirm/fullscreen)
 - [ ] Bottom Sheets
 - [ ] Action Sheet
 - [ ] Backdrop
+- [x] Layout
 
-1.  Liquid Glass Suite
+11. Utility Components  
+- [x] Theme Switcher (3-way toggle: system/light/dark)
+
+12. Liquid Glass Suite
 - [ ] Glass Card
 - [ ] Liquid Button
 - [ ] Distortion Container
@@ -252,7 +256,25 @@ interface ThemeConfig {
 - [ ] Swap (icon/text/hamburger)
 - [ ] Diff (image, text)
 - [ ] Rating
-- [ ] Link (advanced states/variants)
+- [x] Link (advanced states/variants)
+
+
+**Inputs**
+Label
+Spinbox
+Line editor
+Editor
+ComboBox
+IconChooser
+Loading Panel
+Calendar
+Selection chips
+Selection chips editor
+
+**Containers / Layout**
+Accordion
+Expander
+Contextual Menu
 
 
 

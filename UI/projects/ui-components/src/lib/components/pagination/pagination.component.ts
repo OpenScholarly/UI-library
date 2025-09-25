@@ -6,6 +6,7 @@ export type PaginationSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-pagination',
+  standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

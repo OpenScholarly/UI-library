@@ -13,6 +13,7 @@ export type BreadcrumbSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'ui-breadcrumbs',
+  standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -27,20 +28,20 @@ export type BreadcrumbSize = 'sm' | 'md' | 'lg';
       @for (item of visibleItems(); track item.label; let i = $index, isLast = $last) {
         <li class="ui-breadcrumbs__item flex items-center" [class]="getItemClasses(item, isLast)">
           @if (!isLast && separator() === 'slash' && i > 0) {
-            <svg 
+            <svg
               class="ui-breadcrumbs__separator w-4 h-4 text-gray-400 dark:text-gray-500 mx-2"
-              fill="currentColor" 
+              fill="currentColor"
               viewBox="0 0 20 20"
               aria-hidden="true">
               <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
             </svg>
           }
-          
+
           @if (!isLast && separator() === 'chevron' && i > 0) {
-            <svg 
+            <svg
               class="ui-breadcrumbs__separator w-3 h-3 text-gray-400 dark:text-gray-500 mx-2"
-              fill="none" 
-              stroke="currentColor" 
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -52,41 +53,41 @@ export type BreadcrumbSize = 'sm' | 'md' | 'lg';
           }
 
           @if (item.href && !item.disabled && !isLast) {
-            <a 
+            <a
               [href]="item.href"
               class="ui-breadcrumbs__link inline-flex items-center transition-colors duration-200"
               [class]="getLinkClasses(item, isLast)"
               [attr.aria-current]="isLast ? 'page' : null"
               (click)="onItemClick(item, $event)">
-              
+
               @if (item.icon) {
                 <span class="ui-breadcrumbs__icon mr-2" [innerHTML]="item.icon"></span>
               }
-              
+
               @if (showHome() && i === 0) {
                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
                 </svg>
               }
-              
+
               {{ item.label }}
             </a>
           } @else {
-            <span 
+            <span
               class="ui-breadcrumbs__text inline-flex items-center"
               [class]="getTextClasses(item, isLast)"
               [attr.aria-current]="isLast ? 'page' : null">
-              
+
               @if (item.icon) {
                 <span class="ui-breadcrumbs__icon mr-2" [innerHTML]="item.icon"></span>
               }
-              
+
               @if (showHome() && i === 0) {
                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
                 </svg>
               }
-              
+
               {{ item.label }}
             </span>
           }
@@ -112,7 +113,7 @@ export class BreadcrumbsComponent {
   visibleItems = computed(() => {
     const allItems = this.items();
     const max = this.maxItems();
-    
+
     if (!max || allItems.length <= max) {
       return allItems;
     }
@@ -120,7 +121,7 @@ export class BreadcrumbsComponent {
     // Show first item, ellipsis, and last (max-2) items
     const firstItem = allItems[0];
     const lastItems = allItems.slice(-(max - 2));
-    
+
     return [
       firstItem,
       { label: '...', disabled: true },
