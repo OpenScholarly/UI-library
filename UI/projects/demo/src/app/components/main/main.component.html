@@ -2,10 +2,14 @@
   <ui-container size="2xl">
     <!-- Header -->
     <header class="text-center mb-12">
+      <div class="flex justify-between items-center mb-6">
+        <div></div>
+        <ui-theme-switcher size="sm" (themeChanged)="onThemeChanged($event)"></ui-theme-switcher>
+      </div>
       <ui-heading level="h1" size="4xl" color="primary">{{ title() }}</ui-heading>
       <ui-text color="secondary" size="lg" class="mt-4 mb-6">A comprehensive Angular UI component library</ui-text>
       <div class="flex justify-center space-x-4">
-        <ui-badge variant="primary" size="md">25+ Components</ui-badge>
+        <ui-badge variant="primary" size="md">42+ Components</ui-badge>
         <ui-badge variant="success" size="md">Production Ready</ui-badge>
         <ui-badge variant="info" size="md">TypeScript</ui-badge>
       </div>
@@ -528,6 +532,94 @@
         [items]="accordionItems()">
       </ui-accordion>
     </div>
+
+    <!-- New Components Section -->
+    <ui-card class="mb-8">
+      <div class="p-6">
+        <ui-heading level="h3" size="lg" color="primary" class="mb-4">New Components Showcase</ui-heading>
+        <div class="space-y-8">
+          
+          <!-- Theme Switcher -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Theme Switcher</ui-text>
+            <div class="flex items-center gap-4">
+              <ui-theme-switcher 
+                size="md"
+                (themeChanged)="onThemeChanged($event)">
+              </ui-theme-switcher>
+              <ui-text color="secondary" size="sm">3-way toggle: System, Light, Dark</ui-text>
+            </div>
+          </div>
+
+          <ui-divider />
+
+          <!-- Table / Data Grid -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Table / Data Grid</ui-text>
+            <ui-table 
+              [columns]="tableColumns()"
+              [data]="tableData()"
+              variant="striped"
+              size="md"
+              [hover]="true"
+              [selectable]="true"
+              (rowClicked)="onTableRowClicked($event)"
+              (sortChanged)="onTableSortChanged($event)">
+            </ui-table>
+          </div>
+
+          <ui-divider />
+
+          <!-- Menu / Dropdown -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Menu / Dropdown</ui-text>
+            <div class="flex gap-4">
+              <ui-menu 
+                [items]="menuItems()"
+                trigger="click"
+                placement="bottom-start"
+                (itemSelected)="onMenuItemSelected($event)">
+                <ui-button slot="trigger" variant="outline">
+                  Actions ⌄
+                </ui-button>
+              </ui-menu>
+              
+              <ui-menu 
+                [items]="menuItems()"
+                trigger="hover"
+                placement="bottom-start"
+                (itemSelected)="onMenuItemSelected($event)">
+                <ui-button slot="trigger" variant="secondary">
+                  Hover Menu
+                </ui-button>
+              </ui-menu>
+            </div>
+          </div>
+
+          <ui-divider />
+
+          <!-- Skeleton Loading -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Skeleton Loading States</ui-text>
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <ui-skeleton variant="circular" width="40px" height="40px"></ui-skeleton>
+                <div class="flex-1 space-y-2">
+                  <ui-skeleton variant="text" width="200px" height="16px"></ui-skeleton>
+                  <ui-skeleton variant="text" width="150px" height="12px"></ui-skeleton>
+                </div>
+              </div>
+              <ui-skeleton variant="rectangular" width="100%" height="120px"></ui-skeleton>
+              <div class="grid grid-cols-3 gap-4">
+                <ui-skeleton variant="rounded" height="80px"></ui-skeleton>
+                <ui-skeleton variant="rounded" height="80px"></ui-skeleton>
+                <ui-skeleton variant="rounded" height="80px"></ui-skeleton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ui-card>
 
     <!-- Footer -->
     <div class="mt-16">

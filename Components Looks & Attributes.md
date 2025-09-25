@@ -210,13 +210,13 @@ interface ThemeConfig {
 - [x] Card
 - [ ] List (incl. virtual list)
 - [?] Avatar / Avatar Group (with ring/status) *(avatar ready; group pending)*
-- [ ] Table / Data Grid
+- [x] Table / Data Grid
 - [ ] Feed
 - [ ] Stats
 - [ ] Timeline
 - [ ] Banner
 - [ ] Carousel
-- [ ] Skeleton (after Card/Container)
+- [x] Skeleton (after Card/Container)
 - [x] Footer / Copyright
 
 9. Navigation
@@ -228,7 +228,7 @@ interface ThemeConfig {
 - [ ] Sidebar / Drawer / SlideOver / Side Sheets / Navigation Drawer
 - [ ] Navigation Rail
 - [ ] Bottom Navigation / Dock
-- [ ] Menu / Dropdown / Flyout Menu
+- [x] Menu / Dropdown / Flyout Menu
 - [ ] Command Menu / Command Palette
 - [x] Accordion
 - [ ] Tree View
@@ -244,7 +244,10 @@ interface ThemeConfig {
 - [ ] Backdrop
 - [x] Layout
 
-1.  Liquid Glass Suite
+11. Utility Components  
+- [x] Theme Switcher (3-way toggle: system/light/dark)
+
+12. Liquid Glass Suite
 - [ ] Glass Card
 - [ ] Liquid Button
 - [ ] Distortion Container
