@@ -46,7 +46,7 @@ export class GridComponent {
 
     const colsClass = colsClasses[this.cols()];
     const gapClass = gapClasses[this.gap()];
-    const responsiveClass = this.responsive() ? 'grid-cols-1 sm:grid-cols-2 lg:' + colsClass.split('grid-cols-')[1] : colsClass;
+    const responsiveClass = this.responsive() ? `grid-cols-1 sm:grid-cols-2 lg:grid-cols-${this.cols()}` : colsClass;
 
     return `${baseClasses} ${this.responsive() ? responsiveClass : colsClass} ${gapClass}`;
   });
