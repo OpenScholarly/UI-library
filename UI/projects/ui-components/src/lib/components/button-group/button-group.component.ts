@@ -18,12 +18,12 @@ export class ButtonGroupComponent {
   orientation = input<ButtonGroupOrientation>('horizontal');
   size = input<ButtonGroupSize>('md');
   variant = input<ButtonGroupVariant>('default');
-  spacing = input<'none' | 'sm' | 'md'>('none');
+  spacing = input<'none' | 'sm' | 'md'>('sm');
   fullWidth = input(false);
   ariaLabel = input<string>('');
 
   protected groupClasses = computed(() => {
-    const baseClasses = 'inline-flex';
+    const baseClasses = 'inline-flex p-2 m-0';
 
     const orientationClasses = {
       horizontal: 'flex-row',
