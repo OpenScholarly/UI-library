@@ -312,4 +312,23 @@ export class InputComponent implements ControlValueAccessor {
   getValue(): string {
     return this.inputValue();
   }
+
+
+  //  value = '';
+
+  // onChange = (_: any) => {};
+  // onTouched = () => {};
+
+  // writeValue(obj: any) { this.value = obj ?? ''; }
+  // registerOnChange(fn: any) { this.onChange = fn; }
+  // registerOnTouched(fn: any) { this.onTouched = fn; }
+  // setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
+
+  // onInput(e: Event) {
+  //   const v = (e.target as HTMLInputElement).value;
+  //   this.value = v;
+  //   this.onChange(v);
+  // }
+
+  // onBlur() { this.onTouched(); }
 }
