@@ -1,199 +1,192 @@
 # UI Library Components Specification
+**Last Updated:** 02 October 2025  
+**Version:** 1.1.0
 
-# Tailwind Theme Integration
-## Theme Configuration
-The UI library leverages Tailwind's theme system with custom design tokens:
-```javascript
-// tailwind.config.js
-module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        primary: {
-          50: 'rgb(var(--color-primary-50) / <alpha-value>)',
-          100: 'rgb(var(--color-primary-100) / <alpha-value>)',
-          // ... through 950
-        },
-        surface: {
-          DEFAULT: 'rgb(var(--color-surface) / <alpha-value>)',
-          variant: 'rgb(var(--color-surface-variant) / <alpha-value>)',
-        },
-        glass: {
-          DEFAULT: 'rgb(var(--color-glass-bg) / <alpha-value>)',
-          border: 'rgb(var(--color-glass-border) / <alpha-value>)',
-        }
-      },
-      spacing: {
-        'ui-xs': 'var(--spacing-xs)',
-        'ui-sm': 'var(--spacing-sm)',
-        'ui-md': 'var(--spacing-md)',
-        'ui-lg': 'var(--spacing-lg)',
-        'ui-xl': 'var(--spacing-xl)',
-      },
-      borderRadius: {
-        'ui-sm': 'var(--radius-sm)',
-        'ui-md': 'var(--radius-md)',
-        'ui-lg': 'var(--radius-lg)',
-        'ui-xl': 'var(--radius-xl)',
-      },
-      backdropBlur: {
-        'glass-sm': 'var(--blur-sm)',
-        'glass-md': 'var(--blur-md)',
-        'glass-lg': 'var(--blur-lg)',
-        'glass-xl': 'var(--blur-xl)',
-      },
-      animation: {
-        'liquid-ripple': 'liquid-ripple 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-        'glass-shimmer': 'glass-shimmer 2s infinite',
-        'float': 'float 3s ease-in-out infinite',
-      }
-    }
-  }
-}
-```
+## Overview
+### Design System Documentation
+**Style Guide:** [Design System Overview](Design.md)
+**Figma Design System:** [Insert main Figma file link here]
 
-## CSS Custom Properties
-```css
-:root {
-  /* Colors - Light Theme */
-  --color-primary-50: 240 249 255;
-  --color-primary-500: 59 130 246;
-  --color-primary-950: 23 37 84;
-  
-  /* Surface Colors */
-  --color-surface: 255 255 255;
-  --color-surface-variant: 248 250 252;
-  
-  /* Glass Effect Colors */
-  --color-glass-bg: 255 255 255;
-  --color-glass-border: 255 255 255;
-  
-  /* Spacing */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  
-  /* Border Radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  
-  /* Glass Blur */
-  --blur-sm: 4px;
-  --blur-md: 8px;
-  --blur-lg: 16px;
-  --blur-xl: 24px;
-}
 
-[data-theme="dark"] {
-  --color-surface: 15 23 42;
-  --color-surface-variant: 30 41 59;
-  --color-glass-bg: 15 23 42;
-  --color-glass-border: 71 85 105;
-}
-```
+### Strategies for Coherence
+- Design Tokens: Centralize colors, spacing, typography via CSS variables or Tailwind config for design consistency.
+- Component Props: Standardize props (variant, size, density) so variant=“primary” means the same across all types.
+- Themeable API: Use custom properties; allow consuming apps to overwrite via parent themes or Tailwind config extension.
+- Documentation: Provide Storybook or demo app with examples in both desktop and mobile layouts.
+- Testing: Run visual regressions (Chromatic, Percy), support WCAG accessibility checks.
 
-### Theme Configuration
+### Mobile Friendliness
+- Responsive Variants: Use media queries/Tailwind’s breakpoints (sm:, md:, lg:).
+- Touch Optimization: Tap targets min. 48px, visible focus states, avoid hover-only triggers.
+- Hide/Convert: Hide secondary elements, use full-screen selectors instead of dropdowns.
+- Grid & Flex Layouts: Prefer CSS Grid or Flex for adaptive, fluid layouts.
+- Viewport-based Routing: Optionally show different components/routes depending on device size.
+- Test on Devices: Leverage device labs or BrowserStack for real physical device responsiveness checks.
+
+
+### Testing Strategy
+- Unit tests for all components with Jest
+- [Page Object Tests](#page-object) for component behavior
+- Integration tests for complex interactions
+- Visual regression tests with Chromatic
+- Accessibility tests with axe-core
+- Performance tests for animations and interactions
+
+
+## API Design Patterns
+### Modal Service
 ```typescript
-interface ThemeConfig {
-  name: string;
-  colors: {
-    primary: string;
-    secondary: string;
-    success: string;
-    warning: string;
-    error: string;
-    info: string;
-    surface: string;
-    background: string;
-    // ... additional colors
-  };
-  spacing: {
-    xs: string;
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-  };
-  typography: {
-    fontFamily: string;
-    fontSizes: Record<string, string>;
-    fontWeights: Record<string, number>;
-    lineHeights: Record<string, number>;
-  };
-  borderRadius: {
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-  };
-  shadows: {
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-  };
-  motion: {
-    durations: Record<string, string>;
-    easings: Record<string, string>;
-  };
+interface ModalService {
+  open<T>(component: ComponentType<T>, config?: ModalConfig): ModalRef<T>;
+  confirm(config: ConfirmConfig): ModalRef<boolean>;
+  alert(config: AlertConfig): ModalRef<void>;
+  closeAll(): void;
 }
 ```
 
-### Typography Component Service
+&nbsp;  
+&nbsp;  
+### Form Integration
+All form controls implement [`ControlValueAccessor`](#controlvalueaccessor) and integrate seamlessly with Angular Reactive Forms:
+
+```typescript
+// Reactive Forms
+this.form = this.fb.group({
+  email: ['', [Validators.required, Validators.email]],
+  password: ['', [Validators.required, Validators.minLength(8)]],
+  preferences: this.fb.group({
+    newsletter: [false],
+    theme: ['light']
+  })
+});
+
+// Template
+<form [formGroup]="form">
+  <ui-input 
+    formControlName="email" 
+    type="email" 
+    label="Email Address"
+    placeholder="Enter your email">
+  </ui-input>
+  
+  <ui-input 
+    formControlName="password" 
+    type="password" 
+    label="Password"
+    showPasswordToggle="true">
+  </ui-input>
+  
+  <ui-toggle 
+    formControlName="preferences.newsletter"
+    label="Subscribe to newsletter">
+  </ui-toggle>
+</form>
+```
+
+
+&nbsp;  
+&nbsp;  
+### Theme Provider
 ```typescript
 @Injectable({
   providedIn: 'root'
 })
-export class TypographyService {
-  private fontLoadingSubject = new BehaviorSubject<boolean>(false);
-  
-  async loadFonts(): Promise<void> {
-    try {
-      await Promise.all([
-        document.fonts.load('400 16px Inter'),
-        document.fonts.load('700 16px Inter'),
-        document.fonts.load('400 24px Playfair Display')
-      ]);
-      this.fontLoadingSubject.next(true);
-    } catch (error) {
-      console.warn('Font loading failed:', error);
-    }
+export class ThemeService {
+  private currentTheme = signal<ThemeConfig>(defaultTheme);
+  private isDark = signal<boolean>(false);
+
+  setTheme(theme: ThemeConfig): void {
+    this.currentTheme.set(theme);
+    this.applyThemeVariables(theme);
   }
-  
-  get fontsLoaded$(): Observable<boolean> {
-    return this.fontLoadingSubject.asObservable();
+
+  toggleDarkMode(): void {
+    this.isDark.update(dark => !dark);
+    document.documentElement.setAttribute('data-theme', this.isDark() ? 'dark' : 'light');
   }
+
+  private applyThemeVariables(theme: ThemeConfig): void {
+    const root = document.documentElement;
+    
+    // Apply color variables
+    Object.entries(theme.colors).forEach(([key, value]) => {
+      if (typeof value === 'object') {
+        Object.entries(value).forEach(([shade, color]) => {
+          root.style.setProperty(`--color-${key}-${shade}`, this.hexToRgb(color));
+        });
+      } else {
+        root.style.setProperty(`--color-${key}`, this.hexToRgb(value));
+      }
+    });
+
+    // Apply spacing, radius, etc.
+    Object.entries(theme.spacing).forEach(([key, value]) => {
+      root.style.setProperty(`--spacing-${key}`, value);
+    });
+  }
+
+  getColorClasses(scheme: string): ColorClasses {
+    return {
+      bg: `bg-${scheme}-500`,
+      bgHover: `hover:bg-${scheme}-600`,
+      text: `text-${scheme}-600`,
+      border: `border-${scheme}-500`,
+      ring: `ring-${scheme}-500`,
+    };
+  }
+}
+
+interface ColorClasses {
+  bg: string;
+  bgHover: string;
+  text: string;
+  border: string;
+  ring: string;
 }
 ```
 
-#### Font Loading Strategies
-1. Preload critical fonts in HTML head
-2. Use `font-display: swap` for better UX
-3. Implement font fallbacks with similar metrics
-4. Test across devices and screen sizes
-5. Monitor performance with Core Web Vitals
 
 
-# ControlValueAccessor
-<https://dev.to/valorsoftware/avoiding-common-pitfalls-with-controlvalueaccessors-in-angular-4m57>
-<https://angular.love/never-again-be-confused-when-implementing-controlvalueaccessor-in-angular-forms>
-<https://www.sparkcodehub.com/angular/accessibility/use-aria-labels-in-ui>
-<https://testing-library.com/docs/angular-testing-library/intro/>
-<https://codelabs.developers.google.com/angular-a11y#0>
-<https://fontawesome.com/v4/examples/>
-<https://fontawesome.com/icons/language?f=slab&s=regular>
+&nbsp;  
+&nbsp;  
+### Component Base Class
+```typescript
+export abstract class UiComponentBase {
+  @Input() colorScheme: ColorScheme = 'blue';
+  @Input() customClasses?: string;
+  
+  protected getColorClasses(scheme: ColorScheme = this.colorScheme): Record<string, string> {
+    return {
+      primary: `bg-${scheme}-500 hover:bg-${scheme}-600 text-white`,
+      secondary: `bg-${scheme}-100 hover:bg-${scheme}-200 text-${scheme}-800`,
+      outline: `border-${scheme}-500 text-${scheme}-600 hover:bg-${scheme}-50`,
+      ghost: `text-${scheme}-600 hover:bg-${scheme}-50`,
+      text: `bg-${scheme}-500 text-white`,
+      ring: `ring-${scheme}-500 focus:ring-${scheme}-500`,
+    };
+  }
+  
+  protected combineClasses(...classes: (string | string[] | undefined)[]): string {
+    return classes
+      .flat()
+      .filter(Boolean)
+      .join(' ');
+  }
+}
+
+type ColorScheme = 'blue' | 'green' | 'purple' | 'red' | 'gray';
+```
 
 
+
+&nbsp;  
+&nbsp;  
+### ControlValueAccessor
 ```typescript
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, Injectable, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 
-// Base class for form components
 @Injectable()
 export abstract class BaseFormControl<T = any> implements ControlValueAccessor, OnDestroy {
   protected _value: T | null = null;
@@ -256,31 +249,6 @@ export abstract class BaseFormControl<T = any> implements ControlValueAccessor, 
 // Example implementation for button component
 @Component({
   selector: 'my-ui-input',
-  template: `
-    <div class="ui-input-wrapper" [class.ui-input--disabled]="disabled">
-      <label *ngIf="label" [for]="inputId" class="ui-input__label">
-        {{ label }}
-        <span *ngIf="required" aria-label="required">*</span>
-      </label>
-      <input
-        [id]="inputId"
-        [type]="type"
-        [placeholder]="placeholder"
-        [disabled]="disabled"
-        [value]="value || ''"
-        [attr.aria-describedby]="getAriaDescribedBy()"
-        [attr.aria-invalid]="hasError"
-        [attr.aria-required]="required"
-        (input)="onInput($event)"
-        (blur)="onBlur()"
-        (focus)="onFocus()"
-        class="ui-input__control">
-      <div *ngIf="hint" [id]="hintId" class="ui-input__hint">{{ hint }}</div>
-      <div *ngIf="errorMessage" [id]="errorId" class="ui-input__error" role="alert">
-        {{ errorMessage }}
-      </div>
-    </div>
-  `,
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => MyUiInput),
@@ -326,10 +294,118 @@ export class MyUiInput extends BaseFormControl<string> implements AfterViewInit 
 }
 ```
 
+<https://dev.to/valorsoftware/avoiding-common-pitfalls-with-controlvalueaccessors-in-angular-4m57>
+<https://angular.love/never-again-be-confused-when-implementing-controlvalueaccessor-in-angular-forms>
+<https://www.sparkcodehub.com/angular/accessibility/use-aria-labels-in-ui>
+<https://testing-library.com/docs/angular-testing-library/intro/>
+<https://codelabs.developers.google.com/angular-a11y#0>
+<https://fontawesome.com/v4/examples/>
+<https://fontawesome.com/icons/language?f=slab&s=regular>
 
 
 
 
+
+&nbsp;  
+&nbsp;  
+### Content Projection with Slots
+```typescript
+export class MyUiCard implements AfterContentInit {
+  @Input() variant: 'elevated' | 'outlined' | 'filled' = 'elevated';
+    @ContentChild('[slot=header]') headerContent?: ElementRef;
+  @ContentChild('[slot=media]') mediaContent?: ElementRef;
+  @ContentChild('[slot=actions]') actionsContent?: ElementRef;
+
+  get hasHeader(): boolean {
+    return !!this.headerContent;
+  }
+
+  get hasMedia(): boolean {
+    return !!this.mediaContent;
+  }
+
+  get hasActions(): boolean {
+    return !!this.actionsContent;
+  }
+}
+```
+
+
+&nbsp;  
+&nbsp;  
+### Page Object
+```typescript
+import { render, screen, fireEvent } from '@testing-library/angular';
+import { MyUiButton } from './button.component';
+
+describe('MyUiButton', () => {
+  test('renders button with text', async () => {
+    await render(MyUiButton, {
+      componentProperties: {
+        variant: 'primary'
+      },
+      template: '<my-ui-button>Click me</my-ui-button>'
+    });
+
+    expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
+  });
+
+  test('emits click event', async () => {
+    const clickSpy = jest.fn();
+    
+    await render(MyUiButton, {
+      componentProperties: {
+        click: { emit: clickSpy } as any
+      },
+      template: '<my-ui-button (click)="click.emit()">Click me</my-ui-button>'
+    });
+
+    fireEvent.click(screen.getByRole('button'));
+    expect(clickSpy).toHaveBeenCalled();
+  });
+
+  test('is accessible', async () => {
+    await render(MyUiButton, {
+      template: '<my-ui-button aria-label="Save document">Save</my-ui-button>'
+    });
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveAttribute('aria-label', 'Save document');
+  });
+});
+```
+
+
+
+
+
+
+
+
+
+
+## Accessibility Implementation
+### WCAG 2.1 AA Compliance Checklist
+- ✅ Color contrast ratios (4.5:1 for normal text, 3:1 for large text/UI components)
+- ✅ Keyboard navigation and focus management
+- ✅ Screen reader support with proper ARIA attributes
+- ✅ Respect for `prefers-reduced-motion`
+- ✅ Touch targets ≥ 44×44px with adequate spacing
+- ✅ Alternative text for images and icons
+- ✅ Logical tab order and focus indicators
+- ✅ Error identification and suggestions
+- ✅ Consistent navigation and identification
+
+### Testing Requirements
+- Automated testing with axe-core
+- Manual keyboard navigation testing
+- Screen reader testing (NVDA, JAWS, VoiceOver)
+- High contrast mode verification
+- Mobile accessibility testing
+- Color blindness simulation
+
+
+### Accessible Modal Component Example
 ```typescript
 // Accessibility service
 @Injectable({
@@ -489,141 +565,28 @@ export class MyUiModal implements OnInit, OnDestroy {
 ```
 
 
-```typescript
-export class MyUiCard implements AfterContentInit {
-  @Input() variant: 'elevated' | 'outlined' | 'filled' = 'elevated';
-    @ContentChild('[slot=header]') headerContent?: ElementRef;
-  @ContentChild('[slot=media]') mediaContent?: ElementRef;
-  @ContentChild('[slot=actions]') actionsContent?: ElementRef;
 
-  get hasHeader(): boolean {
-    return !!this.headerContent;
-  }
-
-  get hasMedia(): boolean {
-    return !!this.mediaContent;
-  }
-
-  get hasActions(): boolean {
-    return !!this.actionsContent;
-  }
-```
-
-
-
-
-
-
-PO:
-```typescript
-// Component test example
-import { render, screen, fireEvent } from '@testing-library/angular';
-import { MyUiButton } from './button.component';
-
-describe('MyUiButton', () => {
-  test('renders button with text', async () => {
-    await render(MyUiButton, {
-      componentProperties: {
-        variant: 'primary'
-      },
-      template: '<my-ui-button>Click me</my-ui-button>'
-    });
-
-    expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
-  });
-
-  test('emits click event', async () => {
-    const clickSpy = jest.fn();
-    
-    await render(MyUiButton, {
-      componentProperties: {
-        click: { emit: clickSpy } as any
-      },
-      template: '<my-ui-button (click)="click.emit()">Click me</my-ui-button>'
-    });
-
-    fireEvent.click(screen.getByRole('button'));
-    expect(clickSpy).toHaveBeenCalled();
-  });
-
-  test('is accessible', async () => {
-    await render(MyUiButton, {
-      template: '<my-ui-button aria-label="Save document">Save</my-ui-button>'
-    });
-
-    const button = screen.getByRole('button');
-    expect(button).toHaveAttribute('aria-label', 'Save document');
-  });
-});
-```
-
-
-
-
-
-Strategies for Coherence
-
-Design Tokens: Centralize colors, spacing, typography via CSS variables or Tailwind config for design consistency.
-
-Component Props: Standardize props (variant, size, density) so variant=“primary” means the same across all types.
-
-Themeable API: Use custom properties; allow consuming apps to overwrite via parent themes or Tailwind config extension.
-
-Documentation: Provide Storybook or demo app with examples in both desktop and mobile layouts.
-
-Testing: Run visual regressions (Chromatic, Percy), support WCAG accessibility checks.
-
-Mobile Friendliness
-
-Responsive Variants: Use media queries/Tailwind’s breakpoints (sm:, md:, lg:).
-
-Touch Optimization: Tap targets min. 48px, visible focus states, avoid hover-only triggers.
-
-Hide/Convert: Hide secondary elements, use full-screen selectors instead of dropdowns.
-
-Grid & Flex Layouts: Prefer CSS Grid or Flex for adaptive, fluid layouts.
-
-Viewport-based Routing: Optionally show different components/routes depending on device size.
-
-Test on Devices: Leverage device labs or BrowserStack for real physical device responsiveness checks.
-
-
-```js
-colors: {
-  'liquid-glass-bg': 'rgba(255,255,255,0.2)',
-},
-boxShadow: {
-  'liquid': '0 4px 14px rgba(0,0,0,0.17)',
-}
-```
-
-
-
----
-
-# Component Roadmap
+## Component Roadmap
 1. Foundation (already in theme section)
 - [x] Design tokens (colors, radius, spacing, motion)
-- [x] Tailwind theme + utilities (focus ring, glass, transitions)
+- [x] [Tailwind theme](#tailwind-theme-integration) + utilities (focus ring, glass, transitions)
 - [x] A11y utilities (focus trap, aria helpers)
 - [x] Overlay/positioning primitives (portal, z-layers, dismiss, positioning)
 
 2. Primitives & Layout
-- [x] Container
-- [x] Grid / Row / Column
+- [x] [Container](#container-props)
+- [x] [Grid](#grid-props) / Row / Column
 - [x] Dividers
 - [x] Typography (Heading, Text)
-- [x] Icon
+- [x] [Icon](#icon)
 - [x] Link
 - [x] Image
 - [x] Scroll Area
 
 3. Button Family
-- [x] Button
-- [x] Icon Button
+- [x] [Button / Icon Button / Button Groups](#button)
 - [x] Segmented Button
 - [x] Split Button
-- [x] Button Groups
 - [x] Floating Action Button (FAB)
 - [x] Extended FAB
 - [ ] FAB Menu
@@ -632,99 +595,81 @@ boxShadow: {
 - [ ] Form Field Wrapper
 
 5. Basic Inputs (non-overlay)
-- [x] Text Field / Input (text, password, email, number, search, masks/validators/OTP)
-- [x] Textarea
-- [x] Checkbox
-- [x] Radio Group & Radio
-- [x] Toggle / Switch
-- [x] Slider / Range
+- [ ] Label
+- [x] [Text Field / Input](#input-text) (text, password, email, number, search, masks/validators/OTP)
+- [x] [Textarea](#textarea)
+- [x] [Checkbox](#checkbox)
+- [x] [Radio Group & Radio](#radio-group--radio)
+- [x] [Toggle / Switch](#toggle--switch)
+- [x] [Slider / Range](#slider--range-input)
 
 6. Overlay-based Inputs (requires overlay primitives)
-- [x] Select (Single & Multi)
-- [x] Autocomplete / Combo Box / Typeahead
-- [ ] Date Picker
-- [ ] Time Picker
-- [ ] File Upload
+- [x] [Select](#select-single--multi) (Single & Multi)
+- [x] [Autocomplete / Combo Box / Typeahead](#autocomplete--typeahead)
+- [ ] [Date Picker](#date-picker)
+- [ ] [Time Picker](#time-picker)
+- [ ] [File Upload](#file-upload)
 - [x] Search (composite of input + list/command menu)
 
 7. Feedback & Status
 - [x] Loading Indicator / Loader
 - [?] Progress Indicators (linear + circular) *(increment/reset APIs pending)*
-- [x] Badge / Status
-- [x] Chip / Tag / Pill
-- [x] Toast / Snackbar
-- [ ] Notification (alias or wrapper of Toast system)
+- [x] [Badge / Status](#badge)
+- [x] [Chip / Tag / Pill](#chip--tag)
+- [x] [Toast / Snackbar](#toast--snackbar)
 
 8. Surfaces & Data Display
-- [x] Card
-- [ ] List (incl. virtual list)
-- [?] Avatar / Avatar Group (with ring/status) *(avatar ready; group pending)*
-- [x] Table / Data Grid
+- [x] [Card](#card)
+- [ ] [List (incl. virtual list)](#list--virtual-list)
+- [?] [Avatar / Avatar Group (with ring/status)](#avatar)
+- [x] [Table / Data Grid](#table--data-grid)
 - [x] Feed
 - [x] Stats
 - [x] Timeline
 - [x] Banner
 - [x] Carousel
-- [x] Skeleton (after Card/Container)
+- [x] [Skeleton (after Card/Container)](#skeleton-props)
 - [x] Footer / Copyright
 
 9. Navigation
-- [x] Tabs
-- [x] Breadcrumbs
-- [x] Pagination
-- [ ] Steps / Stepper
-- [x] Navbar / App Bar / Toolbar
-- [ ] Sidebar / Drawer / SlideOver / Side Sheets / Navigation Drawer
+- [x] [Tabs](#tabs)
+- [x] [Breadcrumbs](#breadcrumb)
+- [x] [Pagination](#pagination)
+- [ ] [Steps / Stepper](#stepper)
+- [x] [Navbar / App Bar / Toolbar](#navbar--toolbar)
+- [ ] [Sidebar / Drawer / SlideOver / Side Sheets / Navigation Drawer](#sidenav--drawer)
 - [ ] Navigation Rail
 - [ ] Bottom Navigation / Dock
-- [x] Menu / Dropdown / Flyout Menu
-- [x] Command Menu / Command Palette
+- [x] [Menu / Dropdown / Flyout Menu](#menu--dropdown)
+- [x] [Command Menu / Command Palette](#command-palette)
 - [x] Accordion
 - [x] Tree View
 - [ ] Reorder (drag to reorder)
 - [ ] Keyboard Shortcuts (service; used by Command Menu)
+- [ ] Expander
+- [ ] Context Menu
 
-10. Overlays
-- [x] Tooltip
-- [ ] Popover / Pop-up
-- [x] Modal / Dialog (alert/confirm/fullscreen)
+1.  Overlays
+- [x] [Tooltip](#tooltip)
+- [ ] [Popover / Pop-up](#popover--popper)
+- [x] [Modal / Dialog (alert/confirm/fullscreen)](#modal--dialog)
 - [ ] Bottom Sheets
 - [ ] Action Sheet
 - [ ] Backdrop
-- [x] Layout
+- [x] [Layout](#layout-components)
 
-11. Utility Components  
+1.  Utility Components
 - [x] Theme Switcher (3-way toggle: system/light/dark)
 
-12. Liquid Glass Suite
-- [ ] Glass Card
-- [ ] Liquid Button
-- [ ] Distortion Container
+1.  Liquid Glass Suite
+- [ ] [Glass Card](#glass-card)
+- [ ] [Liquid Button](#liquid-button)
+- [ ] [Distortion Container](#distortion-container)
 
 1.  Misc Utilities
 - [ ] Swap (icon/text/hamburger)
 - [ ] Diff (image, text)
 - [ ] Rating
-- [x] Link (advanced states/variants)
-
-
-**Inputs**
-Label
-Spinbox
-Line editor
-Editor
-ComboBox
-IconChooser
-Loading Panel
-Calendar
-Selection chips
-Selection chips editor
-
-**Containers / Layout**
-Accordion
-Expander
-Contextual Menu
-
 
 
 List sources:
@@ -743,22 +688,198 @@ List sources:
 
 ---
 
-# 1 — Core/Essential Components
 
-## Button
+## Tailwind Theme Integration
+### Theme Configuration
+The UI library leverages Tailwind's theme system with custom design tokens:
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: 'rgb(var(--color-primary-50) / <alpha-value>)',
+          100: 'rgb(var(--color-primary-100) / <alpha-value>)',
+          // ... through 950
+        },
+        surface: {
+          DEFAULT: 'rgb(var(--color-surface) / <alpha-value>)',
+          variant: 'rgb(var(--color-surface-variant) / <alpha-value>)',
+        },
+        glass: {
+          DEFAULT: 'rgb(var(--color-glass-bg) / <alpha-value>)',
+          border: 'rgb(var(--color-glass-border) / <alpha-value>)',
+        }
+      },
+      spacing: {
+        'ui-xs': 'var(--spacing-xs)',
+        'ui-sm': 'var(--spacing-sm)',
+        'ui-md': 'var(--spacing-md)',
+        'ui-lg': 'var(--spacing-lg)',
+        'ui-xl': 'var(--spacing-xl)',
+      },
+      borderRadius: {
+        'ui-sm': 'var(--radius-sm)',
+        'ui-md': 'var(--radius-md)',
+        'ui-lg': 'var(--radius-lg)',
+        'ui-xl': 'var(--radius-xl)',
+      },
+      backdropBlur: {
+        'glass-sm': 'var(--blur-sm)',
+        'glass-md': 'var(--blur-md)',
+        'glass-lg': 'var(--blur-lg)',
+        'glass-xl': 'var(--blur-xl)',
+      },
+      animation: {
+        'liquid-ripple': 'liquid-ripple 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+        'glass-shimmer': 'glass-shimmer 2s infinite',
+        'float': 'float 3s ease-in-out infinite',
+      }
+    }
+  }
+}
+```
+
+### CSS Custom Properties
+```css
+:root {
+  /* Colors - Light Theme */
+  --color-primary-50: 240 249 255;
+  --color-primary-500: 59 130 246;
+  --color-primary-950: 23 37 84;
+  
+  /* Surface Colors */
+  --color-surface: 255 255 255;
+  --color-surface-variant: 248 250 252;
+  
+  /* Glass Effect Colors */
+  --color-glass-bg: 255 255 255;
+  --color-glass-border: 255 255 255;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  
+  /* Glass Blur */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+}
+
+[data-theme="dark"] {
+  --color-surface: 15 23 42;
+  --color-surface-variant: 30 41 59;
+  --color-glass-bg: 15 23 42;
+  --color-glass-border: 71 85 105;
+}
+```
+
+### Theme Configuration
+```typescript
+interface ThemeConfig {
+  name: string;
+  colors: {
+    primary: string;
+    secondary: string;
+    success: string;
+    warning: string;
+    error: string;
+    info: string;
+    surface: string;
+    background: string;
+    // ... additional colors
+  };
+  spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  typography: {
+    fontFamily: string;
+    fontSizes: Record<string, string>;
+    fontWeights: Record<string, number>;
+    lineHeights: Record<string, number>;
+  };
+  borderRadius: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  shadows: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+  motion: {
+    durations: Record<string, string>;
+    easings: Record<string, string>;
+  };
+}
+```
+
+### Typography Component Service
+```typescript
+@Injectable({
+  providedIn: 'root'
+})
+export class TypographyService {
+  private fontLoadingSubject = new BehaviorSubject<boolean>(false);
+  
+  async loadFonts(): Promise<void> {
+    try {
+      await Promise.all([
+        document.fonts.load('400 16px Inter'),
+        document.fonts.load('700 16px Inter'),
+        document.fonts.load('400 24px Playfair Display')
+      ]);
+      this.fontLoadingSubject.next(true);
+    } catch (error) {
+      console.warn('Font loading failed:', error);
+    }
+  }
+  
+  get fontsLoaded$(): Observable<boolean> {
+    return this.fontLoadingSubject.asObservable();
+  }
+}
+```
+
+#### Font Loading Strategies
+1. Preload critical fonts in HTML head
+2. Use `font-display: swap` for better UX
+3. Implement font fallbacks with similar metrics
+4. Test across devices and screen sizes
+5. Monitor performance with Core Web Vitals
+
+
+---
+
+
+## Components
+All components should be wrapped in [UIComponent Base Class](#component-base-class) to inherit theme and utility props.
+### Button
 **Purpose:** Primary interactive element for user actions
 **Figma Design:** [Insert Figma link here]
 
-### Variants
-`primary`, `secondary`, `tertiary`, `ghost`, `outline`, `danger`, `warning`, `success`, `info`, `link`
+Variants: `primary`, `secondary`, `tertiary`, `ghost`, `outline`, `danger`, `warning`, `success`, `info`, `link`
+Sizes: `xs`, `sm`, `md`, `lg`, `xl`
+States: `normal`, `hover`, `active`, `focus`, `disabled`, `loading`, `pressed`
 
-### Sizes
-`xs`, `sm`, `md`, `lg`, `xl`
-
-### States
-`normal`, `hover`, `active`, `focus`, `disabled`, `loading`, `pressed`
-
-### Parameters / Props
 ```typescript
 @Input() variant: 'primary'|'secondary'|'tertiary'|'ghost'|'outline'|'danger'|'warning'|'success'|'info'|'link' = 'primary'
 @Input() size: 'xs'|'sm'|'md'|'lg'|'xl' = 'md'
@@ -785,24 +906,6 @@ List sources:
 @Output() blur = new EventEmitter<FocusEvent>()
 ```
 
-### Material Variant Aliases
-- filled -> primary (solid) button
-- outlined -> outline
-- text -> link/ghost (no container)
-- tonal -> secondary (use container/onContainer tokens)
-
-Implementation hint: When mdVariantAlias is set, map to your existing variantClasses using Material tokens for container/label colors.
-
-### Accessibility Features
-- Minimum 48×48px touch target
-- WCAG 2.1 AA color contrast compliance
-- Keyboard navigation support
-- Screen reader compatible
-- Focus ring visible on `:focus-visible`
-- `aria-pressed` for toggle states
-
-
-### Tailwind Classes Applied
 ```typescript
 // Base classes
 private readonly baseClasses = [
@@ -838,16 +941,31 @@ private readonly variantClasses = {
 };
 ```
 
-### Examples
-[Screenshot placeholder - Button variants with Tailwind theming]
 
----
+- filled -> primary (solid) button
+- outlined -> outline
+- text -> link/ghost (no container)
+- tonal -> secondary (use container/onContainer tokens)
 
-## Form Field Wrapper
+Implementation hint: When mdVariantAlias is set, map to your existing variantClasses using Material tokens for container/label colors.
+
+#### Accessibility Features
+- Minimum 48×48px touch target
+- WCAG 2.1 AA color contrast compliance
+- Keyboard navigation support
+- Screen reader compatible
+- Focus ring visible on `:focus-visible`
+- `aria-pressed` for toggle states
+
+
+
+&nbsp;  
+&nbsp;  
+### Form Field Wrapper
 **Purpose:** Consistent wrapper for all form controls with label, hints, and error handling
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
+
 ```typescript
 @Input() label?: string
 @Input() labelPosition: 'top'|'left'|'floating' = 'top'
@@ -864,14 +982,6 @@ private readonly variantClasses = {
 @Input() ariaDescribedBy?: string
 ```
 
-### Content Projection Slots
-- `prefix` - Icon or text before the control
-- `suffix` - Icon or text after the control  
-- `control` - The form control itself
-- `hint` - Helper text below the control
-- `error` - Error message below the control
-
-### Tailwind Classes Applied
 ```typescript
 private readonly wrapperClasses = [
   'space-y-1', // Default spacing between label and input
@@ -892,20 +1002,27 @@ private readonly hintClasses = [
 ];
 ```
 
----
 
-## Input (Text)
+Content Projection Slots:  
+- `prefix` - Icon or text before the control
+- `suffix` - Icon or text after the control  
+- `control` - The form control itself
+- `hint` - Helper text below the control
+- `error` - Error message below the control
+
+
+
+&nbsp;  
+&nbsp;  
+### Input (Text)
 **Purpose:** Single-line text input with comprehensive validation and styling
 **Figma Design:** [Insert Figma link here]
-Implement `ControlValueAccessor`, send `touched`/`dirty` states.
 
-### Input Types
-`text`, `password`, `search`, `url`, `email`, `tel`, `number`, `hidden`
+Input Types: `text`, `password`, `search`, `url`, `email`, `tel`, `number`, `hidden`
+Sizes: `sm` (32px), `md` (40px), `lg` (48px)
+Implement [`ControlValueAccessor`](#controlvalueaccessor), send `touched`/`dirty` states.
 
-### Sizes
-`sm` (32px), `md` (40px), `lg` (48px)
 
-### Parameters / Props
 ```typescript
 @Input() type: 'text'|'password'|'search'|'url'|'email'|'tel'|'number' = 'text'
 @Input() value: string = ''
@@ -946,11 +1063,6 @@ Implement `ControlValueAccessor`, send `touched`/`dirty` states.
 @Output() clear = new EventEmitter<void>()
 ```
 
-### Accessibility note (Material)
-- role="textbox" and aria-invalid on error.
-- Describe with aria-describedby for hint and error; update dynamically.
-
-### Tailwind Classes Applied
 ```typescript
 private readonly baseInputClasses = [
   'w-full', 'transition-all', 'duration-200',
@@ -986,13 +1098,20 @@ private readonly variantClasses = {
 };
 ```
 
----
+#### Accessibility Features
+- role="textbox" and aria-invalid on error.
+- Describe with aria-describedby for hint and error; update dynamically.
 
-## Textarea
+
+
+
+&nbsp;  
+&nbsp;  
+### Textarea
 **Purpose:** Multi-line text input with auto-resize capabilities
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
+
 ```typescript
 // Inherits from Input plus:
 @Input() rows: number = 4
@@ -1003,22 +1122,19 @@ private readonly variantClasses = {
 @Input() characterCount: boolean = false
 ```
 
-### Examples
-[Screenshot placeholder - Textarea variants]
-
----
-
-## Select (Single & Multi)
+&nbsp;  
+&nbsp;  
+### Select (Single & Multi)
 **Purpose:** Dropdown selection with search, multi-select, and virtual scrolling
 **Figma Design:** [Insert Figma link here]
 
-### Types
+Types:  
 - Single select (native/custom)
 - Multi-select with chips
 - Creatable/taggable
 - Grouped options
 
-### Parameters / Props
+
 ```typescript
 @Input() multiple: boolean = false
 @Input() options: SelectOption[] = []
@@ -1052,32 +1168,28 @@ private readonly variantClasses = {
 @Output() optionRemove = new EventEmitter<SelectOption>()
 ```
 
-### Template Slots
+#### Template Slots
 - `optionTemplate` - Custom option rendering
 - `selectedTemplate` - Custom selected value display
 - `noOptionsTemplate` - No results message
 - `loadingTemplate` - Loading indicator
 
-### Accessibility Features
+#### Accessibility Features
 - Keyboard navigation with arrow keys
 - Type-ahead search
 - `aria-expanded`, `aria-owns`, `aria-activedescendant`
 - Screen reader announcements
 
-### Examples
-[Screenshot placeholder - Select variants]
-[Screenshot placeholder - Multi-select with chips]
 
----
 
-## Checkbox
+&nbsp;  
+&nbsp;  
+### Checkbox
 **Purpose:** Binary or tri-state selection control
 **Figma Design:** [Insert Figma link here]
 
-### Variants
-`default`, `tristate`, `custom`
+Variants: `default`, `tristate`, `custom`
 
-### Parameters / Props
 ```typescript
 @Input() checked: boolean | 'indeterminate' = false
 @Input() disabled: boolean = false
@@ -1095,16 +1207,15 @@ private readonly variantClasses = {
 @Output() blur = new EventEmitter<FocusEvent>()
 ```
 
-### Examples
-[Screenshot placeholder - Checkbox states and variants]
 
----
 
-## Radio Group & Radio
+&nbsp;  
+&nbsp;  
+### Radio Group & Radio
 **Purpose:** Single selection from multiple options
 **Figma Design:** [Insert Figma link here]
 
-### Radio Group Props
+#### Radio Group Props
 ```typescript
 @Input() name: string
 @Input() value: any
@@ -1118,7 +1229,7 @@ private readonly variantClasses = {
 @Output() valueChange = new EventEmitter<any>()
 ```
 
-### Radio Props
+#### Radio Props
 ```typescript
 @Input() value: any
 @Input() label?: string
@@ -1127,23 +1238,22 @@ private readonly variantClasses = {
 @Input() ariaDescribedBy?: string
 ```
 
-### Accessibility Features
+#### Accessibility Features
 - Arrow key navigation between options
 - Space key to select
 - Roving tabindex
 - role="combobox" with aria-expanded/aria-controls; popup list role="listbox" with option items role="option".
 - Manage active option via aria-activedescendant.
 
-### Examples
-[Screenshot placeholder - Radio group orientations]
 
----
 
-## Toggle / Switch
+&nbsp;  
+&nbsp;  
+### Toggle / Switch
 **Purpose:** On/off control with smooth animations
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
+
 ```typescript
 @Input() checked: boolean = false
 @Input() disabled: boolean = false
@@ -1162,22 +1272,20 @@ private readonly variantClasses = {
 @Output() blur = new EventEmitter<FocusEvent>()
 ```
 
-### Examples
-[Screenshot placeholder - Toggle variants and sizes]
 
----
-
-## Slider / Range Input
+&nbsp;  
+&nbsp;  
+### Slider / Range Input
 **Purpose:** Numeric input via dragging or touch
 **Figma Design:** [Insert Figma link here]
 
-### Types
+Types:  
 - Single value
 - Range (dual handle)
 - Stepped values
 - With marks/ticks
 
-### Parameters / Props
+
 ```typescript
 @Input() min: number = 0
 @Input() max: number = 100
@@ -1200,21 +1308,16 @@ private readonly variantClasses = {
 @Output() slideEnd = new EventEmitter<void>()
 ```
 
-### Examples
-[Screenshot placeholder - Slider variants and orientations]
 
----
 
-# 2 — Navigation & Structure
-
-## Tabs
+&nbsp;  
+&nbsp;  
+### Tabs
 **Purpose:** Content organization and switching interface
 **Figma Design:** [Insert Figma link here]
 
-### Variants
-`line`, `pills`, `box`, `segmented`, `glass`
+Variants: `line`, `pills`, `box`, `segmented`, `glass`
 
-### Parameters / Props
 ```typescript
 @Input() variant: 'line'|'pills'|'box'|'segmented'|'glass' = 'line'
 @Input() size: 'sm'|'md'|'lg' = 'md'
@@ -1236,7 +1339,6 @@ private readonly variantClasses = {
 @Output() tabClick = new EventEmitter<{index: number, tab: TabItem}>()
 ```
 
-### Tab Item Props
 ```typescript
 interface TabItem {
   label: string;
@@ -1248,28 +1350,27 @@ interface TabItem {
 }
 ```
 
-### Accessibility Notes
+#### Accessibility Notes
 - role="tablist" on container, role="tab" on triggers, role="tabpanel" on content.
 - aria-selected, aria-controls, id binding per WAI-ARIA Authoring Practices.
 - Use roving tabindex for horizontal/vertical arrow key navigation.
 - Follow WAI-ARIA APG: roving tabindex, aria-selected on active tab, aria-controls/id linkage.
 
-### Examples
-[Screenshot placeholder - Tab variants and orientations]
 
----
 
-## Menu / Dropdown
+&nbsp;  
+&nbsp;  
+### Menu / Dropdown
 **Purpose:** Contextual actions and navigation
 **Figma Design:** [Insert Figma link here]
 
-### Types
+Types:  
 - Context menu
 - Menu button
 - Split button
 - Nested menus
 
-### Parameters / Props
+
 ```typescript
 @Input() trigger: 'click'|'hover'|'contextmenu' = 'click'
 @Input() placement: Placement = 'bottom-start'
@@ -1289,7 +1390,6 @@ interface TabItem {
 @Output() itemClick = new EventEmitter<MenuItem>()
 ```
 
-### Menu Item Props
 ```typescript
 interface MenuItem {
   label: string;
@@ -1303,21 +1403,20 @@ interface MenuItem {
 }
 ```
 
-### Accessibility Notes
+#### Accessibility Notes
 - role="menu" with role="menuitem" (or menuitemcheckbox/menuitemradio) when appropriate.
 - Manage focus with looped arrow key navigation; Esc closes and returns focus to trigger.
 - Leverage aria-activedescendant with active option id.
 
-### Examples
-[Screenshot placeholder - Menu variants and nested menus]
 
----
 
-## Breadcrumb
+&nbsp;  
+&nbsp;  
+### Breadcrumb
 **Purpose:** Hierarchical navigation display
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
+
 ```typescript
 @Input() items: BreadcrumbItem[] = []
 @Input() separator: 'slash'|'chevron'|'arrow'|'custom' = 'slash'
@@ -1329,7 +1428,6 @@ interface MenuItem {
 @Output() itemClick = new EventEmitter<BreadcrumbItem>()
 ```
 
-### Breadcrumb Item
 ```typescript
 interface BreadcrumbItem {
   label: string;
@@ -1340,21 +1438,19 @@ interface BreadcrumbItem {
 }
 ```
 
-### Examples
-[Screenshot placeholder - Breadcrumb variants]
 
----
-
-## Pagination
+&nbsp;  
+&nbsp;  
+### Pagination
 **Purpose:** Large dataset navigation
 **Figma Design:** [Insert Figma link here]
 
-### Types
+Types:  
 - Standard pagination
 - Simple (previous/next only)
 - Compact (mobile-optimized)
 
-### Parameters / Props
+
 ```typescript
 @Input() currentPage: number = 1
 @Input() pageSize: number = 10
@@ -1373,21 +1469,22 @@ interface BreadcrumbItem {
 @Output() pageSizeChange = new EventEmitter<number>()
 ```
 
-### Examples
-[Screenshot placeholder - Pagination variants]
 
----
 
-## Sidenav / Drawer
+
+&nbsp;  
+&nbsp;  
+### Sidenav / Drawer
 **Purpose:** Side navigation panel with multiple display modes
 **Figma Design:** [Insert Figma link here]
 
-### Modes
+Modes:  
 - `over` - Overlays content
 - `push` - Pushes content aside
 - `side` - Side-by-side with content
 
-### Parameters / Props
+
+
 ```typescript
 @Input() mode: 'over'|'push'|'side' = 'over'
 @Input() position: 'left'|'right' = 'left'
@@ -1408,16 +1505,14 @@ interface BreadcrumbItem {
 @Output() closedEnd = new EventEmitter<void>()
 ```
 
-### Examples
-[Screenshot placeholder - Drawer modes and positions]
 
----
 
-## Navbar / Toolbar
+&nbsp;  
+&nbsp;  
+### Navbar / Toolbar
 **Purpose:** Application header with navigation and actions
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
 ```typescript
 @Input() fixed: boolean = false
 @Input() sticky: boolean = false
@@ -1432,24 +1527,19 @@ interface BreadcrumbItem {
 @Input() ariaLabel: string = 'Navigation'
 ```
 
-### Content Slots
+Content Slots:  
 - `brand` - Logo/brand area
 - `nav` - Navigation links
 - `actions` - Action buttons
 - `mobile-menu` - Mobile menu toggle
 
-### Examples
-[Screenshot placeholder - Navbar variants]
 
----
-
-# 3 — Feedback & Overlays
-
-## Tooltip
+&nbsp;  
+&nbsp;  
+### Tooltip
 **Purpose:** Contextual information on hover/focus
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
 ```typescript
 @Input() content: string | TemplateRef<any>
 @Input() placement: Placement = 'top'
@@ -1467,16 +1557,14 @@ interface BreadcrumbItem {
 @Output() hide = new EventEmitter<void>()
 ```
 
-### Examples
-[Screenshot placeholder - Tooltip placements and themes]
 
----
 
-## Popover / Popper
+&nbsp;  
+&nbsp;  
+### Popover / Popper
 **Purpose:** Rich contextual content overlay
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
 ```typescript
 @Input() trigger: 'click'|'hover'|'focus'|'manual' = 'click'
 @Input() placement: Placement = 'bottom'
@@ -1497,27 +1585,26 @@ interface BreadcrumbItem {
 @Output() close = new EventEmitter<void>()
 ```
 
-### Content Slots
+Content Slots:  
 - `header` - Popover header
 - `content` - Main content area
 - `footer` - Action buttons area
 
-### Examples
-[Screenshot placeholder - Popover variants]
 
----
 
-## Modal / Dialog
+&nbsp;  
+&nbsp;  
+### Modal / Dialog
 **Purpose:** Modal overlays for important content and actions
 **Figma Design:** [Insert Figma link here]
 
-### Types
+Types:  
 - Standard dialog
 - Alert dialog
 - Confirmation dialog
 - Full-screen modal
 
-### Parameters / Props
+
 ```typescript
 @Input() open: boolean = false
 @Input() size: 'xs'|'sm'|'md'|'lg'|'xl'|'fullscreen' = 'md'
@@ -1546,19 +1633,6 @@ interface BreadcrumbItem {
 @Output() escapeKey = new EventEmitter<void>()
 ```
 
-### Content Slots
-- `header` - Modal header with title
-- `body` - Main content area
-- `footer` - Action buttons
-
-### Accessibility (Material Dialog)
-- role="dialog" or role="alertdialog" with aria-modal="true".
-- Focus trap on open; return focus to trigger on close.
-- Label via aria-labelledby or aria-label; describe via aria-describedby.
-
-### Examples
-[Screenshot placeholder - Modal sizes and types] 
-### Tailwind Classes Applied
 ```typescript
 private readonly backdropClasses = [
   'fixed', 'inset-0', 'z-50',
@@ -1596,16 +1670,30 @@ private readonly sizeClasses = {
 };
 ```
 
----
 
-## Toast / Snackbar
+
+Content Slots:
+- `header` - Modal header with title
+- `body` - Main content area
+- `footer` - Action buttons
+
+#### Accessibility
+- role="dialog" or role="alertdialog" with aria-modal="true".
+- Focus trap on open; return focus to trigger on close.
+- Label via aria-labelledby or aria-label; describe via aria-describedby.
+
+
+
+
+&nbsp;  
+&nbsp;  
+### Toast / Snackbar
 **Purpose:** Non-intrusive notifications
 **Figma Design:** [Insert Figma link here]
 
-### Types
-`info`, `success`, `warning`, `error`, `custom`
+Types: `info`, `success`, `warning`, `error`, `custom`
 
-### Parameters / Props
+
 ```typescript
 @Input() type: 'info'|'success'|'warning'|'error' = 'info'
 @Input() title?: string
@@ -1623,7 +1711,6 @@ private readonly sizeClasses = {
 @Output() actionClick = new EventEmitter<ToastAction>()
 ```
 
-### Service API
 ```typescript
 interface ToastService {
   show(config: ToastConfig): ToastRef;
@@ -1635,21 +1722,21 @@ interface ToastService {
 }
 ```
 
-### Examples
-[Screenshot placeholder - Toast types and positions]
+Another option is to use the `ngx-toastr` library.
 
----
 
-## Progress Indicators
+&nbsp;  
+&nbsp;  
+### Progress Indicators
 **Purpose:** Loading and progress feedback
 **Figma Design:** [Insert Figma link here]
 
-### Types
+Types:  
 - Linear progress bar
 - Circular progress/spinner
 - Skeleton loaders
 
-### Linear Progress Props
+#### Linear Progress Props
 ```typescript
 @Input() value?: number // undefined for indeterminate
 @Input() buffer?: number
@@ -1660,7 +1747,7 @@ interface ToastService {
 @Input() ariaLabel?: string
 ```
 
-### Circular Progress Props
+#### Circular Progress Props
 ```typescript
 @Input() value?: number // undefined for indeterminate
 @Input() size: number = 40
@@ -1670,7 +1757,7 @@ interface ToastService {
 @Input() ariaLabel?: string
 ```
 
-### Skeleton Props
+#### Skeleton Props
 ```typescript
 @Input() variant: 'text'|'rectangular'|'circular' = 'text'
 @Input() width?: string | number
@@ -1679,18 +1766,15 @@ interface ToastService {
 @Input() lines?: number // for text variant
 ```
 
-### Examples
-[Screenshot placeholder - Progress variants]
 
----
 
-# 4 — Data Display & Complex Controls
-
-## Table / Data Grid
+&nbsp;  
+&nbsp;  
+### Table / Data Grid
 **Purpose:** Structured data display with sorting, filtering, and pagination
 **Figma Design:** [Insert Figma link here]
 
-### Features
+Features:  
 - Column sorting and filtering
 - Row selection (single/multi)
 - Virtual scrolling
@@ -1698,7 +1782,7 @@ interface ToastService {
 - Row expansion
 - Sticky headers
 
-### Parameters / Props
+
 ```typescript
 @Input() columns: TableColumn[] = []
 @Input() data: any[] = []
@@ -1729,7 +1813,6 @@ interface ToastService {
 @Output() columnReorder = new EventEmitter<ColumnReorderEvent>()
 ```
 
-### Column Definition
 ```typescript
 interface TableColumn {
   field: string;
@@ -1749,19 +1832,15 @@ interface TableColumn {
 }
 ```
 
-### Examples
-[Screenshot placeholder - Table variants and features]
 
----
-
-## Card
+&nbsp;  
+&nbsp;  
+### Card
 **Purpose:** Content container with optional header, body, and footer
 **Figma Design:** [Insert Figma link here]
 
-### Variants
-`elevated`, `outlined`, `filled`
+Variants: `elevated`, `outlined`, `filled`
 
-### Parameters / Props
 ```typescript
 @Input() variant: 'elevated'|'outlined'|'filled' = 'elevated'
 @Input() elevation: 0|1|2|3|4 = 1
@@ -1777,28 +1856,27 @@ interface TableColumn {
 @Output() blur = new EventEmitter<FocusEvent>()
 ```
 
-### Content Slots
+Content Slots:  
 - `header` - Card header with title and actions
 - `media` - Image or media content
 - `content` - Main card content
 - `actions` - Action buttons
 - `footer` - Additional footer content
 
-### Examples
-[Screenshot placeholder - Card variants and layouts]
 
----
 
-## List / Virtual List
+&nbsp;  
+&nbsp;  
+### List / Virtual List
 **Purpose:** Efficient display of large data sets
 **Figma Design:** [Insert Figma link here]
 
-### Types
+Types:  
 - Simple list
 - Virtual scrolling list
 - Infinite scroll list
 
-### Parameters / Props
+
 ```typescript
 @Input() items: any[] = []
 @Input() trackBy?: TrackByFunction<any>
@@ -1820,21 +1898,18 @@ interface TableColumn {
 @Output() loadMoreClick = new EventEmitter<void>()
 ```
 
-### Item Templates
+Item Templates:  
 - `itemTemplate` - Custom item rendering
 - `emptyTemplate` - Empty state display
 - `loadingTemplate` - Loading indicator
 
-### Examples
-[Screenshot placeholder - List variants]
 
----
-
-## Avatar
+&nbsp;  
+&nbsp;  
+### Avatar
 **Purpose:** User profile image or initials display
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
 ```typescript
 @Input() src?: string
 @Input() alt?: string
@@ -1852,7 +1927,6 @@ interface TableColumn {
 @Output() load = new EventEmitter<Event>()
 ```
 
-### Avatar Badge
 ```typescript
 interface AvatarBadge {
   content?: string | number;
@@ -1862,19 +1936,16 @@ interface AvatarBadge {
 }
 ```
 
-### Examples
-[Screenshot placeholder - Avatar sizes and variants]
 
----
-
-## Badge
+&nbsp;  
+&nbsp;  
+### Badge
 **Purpose:** Status indicators and counters
 **Figma Design:** [Insert Figma link here]
 
-### Variants
-`dot`, `count`, `text`, `status`
+Variants: `dot`, `count`, `text`, `status`
 
-### Parameters / Props
+
 ```typescript
 @Input() variant: 'dot'|'count'|'text'|'status' = 'count'
 @Input() content?: string | number
@@ -1888,19 +1959,15 @@ interface AvatarBadge {
 @Input() ariaLabel?: string
 ```
 
-### Examples
-[Screenshot placeholder - Badge variants and positions]
 
----
-
-## Chip / Tag
+&nbsp;  
+&nbsp;  
+### Chip / Tag
 **Purpose:** Compact elements for filters, selections, and labels
 **Figma Design:** [Insert Figma link here]
 
-### Variants
-`filled`, `outlined`, `text`
+Variants: `filled`, `outlined`, `text`
 
-### Parameters / Props
 ```typescript
 @Input() variant: 'filled'|'outlined'|'text' = 'filled'
 @Input() label: string
@@ -1919,23 +1986,19 @@ interface AvatarBadge {
 @Output() blur = new EventEmitter<FocusEvent>()
 ```
 
-### Examples
-[Screenshot placeholder - Chip variants and states]
 
----
-
-# 5 — Advanced Form Controls
-
-## Date Picker
+&nbsp;  
+&nbsp;  
+### Date Picker
 **Purpose:** Date selection with calendar interface
 **Figma Design:** [Insert Figma link here]
 
-### Selection Modes
+Selection Modes:  
 - Single date
 - Date range
 - Multiple dates
 
-### Parameters / Props
+
 ```typescript
 @Input() value: Date | DateRange | Date[]
 @Input() selectionMode: 'single'|'range'|'multiple' = 'single'
@@ -1962,21 +2025,19 @@ interface AvatarBadge {
 @Output() blur = new EventEmitter<FocusEvent>()
 ```
 
-### Templates
+Templates:  
 - `headerTemplate` - Custom calendar header
 - `dayTemplate` - Custom day cell
 - `footerTemplate` - Custom calendar footer
 
-### Examples
-[Screenshot placeholder - Date picker variants]
 
----
-
-## Time Picker
+&nbsp;  
+&nbsp;  
+### Time Picker
 **Purpose:** Time selection interface
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
+
 ```typescript
 @Input() value: string | Date
 @Input() format: '12h'|'24h' = '12h'
@@ -1993,22 +2054,21 @@ interface AvatarBadge {
 @Output() blur = new EventEmitter<FocusEvent>()
 ```
 
-### Examples
-[Screenshot placeholder - Time picker variants]
 
----
 
-## File Upload
+&nbsp;  
+&nbsp;  
+### File Upload
 **Purpose:** File selection and upload with preview
 **Figma Design:** [Insert Figma link here]
 
-### Upload Types
+Upload Types:  
 - Single file
 - Multiple files
 - Drag & drop zone
 - Directory upload
 
-### Parameters / Props
+
 ```typescript
 @Input() multiple: boolean = false
 @Input() directory: boolean = false
@@ -2033,16 +2093,13 @@ interface AvatarBadge {
 @Output() uploadError = new EventEmitter<UploadErrorEvent>()
 ```
 
-### Examples
-[Screenshot placeholder - File upload variants]
 
----
-
-## Autocomplete / Typeahead
+&nbsp;  
+&nbsp;  
+### Autocomplete / Typeahead
 **Purpose:** Search-as-you-type input with suggestions
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
 ```typescript
 @Input() value: string = ''
 @Input() placeholder?: string
@@ -2066,29 +2123,25 @@ interface AvatarBadge {
 @Output() clear = new EventEmitter<void>()
 ```
 
-### Templates
+Templates:  
 - `optionTemplate` - Custom option display
 - `noResultsTemplate` - No results message
 - `loadingTemplate` - Loading indicator
 
-### Examples
-[Screenshot placeholder - Autocomplete variants]
 
----
 
-# 6 — Utilities & System Components
-
-## Icon
+&nbsp;  
+&nbsp;  
+### Icon
 **Purpose:** Scalable vector icons with multiple source support
 **Figma Design:** [Insert Figma link here]
 
-### Icon Sources
+Icon Sources:  
 - Font icons (Material, Phosphor, etc.)
 - SVG sprites
 - Individual SVG files
 - Component-based icons
 
-### Parameters / Props
 ```typescript
 @Input() name: string
 @Input() size: 'xs'|'sm'|'md'|'lg'|'xl'|number = 'md'
@@ -2101,16 +2154,13 @@ interface AvatarBadge {
 @Input() ariaHidden: boolean = true
 ```
 
-### Examples
-[Screenshot placeholder - Icon sizes and effects]
 
----
-
-## Typography Components
+&nbsp;  
+&nbsp;  
+### Text / Typography
 **Purpose:** Consistent text styling across the application
 **Figma Design:** [Insert Figma link here]
 
-### Text Component Props
 ```typescript
 @Input() variant: 'h1'|'h2'|'h3'|'h4'|'h5'|'h6'|'body1'|'body2'|'caption'|'overline' = 'body1'
 @Input() color?: string
@@ -2124,23 +2174,24 @@ interface AvatarBadge {
 @Input() ariaLabel?: string
 ```
 
-### Examples
-[Screenshot placeholder - Typography variants]
-
----
-
-## Layout Components
+&nbsp;  
+&nbsp;  
+### Container
 **Purpose:** Responsive grid and flex utilities
 **Figma Design:** [Insert Figma link here]
 
-### Container Props
 ```typescript
 @Input() maxWidth: 'xs'|'sm'|'md'|'lg'|'xl'|'2xl'|'none' = 'lg'
 @Input() fluid: boolean = false
 @Input() gutters: boolean = true
 ```
 
-### Grid Props
+&nbsp;  
+&nbsp;  
+### Grid
+**Purpose:** Responsive grid and flex utilities
+**Figma Design:** [Insert Figma link here]
+
 ```typescript
 @Input() columns: number = 12
 @Input() gap: 'xs'|'sm'|'md'|'lg'|'xl' = 'md'
@@ -2148,33 +2199,22 @@ interface AvatarBadge {
 @Input() justifyContent: 'start'|'center'|'end'|'between'|'around'|'evenly' = 'start'
 ```
 
-### Column Props
+
+&nbsp;  
+&nbsp;  
+### Column
+**Purpose:** Responsive column and flex utilities
+**Figma Design:** [Insert Figma link here]
 ```typescript
 @Input() span: number | ResponsiveValue = 12
 @Input() offset: number | ResponsiveValue = 0
 @Input() order: number | ResponsiveValue = 0
 ```
 
-### Examples
-[Screenshot placeholder - Layout components]
 
----
-
-
-# 7 — Liquid Glass Components
-- Prefer bg-glass and border-glass-border tokens to keep consistent luminance in light/dark.
-- Respect prefers-reduced-motion by disabling shimmer/float animations when set.
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  .animate-float, .animate-glass-shimmer, .animate-liquid-ripple {
-    animation: none !important;
-  }
-}
-```
-
-## Glass Card
-### Parameters / Props
+&nbsp;  
+&nbsp;  
+### Glass Card
 ```typescript
 @Input() blur: 'sm'|'md'|'lg'|'xl' = 'md'
 @Input() opacity: number = 0.6
@@ -2186,8 +2226,9 @@ interface AvatarBadge {
 @Input() elevation: 1|2|3|4 = 2
 ```
 
-## Liquid Button
-### Parameters / Props
+&nbsp;  
+&nbsp;  
+### Liquid Button
 ```typescript
 @Input() liquidEffect: 'ripple'|'morph'|'flow' = 'ripple'
 @Input() viscosity: number = 0.5
@@ -2195,8 +2236,9 @@ interface AvatarBadge {
 @Input() flowDirection: 'horizontal'|'vertical'|'radial' = 'radial'
 ```
 
-## Distortion Container
-### Parameters / Props
+&nbsp;  
+&nbsp;  
+### Distortion Container
 ```typescript
 @Input() intensity: number = 0.1
 @Input() frequency: number = 2
@@ -2205,18 +2247,13 @@ interface AvatarBadge {
 @Input() speed: number = 1
 ```
 
-### Examples
-[Screenshot placeholder - Liquid glass effects]
 
----
-
-# 8 — Advanced Patterns
-
-## Command Palette
+&nbsp;  
+&nbsp;  
+### Command Palette
 **Purpose:** Quick action and navigation interface
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
 ```typescript
 @Input() placeholder: string = 'Type a command or search...'
 @Input() commands: Command[] = []
@@ -2230,7 +2267,6 @@ interface AvatarBadge {
 @Output() close = new EventEmitter<void>()
 ```
 
-### Command Interface
 ```typescript
 interface Command {
   id: string;
@@ -2244,11 +2280,13 @@ interface Command {
 }
 ```
 
-## Stepper
+
+&nbsp;  
+&nbsp;  
+### Stepper
 **Purpose:** Multi-step process navigation
 **Figma Design:** [Insert Figma link here]
 
-### Parameters / Props
 ```typescript
 @Input() steps: Step[] = []
 @Input() activeStep: number = 0
@@ -2263,7 +2301,6 @@ interface Command {
 @Output() stepClick = new EventEmitter<Step>()
 ```
 
-### Step Interface
 ```typescript
 interface Step {
   label: string;
@@ -2276,11 +2313,13 @@ interface Step {
 }
 ```
 
-## Data Visualization
+&nbsp;  
+&nbsp;  
+### Data Visualization
 **Purpose:** Chart and graph components for data display
 **Figma Design:** [Insert Figma link here]
 
-### Chart Types
+Chart Types:  
 - Line chart
 - Bar chart  
 - Area chart
@@ -2288,7 +2327,7 @@ interface Step {
 - Scatter plot
 - Heatmap
 
-### Base Chart Props
+
 ```typescript
 @Input() data: ChartData
 @Input() config: ChartConfig
@@ -2304,339 +2343,5 @@ interface Step {
 @Output() chartHover = new EventEmitter<ChartEvent>()
 ```
 
-### Examples
-[Screenshot placeholder - Chart variants]
 
----
-
-# 9 — API Design Patterns
-
-## Service-Based Components
-Many components offer both declarative and programmatic APIs:
-
-### Modal Service
-```typescript
-interface ModalService {
-  open<T>(component: ComponentType<T>, config?: ModalConfig): ModalRef<T>;
-  confirm(config: ConfirmConfig): ModalRef<boolean>;
-  alert(config: AlertConfig): ModalRef<void>;
-  closeAll(): void;
-}
-```
-
-### Toast Service
-```typescript
-interface ToastService {
-  show(config: ToastConfig): ToastRef;
-  success(message: string, config?: Partial<ToastConfig>): ToastRef;
-  error(message: string, config?: Partial<ToastConfig>): ToastRef;
-  warning(message: string, config?: Partial<ToastConfig>): ToastRef;
-  info(message: string, config?: Partial<ToastConfig>): ToastRef;
-  clear(): void;
-  clearByType(type: ToastType): void;
-}
-```
-
-## Form Integration
-All form controls implement `ControlValueAccessor` and integrate seamlessly with Angular Reactive Forms:
-
-```typescript
-// Reactive Forms
-this.form = this.fb.group({
-  email: ['', [Validators.required, Validators.email]],
-  password: ['', [Validators.required, Validators.minLength(8)]],
-  preferences: this.fb.group({
-    newsletter: [false],
-    theme: ['light']
-  })
-});
-
-// Template
-<form [formGroup]="form">
-  <ui-input 
-    formControlName="email" 
-    type="email" 
-    label="Email Address"
-    placeholder="Enter your email">
-  </ui-input>
-  
-  <ui-input 
-    formControlName="password" 
-    type="password" 
-    label="Password"
-    showPasswordToggle="true">
-  </ui-input>
-  
-  <ui-toggle 
-    formControlName="preferences.newsletter"
-    label="Subscribe to newsletter">
-  </ui-toggle>
-</form>
-```
-
----
-
-
-## Theme Provider
-**Purpose:** Global theming and design token management
-**Figma Design:** [Insert Figma link here]
-
-### Theme Service
-```typescript
-@Injectable({
-  providedIn: 'root'
-})
-export class ThemeService {
-  private currentTheme = signal<ThemeConfig>(defaultTheme);
-  private isDark = signal<boolean>(false);
-
-  setTheme(theme: ThemeConfig): void {
-    this.currentTheme.set(theme);
-    this.applyThemeVariables(theme);
-  }
-
-  toggleDarkMode(): void {
-    this.isDark.update(dark => !dark);
-    document.documentElement.setAttribute('data-theme', this.isDark() ? 'dark' : 'light');
-  }
-
-  private applyThemeVariables(theme: ThemeConfig): void {
-    const root = document.documentElement;
-    
-    // Apply color variables
-    Object.entries(theme.colors).forEach(([key, value]) => {
-      if (typeof value === 'object') {
-        Object.entries(value).forEach(([shade, color]) => {
-          root.style.setProperty(`--color-${key}-${shade}`, this.hexToRgb(color));
-        });
-      } else {
-        root.style.setProperty(`--color-${key}`, this.hexToRgb(value));
-      }
-    });
-
-    // Apply spacing, radius, etc.
-    Object.entries(theme.spacing).forEach(([key, value]) => {
-      root.style.setProperty(`--spacing-${key}`, value);
-    });
-  }
-
-  getColorClasses(scheme: string): ColorClasses {
-    return {
-      bg: `bg-${scheme}-500`,
-      bgHover: `hover:bg-${scheme}-600`,
-      text: `text-${scheme}-600`,
-      border: `border-${scheme}-500`,
-      ring: `ring-${scheme}-500`,
-    };
-  }
-}
-
-interface ColorClasses {
-  bg: string;
-  bgHover: string;
-  text: string;
-  border: string;
-  ring: string;
-}
-```
-
-### Usage Examples
-```typescript
-// Component usage with theme integration
-@Component({
-  template: `
-    <ui-button 
-      [colorScheme]="themeService.currentScheme()"
-      variant="primary"
-      customClasses="shadow-lg hover:shadow-xl">
-      Themed Button
-    </ui-button>
-    
-    <ui-card 
-      variant="glass"
-      [colorScheme]="themeService.currentScheme()"
-      customClasses="backdrop-blur-glass-lg">
-      Glass morphism card with theme integration
-    </ui-card>
-  `
-})
-export class ExampleComponent {
-  constructor(public themeService: ThemeService) {}
-}
-```
-
-### Tailwind Configuration Extension
-```javascript
-// tailwind.config.js - Extended for UI library
-module.exports = {
-  content: [
-    './src/**/*.{html,ts}',
-    './projects/ui-lib/**/*.{html,ts}'
-  ],
-  darkMode: ['class', '[data-theme="dark"]'],
-  theme: {
-    extend: {
-      // ...existing code...
-      
-      // Component-specific utilities
-      utilities: {
-        '.ui-focus': {
-          '@apply focus:outline-none focus:ring-2 focus:ring-offset-2': {},
-        },
-        '.ui-transition': {
-          '@apply transition-all duration-200 ease-in-out': {},
-        },
-        '.ui-glass': {
-          '@apply backdrop-blur-glass-md bg-glass/60 border border-glass-border/20': {},
-        },
-        '.ui-liquid-hover': {
-          '@apply relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-radial before:from-current/20 before:to-transparent before:opacity-0 before:transition-opacity hover:before:opacity-100': {},
-        }
-      }
-    }
-  },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    // Custom plugin for UI library utilities
-    function({ addUtilities, theme }) {
-      addUtilities({
-        '.ui-focus': {
-          '&:focus': {
-            outline: 'none',
-            'box-shadow': `0 0 0 2px ${theme('colors.blue.500')}`,
-          }
-        }
-      });
-    }
-  ]
-}
-```
-
----
-
-## Component Base Class
-```typescript
-export abstract class UiComponentBase {
-  @Input() colorScheme: ColorScheme = 'blue';
-  @Input() customClasses?: string;
-  
-  protected getColorClasses(scheme: ColorScheme = this.colorScheme): Record<string, string> {
-    return {
-      primary: `bg-${scheme}-500 hover:bg-${scheme}-600 text-white`,
-      secondary: `bg-${scheme}-100 hover:bg-${scheme}-200 text-${scheme}-800`,
-      outline: `border-${scheme}-500 text-${scheme}-600 hover:bg-${scheme}-50`,
-      ghost: `text-${scheme}-600 hover:bg-${scheme}-50`,
-      text: `bg-${scheme}-500 text-white`,
-      ring: `ring-${scheme}-500 focus:ring-${scheme}-500`,
-    };
-  }
-  
-  protected combineClasses(...classes: (string | string[] | undefined)[]): string {
-    return classes
-      .flat()
-      .filter(Boolean)
-      .join(' ');
-  }
-}
-
-type ColorScheme = 'blue' | 'green' | 'purple' | 'red' | 'gray';
-```
-
-
-
----
-
-# 11 — Accessibility Implementation
-
-## WCAG 2.1 AA Compliance Checklist
-- ✅ Color contrast ratios (4.5:1 for normal text, 3:1 for large text/UI components)
-- ✅ Keyboard navigation and focus management
-- ✅ Screen reader support with proper ARIA attributes
-- ✅ Respect for `prefers-reduced-motion`
-- ✅ Touch targets ≥ 44×44px with adequate spacing
-- ✅ Alternative text for images and icons
-- ✅ Logical tab order and focus indicators
-- ✅ Error identification and suggestions
-- ✅ Consistent navigation and identification
-
-## Testing Requirements
-- Automated testing with axe-core
-- Manual keyboard navigation testing
-- Screen reader testing (NVDA, JAWS, VoiceOver)
-- High contrast mode verification
-- Mobile accessibility testing
-- Color blindness simulation
-
----
-
-
-
-
-# 11 — Development & Documentation
-
-## Storybook Integration
-Each component includes comprehensive Storybook stories:
-- Default state examples
-- All variant demonstrations
-- Interactive property controls
-- Accessibility testing
-- Design token documentation
-- Usage guidelines and best practices
-
-## Component Template Structure
-```typescript
-@Component({
-  selector: 'ui-[component-name]',
-  templateUrl: './[component-name].component.html',
-  styleUrls: ['./[component-name].component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  providers: [
-    // ControlValueAccessor for form controls
-  ],
-  host: {
-    'class': 'ui-[component-name]',
-    '[class.ui-[component-name]--disabled]': 'disabled',
-    '[class.ui-[component-name]--loading]': 'loading',
-    '[attr.aria-disabled]': 'disabled || null',
-    // Additional host bindings
-  }
-})
-export class Ui[ComponentName] implements OnInit, OnDestroy, ControlValueAccessor {
-  // Component implementation
-}
-```
-
-
-
----
-
-
-## Testing Strategy
-- Unit tests for all components with Jest
-- Integration tests for complex interactions
-- Visual regression tests with Chromatic
-- Accessibility tests with axe-core
-- Performance tests for animations and interactions
-
-
-
-## Design System Documentation
-**Figma Design System:** [Insert main Figma file link here]
-**Component Library:** [Insert component library Figma link here]
-**Style Guide:** [Insert style guide Figma link here]
-
-## Interactive Examples
-All components will include interactive examples in Storybook with:
-- Live property editing
-- Code snippets
-- Design token integration
-- Accessibility testing tools
-- Responsive preview modes
-
----
-
-**Last Updated:** September 2025  
-**Version:** 1.0.2
 
