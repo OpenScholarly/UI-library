@@ -209,7 +209,7 @@ export class ContainerComponent {
    * Overflow behavior for content that exceeds container bounds.
    * @default "visible"
    */
-  overflow = input<'visible' | 'hidden' | 'scroll' | 'auto'>('visible');
+  overflow = input<'visible' | 'hidden' | 'scroll' | 'auto'>('auto');
   
   /**
    * CSS positioning type for the container.

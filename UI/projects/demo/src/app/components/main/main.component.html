@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-  <ui-container size="2xl">
+  <ui-container [size]="'2xl'" [centerContent]="true" [padding]="'md'" [stack]="true">
     <!-- Header -->
-    <header class="text-center mb-12">
+    <header class="text-center mb-12 w-full">
       <ui-heading level="h1" size="4xl" color="primary">{{ title() }}</ui-heading>
       <ui-text color="secondary" size="lg" class="mt-4 mb-6">A comprehensive Angular UI component library</ui-text>
       <div class="flex justify-center space-x-4">
@@ -24,7 +24,13 @@
             <!-- Container Demo -->
             <div>
               <ui-text weight="semibold" class="mb-2">Container</ui-text>
-              <ui-container size="md" class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded">
+              <ui-container 
+                [size]="'md'" 
+                [centerContent]="true" 
+                [padding]="'md'" 
+                [borderRadius]="'md'"
+                [background]="'rgb(239, 246, 255)'"
+                class="dark:bg-blue-900/20">
                 <ui-text>This content is in a medium-sized container</ui-text>
               </ui-container>
             </div>
@@ -36,19 +42,31 @@
               <ui-text weight="semibold" class="mb-2">Grid System</ui-text>
               <ui-grid cols="3" gap="md">
                 <ui-column span="1">
-                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                  <ui-container 
+                    [padding]="'md'" 
+                    [borderRadius]="'md'"
+                    [background]="'rgb(220, 252, 231)'"
+                    class="dark:bg-green-900/20">
                     <ui-text>Column 1</ui-text>
-                  </div>
+                  </ui-container>
                 </ui-column>
                 <ui-column span="1">
-                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                  <ui-container 
+                    [padding]="'md'" 
+                    [borderRadius]="'md'"
+                    [background]="'rgb(220, 252, 231)'"
+                    class="dark:bg-green-900/20">
                     <ui-text>Column 2</ui-text>
-                  </div>
+                  </ui-container>
                 </ui-column>
                 <ui-column span="1">
-                  <div class="bg-green-100 dark:bg-green-900/20 p-4 rounded">
+                  <ui-container 
+                    [padding]="'md'" 
+                    [borderRadius]="'md'"
+                    [background]="'rgb(220, 252, 231)'"
+                    class="dark:bg-green-900/20">
                     <ui-text>Column 3</ui-text>
-                  </div>
+                  </ui-container>
                 </ui-column>
               </ui-grid>
             </div>
@@ -59,15 +77,27 @@
             <div>
               <ui-text weight="semibold" class="mb-2">Row Layout</ui-text>
               <ui-row justify="between" align="center" gap="md">
-                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                <ui-container 
+                  [padding]="'sm'" 
+                  [borderRadius]="'md'"
+                  [background]="'rgb(243, 232, 255)'"
+                  class="dark:bg-purple-900/20">
                   <ui-text>Left Item</ui-text>
-                </div>
-                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                </ui-container>
+                <ui-container 
+                  [padding]="'sm'" 
+                  [borderRadius]="'md'"
+                  [background]="'rgb(243, 232, 255)'"
+                  class="dark:bg-purple-900/20">
                   <ui-text>Center Item</ui-text>
-                </div>
-                <div class="bg-purple-100 dark:bg-purple-900/20 p-3 rounded">
+                </ui-container>
+                <ui-container 
+                  [padding]="'sm'" 
+                  [borderRadius]="'md'"
+                  [background]="'rgb(243, 232, 255)'"
+                  class="dark:bg-purple-900/20">
                   <ui-text>Right Item</ui-text>
-                </div>
+                </ui-container>
               </ui-row>
             </div>
           </div>
