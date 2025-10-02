@@ -20,14 +20,14 @@ export type ThemeMode = 'system' | 'light' | 'dark';
           (change)="handleThemeChange('system')"
           [attr.aria-label]="systemLabel()"
           class="sr-only" />
-        <label [for]="systemId" [class]="buttonClasses()">
+        <label [for]="systemId" [class]="getButtonClasses('system')">
           <span class="sr-only">{{ systemLabel() }}</span>
           <svg
             [attr.height]="iconSize()"
             [attr.width]="iconSize()"
             stroke-linejoin="round"
             viewBox="0 0 16 16"
-            class="transition-colors duration-200"
+            class="transition-colors duration-200 relative z-10"
             style="color: currentcolor">
             <path
               fill-rule="evenodd"
@@ -49,14 +49,14 @@ export type ThemeMode = 'system' | 'light' | 'dark';
           (change)="handleThemeChange('light')"
           [attr.aria-label]="lightLabel()"
           class="sr-only" />
-        <label [for]="lightId" [class]="buttonClasses()">
+        <label [for]="lightId" [class]="getButtonClasses('light')">
           <span class="sr-only">{{ lightLabel() }}</span>
           <svg
             [attr.height]="iconSize()"
             [attr.width]="iconSize()"
             stroke-linejoin="round"
             viewBox="0 0 16 16"
-            class="transition-colors duration-200"
+            class="transition-colors duration-200 relative z-10"
             style="color: currentcolor">
             <path
               fill-rule="evenodd"
@@ -78,14 +78,14 @@ export type ThemeMode = 'system' | 'light' | 'dark';
           (change)="handleThemeChange('dark')"
           [attr.aria-label]="darkLabel()"
           class="sr-only" />
-        <label [for]="darkId" [class]="buttonClasses()">
+        <label [for]="darkId" [class]="getButtonClasses('dark')">
           <span class="sr-only">{{ darkLabel() }}</span>
           <svg
             [attr.height]="iconSize()"
             [attr.width]="iconSize()"
             stroke-linejoin="round"
             viewBox="0 0 16 16"
-            class="transition-colors duration-200"
+            class="transition-colors duration-200 relative z-10"
             style="color: currentcolor">
             <path
               fill-rule="evenodd"
@@ -129,11 +129,17 @@ export class ThemeSwitcherComponent {
   });
 
   protected buttonClasses = computed(() => {
-    const baseClasses = 'cursor-pointer w-8 h-8 text-gray-600 dark:text-gray-400 bg-transparent rounded-full justify-center items-center m-0 flex relative transition-all duration-200';
+    const baseClasses = 'cursor-pointer w-8 h-8 text-gray-600 dark:text-gray-400 rounded-full justify-center items-center m-0 flex relative transition-all duration-200';
     const sizeClasses = this.size() === 'sm' ? 'w-7 h-7' : 'w-8 h-8';
 
     return `${baseClasses} ${sizeClasses} hover:text-gray-900 dark:hover:text-gray-100`;
   });
+
+  protected getButtonClasses(theme: ThemeMode): string {
+    const baseClasses = this.buttonClasses();
+    const isActive = this.currentTheme() === theme;
+    return isActive ? `${baseClasses} text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-700` : `${baseClasses} bg-transparent`;
+  }
 
   constructor() {
     // Initialize theme from localStorage or default to system
