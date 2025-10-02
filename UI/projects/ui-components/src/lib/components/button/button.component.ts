@@ -60,5 +60,7 @@ export class ButtonComponent {
     if (!this.disabled()) {
       this.clicked.emit();
     }
+    // if (this.disabled || this.loading) { e.preventDefault(); return; }
+    // this.click.emit(e);
   }
 }

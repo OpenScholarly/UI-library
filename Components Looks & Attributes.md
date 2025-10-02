@@ -1,14 +1,8 @@
 # UI Library Components Specification
 
-Following Material Design 3 principles with Tailwind CSS theming, liquid glass effects, advanced animations, and comprehensive design token support.
-
----
-
 # Tailwind Theme Integration
-
 ## Theme Configuration
 The UI library leverages Tailwind's theme system with custom design tokens:
-
 ```javascript
 // tailwind.config.js
 module.exports = {
@@ -148,6 +142,461 @@ interface ThemeConfig {
   };
 }
 ```
+
+### Typography Component Service
+```typescript
+@Injectable({
+  providedIn: 'root'
+})
+export class TypographyService {
+  private fontLoadingSubject = new BehaviorSubject<boolean>(false);
+  
+  async loadFonts(): Promise<void> {
+    try {
+      await Promise.all([
+        document.fonts.load('400 16px Inter'),
+        document.fonts.load('700 16px Inter'),
+        document.fonts.load('400 24px Playfair Display')
+      ]);
+      this.fontLoadingSubject.next(true);
+    } catch (error) {
+      console.warn('Font loading failed:', error);
+    }
+  }
+  
+  get fontsLoaded$(): Observable<boolean> {
+    return this.fontLoadingSubject.asObservable();
+  }
+}
+```
+
+#### Font Loading Strategies
+1. Preload critical fonts in HTML head
+2. Use `font-display: swap` for better UX
+3. Implement font fallbacks with similar metrics
+4. Test across devices and screen sizes
+5. Monitor performance with Core Web Vitals
+
+
+# ControlValueAccessor
+<https://dev.to/valorsoftware/avoiding-common-pitfalls-with-controlvalueaccessors-in-angular-4m57>
+<https://angular.love/never-again-be-confused-when-implementing-controlvalueaccessor-in-angular-forms>
+<https://www.sparkcodehub.com/angular/accessibility/use-aria-labels-in-ui>
+<https://testing-library.com/docs/angular-testing-library/intro/>
+<https://codelabs.developers.google.com/angular-a11y#0>
+<https://fontawesome.com/v4/examples/>
+<https://fontawesome.com/icons/language?f=slab&s=regular>
+
+
+```typescript
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, Injectable, OnDestroy } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject } from 'rxjs';
+
+// Base class for form components
+@Injectable()
+export abstract class BaseFormControl<T = any> implements ControlValueAccessor, OnDestroy {
+  protected _value: T | null = null;
+  protected _disabled = false;
+  protected _touched = false;
+  
+  private onChange = (value: T) => {};
+  private onTouched = () => {};
+  private destroy$ = new Subject<void>();
+
+  get value(): T | null {
+    return this._value;
+  }
+
+  set value(val: T | null) {
+    if (val !== this._value) {
+      this._value = val;
+      this.onChange(val);
+    }
+  }
+
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
+  // ControlValueAccessor implementation
+  writeValue(value: T): void {
+    this._value = value;
+    this.cdr.markForCheck();
+  }
+
+  registerOnChange(fn: (value: T) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this._disabled = isDisabled;
+    this.cdr.markForCheck();
+  }
+
+  protected markAsTouched(): void {
+    if (!this._touched) {
+      this._touched = true;
+      this.onTouched();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  constructor(protected cdr: ChangeDetectorRef) {}
+}
+
+// Example implementation for button component
+@Component({
+  selector: 'my-ui-input',
+  template: `
+    <div class="ui-input-wrapper" [class.ui-input--disabled]="disabled">
+      <label *ngIf="label" [for]="inputId" class="ui-input__label">
+        {{ label }}
+        <span *ngIf="required" aria-label="required">*</span>
+      </label>
+      <input
+        [id]="inputId"
+        [type]="type"
+        [placeholder]="placeholder"
+        [disabled]="disabled"
+        [value]="value || ''"
+        [attr.aria-describedby]="getAriaDescribedBy()"
+        [attr.aria-invalid]="hasError"
+        [attr.aria-required]="required"
+        (input)="onInput($event)"
+        (blur)="onBlur()"
+        (focus)="onFocus()"
+        class="ui-input__control">
+      <div *ngIf="hint" [id]="hintId" class="ui-input__hint">{{ hint }}</div>
+      <div *ngIf="errorMessage" [id]="errorId" class="ui-input__error" role="alert">
+        {{ errorMessage }}
+      </div>
+    </div>
+  `,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => MyUiInput),
+    multi: true
+  }],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class MyUiInput extends BaseFormControl<string> implements AfterViewInit {
+  @Input() label?: string;
+  @Input() placeholder?: string;
+  @Input() type = 'text';
+  @Input() required = false;
+  @Input() hint?: string;
+  @Input() errorMessage?: string;
+  
+  readonly inputId = `ui-input-${Math.random().toString(36).substr(2, 9)}`;
+  readonly hintId = `${this.inputId}-hint`;
+  readonly errorId = `${this.inputId}-error`;
+
+  get hasError(): boolean {
+    return !!this.errorMessage;
+  }
+
+  onInput(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.value = target.value;
+  }
+
+  onBlur(): void {
+    this.markAsTouched();
+  }
+
+  onFocus(): void {
+    // Handle focus logic
+  }
+
+  getAriaDescribedBy(): string | null {
+    const ids = [];
+    if (this.hint) ids.push(this.hintId);
+    if (this.errorMessage) ids.push(this.errorId);
+    return ids.length > 0 ? ids.join(' ') : null;
+  }
+}
+```
+
+
+
+
+
+```typescript
+// Accessibility service
+@Injectable({
+  providedIn: 'root'
+})
+export class A11yService {
+  private liveAnnouncer = inject(LiveAnnouncer);
+  
+  announceForScreenReader(message: string, priority: AriaLivePoliteness = 'polite'): void {
+    this.liveAnnouncer.announce(message, priority);
+  }
+
+  generateUniqueId(prefix = 'ui'): string {
+    return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  trapFocus(element: HTMLElement): void {
+    // Implementation for focus trapping in modals
+    const focusableElements = element.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    
+    const firstElement = focusableElements[0] as HTMLElement;
+    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+    element.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    });
+  }
+}
+
+// Accessible modal component
+@Component({
+  selector: 'my-ui-modal',
+  template: `
+    <div 
+      *ngIf="open"
+      class="ui-modal-backdrop"
+      [attr.aria-hidden]="!open"
+      (click)="onBackdropClick($event)">
+      <div 
+        class="ui-modal-container"
+        role="dialog"
+        [attr.aria-modal]="open"
+        [attr.aria-labelledby]="titleId"
+        [attr.aria-describedby]="descriptionId"
+        (click)="$event.stopPropagation()">
+        
+        <div class="ui-modal-header">
+          <h2 [id]="titleId" class="ui-modal-title">
+            <ng-content select="[slot=title]"></ng-content>
+          </h2>
+          <button 
+            *ngIf="closable"
+            type="button"
+            class="ui-modal-close"
+            [attr.aria-label]="closeAriaLabel"
+            (click)="close()">
+            ×
+          </button>
+        </div>
+        
+        <div [id]="descriptionId" class="ui-modal-body">
+          <ng-content></ng-content>
+        </div>
+        
+        <div class="ui-modal-footer">
+          <ng-content select="[slot=footer]"></ng-content>
+        </div>
+      </div>
+    </div>
+  `,
+  host: {
+    '(keydown.escape)': 'close()',
+    '[class.ui-modal--open]': 'open'
+  }
+})
+export class MyUiModal implements OnInit, OnDestroy {
+  @Input() open = false;
+  @Input() closable = true;
+  @Input() closeAriaLabel = 'Close dialog';
+  @Output() openChange = new EventEmitter<boolean>();
+  @Output() closed = new EventEmitter<void>();
+
+  readonly titleId = this.a11y.generateUniqueId('modal-title');
+  readonly descriptionId = this.a11y.generateUniqueId('modal-desc');
+
+  private previousActiveElement?: HTMLElement;
+
+  constructor(private a11y: A11yService, private elementRef: ElementRef) {}
+
+  ngOnInit(): void {
+    if (this.open) {
+      this.handleOpen();
+    }
+  }
+
+  @HostListener('openChange')
+  onOpenChange(): void {
+    if (this.open) {
+      this.handleOpen();
+    } else {
+      this.handleClose();
+    }
+  }
+
+  close(): void {
+    this.open = false;
+    this.openChange.emit(false);
+    this.closed.emit();
+  }
+
+  private handleOpen(): void {
+    this.previousActiveElement = document.activeElement as HTMLElement;
+    
+    // Trap focus within modal
+    setTimeout(() => {
+      const modalElement = this.elementRef.nativeElement.querySelector('.ui-modal-container');
+      if (modalElement) {
+        this.a11y.trapFocus(modalElement);
+        modalElement.focus();
+      }
+    });
+
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  }
+
+  private handleClose(): void {
+    // Restore focus
+    if (this.previousActiveElement) {
+      this.previousActiveElement.focus();
+    }
+
+    // Restore body scroll
+    document.body.style.overflow = '';
+  }
+
+  onBackdropClick(event: Event): void {
+    if (this.closable && event.target === event.currentTarget) {
+      this.close();
+    }
+  }
+}
+```
+
+
+```typescript
+export class MyUiCard implements AfterContentInit {
+  @Input() variant: 'elevated' | 'outlined' | 'filled' = 'elevated';
+    @ContentChild('[slot=header]') headerContent?: ElementRef;
+  @ContentChild('[slot=media]') mediaContent?: ElementRef;
+  @ContentChild('[slot=actions]') actionsContent?: ElementRef;
+
+  get hasHeader(): boolean {
+    return !!this.headerContent;
+  }
+
+  get hasMedia(): boolean {
+    return !!this.mediaContent;
+  }
+
+  get hasActions(): boolean {
+    return !!this.actionsContent;
+  }
+```
+
+
+
+
+
+
+PO:
+```typescript
+// Component test example
+import { render, screen, fireEvent } from '@testing-library/angular';
+import { MyUiButton } from './button.component';
+
+describe('MyUiButton', () => {
+  test('renders button with text', async () => {
+    await render(MyUiButton, {
+      componentProperties: {
+        variant: 'primary'
+      },
+      template: '<my-ui-button>Click me</my-ui-button>'
+    });
+
+    expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
+  });
+
+  test('emits click event', async () => {
+    const clickSpy = jest.fn();
+    
+    await render(MyUiButton, {
+      componentProperties: {
+        click: { emit: clickSpy } as any
+      },
+      template: '<my-ui-button (click)="click.emit()">Click me</my-ui-button>'
+    });
+
+    fireEvent.click(screen.getByRole('button'));
+    expect(clickSpy).toHaveBeenCalled();
+  });
+
+  test('is accessible', async () => {
+    await render(MyUiButton, {
+      template: '<my-ui-button aria-label="Save document">Save</my-ui-button>'
+    });
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveAttribute('aria-label', 'Save document');
+  });
+});
+```
+
+
+
+
+
+Strategies for Coherence
+
+Design Tokens: Centralize colors, spacing, typography via CSS variables or Tailwind config for design consistency.
+
+Component Props: Standardize props (variant, size, density) so variant=“primary” means the same across all types.
+
+Themeable API: Use custom properties; allow consuming apps to overwrite via parent themes or Tailwind config extension.
+
+Documentation: Provide Storybook or demo app with examples in both desktop and mobile layouts.
+
+Testing: Run visual regressions (Chromatic, Percy), support WCAG accessibility checks.
+
+Mobile Friendliness
+
+Responsive Variants: Use media queries/Tailwind’s breakpoints (sm:, md:, lg:).
+
+Touch Optimization: Tap targets min. 48px, visible focus states, avoid hover-only triggers.
+
+Hide/Convert: Hide secondary elements, use full-screen selectors instead of dropdowns.
+
+Grid & Flex Layouts: Prefer CSS Grid or Flex for adaptive, fluid layouts.
+
+Viewport-based Routing: Optionally show different components/routes depending on device size.
+
+Test on Devices: Leverage device labs or BrowserStack for real physical device responsiveness checks.
+
+
+```js
+colors: {
+  'liquid-glass-bg': 'rgba(255,255,255,0.2)',
+},
+boxShadow: {
+  'liquid': '0 4px 14px rgba(0,0,0,0.17)',
+}
+```
+
 
 
 ---
@@ -448,6 +897,7 @@ private readonly hintClasses = [
 ## Input (Text)
 **Purpose:** Single-line text input with comprehensive validation and styling
 **Figma Design:** [Insert Figma link here]
+Implement `ControlValueAccessor`, send `touched`/`dirty` states.
 
 ### Input Types
 `text`, `password`, `search`, `url`, `email`, `tel`, `number`, `hidden`
@@ -460,14 +910,20 @@ private readonly hintClasses = [
 @Input() type: 'text'|'password'|'search'|'url'|'email'|'tel'|'number' = 'text'
 @Input() value: string = ''
 @Input() placeholder?: string
+@Input() iconLeft?: string
+@Input() iconRight?: string
+@Input() label?: string
+@Input() hint?: string
+@Input() error?: string
 @Input() size: 'sm'|'md'|'lg' = 'md'
+@Input() required: boolean = false
 @Input() readonly: boolean = false
 @Input() disabled: boolean = false
 @Input() autofocus: boolean = false
 @Input() autocomplete?: string
 @Input() spellcheck: boolean = true
 @Input() clearable: boolean = false
-@Input() showPasswordToggle: boolean = false
+@Input() showPasswordToggle: boolean = false // input necessary?
 @Input() maxLength?: number
 @Input() minLength?: number
 @Input() pattern?: string
@@ -1489,6 +1945,7 @@ interface AvatarBadge {
 @Input() minDate?: Date
 @Input() maxDate?: Date
 @Input() disabledDates?: Date[] | ((date: Date) => boolean)
+@Input() startView: 'month'|'year'|'decade' = 'month'
 @Input() format: string = 'MM/dd/yyyy'
 @Input() firstDayOfWeek: number = 0 // 0 = Sunday
 @Input() showWeekNumbers: boolean = false
@@ -1555,7 +2012,7 @@ interface AvatarBadge {
 ```typescript
 @Input() multiple: boolean = false
 @Input() directory: boolean = false
-@Input() accept?: string
+@Input() accept?: string // e.g. "image/*,.pdf" (MIME types or extensions)
 @Input() maxSize?: number // in bytes
 @Input() maxFiles?: number
 @Input() disabled: boolean = false

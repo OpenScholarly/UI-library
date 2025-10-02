@@ -13,6 +13,13 @@ This UI library provides a comprehensive collection of production-ready Angular 
 &nbsp;  
 &nbsp;  
 ## Rules
+* Use **clear hierarchy** (surface → elevation → shadow → motion) to show relationships. ([Material Design][1])
+* Motion is an *enhancer*, not required for understanding but provides meaning and fun; obey user reduced-motion preferences. ([MDN Web Docs][2], [W3C][3])
+* Make interactive targets comfortably large (≈48×48dp or 44×44pt) and spaced. ([Material Design][4], [Apple Developer][5])
+* Ensure color contrast meets WCAG (4.5:1 for body text; 3:1 for large text / UI components). ([W3C][6])
+
+
+
 ### Shadows & “shiny colored backdrop” rules (depth + glow)
 **Goal:** depth + personality without breaking contrast/accessibility or looking noisy.
 Design rules:
@@ -149,6 +156,12 @@ Checklist:
 * Keyboard rules: `Tab`/`Shift+Tab` for forward/backward focus, arrow keys for menus/radios/listboxes, `Esc` to close overlays; document any deviation. ([W3C][16])
 * Announce dynamic changes to assistive tech (use `aria-live` regions for notifications/toasts); ensure role attributes and `aria-*` states reflect real state.
 * Follow color contrast and “don’t rely on color alone” rules above. ([W3C][6])
+* All interactive components must have correct role, `tabindex`, visible focus styles.
+* Dialog/Modal: trap focus, restore focus to trigger, `aria-modal="true"`, labelledby and describedby.
+* Tooltip: not solely relying on hover — show on focus too; use `aria-describedby`.
+* Menus/Selects: arrow keys, Esc to close, Enter to select, Home/End support for lists.
+* Provide aria attributes for state: `aria-checked`, `aria-selected`, `aria-disabled`, `aria-expanded`.
+* Provide screen-reader-only text slots when needed.
 
 
 ### Performance & practical constraints
@@ -275,32 +288,81 @@ Dark theme variants are automatically applied when `data-theme="dark"` is set on
 &nbsp;  
 &nbsp;  
 ## Typography
-- [Google Fonts](https://fonts.google.com/)
-### Font System
-Primary font: **Inter** with fallbacks to system fonts for optimal performance and cross-platform consistency.
+Typography isn't just about making text look good—it's a fundamental component of user experience that affects readability, accessibility, brand perception, and user engagement. Studies show that **70% of user interface effectiveness depends on typography**, making font selection one of your most critical design decisions.
 
+
+### Font choices
+[Google Fonts](https://fonts.google.com/)
+
+#### Sans-Serif Fonts
+- Characteristics: Clean, modern, minimal without decorative strokes
+- Best For: Digital screens, body text, modern brands, mobile interfaces
+- Psychology: Projects approachability, innovation, clarity
+
+Inter, DM Sans, Poppins, Roboto, Open Sans, Lato, Montserrat, Source Sans Pro, Nunito, Raleway.  
+
+#### Serif Fonts
+- Characteristics: Traditional decorative strokes, formal, elegant
+- Best For: Headlines, branding, luxury products, long-form reading
+- Psychology: Conveys tradition, authority, trustworthiness
+
+Playfair Display, Merriweather, Lora, PT Serif, Crimson Text, EB Garamond.  
+
+#### Technical Impletentation
 ```css
 :root {
   --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 }
 ```
+OR  
+```scss
+// 1. Preload critical fonts
+<link rel="preload" href="path/to/font.woff2" as="font" type="font/woff2" crossorigin>
+
+// 2. Use font-display for better loading experience
+@font-face {
+  font-family: 'Inter';
+  font-display: swap; // Shows fallback until custom font loads
+  src: url('inter-variable.woff2') format('woff2-variations');
+}
+
+// 3. Define fallback stacks
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+```
 
 ### Type Scale
-```css
+1. Display/H1: Largest, most important (36-72px)
+2. Headlines/H2-H3: Secondary importance (24-36px)
+3. Titles/H4-H6: Tertiary levels (18-24px)
+4. Body Text: Primary reading (16-18px minimum)
+5. Captions/Meta: Supporting information (12-14px)
+
+Classic Typographic Scale: 6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 21, 24, 30, 36, 48, 60, 72  
+
+```scss
 :root {
-  --text-xs: 12px;    /* Caption, helper text */
-  --text-sm: 14px;    /* Body small, secondary text */
-  --text-base: 16px;  /* Body text, labels */
-  --text-lg: 18px;    /* Subtitle, large body */
-  --text-xl: 20px;    /* Card titles, section headers */
-  --text-2xl: 24px;   /* Page titles, modal headers */
-  --text-3xl: 30px;   /* Display text, hero titles */
-  --text-4xl: 36px;   /* Large display text */
+  --text-xs: 0.75rem;   // 12px - captions, helper text
+  --text-sm: 0.875rem;  // 14px - small text, body small
+  --text-base: 1rem;    // 16px - body text (minimum), labels
+  --text-lg: 1.125rem;  // 18px - large body, subtitle
+  --text-xl: 1.25rem;   // 20px - small headings, card titles, section headers
+  --text-2xl: 1.5rem;   // 24px - headings, modal headers, page titles
+  --text-3xl: 1.875rem; // 30px - large headings, hero titles, display text
+  --text-4xl: 2.25rem;  // 36px - display
 }
 ```
 
 ### Font Weights
+```css
+:root {
+  --font-weight-light: 300;   /* Light */
+  --font-weight-regular: 400; /* Regular */
+  --font-weight-medium: 500;  /* Medium */
+  --font-weight-semibold: 600;/* Semibold */
+  --font-weight-bold: 700;    /* Bold */
+}
+```
 - **Light (300)**: Large display text
 - **Regular (400)**: Body text, captions
 - **Medium (500)**: Buttons, labels, emphasis
@@ -317,18 +379,26 @@ Primary font: **Inter** with fallbacks to system fonts for optimal performance a
 ```
 
 
+
 &nbsp;  
 &nbsp;  
 ## Icons
-### Icon System
-The library supports multiple icon systems for maximum flexibility:
-
-#### Recommended Icon Libraries
-- **Phosphor Icons**: Modern, consistent, and comprehensive
-- **Heroicons**: Clean, outlined and solid variations
-- **Google Material Icons**: Standard and sharp variants
-- **Ionicons**: iOS/Android style icons
-- **Remix Icons**: Open-source icon library
+### Icon Libraries
+- [Phosphor Icons](https://phosphoricons.com/)
+- [Heroicons](https://heroicons.com/)
+- [Google Material Icons](https://fonts.google.com/icons)
+- [Ionicons](https://ionic.io/ionicons)
+- [IcoMoon](https://icomoon.io/)
+- [Icons8](https://icons8.com/icons/set/health--style-material)
+- [IsoCons](https://isocons.app)
+- [IconScout](https://iconscout.com/)
+- [Remix Icon](https://remixicon.com/)
+- [IconBuddy](https://iconboddy.com/)
+- [IsoCons](https://isocons.app)
+- [Heroicons](https://heroicons.com/)
+- [IconScout](https://iconscout.com/)
+- [Remix Icon](https://remixicon.com/)
+- [IconBuddy](https://iconboddy.com/)
 
 #### Implementation
 ```typescript
@@ -346,11 +416,11 @@ export class UiIcon {
 }
 ```
 
-#### Icon Sizes
-- **Small**: 16px (inline text, compact UI)
-- **Medium**: 20px (buttons, form controls)
-- **Large**: 24px (default, general UI)
-- **XL**: 32px (headers, prominent actions)
+**Icon Sizes:**
+- Small: 16px (inline text, compact UI)
+- Medium: 20px (buttons, form controls)
+- Large: 24px (default, general UI)
+- XL: 32px (headers, prominent actions)
 
 
 
@@ -380,6 +450,7 @@ export class UiIcon {
   --space-12: 64px; /* Page sections */
 }
 ```
+- [Spacing methods - Material Design](https://m2.material.io/design/layout/spacing-methods.html)
 
 #### Border Radius
 ```css
@@ -402,6 +473,7 @@ export class UiIcon {
   --elevation-4: 0 16px 32px rgba(0,0,0,0.16), 0 6px 12px rgba(0,0,0,0.12);
 }
 ```
+- [Elevation – Material Design 3](https://m3.material.io/styles/elevation/applying-elevation)
 
 
 ### Buttons
@@ -509,6 +581,8 @@ The library includes advanced "liquid glass" components with:
 
 Use ["spring" physics](https://m3.material.io/styles/motion/overview/how-it-works) for micro-interactions (buttons, toggles) and standard easing for transitions.
 
+[Easing and duration – Material Design 3](https://m3.material.io/styles/motion/easing-and-duration/)
+
 ### Motion Tokens
 ```css
 :root {
@@ -609,23 +683,13 @@ Use ["spring" physics](https://m3.material.io/styles/motion/overview/how-it-work
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/)
 - [WCAG 2.1 Guidelines](https://www.w3.org/TR/WCAG21/)
+- [UI Design Dos and Don'ts - Apple Developer](https://developer.apple.com/design/tips/)
+- [ARIA Authoring Practices Guide | APG | WAI - W3C](https://www.w3.org/WAI/ARIA/apg/)
 
 ### Development Tools
 - [Storybook](https://storybook.js.org/) for component documentation
 - [Angular CDK](https://material.angular.io/cdk/) for advanced functionality
 - [axe-core](https://github.com/dequelabs/axe-core) for accessibility testing
-
-### Icon Libraries
-- [Phosphor Icons](https://phosphoricons.com/)
-- [Heroicons](https://heroicons.com/)
-- [Google Material Icons](https://fonts.google.com/icons)
-- [Ionicons](https://ionic.io/ionicons)
-- [IcoMoon](https://icomoon.io/)
-- [Icons8](https://icons8.com/icons/set/health--style-material)
-- [IsoCons](https://isocons.app)
-- [IconScout](https://iconscout.com/)
-- [Remix Icon](https://remixicon.com/)
-- [IconBuddy](https://iconboddy.com/)
 
 
 
