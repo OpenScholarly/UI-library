@@ -120,7 +120,7 @@ export interface SearchResult {
 
 // Data display
 export interface TableColumn<T = any> {
-  key: keyof T | string;
+  key: keyof T;
   label: string;
   sortable?: boolean;
   width?: string;
