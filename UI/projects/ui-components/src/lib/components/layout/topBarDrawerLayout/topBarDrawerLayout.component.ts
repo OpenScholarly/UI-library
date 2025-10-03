@@ -1,17 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
-
-export interface NavigationItem {
-  id: string;
-  label: string;
-  icon?: string;
-  href?: string;
-  children?: NavigationItem[];
-  badge?: string;
-  disabled?: boolean;
-}
-
-export type LayoutSidebarPosition = 'left' | 'right';
-export type LayoutSidebarBehavior = 'fixed' | 'overlay' | 'push';
+import { NavigationItem, LayoutSidebarPosition, LayoutSidebarBehavior } from '../../../types';
 
 @Component({
   selector: 'ui-layout',

@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-export type IconVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+import { IconSize, IconVariant } from '../../../types';
 
 @Component({
   selector: 'ui-icon',

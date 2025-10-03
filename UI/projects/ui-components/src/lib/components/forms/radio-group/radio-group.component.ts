@@ -1,16 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-export interface RadioOption {
-  value: string | number;
-  label: string;
-  description?: string;
-  disabled?: boolean;
-}
-
-export type RadioSize = 'sm' | 'md' | 'lg';
-export type RadioVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
-export type RadioOrientation = 'horizontal' | 'vertical';
+import { RadioOption, RadioSize, RadioVariant, RadioOrientation } from '../../../types';
 
 @Component({
   selector: 'ui-radio-group',

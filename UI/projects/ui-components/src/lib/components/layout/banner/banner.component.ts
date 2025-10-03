@@ -1,11 +1,6 @@
 import { Component, input, output, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface BannerAction {
-  label: string;
-  variant?: 'primary' | 'secondary' | 'ghost';
-  handler?: () => void;
-}
+import { BannerAction } from '../../../types';
 
 @Component({
   selector: 'ui-banner',

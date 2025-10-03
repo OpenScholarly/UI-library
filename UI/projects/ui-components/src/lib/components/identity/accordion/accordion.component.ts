@@ -1,13 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect } from '@angular/core';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
-
-export interface AccordionItem {
-  id: string;
-  title: string;
-  content: string;
-  disabled?: boolean;
-  expanded?: boolean;
-}
+import { AccordionItem } from '../../../types';
 
 @Component({
   selector: 'ui-accordion',

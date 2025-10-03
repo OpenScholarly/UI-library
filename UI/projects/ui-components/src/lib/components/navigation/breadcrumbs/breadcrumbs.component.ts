@@ -1,15 +1,6 @@
 import { Component, ChangeDetectionStrategy, input, output, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export interface BreadcrumbItem {
-  label: string;
-  href?: string;
-  disabled?: boolean;
-  icon?: string;
-}
-
-export type BreadcrumbVariant = 'default' | 'simple' | 'solid';
-export type BreadcrumbSize = 'sm' | 'md' | 'lg';
+import { BreadcrumbItem, BreadcrumbVariant, BreadcrumbSize } from '../../../types';
 
 @Component({
   selector: 'ui-breadcrumbs',

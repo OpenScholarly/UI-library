@@ -1,9 +1,7 @@
 import { Component, ChangeDetectionStrategy, input, output, computed, signal, ViewChild, ElementRef, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-export type SliderVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
-export type SliderSize = 'sm' | 'md' | 'lg';
+import { SliderVariant, SliderSize } from '../../../types';
 
 @Component({
   selector: 'ui-slider',

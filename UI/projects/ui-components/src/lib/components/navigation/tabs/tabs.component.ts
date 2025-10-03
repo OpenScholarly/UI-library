@@ -1,18 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, inject } from '@angular/core';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
-
-export interface TabItem {
-  id: string;
-  label: string;
-  content?: string;
-  disabled?: boolean;
-  badge?: string | number;
-  icon?: string;
-}
-
-export type TabsVariant = 'default' | 'pills' | 'underline' | 'card';
-export type TabsSize = 'sm' | 'md' | 'lg';
-export type TabsOrientation = 'horizontal' | 'vertical';
+import { TabItem, TabsVariant, TabsSize, TabsOrientation } from '../../../types';
 
 @Component({
   selector: 'ui-tabs',

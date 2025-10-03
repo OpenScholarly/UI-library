@@ -2,16 +2,7 @@ import { Component, ChangeDetectionStrategy, input, output, computed, signal, ef
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DismissService } from '../../../utilities/dismiss.service';
-
-export interface SelectOption {
-  value: any;
-  label: string;
-  disabled?: boolean;
-  description?: string;
-}
-
-export type SelectVariant = 'default' | 'filled' | 'outlined';
-export type SelectSize = 'sm' | 'md' | 'lg';
+import { SelectOption, SelectVariant, SelectSize } from '../../../types';
 
 @Component({
   selector: 'ui-select',

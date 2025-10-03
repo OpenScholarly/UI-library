@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
-
-export type ThemeMode = 'system' | 'light' | 'dark';
+import { ThemeMode } from '../../../types';
 
 @Component({
   selector: 'ui-theme-switcher',

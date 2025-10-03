@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-
-export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'outline';
-export type BadgeSize = 'xs' | 'sm' | 'md' | 'lg';
-export type BadgeShape = 'rounded' | 'pill' | 'square';
+import { BadgeVariant, BadgeSize, BadgeShape } from '../../../types';
 
 @Component({
   selector: 'ui-badge',

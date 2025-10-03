@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type ProgressType = 'linear' | 'circular';
-export type ProgressSize = 'sm' | 'md' | 'lg' | 'xl';
-export type ProgressVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+import { ProgressType, ProgressSize, ProgressVariant } from '../../../types';
 
 @Component({
   selector: 'ui-progress',

@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type GridCols = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
-export type GridGap = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+import { GridCols, GridGap } from '../../../types';
 
 @Component({
   selector: 'ui-grid',
