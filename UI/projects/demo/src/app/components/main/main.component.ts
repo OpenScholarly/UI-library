@@ -10,7 +10,7 @@ import {
   ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
   HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
   IconButtonComponent, ButtonGroupComponent, FabComponent,
-  SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, LayoutComponent,
+  SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, TopBarDrawerLayoutComponent,
   TableComponent, MenuComponent, SkeletonComponent, ThemeSwitcherComponent,
   FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent,
   NavbarComponent, CommandMenuComponent, TreeViewComponent,
@@ -33,7 +33,7 @@ import {
     ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
     HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
     IconButtonComponent, ButtonGroupComponent, FabComponent,
-    SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, LayoutComponent,
+    SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, TopBarDrawerLayoutComponent,
     TableComponent, MenuComponent, SkeletonComponent, ThemeSwitcherComponent,
     FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent,
     NavbarComponent, CommandMenuComponent, TreeViewComponent

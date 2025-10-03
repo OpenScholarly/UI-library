@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, input, output, computed, signal, effect, ViewChild, ElementRef, forwardRef, inject, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DismissService } from '../../utilities/dismiss.service';
+import { DismissService } from '../../../utilities/dismiss.service';
 
 export interface SelectOption {
   value: any;
