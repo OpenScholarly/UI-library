@@ -1,237 +1,111 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-  <ui-container [size]="'2xl'" [centerContent]="true" [padding]="'md'" [stack]="true">
+  <ui-container [size]="'2xl'" [centerContent]="true" [padding]="'md'" [stack]="true" [gap]="'lg'">
     <!-- Header -->
     <header class="text-center mb-12 w-full">
       <ui-heading level="h1" size="4xl" color="primary">{{ title() }}</ui-heading>
       <ui-text color="secondary" size="lg" class="mt-4 mb-6">A comprehensive Angular UI component library</ui-text>
       <div class="flex justify-center space-x-4">
-        <ui-badge variant="primary" size="md">42+ Components</ui-badge>
-        <ui-badge variant="success" size="md">Production Ready</ui-badge>
+        <ui-badge variant="primary" size="md">50+ Components</ui-badge>
+        <ui-badge variant="success" size="md">WCAG 2.1 AA Compliant</ui-badge>
         <ui-badge variant="info" size="md">TypeScript</ui-badge>
       </div>
     </header>
 
-    <!-- New Components Section -->
-    <div class="mb-12">
-      <ui-heading level="h2" size="2xl" color="primary" class="mb-8">New Components</ui-heading>
-
-      <!-- Layout Components Demo -->
-      <ui-card class="mb-8">
-        <div class="p-6">
-          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Layout Components</ui-heading>
-
-          <div class="space-y-6">
-            <!-- Container Demo -->
-            <div>
-              <ui-text weight="semibold" class="mb-2">Container</ui-text>
-              <ui-container 
-                [size]="'md'" 
-                [centerContent]="true" 
-                [padding]="'md'" 
-                [borderRadius]="'md'"
-                [background]="'rgb(239, 246, 255)'"
-                class="dark:bg-blue-900/20">
-                <ui-text>This content is in a medium-sized container</ui-text>
-              </ui-container>
+    <!-- Accessibility Showcase -->
+    <ui-card class="mb-8">
+      <div class="p-6">
+        <ui-heading level="h3" size="lg" color="primary" class="mb-4">♿ Accessibility Features</ui-heading>
+        <div class="space-y-6">
+          <!-- Theme Switcher with Accessibility -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Theme Switcher (48×48px Touch Targets)</ui-text>
+            <div class="flex items-center gap-4">
+              <ui-theme-switcher
+                size="md"
+                (themeChanged)="onThemeChanged($event)">
+              </ui-theme-switcher>
+              <ui-text color="secondary" size="sm">
+                Try keyboard navigation: Tab to focus, Arrow keys to select, Space/Enter to activate
+              </ui-text>
             </div>
-
-            <ui-divider />
-
-            <!-- Grid Demo -->
-            <div>
-              <ui-text weight="semibold" class="mb-2">Grid System</ui-text>
-              <ui-grid cols="3" gap="md">
-                <ui-column span="1">
-                  <ui-container 
-                    [padding]="'md'" 
-                    [borderRadius]="'md'"
-                    [background]="'rgb(220, 252, 231)'"
-                    class="dark:bg-green-900/20">
-                    <ui-text>Column 1</ui-text>
-                  </ui-container>
-                </ui-column>
-                <ui-column span="1">
-                  <ui-container 
-                    [padding]="'md'" 
-                    [borderRadius]="'md'"
-                    [background]="'rgb(220, 252, 231)'"
-                    class="dark:bg-green-900/20">
-                    <ui-text>Column 2</ui-text>
-                  </ui-container>
-                </ui-column>
-                <ui-column span="1">
-                  <ui-container 
-                    [padding]="'md'" 
-                    [borderRadius]="'md'"
-                    [background]="'rgb(220, 252, 231)'"
-                    class="dark:bg-green-900/20">
-                    <ui-text>Column 3</ui-text>
-                  </ui-container>
-                </ui-column>
-              </ui-grid>
-            </div>
-
-            <ui-divider />
-
-            <!-- Row Demo -->
-            <div>
-              <ui-text weight="semibold" class="mb-2">Row Layout</ui-text>
-              <ui-row justify="between" align="center" gap="md">
-                <ui-container 
-                  [padding]="'sm'" 
-                  [borderRadius]="'md'"
-                  [background]="'rgb(243, 232, 255)'"
-                  class="dark:bg-purple-900/20">
-                  <ui-text>Left Item</ui-text>
-                </ui-container>
-                <ui-container 
-                  [padding]="'sm'" 
-                  [borderRadius]="'md'"
-                  [background]="'rgb(243, 232, 255)'"
-                  class="dark:bg-purple-900/20">
-                  <ui-text>Center Item</ui-text>
-                </ui-container>
-                <ui-container 
-                  [padding]="'sm'" 
-                  [borderRadius]="'md'"
-                  [background]="'rgb(243, 232, 255)'"
-                  class="dark:bg-purple-900/20">
-                  <ui-text>Right Item</ui-text>
-                </ui-container>
-              </ui-row>
-            </div>
+            <ui-text color="muted" size="sm" class="mt-2">
+              ✓ Minimum 48×48px touch targets • ✓ Visible focus rings • ✓ ARIA attributes • ✓ Screen reader support
+            </ui-text>
           </div>
-        </div>
-      </ui-card>
 
-      <!-- Typography Demo -->
-      <ui-card class="mb-8">
-        <div class="p-6">
-          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Typography</ui-heading>
+          <ui-divider />
 
-          <div class="space-y-4">
-            <!-- Headings -->
-            <div>
-              <ui-text weight="semibold" class="mb-2">Headings</ui-text>
-              <div class="space-y-2">
-                <ui-heading level="h1" size="3xl">Heading 1 - Large</ui-heading>
-                <ui-heading level="h2" size="2xl">Heading 2 - Medium</ui-heading>
-                <ui-heading level="h3" size="xl">Heading 3 - Small</ui-heading>
-              </div>
-            </div>
-
-            <ui-divider />
-
-            <!-- Text Variants -->
-            <div>
-              <ui-text weight="semibold" class="mb-2">Text Variants</ui-text>
-              <div class="space-y-2">
-                <ui-text variant="body" size="lg">Large body text for important content</ui-text>
-                <ui-text variant="body" size="md">Regular body text for general content</ui-text>
-                <ui-text variant="caption" size="sm">Caption text for descriptions</ui-text>
-                <ui-text variant="overline" size="xs">OVERLINE TEXT FOR LABELS</ui-text>
-                <ui-text variant="code" size="sm">code text for technical content</ui-text>
-              </div>
-            </div>
-
-            <ui-divider />
-
-            <!-- Text Colors -->
-            <div>
-              <ui-text weight="semibold" class="mb-2">Text Colors</ui-text>
-              <div class="space-y-4">
-                <ui-text color="primary">Primary text color</ui-text>
-                <ui-text color="secondary">Secondary text color</ui-text>
-                <ui-text color="muted">Muted text color</ui-text>
-                <ui-text color="success">Success text color</ui-text>
-                <ui-text color="warning">Warning text color</ui-text>
-                <ui-text color="error">Error text color</ui-text>
-              </div>
-            </div>
-            <ui-divider />
-
-            <!-- Media Components Demo -->
-            <div>
-              <ui-text weight="semibold" class="mb-2">Media & Utility Components</ui-text>
-              <div class="space-y-4">
-                <!-- Icons -->
-                <div>
-                  <ui-text variant="caption" class="mb-1">Icons</ui-text>
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2">
-                      <ui-icon size="sm" color="primary">✓</ui-icon>
-                      <ui-text size="sm">Check Icon</ui-text>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <ui-icon size="md" color="secondary">⏰</ui-icon>
-                      <ui-text size="sm">Clock Icon</ui-text>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <ui-icon size="lg" color="success">✅</ui-icon>
-                      <ui-text size="sm">Success Icon</ui-text>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <ui-icon size="xl" color="error">❌</ui-icon>
-                      <ui-text size="sm">Error Icon</ui-text>
-                    </div>
-                  </div>
+          <!-- Accessible Buttons -->
+          <div>
+            <ui-text weight="semibold" class="mb-3">Accessible Buttons (WCAG AA Compliant)</ui-text>
+            <div class="space-y-4">
+              <!-- Primary actions with proper contrast -->
+              <div>
+                <ui-text variant="caption" class="mb-2">High Contrast Colors (4.5:1 ratio)</ui-text>
+                <div class="flex flex-wrap gap-3">
+                  <ui-button variant="primary" size="md" ariaLabel="Save changes">Save Changes</ui-button>
+                  <ui-button variant="success" size="md" ariaLabel="Confirm action">Confirm</ui-button>
+                  <ui-button variant="danger" size="md" ariaLabel="Delete item">Delete</ui-button>
+                  <ui-button variant="warning" size="md" ariaLabel="Show warning">Warning</ui-button>
                 </div>
+              </div>
 
-                <!-- Links -->
-                <div>
-                  <ui-text variant="caption" class="mb-1">Links</ui-text>
-                  <div class="flex flex-wrap gap-4">
-                    <ui-link href="#" variant="primary">Primary Link</ui-link>
-                    <ui-link href="#" variant="secondary" underline="always">Secondary Link</ui-link>
-                    <ui-link href="#" variant="muted" size="sm">Muted Link</ui-link>
-                    <ui-link href="#" variant="success" [external]="true">External Link</ui-link>
-                  </div>
+              <!-- Loading states -->
+              <div>
+                <ui-text variant="caption" class="mb-2">Loading States (aria-busy)</ui-text>
+                <div class="flex flex-wrap gap-3">
+                  <ui-button variant="primary" size="md" [loading]="true" ariaLabel="Processing request">
+                    Processing...
+                  </ui-button>
+                  <ui-button variant="secondary" size="md" [loading]="true" ariaLabel="Saving changes">
+                    Saving...
+                  </ui-button>
                 </div>
+              </div>
 
-                <!-- Images -->
-                <div>
-                  <ui-text variant="caption" class="mb-1">Images</ui-text>
-                  <div class="flex gap-4">
-                    <ui-image
-                      src="https://picsum.photos/100/100?random=1"
-                      alt="Sample image"
-                      width="100"
-                      height="100"
-                      rounded="md"
-                      class="w-24 h-24">
-                    </ui-image>
-                    <ui-image
-                      src="https://picsum.photos/100/100?random=2"
-                      alt="Rounded image"
-                      width="100"
-                      height="100"
-                      rounded="full"
-                      class="w-24 h-24">
-                    </ui-image>
-                  </div>
+              <!-- Disabled states -->
+              <div>
+                <ui-text variant="caption" class="mb-2">Disabled States (aria-disabled)</ui-text>
+                <div class="flex flex-wrap gap-3">
+                  <ui-button variant="primary" size="md" [disabled]="true" ariaLabel="Disabled button">
+                    Disabled
+                  </ui-button>
+                  <ui-button variant="outline" size="md" [disabled]="true" ariaLabel="Disabled outline button">
+                    Disabled
+                  </ui-button>
                 </div>
+              </div>
 
-                <!-- Scroll Area -->
-                <div>
-                  <ui-text variant="caption" class="mb-1">Scroll Area</ui-text>
-                  <ui-scroll-area size="sm" class="border border-gray-200 dark:border-gray-700 p-4">
-                    <div class="space-y-2">
-                      <ui-text>This is a scrollable area with custom content.</ui-text>
-                      <ui-text>It can contain any amount of content.</ui-text>
-                      <ui-text>When content overflows, it becomes scrollable.</ui-text>
-                      <ui-text>The scrollbar can be styled with Tailwind.</ui-text>
-                      <ui-text>This makes it perfect for constrained layouts.</ui-text>
-                      <ui-text>Such as sidebars, dropdowns, or content areas.</ui-text>
-                      <ui-text>That need to show a lot of information in limited space.</ui-text>
-                    </div>
-                  </ui-scroll-area>
+              <!-- Focus visible demonstration -->
+              <div>
+                <ui-text variant="caption" class="mb-2">Focus Visible (Try Tab key)</ui-text>
+                <div class="flex flex-wrap gap-3">
+                  <ui-button variant="primary" size="md">First Button</ui-button>
+                  <ui-button variant="secondary" size="md">Second Button</ui-button>
+                  <ui-button variant="outline" size="md">Third Button</ui-button>
+                  <ui-button variant="ghost" size="md">Fourth Button</ui-button>
+                </div>
+                <ui-text color="muted" size="sm" class="mt-2">
+                  Notice the focus ring appears only when using keyboard navigation, not mouse clicks
+                </ui-text>
+              </div>
+
+              <!-- Glass variant (new) -->
+              <div>
+                <ui-text variant="caption" class="mb-2">Glass Variant with Backdrop</ui-text>
+                <div class="p-6 rounded-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <div class="flex flex-wrap gap-3">
+                    <ui-button variant="glass" size="md">Glass Effect</ui-button>
+                    <ui-button variant="glass" size="md" [loading]="true">Loading...</ui-button>
+                    <ui-button variant="glass" size="md" [disabled]="true">Disabled</ui-button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </ui-card>
-    </div>
+      </div>
+    </ui-card>
 
     <!-- Component Showcase Grid -->
     <ui-grid cols="3" gap="lg" [responsive]="true">
@@ -241,6 +115,21 @@
         <div class="p-6">
           <ui-heading level="h3" size="lg" color="primary" class="mb-4">Button Family</ui-heading>
           <div class="space-y-4">
+            <!-- Regular Buttons with new sizes -->
+            <div>
+              <ui-text weight="semibold" class="mb-2">Regular Buttons (All sizes ensure 44×44px minimum)</ui-text>
+              <div class="flex flex-wrap gap-2 items-center">
+                <ui-button variant="primary" size="xs">Extra Small</ui-button>
+                <ui-button variant="primary" size="sm">Small</ui-button>
+                <ui-button variant="primary" size="md">Medium</ui-button>
+                <ui-button variant="primary" size="lg">Large</ui-button>
+                <ui-button variant="primary" size="xl">Extra Large</ui-button>
+              </div>
+              <ui-text color="muted" size="sm" class="mt-2">
+                All button sizes meet WCAG touch target requirements (minimum 44×44px)
+              </ui-text>
+            </div>
+
             <!-- Regular Buttons -->
             <div>
               <ui-text weight="semibold" class="mb-2">Regular Buttons</ui-text>
@@ -558,13 +447,123 @@
 
     </ui-grid>
 
-    <!-- Accordion Section -->
-    <div class="mt-12">
-      <ui-heading level="h2" size="2xl" color="primary" class="mb-6">Key Features</ui-heading>
-      <ui-accordion
-        [items]="accordionItems()">
-      </ui-accordion>
+    <!-- Keyboard Navigation Guide -->
+    <ui-card class="mb-8">
+      <div class="p-6">
+        <ui-heading level="h3" size="lg" color="primary" class="mb-4">⌨️ Keyboard Navigation Guide</ui-heading>
+        <div class="space-y-4">
+          <div>
+            <ui-text weight="semibold">General Navigation</ui-text>
+            <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Tab</kbd> - Move forward through interactive elements</li>
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Shift + Tab</kbd> - Move backward</li>
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Enter</kbd> or <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Space</kbd> - Activate buttons and links</li>
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Esc</kbd> - Close modals and dropdowns</li>
+            </ul>
+          </div>
+
+          <ui-divider />
+
+          <div>
+            <ui-text weight="semibold">Theme Switcher</ui-text>
+            <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">←</kbd> <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">→</kbd> - Navigate between theme options</li>
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Space</kbd> - Select theme</li>
+            </ul>
+          </div>
+
+          <ui-divider />
+
+          <div>
+            <ui-text weight="semibold">Form Controls</ui-text>
+            <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">↑</kbd> <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">↓</kbd> - Navigate dropdown/select options</li>
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Space</kbd> - Toggle checkbox/switch</li>
+              <li><kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Home</kbd> / <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">End</kbd> - First/last option</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </ui-card>
+
+    <!-- WCAG Compliance Badge -->
+    <ui-card class="mb-8">
+      <div class="p-6 text-center">
+        <div class="inline-flex items-center gap-3 px-6 py-3 bg-green-50 dark:bg-green-900/20 rounded-lg border-2 border-green-200 dark:border-green-700">
+          <span class="text-3xl">✓</span>
+          <div class="text-left">
+            <ui-text weight="bold" class="text-green-800 dark:text-green-200">WCAG 2.1 Level AA Compliant</ui-text>
+            <ui-text size="sm" class="text-green-700 dark:text-green-300">
+              All components tested for accessibility compliance
+            </ui-text>
+          </div>
+        </div>
+        <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <ui-text weight="semibold" class="block mb-1">Color Contrast</ui-text>
+            <ui-text size="sm" color="secondary">4.5:1 minimum</ui-text>
+          </div>
+          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <ui-text weight="semibold" class="block mb-1">Touch Targets</ui-text>
+            <ui-text size="sm" color="secondary">48×48px minimum</ui-text>
+          </div>
+          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <ui-text weight="semibold" class="block mb-1">Keyboard Nav</ui-text>
+            <ui-text size="sm" color="secondary">Full support</ui-text>
+          </div>
+          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <ui-text weight="semibold" class="block mb-1">Screen Readers</ui-text>
+            <ui-text size="sm" color="secondary">ARIA compliant</ui-text>
+          </div>
+        </div>
+      </div>
+    </ui-card>
+
+    <!-- Footer -->
+    <div class="mt-16">
+      <ui-footer
+        [sections]="footerSections()"
+        copyright="© 2024 UI Component Library. All rights reserved.">
+      </ui-footer>
     </div>
+  </ui-container>
+
+  <!-- Modal -->
+  <ui-modal
+    [open]="isModalOpen()"
+    title="Component Library"
+    (close)="closeModal()">
+    <div class="space-y-4">
+      <p class="text-gray-600 dark:text-gray-400">
+        This comprehensive UI component library includes 22+ production-ready components.
+      </p>
+      <div class="flex justify-end space-x-3">
+        <ui-button variant="outline" (clicked)="closeModal()">Close</ui-button>
+        <ui-button variant="primary">Get Started</ui-button>
+      </div>
+    </div>
+  </ui-modal>
+
+  <!-- Toast -->
+  @if (showToast()) {
+    <div class="fixed top-4 right-4 z-50">
+      <ui-toast
+        title="Success!"
+        message="Component library demo is working perfectly!"
+        variant="success"
+        (dismiss)="onToastDismiss()">
+      </ui-toast>
+    </div>
+  }
+
+  <!-- Command Menu Overlay -->
+  <ui-command-menu
+    [items]="commandItems()"
+    [isOpen]="isCommandMenuOpen()"
+    (select)="onCommandSelect($event)"
+    (close)="closeCommandMenu()">
+  </ui-command-menu>
+</div>
 
     <!-- New Components Section -->
     <ui-card class="mb-8">
@@ -791,7 +790,6 @@
         copyright="© 2024 UI Component Library. All rights reserved.">
       </ui-footer>
     </div>
-  </ui-container>
 
   <!-- Modal -->
   <ui-modal
@@ -828,4 +826,3 @@
     (select)="onCommandSelect($event)"
     (close)="closeCommandMenu()">
   </ui-command-menu>
-</div>
