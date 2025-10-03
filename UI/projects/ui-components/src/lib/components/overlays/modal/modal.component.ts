@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, viewChild, ElementRef, effect, inject, DestroyRef } from '@angular/core';
-import { FocusTrapService } from '../../utilities/focus-trap.service';
-import { DismissService } from '../../utilities/dismiss.service';
-import { PortalService } from '../../utilities/portal.service';
-import { AriaHelpersService } from '../../utilities/aria-helpers.service';
+import { FocusTrapService } from '../../../utilities/focus-trap.service';
+import { DismissService } from '../../../utilities/dismiss.service';
+import { PortalService } from '../../../utilities/portal.service';
+import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 export type ModalVariant = 'default' | 'centered' | 'glass';

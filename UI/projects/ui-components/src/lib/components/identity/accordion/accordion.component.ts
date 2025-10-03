@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect } from '@angular/core';
-import { AriaHelpersService } from '../../utilities/aria-helpers.service';
+import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
 
 export interface AccordionItem {
   id: string;

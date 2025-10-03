@@ -157,7 +157,7 @@ export type LayoutSidebarBehavior = 'fixed' | 'overlay' | 'push';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LayoutComponent {
+export class TopBarDrawerLayoutComponent {
   showNavbar = input(true);
   showSidebar = input(true);
   sidebarPosition = input<LayoutSidebarPosition>('left');

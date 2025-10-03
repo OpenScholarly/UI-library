@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, viewChild, ElementRef, inject, DestroyRef } from '@angular/core';
-import { PositioningService, type Placement } from '../../utilities/positioning.service';
-import { PortalService } from '../../utilities/portal.service';
-import { AriaHelpersService } from '../../utilities/aria-helpers.service';
+import { PositioningService, type Placement } from '../../../utilities/positioning.service';
+import { PortalService } from '../../../utilities/portal.service';
+import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
 
 export type TooltipTrigger = 'hover' | 'focus' | 'click' | 'manual';
 export type TooltipVariant = 'default' | 'dark' | 'light' | 'error' | 'warning' | 'success';
