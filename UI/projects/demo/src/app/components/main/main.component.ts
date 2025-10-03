@@ -322,9 +322,9 @@ export class MainComponent {
 
   // New components data
   segmentedOptions = signal<SegmentedButtonOption[]>([
-    { value: 'list', label: 'List View', icon: '📋' },
-    { value: 'grid', label: 'Grid View', icon: '⊞' },
-    { value: 'card', label: 'Card View', icon: '📃' }
+    { id: 'list', value: 'list', label: 'List View', icon: '📋' },
+    { id: 'grid', value: 'grid', label: 'Grid View', icon: '⊞' },
+    { id: 'card', value: 'card', label: 'Card View', icon: '📃' }
   ]);
 
   splitButtonActions = signal<SplitButtonAction[]>([
