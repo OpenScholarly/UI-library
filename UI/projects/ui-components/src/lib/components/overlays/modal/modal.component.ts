@@ -3,9 +3,8 @@ import { FocusTrapService } from '../../../utilities/focus-trap.service';
 import { DismissService } from '../../../utilities/dismiss.service';
 import { PortalService } from '../../../utilities/portal.service';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
-
-export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
-export type ModalVariant = 'default' | 'centered' | 'glass';
+import type { ModalSize } from '../../../types/sizes';
+import type { ModalVariant } from '../../../types/variants';
 
 @Component({
   selector: 'ui-modal',

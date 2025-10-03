@@ -1,8 +1,7 @@
 import { Component, ChangeDetectionStrategy, input, output, computed, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export type ToastVariant = 'default' | 'success' | 'warning' | 'danger' | 'info';
-export type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+import type { ToastVariant } from '../../../types/variants';
+import type { ToastPosition } from '../../../types/other';
 
 export interface ToastData {
   id?: string;

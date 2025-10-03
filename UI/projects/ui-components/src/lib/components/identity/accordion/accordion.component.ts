@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect } from '@angular/core';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
+import type { AccordionVariant } from '../../../types/variants';
 
 export interface AccordionItem {
   id: string;
@@ -58,7 +59,7 @@ export class AccordionComponent {
   items = input.required<AccordionItem[]>();
   allowMultiple = input(false);
   collapsible = input(true);
-  variant = input<'default' | 'bordered' | 'separated'>('default');
+  variant = input<AccordionVariant>('default');
 
   itemToggled = output<{ id: string; expanded: boolean }>();
 

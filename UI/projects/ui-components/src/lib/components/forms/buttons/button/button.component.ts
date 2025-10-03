@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-
-export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'outline' | 'ghost' | 'destructive' | 'danger' | 'warning' | 'success' | 'info'  | 'link' | 'glass';
-export type ButtonSize =  'xs' | 'sm' | 'md' | 'lg' | 'xl';
+import type { ButtonVariant } from '../../../../types/variants';
+import type { ButtonSize } from '../../../../types/sizes';
 
 /**
  * A versatile and accessible button component for user interactions.
