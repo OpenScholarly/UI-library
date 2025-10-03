@@ -48,3 +48,10 @@ export type HeadingSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4x
 
 // Table sizes
 export type TableSize = 'sm' | 'md' | 'lg';
+
+// Additional form control sizes
+export type ToggleSize = 'sm' | 'md' | 'lg';
+export type LinkSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type FabSize = 'sm' | 'md' | 'lg';
+export type AutocompleteSize = 'sm' | 'md' | 'lg';
+export type InputSize = 'sm' | 'md' | 'lg';

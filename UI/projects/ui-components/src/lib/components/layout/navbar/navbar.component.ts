@@ -1,16 +1,6 @@
 import { Component, input, output, computed, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface NavbarItem {
-  id: string;
-  label: string;
-  href?: string;
-  icon?: string;
-  active?: boolean;
-  badge?: string | number;
-  disabled?: boolean;
-  children?: NavbarItem[];
-}
+import { NavbarItem } from '../../../types';
 
 @Component({
   selector: 'ui-navbar',

@@ -16,3 +16,6 @@ export type MenuTrigger = 'click' | 'hover';
 // Layout sidebar positions
 export type LayoutSidebarPosition = 'left' | 'right';
 export type LayoutSidebarBehavior = 'fixed' | 'overlay' | 'push';
+
+// FAB positions
+export type FabPosition = 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' | 'static';

@@ -49,3 +49,9 @@ export type TextVariant = 'body' | 'caption' | 'overline' | 'code';
 
 // Table variants
 export type TableVariant = 'default' | 'striped' | 'bordered';
+
+// Additional form control variants
+export type ToggleVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
+export type LinkVariant = 'default' | 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error';
+export type FabVariant = 'primary' | 'secondary' | 'extended';
+export type InputVariant = 'default' | 'filled' | 'outlined';

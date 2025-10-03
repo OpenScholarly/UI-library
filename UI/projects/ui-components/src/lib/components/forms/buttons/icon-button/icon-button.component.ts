@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-
-export type IconButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'glass';
-export type IconButtonSize = 'sm' | 'md' | 'lg';
-export type IconButtonShape = 'square' | 'rounded' | 'circle';
+import { IconButtonVariant, IconButtonSize, IconButtonShape } from '../../../../types';
 
 @Component({
   selector: 'ui-icon-button',

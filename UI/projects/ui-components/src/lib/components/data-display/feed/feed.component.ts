@@ -1,23 +1,6 @@
 import { Component, input, output, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface FeedItem {
-  id: string;
-  author: {
-    name: string;
-    avatar?: string;
-    username?: string;
-  };
-  content: string;
-  timestamp: Date;
-  likes?: number;
-  comments?: number;
-  shares?: number;
-  images?: string[];
-  type?: 'text' | 'image' | 'video' | 'link';
-  isLiked?: boolean;
-  isBookmarked?: boolean;
-}
+import { FeedItem } from '../../../types';
 
 @Component({
   selector: 'ui-feed',

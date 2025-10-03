@@ -1,13 +1,6 @@
 import { Component, input, output, computed, signal, effect, ElementRef, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface CarouselItem {
-  id: string;
-  title?: string;
-  description?: string;
-  image?: string;
-  content?: string;
-}
+import { CarouselItem } from '../../../types';
 
 @Component({
   selector: 'ui-carousel',

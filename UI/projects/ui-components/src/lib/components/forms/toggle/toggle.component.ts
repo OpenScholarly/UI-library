@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-export type ToggleSize = 'sm' | 'md' | 'lg';
-export type ToggleVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
+import { ToggleSize, ToggleVariant } from '../../../types';
 
 @Component({
   selector: 'ui-toggle',

@@ -1,17 +1,6 @@
 import { Component, input, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface StatItem {
-  label: string;
-  value: string | number;
-  change?: {
-    value: number;
-    type: 'increase' | 'decrease' | 'neutral';
-    period?: string;
-  };
-  icon?: string;
-  description?: string;
-}
+import { StatItem } from '../../../types';
 
 @Component({
   selector: 'ui-stats',

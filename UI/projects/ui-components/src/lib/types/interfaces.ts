@@ -16,6 +16,7 @@ export interface AccordionItem {
 export interface BreadcrumbItem {
   label: string;
   href?: string;
+  disabled?: boolean;
   icon?: string;
   current?: boolean;
 }
@@ -34,56 +35,69 @@ export interface MenuItem {
   label: string;
   icon?: string;
   disabled?: boolean;
-  href?: string;
-  divider?: boolean;
+  separator?: boolean;
   children?: MenuItem[];
+  value?: any;
 }
 
 export interface TreeNode {
   id: string;
   label: string;
-  children?: TreeNode[];
   icon?: string;
+  children?: TreeNode[];
   expanded?: boolean;
+  selected?: boolean;
   disabled?: boolean;
+  metadata?: Record<string, any>;
 }
 
 export interface NavigationItem {
+  id: string;
   label: string;
-  href?: string;
   icon?: string;
+  href?: string;
   children?: NavigationItem[];
-  active?: boolean;
+  badge?: string;
+  disabled?: boolean;
 }
 
 export interface NavbarItem {
+  id: string;
   label: string;
   href?: string;
   icon?: string;
-  children?: NavbarItem[];
+  active?: boolean;
   badge?: string | number;
+  disabled?: boolean;
+  children?: NavbarItem[];
 }
 
 // Forms
 export interface SegmentedButtonOption {
   id: string;
   label: string;
-  value: string | number;
+  value: string;
   icon?: string;
   disabled?: boolean;
 }
 
 export interface SplitButtonAction {
-  id: string;
   label: string;
+  value: string;
   icon?: string;
   disabled?: boolean;
-  divider?: boolean;
 }
 
 export interface SelectOption {
+  value: any;
   label: string;
-  value: string | number;
+  disabled?: boolean;
+  description?: string;
+}
+
+export interface AutocompleteOption {
+  value: string;
+  label: string;
   disabled?: boolean;
   group?: string;
 }
@@ -99,7 +113,8 @@ export interface SearchResult {
   id: string;
   title: string;
   description?: string;
-  icon?: string;
+  category?: string;
+  url?: string;
   metadata?: Record<string, any>;
 }
 
@@ -120,36 +135,54 @@ export interface TableRow {
 
 export interface FeedItem {
   id: string;
-  author: string;
-  avatar?: string;
+  author: {
+    name: string;
+    avatar?: string;
+    username?: string;
+  };
   content: string;
-  timestamp: Date | string;
-  actions?: { label: string; onClick: () => void }[];
+  timestamp: Date;
+  likes?: number;
+  comments?: number;
+  shares?: number;
+  images?: string[];
+  type?: 'text' | 'image' | 'video' | 'link';
+  isLiked?: boolean;
+  isBookmarked?: boolean;
 }
 
 export interface CarouselItem {
   id: string;
-  src: string;
-  alt?: string;
   title?: string;
   description?: string;
+  image?: string;
+  content?: string;
 }
 
 export interface StatItem {
   label: string;
   value: string | number;
-  change?: number;
-  trend?: 'up' | 'down' | 'neutral';
+  change?: {
+    value: number;
+    type: 'increase' | 'decrease' | 'neutral';
+    period?: string;
+  };
   icon?: string;
+  description?: string;
 }
 
 export interface TimelineItem {
   id: string;
   title: string;
   description?: string;
-  timestamp: Date | string;
+  timestamp: Date;
+  status?: 'completed' | 'active' | 'pending' | 'cancelled';
   icon?: string;
-  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info';
+  user?: {
+    name: string;
+    avatar?: string;
+  };
+  metadata?: Record<string, any>;
 }
 
 // Layout
@@ -166,18 +199,20 @@ export interface FooterSection {
 
 export interface BannerAction {
   label: string;
-  onClick: () => void;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'ghost';
+  handler?: () => void;
 }
 
 // Overlays
 export interface CommandItem {
   id: string;
   label: string;
+  description?: string;
   icon?: string;
   shortcut?: string;
   group?: string;
-  onSelect: () => void;
+  disabled?: boolean;
+  action?: () => void;
 }
 
 // Feedback

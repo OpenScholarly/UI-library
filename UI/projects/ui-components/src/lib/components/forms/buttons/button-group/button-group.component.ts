@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type ButtonGroupOrientation = 'horizontal' | 'vertical';
-export type ButtonGroupSize = 'sm' | 'md' | 'lg';
-export type ButtonGroupVariant = 'default' | 'contained' | 'outlined';
+import { ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant } from '../../../../types';
 
 @Component({
   selector: 'ui-button-group',

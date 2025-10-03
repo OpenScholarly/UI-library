@@ -1,10 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output, signal, viewChild, ElementRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
-
-export type InputType = 'text' | 'password' | 'email' | 'number' | 'search' | 'tel' | 'url';
-export type InputSize = 'sm' | 'md' | 'lg';
-export type InputVariant = 'default' | 'filled' | 'outlined';
+import { InputType, InputSize, InputVariant } from '../../../types';
 
 @Component({
   selector: 'ui-input',

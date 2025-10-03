@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type TextSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type TextWeight = 'normal' | 'medium' | 'semibold' | 'bold';
-export type TextVariant = 'body' | 'caption' | 'overline' | 'code';
+import { TextSize, TextWeight, TextVariant } from '../../../types';
 
 @Component({
   selector: 'ui-text',

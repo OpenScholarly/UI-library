@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
-
-export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-export type AvatarShape = 'circle' | 'square' | 'rounded';
-export type AvatarStatus = 'online' | 'offline' | 'away' | 'busy' | 'dnd';
+import { AvatarSize, AvatarShape, AvatarStatus } from '../../../types';
 
 @Component({
   selector: 'ui-avatar',

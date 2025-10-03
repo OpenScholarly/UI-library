@@ -1,14 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-export interface AutocompleteOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
-  group?: string;
-}
-
-export type AutocompleteSize = 'sm' | 'md' | 'lg';
+import { AutocompleteOption, AutocompleteSize } from '../../../types';
 
 @Component({
   selector: 'ui-autocomplete',

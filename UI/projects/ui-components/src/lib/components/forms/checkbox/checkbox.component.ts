@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-export type CheckboxSize = 'sm' | 'md' | 'lg';
-export type CheckboxVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
+import { CheckboxSize, CheckboxVariant } from '../../../types';
 
 @Component({
   selector: 'ui-checkbox',

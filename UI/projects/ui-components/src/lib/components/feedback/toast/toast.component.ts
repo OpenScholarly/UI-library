@@ -1,21 +1,6 @@
 import { Component, ChangeDetectionStrategy, input, output, computed, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export type ToastVariant = 'default' | 'success' | 'warning' | 'danger' | 'info';
-export type ToastPosition = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
-
-export interface ToastData {
-  id?: string;
-  title?: string;
-  message: string;
-  variant?: ToastVariant;
-  duration?: number;
-  persistent?: boolean;
-  action?: {
-    label: string;
-    handler: () => void;
-  };
-}
+import { ToastVariant, ToastPosition, ToastData } from '../../../types';
 
 @Component({
   selector: 'ui-toast',
