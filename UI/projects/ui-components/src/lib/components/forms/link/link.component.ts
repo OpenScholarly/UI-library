@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-
-export type LinkVariant = 'default' | 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error';
-export type LinkSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+import { LinkVariant, LinkSize } from '../../../types';
 
 @Component({
   selector: 'ui-link',

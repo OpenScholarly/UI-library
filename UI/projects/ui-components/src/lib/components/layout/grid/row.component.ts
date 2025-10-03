@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type RowJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-export type RowAlign = 'start' | 'center' | 'end' | 'stretch' | 'baseline';
-export type RowGap = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+import { RowJustify, RowAlign, RowGap } from '../../../types';
 
 @Component({
   selector: 'ui-row',

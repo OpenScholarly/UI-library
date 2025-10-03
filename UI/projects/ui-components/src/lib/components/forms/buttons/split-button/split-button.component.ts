@@ -1,14 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
-
-export interface SplitButtonAction {
-  label: string;
-  value: string;
-  icon?: string;
-  disabled?: boolean;
-}
-
-export type SplitButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
-export type SplitButtonSize = 'sm' | 'md' | 'lg';
+import { SplitButtonAction, SplitButtonVariant, SplitButtonSize } from '../../../../types';
 
 @Component({
   selector: 'ui-split-button',

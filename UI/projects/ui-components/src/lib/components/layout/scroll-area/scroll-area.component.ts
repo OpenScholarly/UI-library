@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type ScrollAreaDirection = 'vertical' | 'horizontal' | 'both';
-export type ScrollAreaSize = 'sm' | 'md' | 'lg' | 'full';
+import { ScrollAreaDirection, ScrollAreaSize } from '../../../types';
 
 /**
  * ScrollAreaComponent provides a customizable scrollable container.

@@ -1,16 +1,6 @@
 import { Component, input, output, computed, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface TreeNode {
-  id: string;
-  label: string;
-  icon?: string;
-  children?: TreeNode[];
-  expanded?: boolean;
-  selected?: boolean;
-  disabled?: boolean;
-  metadata?: Record<string, any>;
-}
+import { TreeNode } from '../../../types';
 
 @Component({
   selector: 'ui-tree-view',

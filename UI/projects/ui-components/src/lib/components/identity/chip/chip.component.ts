@@ -1,8 +1,6 @@
 import { Component, ChangeDetectionStrategy, input, output, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export type ChipVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'outline';
-export type ChipSize = 'xs' | 'sm' | 'md' | 'lg';
+import { ChipVariant, ChipSize } from '../../../types';
 
 @Component({
   selector: 'ui-chip',

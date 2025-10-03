@@ -36,3 +36,9 @@ export type RowGap = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 // Table sorting
 export type SortDirection = 'asc' | 'desc' | null;
+
+// Input types
+export type InputType = 'text' | 'password' | 'email' | 'number' | 'search' | 'tel' | 'url';
+
+// Theme modes
+export type ThemeMode = 'system' | 'light' | 'dark';

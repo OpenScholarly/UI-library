@@ -1,15 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export interface FooterLink {
-  label: string;
-  href: string;
-  external?: boolean;
-}
-
-export interface FooterSection {
-  title: string;
-  links: FooterLink[];
-}
+import { FooterLink, FooterSection } from '../../../types';
 
 @Component({
   selector: 'ui-footer',

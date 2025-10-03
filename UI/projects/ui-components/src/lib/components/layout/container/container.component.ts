@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgStyle } from '@angular/common';
-
-export type ContainerSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+import { ContainerSize } from '../../../types';
 
 @Component({
   selector: 'ui-container',

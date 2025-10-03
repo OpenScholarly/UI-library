@@ -1,14 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, OnInit, effect } from '@angular/core';
-
-export interface SegmentedButtonOption {
-  value: string;
-  label: string;
-  icon?: string;
-  disabled?: boolean;
-}
-
-export type SegmentedButtonSize = 'sm' | 'md' | 'lg';
-export type SegmentedButtonVariant = 'default' | 'filled' | 'outlined';
+import { SegmentedButtonOption, SegmentedButtonSize, SegmentedButtonVariant } from '../../../../types';
 
 @Component({
   selector: 'ui-segmented-button',

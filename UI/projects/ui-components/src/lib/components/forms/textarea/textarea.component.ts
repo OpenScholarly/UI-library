@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output, signal, viewChild, ElementRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-export type TextareaSize = 'sm' | 'md' | 'lg';
-export type TextareaVariant = 'default' | 'filled' | 'outlined';
-export type TextareaResize = 'none' | 'vertical' | 'horizontal' | 'both';
+import { TextareaSize, TextareaVariant, TextareaResize } from '../../../types';
 
 @Component({
   selector: 'ui-textarea',

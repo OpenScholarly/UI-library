@@ -1,16 +1,6 @@
 import { Component, input, output, computed, signal, effect, ElementRef, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface CommandItem {
-  id: string;
-  label: string;
-  description?: string;
-  icon?: string;
-  shortcut?: string;
-  group?: string;
-  disabled?: boolean;
-  action?: () => void;
-}
+import { CommandItem } from '../../../types';
 
 @Component({
   selector: 'ui-command-menu',

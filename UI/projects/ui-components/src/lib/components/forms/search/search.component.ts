@@ -1,16 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect } from '@angular/core';
-
-export interface SearchResult {
-  id: string;
-  title: string;
-  description?: string;
-  category?: string;
-  url?: string;
-  metadata?: Record<string, any>;
-}
-
-export type SearchSize = 'sm' | 'md' | 'lg';
-export type SearchVariant = 'default' | 'filled' | 'minimal';
+import { SearchResult, SearchSize, SearchVariant } from '../../../types';
 
 @Component({
   selector: 'ui-search',
