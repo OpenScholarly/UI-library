@@ -204,7 +204,9 @@ ui-library-workspace/
         "build:demo": "ng build demo",
         "serve:demo": "ng serve demo",
         "build:all": "npm run build:lib && npm run build:demo",
-        "dev": "ng build ui-components && ng serve demo"
+        "dev": "ng build ui-components && ng serve demo",
+        "dev:lib": "ng build ui-components --watch",
+        "dev:demo": "ng serve demo --poll=2000"
       },
       "prettier": {
         "printWidth": 100,
@@ -274,3 +276,42 @@ ui-library-workspace/
       ]
     }
     ```
+
+## Development Workflow
+
+### Running in Development Mode
+To develop the library with live reload:
+
+```bash
+# Start both library watch mode and demo server
+npm run dev
+```
+
+This command runs two processes in parallel:
+1. **Library Watch Mode** (`dev:lib`): Rebuilds `ui-components` whenever you make changes
+2. **Demo Server** (`dev:demo`): Serves the demo app with polling enabled to detect library changes
+
+**Alternative (Manual):**
+If you prefer to run them separately:
+
+```bash
+# Terminal 1: Watch and rebuild library on changes
+npm run dev:lib
+
+# Terminal 2: Serve demo app
+npm run dev:demo
+```
+
+### How It Works
+- The library (`ui-components`) is built to `dist/ui-components`
+- The demo app imports from `dist/ui-components` (configured in `tsconfig.app.json`)
+- When you edit library files, they're automatically rebuilt
+- The demo app detects the changes via polling and hot-reloads
+
+### Development Scripts
+- `npm run dev` - Run library watch + demo server (recommended for development)
+- `npm run dev:lib` - Watch and rebuild library only
+- `npm run dev:demo` - Serve demo app only
+- `npm run build:lib` - Build library once
+- `npm run serve:demo` - Serve demo without library watch
+- `npm run build:all` - Build both library and demo for production

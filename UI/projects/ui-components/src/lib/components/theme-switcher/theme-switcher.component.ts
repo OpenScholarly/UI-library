@@ -15,11 +15,13 @@ export type ThemeMode = 'system' | 'light' | 'dark';
         <input
           [id]="systemId"
           type="radio"
+          name="theme-switcher"
           value="system"
           [checked]="currentTheme() === 'system'"
+          [attr.aria-pressed]="currentTheme() === 'system'"
           (change)="handleThemeChange('system')"
           [attr.aria-label]="systemLabel()"
-          class="sr-only" />
+          class="sr-only peer/system" />
         <label [for]="systemId" [class]="getButtonClasses('system')">
           <span class="sr-only">{{ systemLabel() }}</span>
           <svg
@@ -28,6 +30,7 @@ export type ThemeMode = 'system' | 'light' | 'dark';
             stroke-linejoin="round"
             viewBox="0 0 16 16"
             class="transition-colors duration-200 relative z-10"
+            [attr.aria-hidden]="true"
             style="color: currentcolor">
             <path
               fill-rule="evenodd"
@@ -44,11 +47,13 @@ export type ThemeMode = 'system' | 'light' | 'dark';
         <input
           [id]="lightId"
           type="radio"
+          name="theme-switcher"
           value="light"
           [checked]="currentTheme() === 'light'"
+          [attr.aria-pressed]="currentTheme() === 'light'"
           (change)="handleThemeChange('light')"
           [attr.aria-label]="lightLabel()"
-          class="sr-only" />
+          class="sr-only peer/light" />
         <label [for]="lightId" [class]="getButtonClasses('light')">
           <span class="sr-only">{{ lightLabel() }}</span>
           <svg
@@ -57,6 +62,7 @@ export type ThemeMode = 'system' | 'light' | 'dark';
             stroke-linejoin="round"
             viewBox="0 0 16 16"
             class="transition-colors duration-200 relative z-10"
+            [attr.aria-hidden]="true"
             style="color: currentcolor">
             <path
               fill-rule="evenodd"
@@ -73,11 +79,13 @@ export type ThemeMode = 'system' | 'light' | 'dark';
         <input
           [id]="darkId"
           type="radio"
+          name="theme-switcher"
           value="dark"
           [checked]="currentTheme() === 'dark'"
+          [attr.aria-pressed]="currentTheme() === 'dark'"
           (change)="handleThemeChange('dark')"
           [attr.aria-label]="darkLabel()"
-          class="sr-only" />
+          class="sr-only peer/dark" />
         <label [for]="darkId" [class]="getButtonClasses('dark')">
           <span class="sr-only">{{ darkLabel() }}</span>
           <svg
@@ -86,6 +94,7 @@ export type ThemeMode = 'system' | 'light' | 'dark';
             stroke-linejoin="round"
             viewBox="0 0 16 16"
             class="transition-colors duration-200 relative z-10"
+            [attr.aria-hidden]="true"
             style="color: currentcolor">
             <path
               fill-rule="evenodd"
@@ -122,23 +131,32 @@ export class ThemeSwitcherComponent {
   protected iconSize = computed(() => this.size() === 'sm' ? '14' : '16');
 
   protected containerClasses = computed(() => {
-    const baseClasses = 'border-0 rounded-full w-fit h-8 m-0 p-0 flex shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800';
-    const sizeClasses = this.size() === 'sm' ? 'h-7' : 'h-8';
+    const baseClasses = 'border-0 rounded-full w-fit m-0 p-1 flex shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800';
+    const sizeClasses = this.size() === 'sm' ? 'h-9' : 'h-12';
 
     return `${baseClasses} ${sizeClasses}`;
   });
 
   protected buttonClasses = computed(() => {
-    const baseClasses = 'cursor-pointer w-8 h-8 text-gray-600 dark:text-gray-400 rounded-full justify-center items-center m-0 flex relative transition-all duration-200';
-    const sizeClasses = this.size() === 'sm' ? 'w-7 h-7' : 'w-8 h-8';
+    const baseClasses = 'cursor-pointer text-gray-600 dark:text-gray-400 bg-transparent rounded-full justify-center items-center m-0 flex relative transition-all duration-200';
+    // Ensure minimum 44×44px touch target (48px for WCAG AAA)
+    const sizeClasses = this.size() === 'sm' ? 'min-w-[44px] min-h-[44px] w-11 h-11' : 'min-w-[48px] min-h-[48px] w-12 h-12';
+    // Enhanced focus ring for WCAG compliance
+    const focusClasses = 'focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2';
 
-    return `${baseClasses} ${sizeClasses} hover:text-gray-900 dark:hover:text-gray-100`;
+    return `${baseClasses} ${sizeClasses} ${focusClasses} hover:text-gray-900 dark:hover:text-gray-100`;
   });
 
   protected getButtonClasses(theme: ThemeMode): string {
     const baseClasses = this.buttonClasses();
     const isActive = this.currentTheme() === theme;
-    return isActive ? `${baseClasses} text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-700` : `${baseClasses} bg-transparent`;
+    
+    if (isActive) {
+      // Enhanced active state with better contrast
+      return `${baseClasses} text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-700 shadow-inner`;
+    }
+    
+    return baseClasses;
   }
 
   constructor() {

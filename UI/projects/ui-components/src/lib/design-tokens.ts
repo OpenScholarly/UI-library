@@ -79,6 +79,14 @@ export const DesignTokens = {
     popover: 1060,
     tooltip: 1070,
   },
+  
+  accessibility: {
+    minTouchTarget: '48px',
+    focusRingWidth: '2px',
+    focusRingOffset: '2px',
+    focusRingColor: '#0066ff',
+    focusRingOpacity: '0.5',
+  },
 } as const;
 
 export type DesignTokens = typeof DesignTokens;
