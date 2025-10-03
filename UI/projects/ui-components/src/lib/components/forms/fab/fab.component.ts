@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-
-export type FabSize = 'sm' | 'md' | 'lg';
-export type FabVariant = 'primary' | 'secondary' | 'extended';
-export type FabPosition = 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' | 'static';
+import { FabSize, FabVariant, FabPosition } from '../../../types';
 
 @Component({
   selector: 'ui-fab',

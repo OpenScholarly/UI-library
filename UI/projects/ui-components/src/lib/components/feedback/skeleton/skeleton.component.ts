@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded';
+import { SkeletonVariant } from '../../../types';
 
 @Component({
   selector: 'ui-skeleton',

@@ -1,8 +1,6 @@
 import { Component, ChangeDetectionStrategy, input, output, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-export type PaginationVariant = 'default' | 'simple' | 'minimal';
-export type PaginationSize = 'sm' | 'md' | 'lg';
+import { PaginationVariant, PaginationSize } from '../../../types';
 
 @Component({
   selector: 'ui-pagination',

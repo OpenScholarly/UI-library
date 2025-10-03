@@ -2,9 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input, output, signal, vi
 import { PositioningService, type Placement } from '../../../utilities/positioning.service';
 import { PortalService } from '../../../utilities/portal.service';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
-
-export type TooltipTrigger = 'hover' | 'focus' | 'click' | 'manual';
-export type TooltipVariant = 'default' | 'dark' | 'light' | 'error' | 'warning' | 'success';
+import { TooltipTrigger, TooltipVariant } from '../../../types';
 
 @Component({
   selector: 'ui-tooltip',

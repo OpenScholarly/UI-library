@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type DividerOrientation = 'horizontal' | 'vertical';
-export type DividerVariant = 'solid' | 'dashed' | 'dotted';
+import { DividerOrientation, DividerVariant } from '../../../types';
 
 @Component({
   selector: 'ui-divider',

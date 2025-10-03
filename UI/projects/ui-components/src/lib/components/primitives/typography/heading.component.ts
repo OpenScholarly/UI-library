@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
-
-export type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-export type HeadingSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
-export type HeadingWeight = 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold';
+import { HeadingLevel, HeadingSize, HeadingWeight } from '../../../types';
 
 @Component({
   selector: 'ui-heading',

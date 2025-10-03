@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type CardVariant = 'default' | 'elevated' | 'outlined' | 'glass';
+import { CardVariant } from '../../../types';
 
 @Component({
   selector: 'ui-card',

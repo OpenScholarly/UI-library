@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-
-export type LoaderType = 'spinner' | 'dots' | 'pulse' | 'bars' | 'ring';
-export type LoaderSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type LoaderVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+import { LoaderType, LoaderSize, LoaderVariant } from '../../../types';
 
 @Component({
   selector: 'ui-loader',

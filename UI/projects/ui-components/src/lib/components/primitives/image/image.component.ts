@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
-
-export type ImageFit = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
-export type ImageRounded = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+import { ImageFit, ImageRounded } from '../../../types';
 
 @Component({
   selector: 'ui-image',

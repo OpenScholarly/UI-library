@@ -1,21 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
-
-export interface TableColumn<T = any> {
-  key: keyof T;
-  label: string;
-  sortable?: boolean;
-  width?: string;
-  align?: 'left' | 'center' | 'right';
-  render?: (value: any, row: T) => string;
-}
-
-export interface TableRow {
-  [key: string]: any;
-}
-
-export type TableSize = 'sm' | 'md' | 'lg';
-export type TableVariant = 'default' | 'striped' | 'bordered';
-export type SortDirection = 'asc' | 'desc' | null;
+import { TableColumn, TableRow, TableSize, TableVariant, SortDirection } from '../../../types';
 
 @Component({
   selector: 'ui-table',

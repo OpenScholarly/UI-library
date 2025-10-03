@@ -1,17 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
-
-export interface MenuItem {
-  id: string;
-  label: string;
-  icon?: string;
-  disabled?: boolean;
-  separator?: boolean;
-  children?: MenuItem[];
-  value?: any;
-}
-
-export type MenuTrigger = 'click' | 'hover';
-export type MenuPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start';
+import { MenuItem, MenuTrigger, MenuPlacement } from '../../../types';
 
 @Component({
   selector: 'ui-menu',

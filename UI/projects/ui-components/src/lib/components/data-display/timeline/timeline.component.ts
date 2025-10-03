@@ -1,19 +1,6 @@
 import { Component, input, output, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
-
-export interface TimelineItem {
-  id: string;
-  title: string;
-  description?: string;
-  timestamp: Date;
-  status?: 'completed' | 'active' | 'pending' | 'cancelled';
-  icon?: string;
-  user?: {
-    name: string;
-    avatar?: string;
-  };
-  metadata?: Record<string, any>;
-}
+import { TimelineItem } from '../../../types';
 
 @Component({
   selector: 'ui-timeline',
