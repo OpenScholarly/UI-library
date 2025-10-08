@@ -275,7 +275,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
       }
     },
     'tozeur': {
-      name: 'Tozeur',
+      name: 'Desert Terracotta',
       description: 'Warm terracotta and peachy tones inspired by desert architecture.',
       mainColor: '#F2A35E',
       palette: {
@@ -296,7 +296,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
       }
     },
     'lader-neutral': {
-      name: 'Lader: Neutral Sans Serif',
+      name: 'Bold Citrus',
       description: 'Bold orange palette with neutral accents.',
       mainColor: '#F26430',
       palette: {
@@ -359,7 +359,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
       }
     },
     'pawhome': {
-      name: 'PawHome',
+      name: 'Playful Sunset',
       description: 'Playful pink and orange palette with warm accents.',
       mainColor: '#F29F05',
       palette: {
@@ -422,7 +422,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
       }
     },
     'naqch': {
-      name: 'NAQCH',
+      name: 'Clay & Rust',
       description: 'Warm terracotta gradient palette.',
       mainColor: '#A65E4E',
       palette: {
@@ -443,7 +443,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
       }
     },
     'neiman-marcus': {
-      name: 'Neiman Marcus',
+      name: 'Golden Luxury',
       description: 'Luxurious warm palette with golden accents.',
       mainColor: '#BF8665',
       palette: {
@@ -464,7 +464,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
       }
     },
     'rocky-salam': {
-      name: 'Rocky Salam',
+      name: 'Coastal Breeze',
       description: 'Cool cyan blues with warm neutral accents.',
       mainColor: '#049DBF',
       palette: {
