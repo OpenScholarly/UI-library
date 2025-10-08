@@ -121,16 +121,16 @@ The system includes 14 more unique palettes. See `color-palettes.json` or the vi
 - Villa Real-Estate
 - Sun, Blue Sky and Autumn
 - Barren Desert Landscape
-- Tozeur
-- Lader: Neutral Sans Serif
+- Desert Terracotta
+- Bold Citrus
 - Wilderness Landscape Forest
 - Safari
-- PawHome
+- Playful Sunset
 - Platform
 - Sunflower
-- NAQCH
-- Neiman Marcus
-- Rocky Salam
+- Clay & Rust
+- Golden Luxury
+- Coastal Breeze
 - Beauty
 
 ## 🔔 Semantic Colors

@@ -64,8 +64,8 @@ console.log(allColors);
 | `villa-real-estate` | Villa Real-Estate | #8C8377 | Real estate, luxury |
 | `sun-blue-autumn` | Sun, Blue Sky and Autumn | #79A3D9 | Seasonal, vibrant brands |
 | `barren-desert` | Barren Desert Landscape | #4E9DA6 | Nature, outdoor brands |
-| `tozeur` | Tozeur | #F2A35E | Warm, inviting brands |
-| `lader-neutral` | Lader: Neutral Sans Serif | #F26430 | Modern, minimalist |
+| `tozeur` | Desert Terracotta | #F2A35E | Warm, inviting brands |
+| `lader-neutral` | Bold Citrus | #F26430 | Modern, minimalist |
 | ... and 9 more! | | | |
 
 ## 🎯 Color Roles Explained
