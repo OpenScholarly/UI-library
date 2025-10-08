@@ -101,7 +101,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
           '600': '#1565C0',
           '700': '#0D47A1',
           '800': '#0A3D91',
-          '900': '#073081'
+          '900': '#073081',
         }
       },
       roles: {
@@ -109,8 +109,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryLight: '300',
         primaryDark: '700',
         accent: '400',
-        surface: '50'
-      }
+        surface: '50',
+      },
     },
     'forest-green': {
       name: 'Organic Modern - Forest Green',
@@ -127,7 +127,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
           '600': '#388E3C',
           '700': '#2E7D32',
           '800': '#1B5E20',
-          '900': '#0F4C1A'
+          '900': '#0F4C1A',
         }
       },
       roles: {
@@ -135,8 +135,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryLight: '300',
         primaryDark: '700',
         accent: '400',
-        surface: '50'
-      }
+        surface: '50',
+      },
     },
     'vibrant-purple': {
       name: 'Creative Edge - Vibrant Purple',
@@ -153,7 +153,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
           '600': '#7C3AED',
           '700': '#6D28D9',
           '800': '#5B21B6',
-          '900': '#4C1D95'
+          '900': '#4C1D95',
         }
       },
       roles: {
@@ -161,8 +161,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryLight: '300',
         primaryDark: '700',
         accent: '400',
-        surface: '50'
-      }
+        surface: '50',
+      },
     },
     'sunset-orange': {
       name: 'Warm & Approachable - Sunset Orange',
@@ -179,7 +179,7 @@ export const ThemeColorSystem: ThemeColorSystem = {
           '600': '#DC2626',
           '700': '#C2410C',
           '800': '#9A3412',
-          '900': '#7C2D12'
+          '900': '#7C2D12',
         }
       },
       roles: {
@@ -187,8 +187,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryLight: '300',
         primaryDark: '700',
         accent: '400',
-        surface: '50'
-      }
+        surface: '50',
+      },
     },
     'beach-landscape': {
       name: 'Beach Landscape',
@@ -196,11 +196,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#BF9169',
       palette: {
         primary: {
+          '50': '#F6F4F0',
           '100': '#F2EFE9',
+          '200': '#E6DBD1',
           '300': '#D9C7B8',
+          '400': '#CCAC91',
           '500': '#BF9169',
+          '600': '#A67654',
           '700': '#8C5B3F',
-          '900': '#593E2E'
+          '800': '#734D37',
+          '900': '#593E2E',
         }
       },
       roles: {
@@ -208,8 +213,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         secondary: '700',
         accent: '300',
         surface: '100',
-        surfaceDark: '900'
-      }
+        surfaceDark: '900',
+      },
     },
     'villa-real-estate': {
       name: 'Villa Real-Estate',
@@ -217,11 +222,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#8C8377',
       palette: {
         primary: {
+          '50': '#E4E4E4',
           '100': '#D9D9D9',
           '200': '#A6A5A4',
+          '300': '#9D9A95',
+          '400': '#958E86',
           '500': '#8C8377',
+          '600': '#665F57',
           '700': '#403B36',
-          '900': '#0D0D0D'
+          '800': '#272422',
+          '900': '#0D0D0D',
         }
       },
       roles: {
@@ -229,8 +239,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         secondary: '700',
         accent: '200',
         surface: '100',
-        surfaceDark: '900'
-      }
+        surfaceDark: '900',
+      },
     },
     'sun-blue-autumn': {
       name: 'Sun, Blue Sky and Autumn',
@@ -238,11 +248,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#79A3D9',
       palette: {
         primary: {
+          '50': '#D6E7F6',
           '100': '#C4DDF2',
+          '200': '#9FC0E6',
           '300': '#79A3D9',
+          '400': '#9C8F8C',
           '500': '#BF7B3F',
+          '600': '#99612F',
           '700': '#73461F',
-          '800': '#F2A35E'
+          '800': '#F2A35E',
+          '900': '#916238',
         }
       },
       roles: {
@@ -250,8 +265,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         secondary: '500',
         accent: '800',
         surface: '100',
-        contrast: '700'
-      }
+        contrast: '700',
+      },
     },
     'barren-desert': {
       name: 'Barren Desert Landscape',
@@ -259,11 +274,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#4E9DA6',
       palette: {
         primary: {
+          '50': '#E6ECEE',
+          '100': '#9AB3BD',
           '200': '#024059',
+          '300': '#0A5166',
           '400': '#126173',
           '500': '#4E9DA6',
+          '600': '#94A290',
           '700': '#D9A679',
-          '900': '#A65437'
+          '800': '#C07D58',
+          '900': '#A65437',
         }
       },
       roles: {
@@ -271,8 +291,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryDark: '200',
         secondary: '700',
         accent: '900',
-        contrast: '400'
-      }
+        contrast: '400',
+      },
     },
     'tozeur': {
       name: 'Desert Terracotta',
@@ -280,11 +300,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#F2A35E',
       palette: {
         primary: {
+          '50': '#F6D4C6',
           '100': '#F2C1AE',
           '200': '#BF9C99',
           '300': '#F29863',
+          '400': '#F29E61',
           '500': '#F2A35E',
-          '700': '#BF5D24'
+          '600': '#D98041',
+          '700': '#BF5D24',
+          '800': '#733816',
+          '900': '#261307',
         }
       },
       roles: {
@@ -292,8 +317,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryLight: '300',
         secondary: '700',
         accent: '100',
-        neutral: '200'
-      }
+        neutral: '200',
+      },
     },
     'lader-neutral': {
       name: 'Bold Citrus',
@@ -301,11 +326,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#F26430',
       palette: {
         primary: {
+          '50': '#F6F6F6',
           '100': '#F2F2F2',
           '200': '#F2C1AE',
           '300': '#F2865E',
+          '400': '#F27547',
           '500': '#F26430',
-          '700': '#F24F13'
+          '600': '#F25A22',
+          '700': '#F24F13',
+          '800': '#912F0B',
+          '900': '#301004',
         }
       },
       roles: {
@@ -313,8 +343,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryDark: '700',
         primaryLight: '300',
         accent: '200',
-        surface: '100'
-      }
+        surface: '100',
+      },
     },
     'wilderness-forest': {
       name: 'Wilderness Landscape Forest',
@@ -322,11 +352,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#9DA65D',
       palette: {
         primary: {
+          '50': '#F6F6F6',
           '100': '#F2F2F2',
           '200': '#8C8C88',
+          '300': '#959973',
           '400': '#9DA65D',
+          '500': '#858D4D',
           '600': '#6C733D',
-          '900': '#202426'
+          '700': '#535935',
+          '800': '#393E2E',
+          '900': '#202426',
         }
       },
       roles: {
@@ -334,8 +369,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryDark: '600',
         secondary: '200',
         surface: '100',
-        surfaceDark: '900'
-      }
+        surfaceDark: '900',
+      },
     },
     'safari': {
       name: 'Safari',
@@ -343,11 +378,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#BF8C6F',
       palette: {
         primary: {
+          '50': '#E4E4E0',
           '100': '#D9D8D2',
+          '200': '#ABB7BC',
           '300': '#7C96A6',
+          '400': '#9E918B',
           '500': '#BF8C6F',
+          '600': '#A6745C',
           '700': '#8C5B49',
-          '900': '#40282C'
+          '800': '#66423B',
+          '900': '#40282C',
         }
       },
       roles: {
@@ -355,8 +395,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         secondary: '700',
         accent: '300',
         surface: '100',
-        surfaceDark: '900'
-      }
+        surfaceDark: '900',
+      },
     },
     'pawhome': {
       name: 'Playful Sunset',
@@ -364,11 +404,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#F29F05',
       palette: {
         primary: {
+          '50': '#F6E7D4',
           '100': '#F2DCC2',
+          '200': '#F2B8C1',
           '300': '#F294C0',
+          '400': '#F29A63',
           '500': '#F29F05',
+          '600': '#F28A05',
           '700': '#F27405',
-          '900': '#A65424'
+          '800': '#CC6415',
+          '900': '#A65424',
         }
       },
       roles: {
@@ -376,8 +421,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         secondary: '700',
         accent: '300',
         surface: '100',
-        contrast: '900'
-      }
+        contrast: '900',
+      },
     },
     'platform': {
       name: 'Platform',
@@ -385,11 +430,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#295BF2',
       palette: {
         primary: {
+          '50': '#F6F6F6',
           '100': '#F2F2F2',
           '200': '#91B2F2',
+          '300': '#5D87F2',
           '400': '#295BF2',
+          '500': '#1736F2',
           '600': '#0511F2',
-          '700': '#D3CEF2'
+          '700': '#D3CEF2',
+          '800': '#7F7C91',
+          '900': '#2A2930',
         }
       },
       roles: {
@@ -397,8 +447,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryDark: '600',
         accent: '200',
         surface: '100',
-        surfaceAlt: '700'
-      }
+        surfaceAlt: '700',
+      },
     },
     'sunflower': {
       name: 'Sunflower',
@@ -406,11 +456,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#D9831A',
       palette: {
         primary: {
+          '50': '#E4DBD2',
           '100': '#D9CBBF',
+          '200': '#A2B99F',
           '300': '#6AA67F',
+          '400': '#A2954D',
           '500': '#D9831A',
           '600': '#1C8C4D',
-          '800': '#8C501B'
+          '700': '#546E34',
+          '800': '#8C501B',
+          '900': '#543010',
         }
       },
       roles: {
@@ -418,8 +473,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         secondary: '600',
         accent: '300',
         surface: '100',
-        contrast: '800'
-      }
+        contrast: '800',
+      },
     },
     'naqch': {
       name: 'Clay & Rust',
@@ -427,11 +482,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#A65E4E',
       palette: {
         primary: {
+          '50': '#F6E9DE',
           '100': '#F2E0D0',
+          '200': '#D9C0B3',
           '300': '#BFA095',
+          '400': '#B37F72',
           '500': '#A65E4E',
+          '600': '#8D584C',
           '700': '#735149',
-          '900': '#401713'
+          '800': '#5A342E',
+          '900': '#401713',
         }
       },
       roles: {
@@ -439,8 +499,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryLight: '300',
         secondary: '700',
         surface: '100',
-        surfaceDark: '900'
-      }
+        surfaceDark: '900',
+      },
     },
     'neiman-marcus': {
       name: 'Golden Luxury',
@@ -448,11 +508,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#BF8665',
       palette: {
         primary: {
+          '50': '#F6F6F5',
           '100': '#F2F2F0',
+          '200': '#F2E7C5',
           '300': '#F2DC99',
           '400': '#D5D973',
           '500': '#BF8665',
-          '800': '#8C472E'
+          '600': '#AE7153',
+          '700': '#9D5C40',
+          '800': '#8C472E',
+          '900': '#542B1C',
         }
       },
       roles: {
@@ -460,8 +525,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         secondary: '800',
         accent: '400',
         accentAlt: '300',
-        surface: '100'
-      }
+        surface: '100',
+      },
     },
     'rocky-salam': {
       name: 'Coastal Breeze',
@@ -469,11 +534,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#049DBF',
       palette: {
         primary: {
+          '50': '#E4D9CF',
           '100': '#D9C9BA',
+          '200': '#C0A994',
           '300': '#A6886D',
           '400': '#04ADBF',
           '500': '#049DBF',
-          '700': '#0378A6'
+          '600': '#048BB3',
+          '700': '#0378A6',
+          '800': '#024864',
+          '900': '#011821',
         }
       },
       roles: {
@@ -481,8 +551,8 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryLight: '400',
         primaryDark: '700',
         secondary: '300',
-        surface: '100'
-      }
+        surface: '100',
+      },
     },
     'beauty': {
       name: 'Beauty',
@@ -490,11 +560,16 @@ export const ThemeColorSystem: ThemeColorSystem = {
       mainColor: '#D96A93',
       palette: {
         primary: {
+          '50': '#F6E4DD',
           '100': '#F2D8CE',
+          '200': '#F2B98D',
           '300': '#F2994B',
+          '400': '#E6826F',
           '500': '#D96A93',
+          '600': '#C04F6E',
           '700': '#A63348',
-          '900': '#8C2A14'
+          '800': '#992F2E',
+          '900': '#8C2A14',
         }
       },
       roles: {
@@ -502,10 +577,10 @@ export const ThemeColorSystem: ThemeColorSystem = {
         primaryDark: '700',
         accent: '300',
         surface: '100',
-        contrast: '900'
-      }
-    }
-  },
+        contrast: '900',
+      },
+    },
+    },
   semanticColors: {
     description: 'Standard semantic colors used across all themes',
     colors: {
