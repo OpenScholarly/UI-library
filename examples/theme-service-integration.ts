@@ -5,35 +5,48 @@
  * with an Angular theme service for dynamic theme switching.
  */
 
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal, computed } from '@angular/core';
 import { 
   ThemeColorSystem, 
   getColorByRole, 
   getThemeColorsByRole,
   getAvailableThemes,
   getThemeInfo,
+  applyThemeVariables,
+  getCSSVariables,
   type ColorRoles
 } from '@ui-components/lib/theme-colors';
 
-interface ThemeState {
-  currentTheme: string;
-  colors: Record<string, string>;
-}
-
+/**
+ * Enhanced Theme Service using Angular Signals
+ * Follows Angular best practices from copilot-instructions.md
+ * Integrates with existing design tokens and Tailwind configuration
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class EnhancedThemeService {
-  private themeState$ = new BehaviorSubject<ThemeState>({
-    currentTheme: 'ocean-blue',
-    colors: {}
-  });
-
+  // Use signals for state management (Angular best practice)
+  private currentThemeKey = signal<string>('ocean-blue');
+  
   /**
-   * Observable stream of theme state
+   * Current theme as a readonly signal
    */
-  public theme$: Observable<ThemeState> = this.themeState$.asObservable();
+  readonly currentTheme = this.currentThemeKey.asReadonly();
+  
+  /**
+   * Computed signal for current theme colors
+   */
+  readonly currentColors = computed(() => {
+    return getThemeColorsByRole(this.currentThemeKey());
+  });
+  
+  /**
+   * Computed signal for current theme info
+   */
+  readonly currentThemeInfo = computed(() => {
+    return getThemeInfo(this.currentThemeKey());
+  });
 
   constructor() {
     this.initializeTheme();
@@ -49,6 +62,7 @@ export class EnhancedThemeService {
 
   /**
    * Set the active theme
+   * Applies CSS variables and updates localStorage
    */
   setTheme(themeKey: string): void {
     if (!ThemeColorSystem.themes[themeKey]) {
@@ -56,40 +70,26 @@ export class EnhancedThemeService {
       themeKey = 'ocean-blue';
     }
 
-    // Get all colors with their roles for the theme
-    const colors = getThemeColorsByRole(themeKey);
+    // Apply theme using the helper function
+    // This sets CSS variables matching Tailwind config and Themes.md patterns
+    const success = applyThemeVariables(themeKey);
     
-    // Apply colors to CSS variables
-    this.applyCSSVariables(colors);
-    
-    // Apply semantic and neutral colors
-    this.applySemanticColors();
-    this.applyNeutralColors();
-    
-    // Update state
-    this.themeState$.next({
-      currentTheme: themeKey,
-      colors
-    });
-    
-    // Save to localStorage
-    localStorage.setItem('ui-theme', themeKey);
-    
-    // Set data attribute for CSS targeting
-    document.documentElement.setAttribute('data-theme', themeKey);
-  }
-
-  /**
-   * Apply theme colors as CSS variables
-   */
-  private applyCSSVariables(colors: Record<string, string>): void {
-    Object.entries(colors).forEach(([role, color]) => {
-      document.documentElement.style.setProperty(`--color-${role}`, color);
-    });
+    if (success) {
+      // Apply semantic and neutral colors
+      this.applySemanticColors();
+      this.applyNeutralColors();
+      
+      // Update signal
+      this.currentThemeKey.set(themeKey);
+      
+      // Save to localStorage
+      localStorage.setItem('ui-theme', themeKey);
+    }
   }
 
   /**
    * Apply semantic colors (success, danger, warning, info)
+   * These align with the semantic colors in tailwind.config.js
    */
   private applySemanticColors(): void {
     const semantic = ThemeColorSystem.semanticColors.colors;
@@ -119,24 +119,10 @@ export class EnhancedThemeService {
   }
 
   /**
-   * Get current theme key
-   */
-  getCurrentTheme(): string {
-    return this.themeState$.value.currentTheme;
-  }
-
-  /**
-   * Get current theme colors
-   */
-  getCurrentColors(): Record<string, string> {
-    return this.themeState$.value.colors;
-  }
-
-  /**
    * Get a specific color by role from current theme
    */
   getColor(role: keyof ColorRoles): string | undefined {
-    return this.themeState$.value.colors[role];
+    return this.currentColors()[role];
   }
 
   /**
@@ -171,42 +157,47 @@ export class EnhancedThemeService {
 
 /**
  * Example Component using the Enhanced Theme Service
+ * Follows Angular best practices: signals, computed values, native control flow
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Component, OnInit, signal, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-theme-selector',
+  imports: [KeyValuePipe],
   template: `
     <div class="theme-selector">
       <h3>Select Theme</h3>
       <div class="theme-grid">
-        <div 
-          *ngFor="let theme of availableThemes"
-          class="theme-option"
-          [class.active]="theme.key === currentTheme"
-          (click)="selectTheme(theme.key)">
+        @for (theme of availableThemes; track theme.key) {
           <div 
-            class="theme-preview" 
-            [style.background-color]="theme.mainColor">
+            class="theme-option"
+            [class.active]="theme.key === themeService.currentTheme()"
+            (click)="selectTheme(theme.key)">
+            <div 
+              class="theme-preview" 
+              [style.background-color]="theme.mainColor">
+            </div>
+            <div class="theme-info">
+              <strong>{{ theme.name }}</strong>
+              <p>{{ theme.description }}</p>
+            </div>
           </div>
-          <div class="theme-info">
-            <strong>{{ theme.name }}</strong>
-            <p>{{ theme.description }}</p>
-          </div>
-        </div>
+        }
       </div>
       
       <div class="current-colors">
         <h4>Current Theme Colors</h4>
         <div class="color-swatches">
-          <div *ngFor="let color of currentColors | keyvalue" class="color-swatch">
-            <div 
-              class="swatch-color" 
-              [style.background-color]="color.value">
+          @for (color of currentColorsArray(); track color.key) {
+            <div class="color-swatch">
+              <div 
+                class="swatch-color" 
+                [style.background-color]="color.value">
+              </div>
+              <span>{{ color.key }}</span>
             </div>
-            <span>{{ color.key }}</span>
-          </div>
+          }
         </div>
       </div>
     </div>
@@ -291,32 +282,23 @@ import { Subject, takeUntil } from 'rxjs';
       font-size: 0.75rem;
       color: var(--color-gray-600);
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ThemeSelectorComponent implements OnInit, OnDestroy {
-  availableThemes: Array<{ key: string; name: string; description: string; mainColor: string }> = [];
-  currentTheme: string = '';
-  currentColors: Record<string, string> = {};
+export class ThemeSelectorComponent implements OnInit {
+  // Use inject() instead of constructor injection
+  readonly themeService = inject(EnhancedThemeService);
   
-  private destroy$ = new Subject<void>();
-
-  constructor(private themeService: EnhancedThemeService) {}
+  availableThemes: Array<{ key: string; name: string; description: string; mainColor: string }> = [];
+  
+  // Computed signal for converting colors object to array for @for loop
+  currentColorsArray = computed(() => {
+    const colors = this.themeService.currentColors();
+    return Object.entries(colors).map(([key, value]) => ({ key, value }));
+  });
 
   ngOnInit(): void {
     this.availableThemes = this.themeService.getAvailableThemes();
-    
-    // Subscribe to theme changes
-    this.themeService.theme$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(state => {
-        this.currentTheme = state.currentTheme;
-        this.currentColors = state.colors;
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   selectTheme(themeKey: string): void {
@@ -326,15 +308,18 @@ export class ThemeSelectorComponent implements OnInit, OnDestroy {
 
 /**
  * Example usage in a button component
+ * Uses input() function and class bindings instead of ngClass
  */
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
+
 @Component({
   selector: 'app-themed-button',
   template: `
     <button 
       class="themed-button"
-      [class.variant-primary]="variant === 'primary'"
-      [class.variant-secondary]="variant === 'secondary'"
-      [class.variant-accent]="variant === 'accent'">
+      [class.variant-primary]="variant() === 'primary'"
+      [class.variant-secondary]="variant() === 'secondary'"
+      [class.variant-accent]="variant() === 'accent'">
       <ng-content></ng-content>
     </button>
   `,
@@ -378,8 +363,10 @@ export class ThemeSelectorComponent implements OnInit, OnDestroy {
     .variant-accent:hover {
       opacity: 0.9;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThemedButtonComponent {
-  @Input() variant: 'primary' | 'secondary' | 'accent' = 'primary';
+  // Use input() function instead of @Input decorator
+  variant = input<'primary' | 'secondary' | 'accent'>('primary');
 }
