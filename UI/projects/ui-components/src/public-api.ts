@@ -82,6 +82,7 @@ export * from './lib/components/navigation/tree-view/tree-view.component';
 
 // Design tokens and utilities
 export * from './lib/design-tokens';
+export * from './lib/theme-colors';
 export * from './lib/utilities';
 
 // Centralized types
