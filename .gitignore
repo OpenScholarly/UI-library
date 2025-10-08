@@ -139,3 +139,6 @@ dist
 **/packagage-lock.json
 **/yarn.lock
 **/node_modules/**
+
+# Screenshots (documented in PR/issues)
+*.png
