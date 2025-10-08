@@ -175,80 +175,105 @@ import {
   getColorByRole, 
   getThemeColorsByRole,
   getAvailableThemes,
-  getThemeInfo 
+  getThemeInfo,
+  applyThemeVariables,  // New helper for easy integration
+  getCSSVariables       // New helper for custom CSS variable handling
 } from '@ui-components/lib/theme-colors';
 ```
 
 ### Step 2: Use in Your Theme Service
 
+**Option A: Simple Integration (Recommended)**
 ```typescript
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { ThemeColorSystem, getThemeColorsByRole } from '@ui-components/lib/theme-colors';
+import { Injectable, signal, computed } from '@angular/core';
+import { applyThemeVariables, getThemeInfo } from '@ui-components/lib/theme-colors';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  private currentTheme$ = new BehaviorSubject<string>('ocean-blue');
+  // Use signals for state management (Angular best practice)
+  private currentThemeKey = signal<string>('ocean-blue');
+  readonly currentTheme = this.currentThemeKey.asReadonly();
+  
+  // Computed theme info
+  readonly themeInfo = computed(() => getThemeInfo(this.currentThemeKey()));
   
   setTheme(themeKey: string): void {
-    const colors = getThemeColorsByRole(themeKey);
+    // Apply theme CSS variables
+    // This automatically sets both --ui-* and --primary-* variables
+    // Aligns with Tailwind config and Themes.md patterns
+    const success = applyThemeVariables(themeKey);
     
-    // Apply colors to CSS variables
-    Object.entries(colors).forEach(([role, color]) => {
-      document.documentElement.style.setProperty(`--color-${role}`, color);
+    if (success) {
+      this.currentThemeKey.set(themeKey);
+      localStorage.setItem('ui-theme', themeKey);
+    }
+  }
+}
+```
+
+**Option B: Custom CSS Variable Names**
+```typescript
+import { Injectable, signal } from '@angular/core';
+import { getCSSVariables } from '@ui-components/lib/theme-colors';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ThemeService {
+  private currentThemeKey = signal<string>('ocean-blue');
+  
+  setTheme(themeKey: string): void {
+    // Get CSS variables with custom handling
+    const cssVars = getCSSVariables(themeKey);
+    
+    // Apply variables with your own logic
+    Object.entries(cssVars).forEach(([varName, color]) => {
+      document.documentElement.style.setProperty(varName, color);
     });
     
-    this.currentTheme$.next(themeKey);
-    localStorage.setItem('ui-theme', themeKey);
-  }
-  
-  getAvailableThemes() {
-    return ThemeColorSystem.themes;
-  }
-  
-  getCurrentTheme(): string {
-    return this.currentTheme$.value;
+    this.currentThemeKey.set(themeKey);
   }
 }
 ```
 
-### Step 3: Set Up CSS Variables
+### Step 3: CSS Variables Convention
 
+The system sets CSS variables that align with existing conventions:
+
+**Standard UI Variables** (used in `tailwind.config.js`):
 ```css
 :root {
-  /* Primary colors */
-  --color-primary: #1851A3;
-  --color-primaryLight: #64B5F6;
-  --color-primaryDark: #0D47A1;
-  
-  /* Secondary colors */
-  --color-secondary: #8C5B3F;
-  --color-secondaryLight: #BF9169;
-  --color-secondaryDark: #593E2E;
-  
-  /* Accent colors */
-  --color-accent: #42A5F5;
-  --color-accentAlt: #F2A35E;
-  
-  /* Surface colors */
-  --color-surface: #E3F2FD;
-  --color-surfaceLight: #ffffff;
-  --color-surfaceDark: #073081;
-  
-  /* Semantic colors */
-  --color-success: #28a745;
-  --color-danger: #dc3545;
-  --color-warning: #ffc107;
-  --color-info: #17a2b8;
-  
-  /* Neutral colors */
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  /* ... etc */
+  --ui-primary: #1851A3;
+  --ui-primary-light: #64B5F6;
+  --ui-primary-dark: #0D47A1;
+  --ui-secondary: #8C5B3F;
+  --ui-surface: #E3F2FD;
+  --ui-surface-light: #ffffff;
+  --ui-surface-dark: #073081;
+  --ui-accent: #42A5F5;
 }
 ```
+
+**Shade Variables** (used in `Themes.md`):
+```css
+:root {
+  /* Primary Palette - Full shade range */
+  --primary-50: #E3F2FD;
+  --primary-100: #BBDEFB;
+  --primary-200: #90CAF9;
+  --primary-300: #64B5F6;
+  --primary-400: #42A5F5;
+  --primary-500: #1851A3;  /* Main primary */
+  --primary-600: #1565C0;
+  --primary-700: #0D47A1;
+  --primary-800: #0A3D91;
+  --primary-900: #073081;
+}
+```
+
+These variables are automatically set when using `applyThemeVariables()`.
 
 ## 📝 Usage Examples
 

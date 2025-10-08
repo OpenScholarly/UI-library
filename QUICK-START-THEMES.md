@@ -24,6 +24,15 @@ npm install @ui-components
 
 ### Step 3: Import and Use
 
+**Quick Apply (Easiest)**
+```typescript
+import { applyThemeVariables } from '@ui-components/lib/theme-colors';
+
+// Apply theme instantly - sets all CSS variables
+applyThemeVariables('ocean-blue');
+```
+
+**Get Specific Colors**
 ```typescript
 import { getColorByRole, getThemeColorsByRole } from '@ui-components/lib/theme-colors';
 
@@ -73,16 +82,16 @@ Each theme includes these color roles:
 ## 💡 Example: Theme Switcher Component
 
 ```typescript
-import { Component } from '@angular/core';
-import { getAvailableThemes, getThemeInfo } from '@ui-components/lib/theme-colors';
+import { Component, signal, inject } from '@angular/core';
+import { getAvailableThemes, getThemeInfo, applyThemeVariables } from '@ui-components/lib/theme-colors';
 
 @Component({
   selector: 'app-theme-picker',
   template: `
     <select (change)="onThemeChange($event)">
-      <option *ngFor="let theme of themes" [value]="theme.key">
-        {{ theme.name }}
-      </option>
+      @for (theme of themes; track theme.key) {
+        <option [value]="theme.key">{{ theme.name }}</option>
+      }
     </select>
   `
 })
@@ -94,7 +103,8 @@ export class ThemePickerComponent {
 
   onThemeChange(event: Event) {
     const themeKey = (event.target as HTMLSelectElement).value;
-    // Apply theme colors...
+    // Apply theme instantly with helper function
+    applyThemeVariables(themeKey);
   }
 }
 ```
@@ -103,32 +113,48 @@ export class ThemePickerComponent {
 
 ### CSS Variables (Recommended)
 
+Use the standard `--ui-*` variables that align with Tailwind config:
+
 ```css
 .my-button {
-  background-color: var(--color-primary);
+  background-color: var(--ui-primary);
   color: white;
 }
 
 .my-button:hover {
-  background-color: var(--color-primaryLight);
+  background-color: var(--ui-primary-light);
+}
+
+.my-card {
+  background-color: var(--ui-surface);
+  border: 1px solid var(--ui-surface-dark);
 }
 ```
 
-### Direct Usage
+Or use shade variables for more granular control:
+
+```css
+.my-element {
+  background: var(--primary-50);
+  border: 1px solid var(--primary-200);
+}
+```
+
+### Direct Usage in TypeScript
 
 ```typescript
-import { getColorByRole } from '@ui-components/lib/theme-colors';
+import { getColorByRole, signal } from '@ui-components/lib/theme-colors';
 
 @Component({
   selector: 'app-card',
   styles: [`
     :host {
-      background-color: {{ surfaceColor }};
+      background-color: {{ surfaceColor() }};
     }
   `]
 })
 export class CardComponent {
-  surfaceColor = getColorByRole('ocean-blue', 'surface');
+  surfaceColor = signal(getColorByRole('ocean-blue', 'surface'));
 }
 ```
 

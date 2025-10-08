@@ -3,6 +3,8 @@
  * 
  * This file defines color palettes with clear role assignments (primary, secondary, accent, etc.)
  * for seamless theme integration in the UI library.
+ * 
+ * Aligns with existing design tokens and Tailwind configuration.
  */
 
 export interface ColorPalette {
@@ -24,6 +26,28 @@ export interface ColorRoles {
   surfaceAlt?: string;
   contrast?: string;
   neutral?: string;
+}
+
+/**
+ * CSS Variable Mapping for Tailwind integration
+ * Maps theme color roles to CSS variable names used in tailwind.config.js
+ */
+export interface CSSVariableMapping {
+  primary: string;
+  primaryLight: string;
+  primaryDark: string;
+  success: string;
+  danger: string;
+  warning: string;
+  info: string;
+  surface: string;
+  surfaceLight: string;
+  surfaceDark: string;
+  background: string;
+  textPrimary: string;
+  textSecondary: string;
+  textDisabled: string;
+  textOnPrimary: string;
 }
 
 export interface ThemeColors {
@@ -577,4 +601,67 @@ export function getThemeInfo(themeKey: string): Pick<ThemeColors, 'name' | 'desc
     description: theme.description,
     mainColor: theme.mainColor
   };
+}
+
+/**
+ * Generate CSS variables for a theme that align with Tailwind configuration
+ * Returns an object with CSS variable names as keys and colors as values
+ * 
+ * Example usage:
+ * ```typescript
+ * const vars = getCSSVariables('ocean-blue');
+ * Object.entries(vars).forEach(([varName, color]) => {
+ *   document.documentElement.style.setProperty(varName, color);
+ * });
+ * ```
+ */
+export function getCSSVariables(themeKey: string): Record<string, string> {
+  const theme = ThemeColorSystem.themes[themeKey];
+  if (!theme) return {};
+  
+  const colors = getThemeColorsByRole(themeKey);
+  const cssVars: Record<string, string> = {};
+  
+  // Map role names to CSS variable names matching tailwind.config.js
+  if (colors['primary']) cssVars['--ui-primary'] = colors['primary'];
+  if (colors['primaryLight']) cssVars['--ui-primary-light'] = colors['primaryLight'];
+  if (colors['primaryDark']) cssVars['--ui-primary-dark'] = colors['primaryDark'];
+  if (colors['secondary']) cssVars['--ui-secondary'] = colors['secondary'];
+  if (colors['surface']) cssVars['--ui-surface'] = colors['surface'];
+  if (colors['surfaceLight']) cssVars['--ui-surface-light'] = colors['surfaceLight'];
+  if (colors['surfaceDark']) cssVars['--ui-surface-dark'] = colors['surfaceDark'];
+  if (colors['accent']) cssVars['--ui-accent'] = colors['accent'];
+  
+  // Add all palette shades as --primary-{shade} variables (matching Themes.md pattern)
+  Object.entries(theme.palette.primary).forEach(([shade, color]) => {
+    cssVars[`--primary-${shade}`] = color;
+  });
+  
+  return cssVars;
+}
+
+/**
+ * Apply theme CSS variables to document root
+ * This helper makes it easy to integrate with existing ThemeService
+ * 
+ * Example:
+ * ```typescript
+ * applyThemeVariables('ocean-blue');
+ * ```
+ */
+export function applyThemeVariables(themeKey: string): boolean {
+  const cssVars = getCSSVariables(themeKey);
+  
+  if (Object.keys(cssVars).length === 0) {
+    return false;
+  }
+  
+  Object.entries(cssVars).forEach(([varName, color]) => {
+    document.documentElement.style.setProperty(varName, color);
+  });
+  
+  // Set data-theme attribute for CSS targeting
+  document.documentElement.setAttribute('data-theme', themeKey);
+  
+  return true;
 }
