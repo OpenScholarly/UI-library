@@ -3,6 +3,80 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SliderVariant, SliderSize } from '../../../types';
 
+/**
+ * A versatile and accessible slider component for selecting values from a range.
+ *
+ * ## Features
+ * - Multiple visual variants (default, primary, success, warning, danger)
+ * - Comprehensive size options (small, medium, large)
+ * - Value display tooltip on thumb
+ * - Optional tick marks with labels
+ * - Custom value formatting
+ * - Full keyboard navigation (arrow keys, Home, End, Page Up/Down)
+ * - Full screen reader support with ARIA attributes
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Disabled and error state handling
+ * - Dark mode support
+ * - Smooth animations and transitions
+ * - Seamless integration with Angular Reactive Forms
+ *
+ * @example
+ * ```html
+ * <!-- Basic slider -->
+ * <ui-slider
+ *   label="Volume"
+ *   [min]="0"
+ *   [max]="100"
+ *   [value]="50">
+ * </ui-slider>
+ *
+ * <!-- Slider with value display -->
+ * <ui-slider
+ *   label="Price range"
+ *   [min]="0"
+ *   [max]="1000"
+ *   [step]="10"
+ *   [showValue]="true"
+ *   variant="primary">
+ * </ui-slider>
+ *
+ * <!-- Slider with tick marks -->
+ * <ui-slider
+ *   label="Rating"
+ *   [min]="0"
+ *   [max]="5"
+ *   [step]="1"
+ *   [showTicks]="true"
+ *   [showValue]="true">
+ * </ui-slider>
+ *
+ * <!-- Slider with custom formatter -->
+ * <ui-slider
+ *   label="Temperature"
+ *   [min]="0"
+ *   [max]="100"
+ *   [showValue]="true"
+ *   [formatValue]="(val) => val + '°C'">
+ * </ui-slider>
+ *
+ * <!-- Reactive forms integration -->
+ * <ui-slider
+ *   formControlName="brightness"
+ *   label="Brightness"
+ *   [min]="0"
+ *   [max]="100"
+ *   variant="success"
+ *   size="lg">
+ * </ui-slider>
+ *
+ * <!-- Disabled slider -->
+ * <ui-slider
+ *   label="Read-only value"
+ *   [disabled]="true"
+ *   [value]="75">
+ * </ui-slider>
+ * ```
+ */
 @Component({
   selector: 'ui-slider',
   standalone: true,
