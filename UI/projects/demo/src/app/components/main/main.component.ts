@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   ButtonComponent, CardComponent, AccordionComponent, FooterComponent,
@@ -13,11 +13,12 @@ import {
   SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, TopBarDrawerLayoutComponent,
   TableComponent, MenuComponent, SkeletonComponent, ThemeSwitcherComponent,
   FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent,
-  NavbarComponent, CommandMenuComponent, TreeViewComponent,
+  NavbarComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
-  type BannerAction, type CarouselItem, type NavbarItem, type CommandItem, type TreeNode, type RadioOption
+  type BannerAction, type CarouselItem, type NavbarItem, type CommandItem, type TreeNode, type RadioOption,
+  ThemeService
 } from 'ui-components';
 
 @Component({
@@ -36,11 +37,12 @@ import {
     SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, TopBarDrawerLayoutComponent,
     TableComponent, MenuComponent, SkeletonComponent, ThemeSwitcherComponent,
     FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent,
-    NavbarComponent, CommandMenuComponent, TreeViewComponent
+    NavbarComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent
   ],
   templateUrl: './main.component.html',
 })
 export class MainComponent {
+  private themeService = inject(ThemeService);
   protected title = signal('UI Component Library - 50+ Components Demo');
 
   // Component states

@@ -1,10 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
-import { ThemeSelectorComponent, ThemeService } from 'ui-components';
+import { ThemeSelectorComponent, ThemeService, ButtonComponent } from 'ui-components';
 
 @Component({
   selector: 'app-theme-selector-demo',
   standalone: true,
-  imports: [ThemeSelectorComponent],
+  imports: [ThemeSelectorComponent, ButtonComponent],
   template: `
     <h2>Theme Selector Demo</h2>
     <ui-theme-selector></ui-theme-selector>
@@ -12,6 +12,7 @@ import { ThemeSelectorComponent, ThemeService } from 'ui-components';
       <h3>Current Theme: {{ currentThemeName() }}</h3>
       <p>This card uses <code>var(--ui-surface)</code> and <code>var(--ui-primary)</code> to demonstrate the active theme.</p>
       <button class="demo-btn">Primary Button</button>
+      <ui-button>Secondary Button</ui-button>
     </div>
   `,
   styles: [`

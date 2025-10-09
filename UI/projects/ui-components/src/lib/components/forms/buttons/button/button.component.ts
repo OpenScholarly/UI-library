@@ -285,19 +285,19 @@ export class ButtonComponent {
     // Enhanced base classes with better focus visibility
     const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed';
 
-    const variants: Record<ButtonVariant, (scheme: string) => string> = {
-      primary: (scheme: string) => `bg-${scheme}-600 text-white hover:bg-${scheme}-700 active:bg-${scheme}-800 focus-visible:ring-${scheme}-500`,
-      secondary: (scheme: string) => `bg-${scheme}-200 text-${scheme}-900 hover:bg-${scheme}-300 active:bg-${scheme}-400 focus-visible:ring-${scheme}-500`,
-      tertiary: (scheme: string) => `bg-${scheme}-100 text-${scheme}-800 hover:bg-${scheme}-200 active:bg-${scheme}-300 focus-visible:ring-${scheme}-500`,
-      outline: (scheme: string) => `border-2 border-${scheme}-500 bg-transparent text-${scheme}-700 hover:bg-${scheme}-50 active:bg-${scheme}-100 focus-visible:ring-${scheme}-500`,
-      ghost: (scheme: string) => `text-${scheme}-700 hover:bg-${scheme}-100 active:bg-${scheme}-200 focus-visible:ring-${scheme}-500`,
-      destructive: (scheme: string) => `bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500`,
-      danger: (scheme: string) => `bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500`,
-      warning: (scheme: string) => `bg-yellow-600 text-white hover:bg-yellow-700 active:bg-yellow-800 focus-visible:ring-yellow-500`,
-      success: (scheme: string) => `bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus-visible:ring-green-500`,
-      info: (scheme: string) => `bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus-visible:ring-blue-500`,
-      link: (scheme: string) => `bg-transparent text-${scheme}-600 underline hover:text-${scheme}-800 active:text-${scheme}-900 focus-visible:ring-${scheme}-500`,
-      glass: (scheme: string) => `backdrop-blur-md bg-white/10 dark:bg-black/10 text-gray-900 dark:text-white border border-white/20 hover:bg-white/20 dark:hover:bg-black/20 active:bg-white/30 dark:active:bg-black/30 focus-visible:ring-white/50`
+    const variants: Record<ButtonVariant, string> = {
+      primary: `bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus-visible:ring-primary-500`,
+      secondary: `bg-primary-200 text-primary-900 hover:bg-primary-300 active:bg-primary-400 focus-visible:ring-primary-500`,
+      tertiary: `bg-primary-100 text-primary-800 hover:bg-primary-200 active:bg-primary-300 focus-visible:ring-primary-500`,
+      outline: `border-2 border-primary-500 bg-transparent text-primary-700 hover:bg-primary-50 active:bg-primary-100 focus-visible:ring-primary-500`,
+      ghost: `text-primary-700 hover:bg-primary-100 active:bg-primary-200 focus-visible:ring-primary-500`,
+      destructive: `bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500`,
+      danger: `bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500`,
+      warning: `bg-yellow-600 text-white hover:bg-yellow-700 active:bg-yellow-800 focus-visible:ring-yellow-500`,
+      success: `bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus-visible:ring-green-500`,
+      info: `bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus-visible:ring-blue-500`,
+      link: `bg-transparent text-primary-600 underline hover:text-primary-800 active:text-primary-900 focus-visible:ring-primary-500`,
+      glass: `backdrop-blur-md bg-white/10 dark:bg-black/10 text-gray-900 dark:text-white border border-white/20 hover:bg-white/20 dark:hover:bg-black/20 active:bg-white/30 dark:active:bg-black/30 focus-visible:ring-white/50`
     };
 
     // Ensure minimum 48×48px touch target for WCAG AAA (44×44px for AA)
@@ -310,15 +310,8 @@ export class ButtonComponent {
     };
 
     const variant = this.variant() as ButtonVariant;
-    const scheme = variant === 'destructive' || variant === 'danger' ? 'red'
-                  : variant === 'warning' ? 'yellow'
-                  : variant === 'success' ? 'green'
-                  : variant === 'info' ? 'blue'
-                  : 'primary';
 
-    const variantClass = variants[variant]
-      ? variants[variant](scheme)
-      : variants['primary']('primary');
+    const variantClass = variants[variant] ? variants[variant] : variants['primary'];
     const sizeClass = sizes[this.size()];
     const customClass = this.customClasses();
 
