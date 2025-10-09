@@ -3,6 +3,17 @@
 - Angular 20+
 - TailwindCSS 3.4+
 
+## Color Theme System
+This library includes a complete color theme system with:
+- **19 Themed Palettes**: Ocean Blue, Forest Green, Purple, Orange, and more
+- **Role-Based Colors**: Primary, secondary, accent, surface assignments
+- **Interactive Visualization**: See all colors before choosing. Open [color-palette-visualization.html](color-palette-visualization.html) in your browser to explore all themes.
+
+```typescript
+import { getColorByRole, getThemeColorsByRole } from '@ui-components/lib/theme-colors';
+const primary = getColorByRole('ocean-blue', 'primary'); // #1851A3
+const colors = getThemeColorsByRole('sunset-orange');
+```
 
 # !TODO https://wave.webaim.org/
 
