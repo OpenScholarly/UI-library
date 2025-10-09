@@ -2,6 +2,42 @@ import { Component, input, output, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { TimelineItem } from '../../../types';
 
+/**
+ * A versatile and accessible timeline component for displaying chronological events.
+ *
+ * ## Features
+ * - Chronological event display
+ * - Status indicators (completed, active, pending, cancelled)
+ * - Icon support for each item
+ * - User information with avatars
+ * - Timestamps
+ * - Clickable items
+ * - Full screen reader support with semantic HTML
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Responsive design
+ *
+ * @example
+ * ```html
+ * <!-- Basic timeline -->
+ * <ui-timeline [items]="timelineItems"></ui-timeline>
+ *
+ * <!-- With item click handler -->
+ * <ui-timeline
+ *   [items]="events"
+ *   (itemClick)="handleEventClick($event)">
+ * </ui-timeline>
+ *
+ * <!-- Timeline with different statuses -->
+ * <ui-timeline
+ *   [items]="[
+ *     { id: '1', title: 'Project Started', status: 'completed', timestamp: date1 },
+ *     { id: '2', title: 'In Progress', status: 'active', timestamp: date2 },
+ *     { id: '3', title: 'Upcoming', status: 'pending', timestamp: date3 }
+ *   ]">
+ * </ui-timeline>
+ * ```
+ */
 @Component({
   selector: 'ui-timeline',
   imports: [NgClass],
