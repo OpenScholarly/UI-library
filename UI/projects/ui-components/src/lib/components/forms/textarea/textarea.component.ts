@@ -2,6 +2,73 @@ import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TextareaSize, TextareaVariant, TextareaResize } from '../../../types';
 
+/**
+ * A versatile and accessible textarea component for multi-line text input.
+ *
+ * ## Features
+ * - Multiple input sizes (small, medium, large)
+ * - Visual variants (default, filled, outlined)
+ * - Configurable resize behavior (none, vertical, horizontal, both)
+ * - Character count display with limit
+ * - Auto-resize option
+ * - Full keyboard navigation and screen reader support
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Disabled, readonly, and error state handling
+ * - Dark mode support
+ * - Custom ARIA attribute support
+ * - Seamless integration with Angular Reactive Forms
+ *
+ * @example
+ * ```html
+ * <!-- Basic textarea -->
+ * <ui-textarea
+ *   label="Comments"
+ *   placeholder="Enter your comments">
+ * </ui-textarea>
+ *
+ * <!-- Textarea with character limit -->
+ * <ui-textarea
+ *   label="Description"
+ *   [maxlength]="500"
+ *   [showCharacterCount]="true"
+ *   helperText="Brief description of the item">
+ * </ui-textarea>
+ *
+ * <!-- Textarea with validation -->
+ * <ui-textarea
+ *   label="Message"
+ *   [required]="true"
+ *   [invalid]="form.controls.message.invalid && form.controls.message.touched"
+ *   errorMessage="Message is required"
+ *   [rows]="5">
+ * </ui-textarea>
+ *
+ * <!-- Filled variant with auto-resize -->
+ * <ui-textarea
+ *   label="Notes"
+ *   variant="filled"
+ *   [autoResize]="true"
+ *   placeholder="Type your notes...">
+ * </ui-textarea>
+ *
+ * <!-- Readonly textarea -->
+ * <ui-textarea
+ *   label="Terms and Conditions"
+ *   [readonly]="true"
+ *   [rows]="10"
+ *   resize="none">
+ * </ui-textarea>
+ *
+ * <!-- Reactive forms integration -->
+ * <ui-textarea
+ *   formControlName="feedback"
+ *   label="Feedback"
+ *   size="lg"
+ *   [maxlength]="1000"
+ *   [showCharacterCount]="true">
+ * </ui-textarea>
+ * ```
+ */
 @Component({
   selector: 'ui-textarea',
   standalone: true,
@@ -70,33 +137,168 @@ import { TextareaSize, TextareaVariant, TextareaResize } from '../../../types';
   ]
 })
 export class TextareaComponent implements ControlValueAccessor {
-  // Input properties
+  /**
+   * Label text displayed above the textarea.
+   * @default ""
+   * @example "Description"
+   */
   label = input<string>('');
+  
+  /**
+   * Placeholder text shown when textarea is empty.
+   * @default ""
+   * @example "Enter detailed description..."
+   */
   placeholder = input<string>('');
+  
+  /**
+   * Helper text displayed below the textarea.
+   * Provides additional context or instructions.
+   * Hidden when error message is shown.
+   * @default ""
+   * @example "Maximum 500 characters"
+   */
   helperText = input<string>('');
+  
+  /**
+   * Error message displayed when textarea is invalid.
+   * Only shown when `invalid` is true.
+   * @default ""
+   * @example "Description is required"
+   */
   errorMessage = input<string>('');
+  
+  /**
+   * Size of the textarea.
+   * - `sm`: Small (compact padding)
+   * - `md`: Medium (standard padding) - default
+   * - `lg`: Large (generous padding)
+   * @default "md"
+   */
   size = input<TextareaSize>('md');
+  
+  /**
+   * Visual style variant of the textarea.
+   * - `default`: Standard border with white background
+   * - `filled`: Filled background with subtle border
+   * - `outlined`: Prominent border with transparent background
+   * @default "default"
+   */
   variant = input<TextareaVariant>('default');
+  
+  /**
+   * Resize behavior of the textarea.
+   * - `none`: Not resizable
+   * - `vertical`: Vertically resizable (default)
+   * - `horizontal`: Horizontally resizable
+   * - `both`: Resizable in both directions
+   * @default "vertical"
+   */
   resize = input<TextareaResize>('vertical');
+  
+  /**
+   * Disables the textarea and prevents interaction.
+   * Applies disabled styling and prevents value changes.
+   * @default false
+   */
   disabled = input(false);
+  
+  /**
+   * Makes the textarea readonly.
+   * Value can be read but not modified by user.
+   * @default false
+   */
   readonly = input(false);
+  
+  /**
+   * Marks the textarea as required.
+   * Displays asterisk (*) next to label.
+   * @default false
+   */
   required = input(false);
+  
+  /**
+   * Marks the textarea as invalid.
+   * Applies error styling and shows error message if provided.
+   * Typically used with form validation.
+   * @default false
+   */
   invalid = input(false);
+  
+  /**
+   * Automatically adjusts textarea height to fit content.
+   * @default false
+   */
   autoResize = input(false);
+  
+  /**
+   * Shows character count indicator.
+   * Only visible when `maxlength` is set.
+   * @default false
+   */
   showCharacterCount = input(false);
+  
+  /**
+   * Makes the textarea take full width of its container.
+   * @default true
+   */
   fullWidth = input(true);
 
-  // HTML textarea attributes
+  /**
+   * Number of visible text rows.
+   * @default 4
+   */
   rows = input<number>(4);
+  
+  /**
+   * Number of visible text columns.
+   * @default undefined
+   */
   cols = input<number>();
+  
+  /**
+   * Maximum length of input value.
+   * @default undefined
+   */
   maxlength = input<number>();
+  
+  /**
+   * Minimum length of input value.
+   * @default undefined
+   */
   minlength = input<number>();
 
-  // Outputs
+  /**
+   * Emitted when the textarea value changes.
+   * Provides the new textarea value.
+   * @event valueChanged
+   */
   valueChanged = output<string>();
+  
+  /**
+   * Emitted when the textarea receives focus.
+   * @event focused
+   */
   focused = output<void>();
+  
+  /**
+   * Emitted when the textarea loses focus.
+   * @event blurred
+   */
   blurred = output<void>();
+  
+  /**
+   * Emitted when a key is pressed in the textarea.
+   * Provides the keyboard event.
+   * @event keyPressed
+   */
   keyPressed = output<KeyboardEvent>();
+  
+  /**
+   * Emitted when content is pasted into the textarea.
+   * Provides the clipboard event.
+   * @event pasted
+   */
   pasted = output<ClipboardEvent>();
 
   // Internal state
@@ -130,8 +332,8 @@ export class TextareaComponent implements ControlValueAccessor {
   protected labelClasses = computed(() => {
     const baseClasses = 'block text-sm font-medium mb-1';
     const colorClasses = this.disabled()
-      ? 'text-text-disabled'
-      : 'text-text-primary';
+      ? 'text-gray-400 dark:text-gray-500'
+      : 'text-gray-900 dark:text-gray-100';
     return `${baseClasses} ${colorClasses}`;
   });
 
@@ -149,9 +351,9 @@ export class TextareaComponent implements ControlValueAccessor {
     };
 
     const variantClasses = {
-      default: 'border border-gray-300 rounded-md bg-white',
-      filled: 'border-0 rounded-md bg-gray-100',
-      outlined: 'border-2 border-gray-300 rounded-md bg-transparent'
+      default: 'border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800',
+      filled: 'border-0 rounded-md bg-gray-100 dark:bg-gray-700',
+      outlined: 'border-2 border-gray-300 dark:border-gray-600 rounded-md bg-transparent'
     };
 
     const resizeClasses = {
@@ -162,14 +364,14 @@ export class TextareaComponent implements ControlValueAccessor {
     };
 
     const stateClasses = this.disabled()
-      ? 'bg-gray-50 text-text-disabled cursor-not-allowed'
+      ? 'bg-gray-50 dark:bg-gray-900 text-gray-400 dark:text-gray-500 cursor-not-allowed'
       : this.readonly()
-      ? 'bg-gray-50 cursor-default'
-      : 'text-text-primary';
+      ? 'bg-gray-50 dark:bg-gray-900 cursor-default'
+      : 'text-gray-900 dark:text-gray-100';
 
     const invalidClasses = this.invalid()
-      ? 'border-red-500 ui-focus-danger'
-      : 'hover:border-gray-400';
+      ? 'border-red-500 dark:border-red-400 ui-focus-danger'
+      : 'hover:border-gray-400 dark:hover:border-gray-500';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${variantClasses[this.variant()]} ${resizeClasses[this.resize()]} ${stateClasses} ${invalidClasses}`;
   });
@@ -177,17 +379,17 @@ export class TextareaComponent implements ControlValueAccessor {
   protected characterCountClasses = computed(() => {
     const baseClasses = 'absolute bottom-2 right-2 text-xs pointer-events-none';
     const colorClasses = this.isAtMaxLength()
-      ? 'text-red-500'
-      : 'text-text-secondary';
+      ? 'text-red-500 dark:text-red-400'
+      : 'text-gray-600 dark:text-gray-400';
     return `${baseClasses} ${colorClasses}`;
   });
 
   protected helperTextClasses = computed(() => {
-    return 'mt-1 text-sm text-text-secondary';
+    return 'mt-1 text-sm text-gray-600 dark:text-gray-400';
   });
 
   protected errorTextClasses = computed(() => {
-    return 'mt-1 text-sm text-red-600';
+    return 'mt-1 text-sm text-red-600 dark:text-red-400';
   });
 
   private isAtMaxLength(): boolean {
