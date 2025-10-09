@@ -2,6 +2,62 @@ import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CheckboxSize, CheckboxVariant } from '../../../types';
 
+/**
+ * A versatile and accessible checkbox component for form selections.
+ *
+ * ## Features
+ * - Multiple visual variants (default, primary, success, warning, danger)
+ * - Comprehensive size options (small, medium, large)
+ * - Indeterminate state support for partial selections
+ * - Full keyboard navigation and screen reader support
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Disabled and error state handling
+ * - Dark mode support
+ * - Custom ARIA attribute support
+ * - Seamless integration with Angular Reactive Forms
+ *
+ * @example
+ * ```html
+ * <!-- Basic checkbox -->
+ * <ui-checkbox label="Accept terms and conditions" />
+ *
+ * <!-- Checkbox with description -->
+ * <ui-checkbox
+ *   label="Enable notifications"
+ *   description="Receive email updates about your account">
+ * </ui-checkbox>
+ *
+ * <!-- Required checkbox with validation -->
+ * <ui-checkbox
+ *   label="I agree to the privacy policy"
+ *   [required]="true"
+ *   [invalid]="form.controls.agree.invalid && form.controls.agree.touched"
+ *   errorMessage="You must accept the privacy policy">
+ * </ui-checkbox>
+ *
+ * <!-- Indeterminate state (for "select all" functionality) -->
+ * <ui-checkbox
+ *   label="Select all items"
+ *   [indeterminate]="someSelected && !allSelected"
+ *   [checked]="allSelected">
+ * </ui-checkbox>
+ *
+ * <!-- Reactive forms integration -->
+ * <ui-checkbox
+ *   formControlName="newsletter"
+ *   label="Subscribe to newsletter"
+ *   variant="primary"
+ *   size="lg">
+ * </ui-checkbox>
+ *
+ * <!-- Disabled checkbox -->
+ * <ui-checkbox
+ *   label="Cannot be changed"
+ *   [disabled]="true"
+ *   [checked]="true">
+ * </ui-checkbox>
+ * ```
+ */
 @Component({
   selector: 'ui-checkbox',
   standalone: true,
@@ -66,20 +122,96 @@ import { CheckboxSize, CheckboxVariant } from '../../../types';
   ]
 })
 export class CheckboxComponent implements ControlValueAccessor {
-  // Input properties
+  /**
+   * Label text displayed next to the checkbox.
+   * @default ""
+   * @example "I agree to the terms"
+   */
   label = input<string>('');
+  
+  /**
+   * Helper text displayed below the checkbox label.
+   * Provides additional context or instructions.
+   * @default ""
+   * @example "You can change this later in settings"
+   */
   description = input<string>('');
+  
+  /**
+   * Error message displayed when checkbox is invalid.
+   * Only shown when `invalid` is true.
+   * @default ""
+   * @example "This field is required"
+   */
   errorMessage = input<string>('');
+  
+  /**
+   * Size of the checkbox.
+   * - `sm`: Small (16px)
+   * - `md`: Medium (20px) - default
+   * - `lg`: Large (24px)
+   * @default "md"
+   */
   size = input<CheckboxSize>('md');
+  
+  /**
+   * Visual style variant of the checkbox.
+   * - `default`: Gray checkbox (default)
+   * - `primary`: Primary color checkbox
+   * - `success`: Green success checkbox
+   * - `warning`: Yellow warning checkbox
+   * - `danger`: Red danger/error checkbox
+   * @default "default"
+   */
   variant = input<CheckboxVariant>('default');
+  
+  /**
+   * Disables the checkbox and prevents interaction.
+   * Applies disabled styling and prevents value changes.
+   * @default false
+   */
   disabled = input(false);
+  
+  /**
+   * Marks the checkbox as required.
+   * Displays asterisk (*) next to label.
+   * @default false
+   */
   required = input(false);
+  
+  /**
+   * Marks the checkbox as invalid.
+   * Applies error styling and shows error message if provided.
+   * Typically used with form validation.
+   * @default false
+   */
   invalid = input(false);
+  
+  /**
+   * Sets the checkbox to indeterminate state.
+   * Useful for "select all" functionality when some items are selected.
+   * Shows a horizontal line instead of checkmark.
+   * @default false
+   */
   indeterminate = input(false);
 
-  // Outputs
+  /**
+   * Emitted when the checkbox value changes.
+   * Provides the new checked state.
+   * @event changed
+   */
   changed = output<boolean>();
+  
+  /**
+   * Emitted when the checkbox receives focus.
+   * @event focused
+   */
   focused = output<void>();
+  
+  /**
+   * Emitted when the checkbox loses focus.
+   * @event blurred
+   */
   blurred = output<void>();
 
   // Internal state
@@ -142,21 +274,21 @@ export class CheckboxComponent implements ControlValueAccessor {
   protected labelClasses = computed(() => {
     const baseClasses = 'text-sm font-medium select-none';
     const colorClasses = this.disabled()
-      ? 'text-text-disabled'
-      : 'text-text-primary';
+      ? 'text-gray-400 dark:text-gray-500'
+      : 'text-gray-900 dark:text-gray-100';
     return `${baseClasses} ${colorClasses}`;
   });
 
   protected descriptionClasses = computed(() => {
     const baseClasses = 'text-xs mt-1 select-none';
     const colorClasses = this.disabled()
-      ? 'text-text-disabled'
-      : 'text-text-secondary';
+      ? 'text-gray-400 dark:text-gray-500'
+      : 'text-gray-600 dark:text-gray-400';
     return `${baseClasses} ${colorClasses}`;
   });
 
   protected errorClasses = computed(() => {
-    return 'mt-1 text-xs text-red-600';
+    return 'mt-1 text-xs text-red-600 dark:text-red-400';
   });
 
   private getCheckedClasses(): string {
@@ -172,10 +304,10 @@ export class CheckboxComponent implements ControlValueAccessor {
   }
 
   private getUncheckedClasses(): string {
-    const baseClasses = 'bg-white border-2';
+    const baseClasses = 'bg-white dark:bg-gray-800 border-2';
     const borderClasses = this.invalid()
-      ? 'border-red-500'
-      : 'border-gray-300 hover:border-gray-400';
+      ? 'border-red-500 dark:border-red-400'
+      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500';
     return `${baseClasses} ${borderClasses}`;
   }
 

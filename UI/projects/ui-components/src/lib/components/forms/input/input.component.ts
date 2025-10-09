@@ -3,6 +3,82 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
 import { InputType, InputSize, InputVariant } from '../../../types';
 
+/**
+ * A versatile and accessible text input component for form data entry.
+ *
+ * ## Features
+ * - Multiple input types (text, email, password, number, tel, url, search, date, time, etc.)
+ * - Comprehensive size options (small, medium, large)
+ * - Visual variants (default, filled, outlined)
+ * - Prefix and suffix icon support
+ * - Password visibility toggle
+ * - Full keyboard navigation and screen reader support
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Disabled, readonly, and error state handling
+ * - Dark mode support
+ * - Custom ARIA attribute support
+ * - Seamless integration with Angular Reactive Forms
+ *
+ * @example
+ * ```html
+ * <!-- Basic text input -->
+ * <ui-input
+ *   label="Email Address"
+ *   type="email"
+ *   placeholder="Enter your email">
+ * </ui-input>
+ *
+ * <!-- Input with validation and error -->
+ * <ui-input
+ *   label="Username"
+ *   [required]="true"
+ *   [invalid]="form.controls.username.invalid && form.controls.username.touched"
+ *   errorMessage="Username must be at least 3 characters"
+ *   helperText="Choose a unique username">
+ * </ui-input>
+ *
+ * <!-- Password input with toggle -->
+ * <ui-input
+ *   label="Password"
+ *   type="password"
+ *   [showPasswordToggle]="true"
+ *   placeholder="Enter secure password">
+ * </ui-input>
+ *
+ * <!-- Input with prefix icon -->
+ * <ui-input
+ *   label="Search"
+ *   type="search"
+ *   prefixIcon="🔍"
+ *   placeholder="Search items...">
+ * </ui-input>
+ *
+ * <!-- Number input with min/max -->
+ * <ui-input
+ *   label="Quantity"
+ *   type="number"
+ *   [min]="1"
+ *   [max]="100"
+ *   [step]="1">
+ * </ui-input>
+ *
+ * <!-- Reactive forms integration -->
+ * <ui-input
+ *   formControlName="email"
+ *   label="Email"
+ *   type="email"
+ *   variant="filled"
+ *   size="lg">
+ * </ui-input>
+ *
+ * <!-- Readonly input -->
+ * <ui-input
+ *   label="Account ID"
+ *   [readonly]="true"
+ *   [value]="accountId">
+ * </ui-input>
+ * ```
+ */
 @Component({
   selector: 'ui-input',
   standalone: true,
@@ -91,35 +167,183 @@ import { InputType, InputSize, InputVariant } from '../../../types';
   ]
 })
 export class InputComponent implements ControlValueAccessor {
-  // Input properties
+  /**
+   * HTML input type attribute.
+   * Supports all standard HTML5 input types.
+   * @default "text"
+   * @example "email", "password", "number", "tel", "url", "search", "date", "time"
+   */
   type = input<InputType>('text');
+  
+  /**
+   * Size of the input field.
+   * - `sm`: Small (36px height)
+   * - `md`: Medium (40px height) - default
+   * - `lg`: Large (48px height)
+   * @default "md"
+   */
   size = input<InputSize>('md');
+  
+  /**
+   * Visual style variant of the input.
+   * - `default`: Standard border with white background
+   * - `filled`: Filled background with subtle border
+   * - `outlined`: Prominent border with transparent background
+   * @default "default"
+   */
   variant = input<InputVariant>('default');
+  
+  /**
+   * Label text displayed above the input field.
+   * @default ""
+   * @example "Email Address"
+   */
   label = input<string>('');
+  
+  /**
+   * Placeholder text shown when input is empty.
+   * @default ""
+   * @example "Enter your email"
+   */
   placeholder = input<string>('');
+  
+  /**
+   * Helper text displayed below the input.
+   * Provides additional context or instructions.
+   * Hidden when error message is shown.
+   * @default ""
+   * @example "We'll never share your email"
+   */
   helperText = input<string>('');
+  
+  /**
+   * Error message displayed when input is invalid.
+   * Only shown when `invalid` is true.
+   * @default ""
+   * @example "Please enter a valid email address"
+   */
   errorMessage = input<string>('');
+  
+  /**
+   * Icon or emoji displayed at the start of the input.
+   * Accepts HTML string or emoji character.
+   * @default ""
+   * @example "📧" or "🔍"
+   */
   prefixIcon = input<string>('');
+  
+  /**
+   * Icon or emoji displayed at the end of the input.
+   * Accepts HTML string or emoji character.
+   * @default ""
+   * @example "✓" or "❌"
+   */
   suffixIcon = input<string>('');
+  
+  /**
+   * Disables the input and prevents interaction.
+   * Applies disabled styling and prevents value changes.
+   * @default false
+   */
   disabled = input(false);
+  
+  /**
+   * Makes the input readonly.
+   * Value can be read but not modified by user.
+   * @default false
+   */
   readonly = input(false);
+  
+  /**
+   * Marks the input as required.
+   * Displays asterisk (*) next to label.
+   * @default false
+   */
   required = input(false);
+  
+  /**
+   * Marks the input as invalid.
+   * Applies error styling and shows error message if provided.
+   * Typically used with form validation.
+   * @default false
+   */
   invalid = input(false);
+  
+  /**
+   * Shows/hides password visibility toggle for password inputs.
+   * Only applies when type is "password".
+   * @default true
+   */
   showPasswordToggle = input(true);
+  
+  /**
+   * Makes the input take full width of its container.
+   * @default true
+   */
   fullWidth = input(true);
 
-  // HTML input attributes
+  /**
+   * Minimum value for number, date, and time inputs.
+   * @default ""
+   */
   min = input<string | number>('');
+  
+  /**
+   * Maximum value for number, date, and time inputs.
+   * @default ""
+   */
   max = input<string | number>('');
+  
+  /**
+   * Step value for number inputs.
+   * @default ""
+   */
   step = input<string | number>('');
+  
+  /**
+   * Maximum length of input value.
+   * @default undefined
+   */
   maxlength = input<number>();
+  
+  /**
+   * Regular expression pattern for input validation.
+   * @default ""
+   * @example "[0-9]{3}-[0-9]{3}-[0-9]{4}" for phone number
+   */
   pattern = input<string>('');
+  
+  /**
+   * Autocomplete attribute for browser autofill.
+   * @default ""
+   * @example "email", "username", "new-password", "current-password"
+   */
   autocomplete = input<string>('');
 
-  // Outputs
+  /**
+   * Emitted when the input value changes.
+   * Provides the new input value.
+   * @event valueChange
+   */
   valueChange = output<string>();
+  
+  /**
+   * Emitted when the input receives focus.
+   * @event focused
+   */
   focused = output<void>();
+  
+  /**
+   * Emitted when the input loses focus.
+   * @event blurred
+   */
   blurred = output<void>();
+  
+  /**
+   * Emitted when a key is pressed in the input.
+   * Provides the keyboard event.
+   * @event keyPressed
+   */
   keyPressed = output<KeyboardEvent>();
 
   // Internal state
@@ -160,8 +384,8 @@ export class InputComponent implements ControlValueAccessor {
   protected labelClasses = computed(() => {
     const baseClasses = 'block text-sm font-medium mb-1';
     const colorClasses = this.disabled()
-      ? 'text-text-disabled'
-      : 'text-text-primary';
+      ? 'text-gray-400 dark:text-gray-500'
+      : 'text-gray-900 dark:text-gray-100';
     return `${baseClasses} ${colorClasses}`;
   });
 
@@ -179,20 +403,20 @@ export class InputComponent implements ControlValueAccessor {
     };
 
     const variantClasses = {
-      default: 'border border-gray-300 rounded-md bg-white',
-      filled: 'border-0 rounded-md bg-gray-100',
-      outlined: 'border-2 border-gray-300 rounded-md bg-transparent'
+      default: 'border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800',
+      filled: 'border-0 rounded-md bg-gray-100 dark:bg-gray-700',
+      outlined: 'border-2 border-gray-300 dark:border-gray-600 rounded-md bg-transparent'
     };
 
     const stateClasses = this.disabled()
-      ? 'bg-gray-50 text-text-disabled cursor-not-allowed'
+      ? 'bg-gray-50 dark:bg-gray-900 text-gray-400 dark:text-gray-500 cursor-not-allowed'
       : this.readonly()
-      ? 'bg-gray-50 cursor-default'
-      : 'text-text-primary';
+      ? 'bg-gray-50 dark:bg-gray-900 cursor-default'
+      : 'text-gray-900 dark:text-gray-100';
 
     const invalidClasses = this.invalid()
-      ? 'border-red-500 ui-focus-danger'
-      : 'hover:border-gray-400';
+      ? 'border-red-500 dark:border-red-400 ui-focus-danger'
+      : 'hover:border-gray-400 dark:hover:border-gray-500';
 
     const paddingClasses = this.getPaddingClasses();
 
@@ -207,18 +431,18 @@ export class InputComponent implements ControlValueAccessor {
     };
 
     const colorClasses = this.disabled()
-      ? 'text-text-disabled'
-      : 'text-text-secondary';
+      ? 'text-gray-400 dark:text-gray-500'
+      : 'text-gray-600 dark:text-gray-400';
 
     return `${sizeClasses[this.size()]} ${colorClasses}`;
   });
 
   protected helperTextClasses = computed(() => {
-    return 'mt-1 text-sm text-text-secondary';
+    return 'mt-1 text-sm text-gray-600 dark:text-gray-400';
   });
 
   protected errorTextClasses = computed(() => {
-    return 'mt-1 text-sm text-red-600';
+    return 'mt-1 text-sm text-red-600 dark:text-red-400';
   });
 
   private getPaddingClasses(): string {
