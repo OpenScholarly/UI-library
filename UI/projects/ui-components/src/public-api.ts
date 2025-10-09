@@ -87,3 +87,5 @@ export * from './lib/utilities';
 
 // Centralized types
 export * from './lib/types';
+export * from './lib/services/theme.service';
+export * from './lib/components/theme-selector/theme-selector.component';
