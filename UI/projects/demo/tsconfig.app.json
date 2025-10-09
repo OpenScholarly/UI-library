@@ -5,8 +5,8 @@
     "types": [],
     "paths": {
       "ui-components": [
-        "../../dist/ui-components",
-        "../../projects/ui-components/src/public-api"
+        "../../projects/ui-components/src/public-api",
+        "../../dist/ui-components"
       ]
     }
   },

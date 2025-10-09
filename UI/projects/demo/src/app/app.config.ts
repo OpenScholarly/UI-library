@@ -2,6 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
+// Font loading is initialized in main.ts after bootstrap to avoid deprecated initializers
 
 export const appConfig: ApplicationConfig = {
   providers: [
