@@ -2,6 +2,68 @@ import { Component, ChangeDetectionStrategy, input, output, computed } from '@an
 import { CommonModule } from '@angular/common';
 import { BreadcrumbItem, BreadcrumbVariant, BreadcrumbSize } from '../../../types';
 
+/**
+ * A versatile and accessible breadcrumbs component for navigation hierarchy.
+ *
+ * ## Features
+ * - Multiple visual variants (default, pills, underline)
+ * - Comprehensive size options (sm, md, lg)
+ * - Multiple separator styles (slash, chevron, dot, custom)
+ * - Optional home icon for first item
+ * - Max items display with collapse
+ * - Icon support for items
+ * - Full keyboard navigation and screen reader support
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Disabled item handling
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Basic breadcrumbs -->
+ * <ui-breadcrumbs
+ *   [items]="[
+ *     { label: 'Home', href: '/' },
+ *     { label: 'Products', href: '/products' },
+ *     { label: 'Details' }
+ *   ]">
+ * </ui-breadcrumbs>
+ *
+ * <!-- With home icon -->
+ * <ui-breadcrumbs
+ *   [items]="breadcrumbItems"
+ *   [showHome]="true">
+ * </ui-breadcrumbs>
+ *
+ * <!-- Different separators -->
+ * <ui-breadcrumbs [items]="items" separator="chevron" />
+ * <ui-breadcrumbs [items]="items" separator="dot" />
+ *
+ * <!-- With icons -->
+ * <ui-breadcrumbs
+ *   [items]="[
+ *     { label: 'Home', href: '/', icon: '🏠' },
+ *     { label: 'Settings', href: '/settings', icon: '⚙️' },
+ *     { label: 'Profile' }
+ *   ]">
+ * </ui-breadcrumbs>
+ *
+ * <!-- With max items -->
+ * <ui-breadcrumbs
+ *   [items]="manyItems"
+ *   [maxItems]="4">
+ * </ui-breadcrumbs>
+ *
+ * <!-- Different variants -->
+ * <ui-breadcrumbs [items]="items" variant="pills" />
+ * <ui-breadcrumbs [items]="items" variant="underline" />
+ *
+ * <!-- With click handler -->
+ * <ui-breadcrumbs
+ *   [items]="items"
+ *   (itemClick)="onBreadcrumbClick($event)">
+ * </ui-breadcrumbs>
+ * ```
+ */
 @Component({
   selector: 'ui-breadcrumbs',
   standalone: true,
@@ -88,16 +150,66 @@ import { BreadcrumbItem, BreadcrumbVariant, BreadcrumbSize } from '../../../type
   `
 })
 export class BreadcrumbsComponent {
-  // Inputs
+  /**
+   * Array of breadcrumb items to display.
+   * Each item should have at minimum a label.
+   * @default []
+   * @example [{ label: 'Home', href: '/' }, { label: 'Products' }]
+   */
   items = input<BreadcrumbItem[]>([]);
+  
+  /**
+   * Visual style variant of the breadcrumbs.
+   * - `default`: Standard breadcrumbs (default)
+   * - `pills`: Pill-shaped breadcrumbs
+   * - `underline`: Underlined breadcrumbs
+   * @default "default"
+   */
   variant = input<BreadcrumbVariant>('default');
+  
+  /**
+   * Size of the breadcrumbs.
+   * - `sm`: Small
+   * - `md`: Medium (default)
+   * - `lg`: Large
+   * @default "md"
+   */
   size = input<BreadcrumbSize>('md');
+  
+  /**
+   * Separator style between breadcrumb items.
+   * - `slash`: Forward slash separator (/)
+   * - `chevron`: Chevron/arrow separator (>)
+   * - `dot`: Dot separator (•)
+   * @default "slash"
+   */
   separator = input<'slash' | 'chevron' | 'dot'>('slash');
+  
+  /**
+   * Shows a home icon on the first breadcrumb item.
+   * @default false
+   */
   showHome = input<boolean>(false);
+  
+  /**
+   * Maximum number of breadcrumb items to display.
+   * Excess items are collapsed with ellipsis.
+   * @default null (show all items)
+   * @example 4
+   */
   maxItems = input<number | null>(null);
+  
+  /**
+   * ARIA label for the breadcrumb navigation.
+   * @default "Breadcrumb navigation"
+   */
   ariaLabel = input<string>('Breadcrumb navigation');
 
-  // Outputs
+  /**
+   * Emitted when a breadcrumb item is clicked.
+   * Provides the clicked item and event.
+   * @event itemClick
+   */
   itemClick = output<{ item: BreadcrumbItem; event: Event }>();
 
   // Computed properties
