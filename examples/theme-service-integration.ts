@@ -1,11 +1,5 @@
-/**
- * Example Theme Service Integration
- * 
- * This example shows how to integrate the color palette system
- * with an Angular theme service for dynamic theme switching.
- */
-
-import { Injectable, signal, computed } from '@angular/core';
+import { KeyValuePipe } from '../UI/node_modules/@angular/common';
+import { Injectable,  Component, OnInit, signal, computed, inject, ChangeDetectionStrategy, input } from '../UI/node_modules/@angular/core';
 import { 
   ThemeColorSystem, 
   getColorByRole, 
@@ -15,7 +9,11 @@ import {
   applyThemeVariables,
   getCSSVariables,
   type ColorRoles
-} from '@ui-components/lib/theme-colors';
+} from '../UI/projects/ui-components/src/lib/theme-colors';
+
+
+
+
 
 /**
  * Enhanced Theme Service using Angular Signals
@@ -155,13 +153,28 @@ export class EnhancedThemeService {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Example Component using the Enhanced Theme Service
  * Follows Angular best practices: signals, computed values, native control flow
  */
-import { Component, OnInit, signal, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { KeyValuePipe } from '@angular/common';
-
 @Component({
   selector: 'app-theme-selector',
   imports: [KeyValuePipe],
@@ -306,11 +319,33 @@ export class ThemeSelectorComponent implements OnInit {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Example usage in a button component
  * Uses input() function and class bindings instead of ngClass
  */
-import { Component, input, ChangeDetectionStrategy } from '@angular/core';
+// import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-themed-button',

@@ -309,7 +309,6 @@ Purpose: Energetic, friendly, and attention-grabbing. Great for education, food,
 }
 ```
 
-
 ## Themes Adobe Color
 ### Lader: Neutral Sans Serif
 `#F24F13` - `#F26430` - `#F2865E` - `#F2C1AE` - `#F2F2F2`
@@ -347,7 +346,7 @@ Purpose: Energetic, friendly, and attention-grabbing. Great for education, food,
 `#5080BF` - `#508BBF` - `#7EAED9` - `#D9AE89` - `#A67D65`
 
 
-# Beach landscape
+### Beach landscape
 `#F2EFE9` - `#BF9169` - `#D9C7B8` - `#8C5B3F` - `#593E2E`
 
 &nbsp;  
