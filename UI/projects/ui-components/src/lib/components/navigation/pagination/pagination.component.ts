@@ -2,6 +2,71 @@ import { Component, ChangeDetectionStrategy, input, output, computed, signal } f
 import { CommonModule } from '@angular/common';
 import { PaginationVariant, PaginationSize } from '../../../types';
 
+/**
+ * A versatile and accessible pagination component for navigating through pages.
+ *
+ * ## Features
+ * - Multiple visual variants (default, simple, minimal, rounded)
+ * - Comprehensive size options (sm, md, lg)
+ * - Page numbers with ellipsis for large page counts
+ * - First/last page navigation
+ * - Previous/next buttons
+ * - Results info display
+ * - Full keyboard navigation and screen reader support
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Customizable page range display
+ *
+ * @example
+ * ```html
+ * <!-- Basic pagination -->
+ * <ui-pagination
+ *   [totalItems]="100"
+ *   [pageSize]="10"
+ *   [currentPage]="1"
+ *   (pageChange)="onPageChange($event)">
+ * </ui-pagination>
+ *
+ * <!-- Simple variant -->
+ * <ui-pagination
+ *   [totalItems]="500"
+ *   [pageSize]="20"
+ *   [currentPage]="currentPage"
+ *   variant="simple"
+ *   (pageChange)="loadPage($event)">
+ * </ui-pagination>
+ *
+ * <!-- With results info -->
+ * <ui-pagination
+ *   [totalItems]="1000"
+ *   [pageSize]="25"
+ *   [currentPage]="page"
+ *   [showInfo]="true">
+ * </ui-pagination>
+ *
+ * <!-- Minimal variant -->
+ * <ui-pagination
+ *   [totalItems]="200"
+ *   [pageSize]="10"
+ *   variant="minimal">
+ * </ui-pagination>
+ *
+ * <!-- Rounded variant -->
+ * <ui-pagination
+ *   [totalItems]="150"
+ *   [pageSize]="15"
+ *   variant="rounded"
+ *   size="lg">
+ * </ui-pagination>
+ *
+ * <!-- Without first/last buttons -->
+ * <ui-pagination
+ *   [totalItems]="100"
+ *   [pageSize]="10"
+ *   [showFirstLast]="false">
+ * </ui-pagination>
+ * ```
+ */
 @Component({
   selector: 'ui-pagination',
   standalone: true,
@@ -182,21 +247,93 @@ import { PaginationVariant, PaginationSize } from '../../../types';
   `
 })
 export class PaginationComponent {
-  // Inputs
+  /**
+   * Current active page number.
+   * @default 1
+   */
   currentPage = input<number>(1);
+  
+  /**
+   * Total number of items across all pages.
+   * @default 0
+   * @example 150
+   */
   totalItems = input<number>(0);
+  
+  /**
+   * Number of items per page.
+   * @default 10
+   */
   pageSize = input<number>(10);
+  
+  /**
+   * Visual style variant of the pagination.
+   * - `default`: Standard pagination with numbers (default)
+   * - `simple`: Simple prev/next with text
+   * - `minimal`: Minimal icon-only buttons
+   * - `rounded`: Rounded button style
+   * @default "default"
+   */
   variant = input<PaginationVariant>('default');
+  
+  /**
+   * Size of the pagination buttons.
+   * - `sm`: Small
+   * - `md`: Medium (default)
+   * - `lg`: Large
+   * @default "md"
+   */
   size = input<PaginationSize>('md');
+  
+  /**
+   * Maximum number of page buttons to display.
+   * Excess pages shown with ellipsis.
+   * @default 7
+   */
   maxVisiblePages = input<number>(7);
+  
+  /**
+   * Shows results information text.
+   * @default true
+   */
   showInfo = input<boolean>(true);
+  
+  /**
+   * Shows first and last page buttons.
+   * @default true
+   */
   showFirstLast = input<boolean>(true);
+  
+  /**
+   * Shows page size selector dropdown.
+   * @default false
+   */
   showPageSize = input<boolean>(false);
+  
+  /**
+   * Available page size options for the selector.
+   * @default [10, 25, 50, 100]
+   */
   pageSizeOptions = input<number[]>([10, 25, 50, 100]);
+  
+  /**
+   * ARIA label for the pagination navigation.
+   * @default "Pagination navigation"
+   */
   ariaLabel = input<string>('Pagination navigation');
 
-  // Outputs
+  /**
+   * Emitted when the page changes.
+   * Provides the new page number.
+   * @event pageChange
+   */
   pageChange = output<number>();
+  
+  /**
+   * Emitted when the page size changes.
+   * Provides the new page size.
+   * @event pageSizeChange
+   */
   pageSizeChange = output<number>();
 
   // Computed properties
