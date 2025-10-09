@@ -659,7 +659,8 @@ export class MyUiModal implements OnInit, OnDestroy {
 - [x] [Layout](#layout-components)
 
 1.  Utility Components
-- [x] Theme Switcher (3-way toggle: system/light/dark)
+- [x] Dark Mode Switcher (3-way toggle: system/light/dark)
+- [ ] Theme Switcher (dropdown to select from available themes)
 
 1.  Liquid Glass Suite
 - [ ] [Glass Card](#glass-card)
