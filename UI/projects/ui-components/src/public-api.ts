@@ -89,3 +89,4 @@ export * from './lib/utilities';
 export * from './lib/types';
 export * from './lib/services/theme.service';
 export * from './lib/components/theme-selector/theme-selector.component';
+export * from './lib/services/typography.service';

@@ -660,7 +660,7 @@ export class MyUiModal implements OnInit, OnDestroy {
 
 1.  Utility Components
 - [x] Dark Mode Switcher (3-way toggle: system/light/dark)
-- [ ] Theme Switcher (dropdown to select from available themes)
+- [x] Theme Switcher (dropdown to select from available themes)
 
 1.  Liquid Glass Suite
 - [ ] [Glass Card](#glass-card)
@@ -834,6 +834,12 @@ interface ThemeConfig {
 ```
 
 ### Typography Component Service
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+```
+
 ```typescript
 @Injectable({
   providedIn: 'root'
