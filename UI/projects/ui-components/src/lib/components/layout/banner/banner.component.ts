@@ -2,6 +2,66 @@ import { Component, input, output, computed } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { BannerAction } from '../../../types';
 
+/**
+ * A versatile and accessible banner component for announcements and notifications.
+ *
+ * ## Features
+ * - Multiple visual variants (info, success, warning, error)
+ * - Icon support
+ * - Action buttons
+ * - Dismissible option
+ * - Full-width display
+ * - Full screen reader support with ARIA attributes
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Info banner -->
+ * <ui-banner
+ *   variant="info"
+ *   title="New Feature Available"
+ *   message="Check out our latest updates!">
+ * </ui-banner>
+ *
+ * <!-- Success banner with icon -->
+ * <ui-banner
+ *   variant="success"
+ *   icon="✓"
+ *   title="Success"
+ *   message="Your changes have been saved.">
+ * </ui-banner>
+ *
+ * <!-- Warning banner with dismiss -->
+ * <ui-banner
+ *   variant="warning"
+ *   title="Attention Required"
+ *   message="Please review your settings."
+ *   [dismissible]="true"
+ *   (dismiss)="onDismiss()">
+ * </ui-banner>
+ *
+ * <!-- Banner with actions -->
+ * <ui-banner
+ *   variant="info"
+ *   title="Update Available"
+ *   message="A new version is ready."
+ *   [actions]="[
+ *     { label: 'Update Now', variant: 'primary' },
+ *     { label: 'Later', variant: 'secondary' }
+ *   ]"
+ *   (actionClick)="handleAction($event)">
+ * </ui-banner>
+ *
+ * <!-- Error banner -->
+ * <ui-banner
+ *   variant="error"
+ *   icon="⚠"
+ *   title="Error"
+ *   message="Something went wrong. Please try again.">
+ * </ui-banner>
+ * ```
+ */
 @Component({
   selector: 'ui-banner',
   imports: [NgClass],
@@ -59,16 +119,78 @@ import { BannerAction } from '../../../types';
   }
 })
 export class BannerComponent {
+  /**
+   * Title text of the banner.
+   * @default undefined
+   * @example "New Feature Available"
+   */
   title = input<string>();
+  
+  /**
+   * Message text of the banner.
+   * @default undefined
+   * @example "Check out our latest updates!"
+   */
   message = input<string>();
+  
+  /**
+   * Icon displayed at the start of the banner.
+   * @default undefined
+   * @example "✓" or "⚠"
+   */
   icon = input<string>();
+  
+  /**
+   * Visual style variant of the banner.
+   * - `info`: Information banner (default)
+   * - `success`: Success banner
+   * - `warning`: Warning banner
+   * - `error`: Error banner
+   * - `neutral`: Neutral gray banner
+   * @default "info"
+   */
   variant = input<'info' | 'success' | 'warning' | 'error' | 'neutral'>('info');
+  
+  /**
+   * Size of the banner.
+   * - `sm`: Compact
+   * - `md`: Standard (default)
+   * - `lg`: Spacious
+   * @default "md"
+   */
   size = input<'sm' | 'md' | 'lg'>('md');
+  
+  /**
+   * Shows dismiss button.
+   * @default false
+   */
   dismissible = input<boolean>(false);
+  
+  /**
+   * ARIA label for dismiss button.
+   * @default undefined
+   * @example "Dismiss notification"
+   */
   dismissLabel = input<string>();
+  
+  /**
+   * Array of action buttons.
+   * @default []
+   * @example [{ label: 'Learn More', variant: 'primary' }]
+   */
   actions = input<BannerAction[]>([]);
 
+  /**
+   * Emitted when the banner is dismissed.
+   * @event dismiss
+   */
   dismiss = output<void>();
+  
+  /**
+   * Emitted when an action button is clicked.
+   * Provides the action object.
+   * @event action
+   */
   action = output<BannerAction>();
 
   containerClasses = computed(() => [
