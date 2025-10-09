@@ -2,6 +2,77 @@ import { Component, ChangeDetectionStrategy, input, output, computed } from '@an
 import { CommonModule } from '@angular/common';
 import { ChipVariant, ChipSize } from '../../../types';
 
+/**
+ * A versatile and accessible chip component for tags, labels, and selections.
+ *
+ * ## Features
+ * - Multiple visual variants (default, primary, secondary, success, warning, danger, info, outline)
+ * - Comprehensive size options (xs, small, medium, large)
+ * - Optional leading icon or avatar
+ * - Optional trailing icon
+ * - Badge/count display
+ * - Dismissible chips with close button
+ * - Clickable chips for selections
+ * - Full keyboard navigation and screen reader support
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Disabled state handling
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Basic chip -->
+ * <ui-chip label="Tag" />
+ *
+ * <!-- Chip with variant -->
+ * <ui-chip label="Success" variant="success" />
+ * <ui-chip label="Error" variant="danger" />
+ *
+ * <!-- Chip with icon -->
+ * <ui-chip
+ *   label="Email"
+ *   leadingIcon="📧"
+ *   variant="primary">
+ * </ui-chip>
+ *
+ * <!-- Chip with avatar -->
+ * <ui-chip
+ *   label="John Doe"
+ *   avatar="/avatar.jpg"
+ *   avatarAlt="John Doe">
+ * </ui-chip>
+ *
+ * <!-- Dismissible chip -->
+ * <ui-chip
+ *   label="Removable"
+ *   [dismissible]="true"
+ *   variant="info"
+ *   (dismissed)="onChipDismissed()">
+ * </ui-chip>
+ *
+ * <!-- Clickable chip -->
+ * <ui-chip
+ *   label="Click me"
+ *   [clickable]="true"
+ *   (clicked)="onChipClicked()">
+ * </ui-chip>
+ *
+ * <!-- Chip with badge -->
+ * <ui-chip
+ *   label="Messages"
+ *   [badge]="5"
+ *   variant="primary">
+ * </ui-chip>
+ *
+ * <!-- Different sizes -->
+ * <ui-chip label="Extra Small" size="xs" />
+ * <ui-chip label="Small" size="sm" />
+ * <ui-chip label="Medium" size="md" />
+ * <ui-chip label="Large" size="lg" />
+ *
+ * <!-- Outlined chip -->
+ * <ui-chip label="Outlined" variant="outline" />
+ * ```
+ */
 @Component({
   selector: 'ui-chip',
   standalone: true,
@@ -69,21 +140,110 @@ import { ChipVariant, ChipSize } from '../../../types';
   `
 })
 export class ChipComponent {
-  // Inputs
+  /**
+   * Text label displayed in the chip.
+   * @required
+   * @example "Active"
+   */
   label = input.required<string>();
+  
+  /**
+   * Visual style variant of the chip.
+   * - `default`: Gray chip (default)
+   * - `primary`: Primary color chip
+   * - `secondary`: Gray secondary chip
+   * - `success`: Green success chip
+   * - `warning`: Yellow warning chip
+   * - `danger`: Red danger/error chip
+   * - `info`: Blue informational chip
+   * - `outline`: Bordered chip with transparent background
+   * @default "default"
+   */
   variant = input<ChipVariant>('default');
+  
+  /**
+   * Size of the chip.
+   * - `xs`: Extra small (minimal padding)
+   * - `sm`: Small (compact padding)
+   * - `md`: Medium (standard padding) - default
+   * - `lg`: Large (generous padding)
+   * @default "md"
+   */
   size = input<ChipSize>('md');
+  
+  /**
+   * Disables the chip and prevents interaction.
+   * Applies disabled styling.
+   * @default false
+   */
   disabled = input<boolean>(false);
+  
+  /**
+   * Makes the chip clickable and interactive.
+   * Adds hover effects and cursor pointer.
+   * @default false
+   */
   clickable = input<boolean>(false);
+  
+  /**
+   * Makes the chip dismissible with a close button.
+   * When clicked, emits the `dismissed` event.
+   * @default false
+   */
   dismissible = input<boolean>(false);
+  
+  /**
+   * Icon or emoji displayed before the label.
+   * Accepts HTML string or emoji character.
+   * @default ""
+   * @example "📧" or "<svg>...</svg>"
+   */
   leadingIcon = input<string>('');
+  
+  /**
+   * Icon or emoji displayed after the label.
+   * Accepts HTML string or emoji character.
+   * @default ""
+   * @example "➡️"
+   */
   trailingIcon = input<string>('');
+  
+  /**
+   * URL of avatar image to display before the label.
+   * Alternative to leadingIcon.
+   * @default ""
+   * @example "/avatars/user.jpg"
+   */
   avatar = input<string>('');
+  
+  /**
+   * Alt text for avatar image.
+   * Required for accessibility when avatar is used.
+   * @default ""
+   * @example "User profile picture"
+   */
   avatarAlt = input<string>('');
+  
+  /**
+   * Badge or count to display on the chip.
+   * Can be a number or string.
+   * @default null
+   * @example 5 or "NEW"
+   */
   badge = input<number | string | null>(null);
 
-  // Outputs
+  /**
+   * Emitted when the chip is clicked.
+   * Only emitted when `clickable` is true.
+   * @event click
+   */
   click = output<Event>();
+  
+  /**
+   * Emitted when the dismiss button is clicked.
+   * Only emitted when `dismissible` is true.
+   * @event dismiss
+   */
   dismiss = output<Event>();
 
   // Computed properties
