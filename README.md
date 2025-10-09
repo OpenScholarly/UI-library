@@ -1,32 +1,20 @@
 # UI-library
-
-A comprehensive Angular component library with **19 pre-built color themes** and role-based color classification.
-
 ## Requirements
 - Angular 20+
 - TailwindCSS 3.4+
 
-## 🎨 Color Theme System
-
+## Color Theme System
 This library includes a complete color theme system with:
 - **19 Themed Palettes**: Ocean Blue, Forest Green, Purple, Orange, and more
 - **Role-Based Colors**: Primary, secondary, accent, surface assignments
-- **Interactive Visualization**: See all colors before choosing
-- **Type-Safe**: Full TypeScript support
+- **Interactive Visualization**: See all colors before choosing. Open `color-palette-visualization.html` in your browser to explore all themes.
 
 **Quick Start**: See [QUICK-START-THEMES.md](QUICK-START-THEMES.md) for a 5-minute guide.
-
 **Full Documentation**: See [COLOR-SYSTEM.md](COLOR-SYSTEM.md) for complete details.
-
-**Visualization**: Open `color-palette-visualization.html` in your browser to explore all themes.
 
 ```typescript
 import { getColorByRole, getThemeColorsByRole } from '@ui-components/lib/theme-colors';
-
-// Get specific color
 const primary = getColorByRole('ocean-blue', 'primary'); // #1851A3
-
-// Get all theme colors
 const colors = getThemeColorsByRole('sunset-orange');
 ```
 
