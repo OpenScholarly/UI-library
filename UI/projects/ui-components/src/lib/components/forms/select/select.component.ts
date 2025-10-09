@@ -4,6 +4,73 @@ import { CommonModule } from '@angular/common';
 import { DismissService } from '../../../utilities/dismiss.service';
 import { SelectOption, SelectVariant, SelectSize } from '../../../types';
 
+/**
+ * A versatile and accessible select dropdown component for single selections.
+ *
+ * ## Features
+ * - Multiple visual variants (default, filled, outlined)
+ * - Comprehensive size options (sm, md, lg)
+ * - Search/filter functionality
+ * - Option groups support
+ * - Disabled options
+ * - Loading state
+ * - Full keyboard navigation (Arrow keys, Enter, Escape, Home, End)
+ * - Full screen reader support with ARIA attributes
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Disabled and error state handling
+ * - Dark mode support
+ * - Seamless integration with Angular Reactive Forms
+ *
+ * @example
+ * ```html
+ * <!-- Basic select -->
+ * <ui-select
+ *   label="Country"
+ *   [options]="countries"
+ *   placeholder="Select a country">
+ * </ui-select>
+ *
+ * <!-- Select with search -->
+ * <ui-select
+ *   label="Search City"
+ *   [options]="cities"
+ *   [searchable]="true"
+ *   placeholder="Type to search...">
+ * </ui-select>
+ *
+ * <!-- Select with validation -->
+ * <ui-select
+ *   label="Category"
+ *   [options]="categories"
+ *   [required]="true"
+ *   [hasError]="form.invalid && form.touched"
+ *   errorMessage="Category is required">
+ * </ui-select>
+ *
+ * <!-- Disabled select -->
+ * <ui-select
+ *   label="Status"
+ *   [options]="statusOptions"
+ *   [disabled]="true">
+ * </ui-select>
+ *
+ * <!-- Reactive forms integration -->
+ * <ui-select
+ *   formControlName="department"
+ *   label="Department"
+ *   [options]="departments"
+ *   variant="filled"
+ *   size="lg">
+ * </ui-select>
+ *
+ * <!-- With option groups -->
+ * <ui-select
+ *   label="Region"
+ *   [options]="groupedRegions"
+ *   placeholder="Choose region">
+ * </ui-select>
+ * ```
+ */
 @Component({
   selector: 'ui-select',
   standalone: true,
@@ -174,25 +241,119 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
   private dismissService = inject(DismissService);
   private dismissId = `select-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Inputs
+  /**
+   * Array of options to display in the dropdown.
+   * @default []
+   * @example [{ value: '1', label: 'Option 1' }, { value: '2', label: 'Option 2' }]
+   */
   options = input<SelectOption[]>([]);
+  
+  /**
+   * Label text displayed above the select.
+   * @default ""
+   * @example "Country"
+   */
   label = input<string>('');
+  
+  /**
+   * Placeholder text when no option is selected.
+   * @default "Select an option"
+   */
   placeholder = input<string>('Select an option');
+  
+  /**
+   * Visual style variant of the select.
+   * - `default`: Standard select with border
+   * - `filled`: Filled background select
+   * - `outlined`: Prominent bordered select
+   * @default "default"
+   */
   variant = input<SelectVariant>('default');
+  
+  /**
+   * Size of the select.
+   * - `sm`: Small
+   * - `md`: Medium (default)
+   * - `lg`: Large
+   * @default "md"
+   */
   size = input<SelectSize>('md');
+  
+  /**
+   * Disables the select and prevents interaction.
+   * @default false
+   */
   disabled = input<boolean>(false);
+  
+  /**
+   * Marks the select as required.
+   * Displays asterisk (*) next to label.
+   * @default false
+   */
   required = input<boolean>(false);
+  
+  /**
+   * Enables multi-select mode with checkboxes.
+   * @default false
+   */
   multiple = input<boolean>(false);
+  
+  /**
+   * Enables search/filter functionality.
+   * @default false
+   */
   searchable = input<boolean>(false);
+  
+  /**
+   * Placeholder text for the search input.
+   * @default "Search options..."
+   */
   searchPlaceholder = input<string>('Search options...');
+  
+  /**
+   * Text displayed when no options match the search.
+   * @default "No options available"
+   */
   noOptionsText = input<string>('No options available');
+  
+  /**
+   * Helper text displayed below the select.
+   * @default ""
+   * @example "Choose your preferred option"
+   */
   helperText = input<string>('');
+  
+  /**
+   * Error message displayed when select is invalid.
+   * @default ""
+   * @example "This field is required"
+   */
   errorMessage = input<string>('');
 
-  // Outputs
+  /**
+   * Emitted when the selection changes.
+   * Provides the selected value(s).
+   * @event change
+   */
   change = output<any>();
+  
+  /**
+   * Emitted when the search query changes.
+   * Provides the search string.
+   * @event search
+   */
   search = output<string>();
+  
+  /**
+   * Emitted when the dropdown is opened.
+   * @event open
+   */
   open = output<void>();
+  
+  /**
+   * Emitted when the dropdown is closed.
+   * @event close
+   */
   close = output<void>();
 
   // State
