@@ -1,0 +1,192 @@
+<!-- New Components Section -->
+<ui-card class="mb-8">
+  <div class="p-6">
+    <ui-heading level="h3" size="lg" color="primary" class="mb-4"
+      >New Components Showcase</ui-heading
+    >
+    <div class="space-y-8">
+      <!-- Table / Data Grid -->
+      <div>
+        <ui-text weight="semibold" class="mb-3">Table / Data Grid</ui-text>
+        <ui-table
+          [columns]="tableColumns()"
+          [data]="tableData()"
+          variant="striped"
+          size="md"
+          [hover]="true"
+          [selectable]="true"
+          (rowClicked)="onTableRowClicked($event)"
+          (sortChanged)="onTableSortChanged($event)"
+        >
+        </ui-table>
+      </div>
+
+
+    </div>
+  </div>
+</ui-card>
+
+<!-- ADVANCED COMPONENTS SHOWCASE -->
+<div class="mb-12">
+  <ui-heading level="h2" size="2xl" color="primary" class="mb-8">🔥 Advanced Components</ui-heading>
+
+  <!-- Navigation & Interface -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6"
+        >Navigation & Interface</ui-heading
+      >
+
+      <!-- Navbar Demo -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Navbar</ui-text>
+        <ui-navbar
+          brandText="Demo App"
+          brandIcon="🚀"
+          [items]="navbarItems()"
+          variant="default"
+          (itemClick)="onNavbarItemClick($event)"
+        >
+          <div slot="actions" class="flex items-center gap-2">
+            <ui-button variant="outline" size="sm">Login</ui-button>
+            <ui-button variant="primary" size="sm">Sign Up</ui-button>
+          </div>
+        </ui-navbar>
+      </div>
+
+      
+    </div>
+  </ui-card>
+
+  <!-- Content & Data Display -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6"
+        >Content & Data Display</ui-heading
+      >
+
+      <!-- Feed Component -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Social Feed</ui-text>
+        <ui-feed
+          [items]="feedItems()"
+          variant="default"
+          (like)="onFeedLike($event)"
+          (comment)="onFeedComment($event)"
+          (share)="onFeedShare($event)"
+          (bookmark)="onFeedBookmark($event)"
+        >
+        </ui-feed>
+      </div>
+
+      <!-- Stats Component -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Statistics Dashboard</ui-text>
+        <ui-stats [stats]="statsItems()" variant="card" [columns]="4"> </ui-stats>
+      </div>
+
+      <!-- Timeline Component -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Timeline</ui-text>
+        <ui-timeline
+          [items]="timelineItems()"
+          [clickable]="true"
+          (itemClick)="onTimelineItemClick($event)"
+        >
+        </ui-timeline>
+      </div>
+
+      <!-- Banner Component -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Banners</ui-text>
+        <div class="space-y-4">
+          <ui-banner
+            title="Welcome to the Component Library!"
+            message="Discover 50+ production-ready components for your next project."
+            icon="🎉"
+            variant="info"
+            [actions]="bannerActions()"
+            [dismissible]="true"
+            (action)="onBannerAction($event)"
+            (dismiss)="onBannerDismiss()"
+          >
+          </ui-banner>
+
+          <ui-banner
+            message="This is a success banner with automatic dismiss."
+            icon="✅"
+            variant="success"
+            size="sm"
+          >
+          </ui-banner>
+
+          <ui-banner
+            title="Important Update"
+            message="Please update to the latest version for security improvements."
+            icon="⚠️"
+            variant="warning"
+            [dismissible]="true"
+          >
+          </ui-banner>
+        </div>
+      </div>
+
+      <!-- Carousel Component -->
+      <div>
+        <ui-text weight="semibold" class="mb-3">Image Carousel</ui-text>
+        <ui-carousel
+          [items]="carouselItems()"
+          [autoplay]="true"
+          [autoplayInterval]="4000"
+          aspectRatio="16:9"
+          (slideChange)="onCarouselSlideChange($event)"
+        >
+        </ui-carousel>
+      </div>
+    </div>
+  </ui-card>
+</div>
+
+<!-- Footer -->
+<div class="mt-16">
+  <ui-footer
+    [sections]="footerSections()"
+    copyright="© 2024 UI Component Library. All rights reserved."
+  >
+  </ui-footer>
+</div>
+
+<!-- Modal -->
+<ui-modal [open]="isModalOpen()" title="Component Library" (close)="closeModal()">
+  <div class="space-y-4">
+    <p class="text-gray-600 dark:text-gray-400">
+      This comprehensive UI component library includes 22+ production-ready components.
+    </p>
+    <div class="flex justify-end space-x-3">
+      <ui-button variant="outline" (clicked)="closeModal()">Close</ui-button>
+      <ui-button variant="primary">Get Started</ui-button>
+    </div>
+  </div>
+</ui-modal>
+
+<!-- Toast -->
+@if (showToast()) {
+<div class="fixed top-4 right-4 z-50">
+  <ui-toast
+    title="Success!"
+    message="Component library demo is working perfectly!"
+    variant="success"
+    (dismiss)="onToastDismiss()"
+  >
+  </ui-toast>
+</div>
+}
+
+<!-- Command Menu Overlay -->
+<ui-command-menu
+  [items]="commandItems()"
+  [isOpen]="isCommandMenuOpen()"
+  (select)="onCommandSelect($event)"
+  (close)="closeCommandMenu()"
+>
+</ui-command-menu>

@@ -4,13 +4,16 @@ import { FooterLink, FooterSection } from '../../../types';
 @Component({
   selector: 'ui-footer',
   standalone: true,
+  host: {
+    'class': 'block w-full'
+  },
   template: `
     <footer [class]="footerClasses()" role="contentinfo">
       <div [class]="containerClasses()">
 
         <!-- Main content -->
         @if (sections().length > 0) {
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          <div class=" w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             @for (section of sections(); track section.title) {
               <div class="space-y-4">
                 <h3 class="font-semibold text-text-primary text-sm uppercase tracking-wide">
@@ -85,7 +88,7 @@ export class FooterComponent {
   fluid = input(false);
 
   protected footerClasses = computed(() => {
-    const baseClasses = 'ui-footer';
+    const baseClasses = 'ui-footer w-full';
 
     const variants = {
       default: 'bg-surface border-t border-gray-200',
@@ -97,7 +100,7 @@ export class FooterComponent {
   });
 
   protected containerClasses = computed(() => {
-    const baseClasses = 'py-12';
+    const baseClasses = 'pt-12 pb-3 w-full';
     const containerClasses = this.fluid() ? 'px-4' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
 
     return `${baseClasses} ${containerClasses}`;

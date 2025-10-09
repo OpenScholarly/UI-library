@@ -10,10 +10,8 @@ import {
   ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
   HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
   IconButtonComponent, ButtonGroupComponent, FabComponent,
-  SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, TopBarDrawerLayoutComponent,
-  TableComponent, MenuComponent, SkeletonComponent, ThemeSwitcherComponent,
-  FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent,
-  NavbarComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
+  SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent,
+  ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
@@ -34,10 +32,8 @@ import {
     ContainerComponent, GridComponent, RowComponent, ColumnComponent, DividerComponent,
     HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
     IconButtonComponent, ButtonGroupComponent, FabComponent,
-    SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, TopBarDrawerLayoutComponent,
-    TableComponent, MenuComponent, SkeletonComponent, ThemeSwitcherComponent,
-    FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent,
-    NavbarComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent
+    SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent, 
+    ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -292,16 +288,19 @@ export class MainComponent {
 
   footerSections = signal<FooterSection[]>([
     {
-      title: 'Components',
+      title: 'Product',
       links: [
-        { label: 'Buttons', href: '#' },
-        { label: 'Forms', href: '#' },
-        { label: 'Navigation', href: '#' }
+        { label: 'Components', href: '#' },
+        { label: 'Pricing', href: '#' },
       ]
-    },
-    {
-      title: 'Resources',
-      links: [
+    }, {
+      title: 'Company', links: [
+        { label: 'About Us', href: '#' },
+        { label: 'Careers', href: '#' },
+        { label: 'Contact', href: '#' }
+      ]
+    }, {
+      title: 'Resources', links: [
         { label: 'Documentation', href: '#' },
         { label: 'Examples', href: '#' },
         { label: 'GitHub', href: '#' }
