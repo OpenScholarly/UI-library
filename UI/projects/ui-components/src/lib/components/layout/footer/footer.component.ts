@@ -1,6 +1,52 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { FooterLink, FooterSection } from '../../../types';
 
+/**
+ * A versatile footer component for site-wide navigation and information.
+ *
+ * ## Features
+ * - Multiple column layout with link sections
+ * - Copyright and social media links support
+ * - Content projection for custom footer content
+ * - Multiple visual variants (default, dark, minimal)
+ * - Responsive grid layout (1-4 columns)
+ * - External link indicators with security defaults
+ * - Full-width or contained layouts
+ * - WCAG 2.1 Level AA accessibility
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Basic footer with sections -->
+ * <ui-footer
+ *   [sections]="footerSections"
+ *   copyright="© 2024 Company Name. All rights reserved."
+ *   [socialLinks]="socialLinks">
+ * </ui-footer>
+ *
+ * <!-- Dark variant footer -->
+ * <ui-footer
+ *   variant="dark"
+ *   [sections]="linkSections"
+ *   copyright="© 2024 Brand">
+ * </ui-footer>
+ *
+ * <!-- Minimal footer with custom content -->
+ * <ui-footer variant="minimal" copyright="© 2024 Company">
+ *   <div class="flex justify-center gap-4">
+ *     <a href="/privacy">Privacy</a>
+ *     <a href="/terms">Terms</a>
+ *   </div>
+ * </ui-footer>
+ *
+ * <!-- Full-width fluid footer -->
+ * <ui-footer
+ *   [fluid]="true"
+ *   [sections]="sections"
+ *   [socialLinks]="socials">
+ * </ui-footer>
+ * ```
+ */
 @Component({
   selector: 'ui-footer',
   standalone: true,
@@ -81,10 +127,42 @@ import { FooterLink, FooterSection } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent {
+  /**
+   * Array of footer sections with links organized by category.
+   * Each section has a title and array of links.
+   * @default []
+   * @example [{ title: 'Product', links: [{ label: 'Features', href: '/features' }] }]
+   */
   sections = input<FooterSection[]>([]);
+  
+  /**
+   * Copyright text displayed in the footer bottom bar.
+   * @default ""
+   * @example "© 2024 Company Name. All rights reserved."
+   */
   copyright = input<string>('');
+  
+  /**
+   * Social media links displayed in the footer bottom bar.
+   * Each link should have a label for accessibility.
+   * @default []
+   * @example [{ label: 'Twitter', href: 'https://twitter.com/company' }]
+   */
   socialLinks = input<FooterLink[]>([]);
+  
+  /**
+   * Visual style variant of the footer.
+   * - `default`: Light background with border
+   * - `dark`: Dark background with white text
+   * - `minimal`: Transparent background
+   * @default "default"
+   */
   variant = input<'default' | 'dark' | 'minimal'>('default');
+  
+  /**
+   * Whether the footer should span full width without max-width constraint.
+   * @default false
+   */
   fluid = input(false);
 
   protected footerClasses = computed(() => {

@@ -2,6 +2,47 @@ import { Component, input, output, computed, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { TreeNode } from '../../../types';
 
+/**
+ * A versatile tree view component for displaying hierarchical data.
+ *
+ * ## Features
+ * - Hierarchical tree structure with unlimited nesting
+ * - Expand/collapse functionality with keyboard support
+ * - Single or multi-select modes
+ * - Custom icons for nodes
+ * - Keyboard navigation (Arrow keys, Enter, Space)
+ * - Selection indicators and active states
+ * - Disabled node support
+ * - Empty state display
+ * - WCAG 2.1 Level AA accessibility with proper ARIA
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- File system tree -->
+ * <ui-tree-view
+ *   [nodes]="fileTree"
+ *   [selectable]="true"
+ *   (nodeClick)="openFile($event)"
+ *   (nodeSelect)="selectFile($event)">
+ * </ui-tree-view>
+ *
+ * <!-- Multi-select tree -->
+ * <ui-tree-view
+ *   [nodes]="categories"
+ *   [selectable]="true"
+ *   [multiSelect]="true"
+ *   (nodeSelect)="onCategorySelect($event)">
+ * </ui-tree-view>
+ *
+ * <!-- Organization hierarchy -->
+ * <ui-tree-view
+ *   [nodes]="orgStructure"
+ *   (nodeToggle)="onNodeToggle($event)"
+ *   (nodeClick)="viewDetails($event)">
+ * </ui-tree-view>
+ * ```
+ */
 @Component({
   selector: 'ui-tree-view',
   imports: [NgClass],
