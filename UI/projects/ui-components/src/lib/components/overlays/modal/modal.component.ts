@@ -71,7 +71,6 @@ import { ModalSize, ModalVariant } from '../../../types';
  */
 @Component({
   selector: 'ui-modal',
-  standalone: true,
   template: `
     @if (open()) {
       <div
@@ -228,6 +227,11 @@ export class ModalComponent {
   private ariaHelpers = inject(AriaHelpersService);
   private destroyRef = inject(DestroyRef);
 
+  // Track original body styles to avoid layout shifts when optionally locking scroll
+  private originalBodyOverflow: string | null = null;
+  private originalBodyPaddingRight: string | null = null;
+  private isScrollLocked = false;
+
   constructor() {
     this.titleId.set(this.ariaHelpers.generateId('modal-title'));
     this.descriptionId.set(this.ariaHelpers.generateId('modal-description'));
@@ -326,9 +330,9 @@ export class ModalComponent {
     // Initialize portal outlets if needed
     this.portalService.initializeDefaultOutlets();
 
-    // Prevent body scroll
+    // Optionally prevent body scroll (off by default) with scrollbar compensation
     if (this.preventBodyScroll()) {
-      document.body.style.overflow = 'hidden';
+      this.lockBodyScroll();
     }
 
     // Setup focus trap when modal element is available
@@ -362,12 +366,49 @@ export class ModalComponent {
 
     this.dismissService.unregister(this.dismissId());
 
-    // Restore body scroll
-    if (this.preventBodyScroll()) {
-      document.body.style.overflow = '';
+    // Restore body scroll only if we previously locked it
+    if (this.isScrollLocked) {
+      this.unlockBodyScroll();
     }
 
     this.ariaHelpers.announce('Modal closed', 'polite');
+  }
+
+  // Scroll locking helpers with layout shift prevention
+  private lockBodyScroll(): void {
+    if (this.isScrollLocked) return;
+
+    const body = document.body;
+    const docEl = document.documentElement;
+
+    // Store original styles for restoration
+    this.originalBodyOverflow = body.style.overflow || '';
+    this.originalBodyPaddingRight = body.style.paddingRight || '';
+
+    // Compute scrollbar width to prevent content shift when hiding overflow
+    const scrollbarWidth = window.innerWidth - docEl.clientWidth;
+
+    // Apply overflow hidden and compensate with padding-right if a vertical scrollbar existed
+    if (scrollbarWidth > 0) {
+      // Respect existing inline padding-right if any
+      const currentPaddingRight = parseFloat(getComputedStyle(body).paddingRight || '0');
+      body.style.paddingRight = `${currentPaddingRight + scrollbarWidth}px`;
+    }
+    body.style.overflow = 'hidden';
+
+    this.isScrollLocked = true;
+  }
+
+  private unlockBodyScroll(): void {
+    const body = document.body;
+
+    // Restore original styles
+    body.style.overflow = this.originalBodyOverflow ?? '';
+    body.style.paddingRight = this.originalBodyPaddingRight ?? '';
+
+    this.isScrollLocked = false;
+    this.originalBodyOverflow = null;
+    this.originalBodyPaddingRight = null;
   }
 
   // Content projection helpers
