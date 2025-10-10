@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { NgStyle } from '@angular/common';
 import { ImageFit, ImageRounded } from '../../../types';
 
 /**
@@ -60,11 +61,12 @@ import { ImageFit, ImageRounded } from '../../../types';
 @Component({
   selector: 'ui-image',
   standalone: true,
+  imports: [NgStyle],
   template: `
-    <div [class]="containerClasses()">
-      @if (showImage()) {
+    <div [class]="containerClasses()" [ngStyle]="containerStyles()">
+      @if(!hasError()) {
         <img
-          [class]="imageClasses()"
+          [class]="imageClasses() + (isLoaded() ? ' opacity-100' : ' opacity-0')"
           [src]="src()"
           [alt]="alt()"
           [loading]="loading()"
@@ -73,21 +75,20 @@ import { ImageFit, ImageRounded } from '../../../types';
           (load)="onLoad()"
           (error)="onError()"
         />
+        @if(!isLoaded()) {
+          <div [class]="placeholderClasses()">
+            <ng-content select="[slot=placeholder]">
+              <div class="flex items-center justify-center">
+                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+            </ng-content>
+          </div>
+        }
       }
 
-      @if (showPlaceholder()) {
-        <div [class]="placeholderClasses()">
-          <ng-content select="[slot=placeholder]">
-            <div class="flex items-center justify-center">
-              <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-            </div>
-          </ng-content>
-        </div>
-      }
-
-      @if (showError()) {
+      @if(hasError()) {
         <div [class]="errorClasses()">
           <ng-content select="[slot=error]">
             <div class="flex items-center justify-center text-red-500">
@@ -100,6 +101,9 @@ import { ImageFit, ImageRounded } from '../../../types';
       }
     </div>
   `,
+  host: {
+    class: 'inline-block flex-shrink-0'
+  },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageComponent {
@@ -169,6 +173,12 @@ export class ImageComponent {
   placeholder = input<string>('');
 
   /**
+   * Aspect ratio for reserving space before image load (e.g., "16 / 9").
+   * height is set, the container will reserve space using CSS aspect-ratio.
+   */
+  aspectRatio = input<string | null>(null);
+
+  /**
    * Emitted when the image finishes loading.
    * @event loaded
    */
@@ -180,17 +190,22 @@ export class ImageComponent {
    */
   error = output<void>();
 
-  private isLoaded = signal(false);
-  private hasError = signal(false);
+  protected isLoaded = signal(false);
+  protected hasError = signal(false);
 
-  protected showImage = computed(() => this.isLoaded() && !this.hasError());
-  protected showPlaceholder = computed(() => !this.isLoaded() && !this.hasError());
-  protected showError = computed(() => this.hasError());
+  constructor() {
+    if(!this.src) {
+      this.hasError.set(true);
+      throw new Error('The "src" input is required for ImageComponent.');
+    }
+    this.hasError.set(false);
+
+  }
 
   protected containerClasses = computed(() => {
-    const baseClasses = 'relative overflow-hidden bg-gray-100 dark:bg-gray-800';
+    const baseClasses = 'relative overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0';
 
-    const roundedClasses = {
+    const roundedClasses: Record<ImageRounded, string> = {
       none: '',
       sm: 'rounded-sm',
       md: 'rounded-md',
@@ -201,11 +216,28 @@ export class ImageComponent {
 
     const roundedClass = roundedClasses[this.rounded()];
 
-    return `${baseClasses} ${roundedClass}`;
+    return `${baseClasses} ${roundedClass}`.trim();
+  });
+
+  protected containerStyles = computed(() => {
+    const styles: { [key: string]: string } = {};
+    
+    if (this.width()) {
+      styles['width'] = typeof this.width() === 'number' ? `${this.width()}px` : this.width().toString();
+      styles['min-width'] = styles['width'];
+    }
+    
+    if (this.height()) {
+      styles['height'] = typeof this.height() === 'number' ? `${this.height()}px` : this.height().toString();
+      styles['min-height'] = styles['height'];
+    }
+    
+    return styles;
   });
 
   protected imageClasses = computed(() => {
-    const baseClasses = 'w-full h-full';
+    // Use display:block to ensure aspect-ratio mapping works reliably with lazy loading.
+    const baseClasses = 'block size-full transition-opacity duration-300';
 
     const fitClasses = {
       contain: 'object-contain',

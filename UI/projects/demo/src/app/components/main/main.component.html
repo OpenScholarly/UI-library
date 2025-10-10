@@ -454,6 +454,45 @@
       </ui-card>
     </ui-grid>
 
+    <!-- ScrollArea, Image, Link, Icon, Accordion Demo Section -->
+    <ui-grid cols="2" gap="lg" [responsive]="true" class="mt-12">
+      <!-- ScrollArea Demo -->
+      <ui-card>
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">ScrollArea</ui-heading>
+          <ui-text class="mb-2">Scrollable content with custom scrollbars and keyboard support.</ui-text>
+          <ui-scroll-area style="height: 180px; max-width: 320px;">
+            <div style="height: 400px; width: 100%; padding: 1rem;">
+              @for (i of [1,2,3,4,5,6,7,8,9,10]; track i) {
+                <p>Scrollable line {{i}}</p>
+              }
+            </div>
+          </ui-scroll-area>
+        </div>
+      </ui-card>
+
+      <!-- Image, Link, Icon Demo -->
+      <ui-card>
+        <div class="p-6 flex flex-col gap-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Image, Link & Icon</ui-heading>
+          <div class="flex items-center gap-4">
+            <ui-image src="https://picsum.photos/80/80?grayscale" alt="Demo image" width="80" height="80" style="border-radius: 8px;" />
+            <ui-link href="https://angular.dev" target="_blank" color="primary">Visit Angular.dev</ui-link>
+            <ui-icon name="star" size="2xl" color="primary"></ui-icon>
+          </div>
+          <ui-text color="muted" size="sm">Image, link, and icon components with accessibility and theming support.</ui-text>
+        </div>
+      </ui-card>
+
+      <!-- Accordion Demo -->
+      <ui-card class="col-span-2">
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-4">Accordion</ui-heading>
+          <ui-accordion [items]="accordionItems()" variant="default" size="md"></ui-accordion>
+        </div>
+      </ui-card>
+    </ui-grid>
+
     <ui-divider />
 
     <ui-card class="w-full mb-8">
