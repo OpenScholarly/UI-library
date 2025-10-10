@@ -297,11 +297,13 @@ export class ToggleComponent implements ControlValueAccessor {
   protected toggleThumbClasses = computed(() => {
     // iOS 26 style: Enhanced shadow with proper iOS appearance
     // Thumb is ~29px in a 32px track (28px visible + 2px padding each side)
-    const ios26BaseClasses = 'absolute flex items-center justify-center bg-white rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.15),0_1px_1px_rgba(0,0,0,0.16)] ui-transition-transform duration-200';
+    // Dark mode support: bg-white in light, bg-gray-200 in dark
+    const ios26BaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.15),0_1px_1px_rgba(0,0,0,0.16)] ui-transition-transform duration-200';
     
     // iOS 18 style: Classic iOS shadow
     // Thumb is ~27px in a 31px track (27px visible + 2px padding each side)
-    const ios18BaseClasses = 'absolute flex items-center justify-center bg-white rounded-full shadow-[0_3px_1px_rgba(0,0,0,0.04),0_3px_8px_rgba(0,0,0,0.12)] ui-transition-transform duration-200';
+    // Dark mode support: bg-white in light, bg-gray-200 in dark
+    const ios18BaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-[0_3px_1px_rgba(0,0,0,0.04),0_3px_8px_rgba(0,0,0,0.12)] ui-transition-transform duration-200';
 
     const baseClasses = this.iosStyle() === 'ios26' ? ios26BaseClasses : ios18BaseClasses;
 
@@ -363,21 +365,21 @@ export class ToggleComponent implements ControlValueAccessor {
   });
 
   private getCheckedTrackClasses(): string {
-    // Use authentic iOS green (#34C759) for success/default ON state
-    // Allow other variants for flexibility
+    // Maintain theme integration while supporting iOS-style appearance
     const variantClasses = {
-      default: 'bg-[#34C759]',     // iOS system green
-      primary: 'bg-primary-600',
-      success: 'bg-[#34C759]',     // iOS system green
-      warning: 'bg-yellow-500',
-      danger: 'bg-red-600'
+      default: 'bg-[#34C759] dark:bg-[#32D74B]',     // iOS system green (light/dark)
+      primary: 'bg-primary-600 dark:bg-primary-500', // Theme-aware primary color
+      success: 'bg-green-600 dark:bg-green-500',     // Theme-aware green
+      warning: 'bg-yellow-500 dark:bg-yellow-400',
+      danger: 'bg-red-600 dark:bg-red-500'
     };
 
     return variantClasses[this.variant()];
   }
 
   private getUncheckedTrackClasses(): string {
-    // iOS uses a light gray (#E5E5EA in light mode, darker in dark mode)
+    // iOS uses light gray in light mode, darker in dark mode
+    // Maintain theme integration with dark mode support
     const baseClasses = 'bg-[#E5E5EA] dark:bg-gray-700';
     const invalidClasses = this.invalid() ? 'ring-2 ring-red-500 dark:ring-red-400' : '';
     return `${baseClasses} ${invalidClasses}`.trim();
