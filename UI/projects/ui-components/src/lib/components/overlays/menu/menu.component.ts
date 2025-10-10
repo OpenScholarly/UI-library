@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { MenuItem, MenuTrigger, MenuPlacement } from '../../../types';
-import { ButtonComponent } from '../../forms/buttons/button/button.component';
 
 /**
  * A versatile and accessible menu component for dropdown menus and context menus.
@@ -20,22 +19,15 @@ import { ButtonComponent } from '../../forms/buttons/button/button.component';
  *
  * @example
  * ```html
- * <!-- Basic menu with click trigger (uses ui-button by default) -->
- * <ui-menu [items]="menuItems" trigger="click" />
- *
- * <!-- Menu with custom button text -->
- * <ui-menu [items]="menuItems" buttonText="Options" />
- *
- * <!-- Menu with custom trigger -->
+ * <!-- Basic menu with click trigger -->
  * <ui-menu [items]="menuItems" trigger="click">
- *   <button slot="trigger">Custom Trigger</button>
+ *   <button slot="trigger">Menu</button>
  * </ui-menu>
  *
  * <!-- Menu with hover trigger -->
  * <ui-menu
  *   [items]="items"
  *   trigger="hover"
- *   [useCustomTrigger]="true"
  *   placement="bottom-start">
  *   <span slot="trigger">Hover me</span>
  * </ui-menu>
@@ -43,8 +35,7 @@ import { ButtonComponent } from '../../forms/buttons/button/button.component';
  * <!-- Context menu -->
  * <ui-menu
  *   [items]="contextItems"
- *   trigger="context"
- *   [useCustomTrigger]="true">
+ *   trigger="context">
  *   <div slot="trigger">Right-click me</div>
  * </ui-menu>
  *
@@ -58,61 +49,37 @@ import { ButtonComponent } from '../../forms/buttons/button/button.component';
  *     { id: 'sep1', separator: true },
  *     { id: '2', label: 'Edit', icon: '✏️' }
  *   ]"
- *   buttonText="Actions"
- *   (itemSelected)="handleMenuClick($event)">
+ *   (itemClick)="handleMenuClick($event)">
+ *   <button slot="trigger">Actions</button>
  * </ui-menu>
  *
- * <!-- Menu with custom trigger -->
+ * <!-- Menu with disabled items -->
  * <ui-menu
  *   [items]="items"
- *   [useCustomTrigger]="true"
  *   [closeOnSelect]="true">
- *   <button slot="trigger">Custom Trigger</button>
+ *   <button slot="trigger">Options</button>
  * </ui-menu>
  * ```
  */
 @Component({
   selector: 'ui-menu',
-  imports: [ButtonComponent],
+  standalone: true,
   template: `
     <div class="relative inline-block" [class]="containerClasses()">
       <!-- Trigger -->
-      @if(hasCustomTrigger()) {
-        <div
-          [class]="triggerClasses()"
-          (click)="handleTriggerClick()"
-          (mouseenter)="handleTriggerMouseEnter()"
-          (mouseleave)="handleTriggerMouseLeave()"
-          [attr.aria-expanded]="isOpen()"
-          [attr.aria-haspopup]="true"
-          role="button">
-          <ng-content select="[slot=trigger]" />
-        </div>
-      } @else {
-        <!-- Default ui-button trigger -->
-        <ui-button
-          [variant]="buttonVariant()"
-          [size]="buttonSize()"
-          [disabled]="disabled()"
-          [attr.aria-expanded]="isOpen()"
-          [attr.aria-haspopup]="true"
-          (clicked)="handleTriggerClick()">
-          {{ buttonText() }}
-          @if(trigger() === 'click') {
-            <svg 
-              class="w-4 h-4 ml-2 transition-transform duration-200"
-              [class.rotate-180]="isOpen()"
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          }
-        </ui-button>
-      }
+      <div
+        [class]="triggerClasses()"
+        (click)="handleTriggerClick()"
+        (mouseenter)="handleTriggerMouseEnter()"
+        (mouseleave)="handleTriggerMouseLeave()"
+        [attr.aria-expanded]="isOpen()"
+        [attr.aria-haspopup]="true"
+        role="button">
+        <ng-content select="[slot=trigger]" />
+      </div>
 
       <!-- Menu Dropdown -->
-      @if(isOpen()) {
+      @if (isOpen()) {
         <div
           [class]="menuClasses()"
           role="menu"
@@ -121,7 +88,7 @@ import { ButtonComponent } from '../../forms/buttons/button/button.component';
           (mouseleave)="handleMenuMouseLeave()">
 
           @for (item of items(); track item.id) {
-            @if(item.separator) {
+            @if (item.separator) {
               <div class="my-1 border-t border-gray-200 dark:border-gray-700"></div>
             } @else {
               <div class="relative" [class]="hasSubmenu(item) ? 'group' : ''">
@@ -134,13 +101,13 @@ import { ButtonComponent } from '../../forms/buttons/button/button.component';
                   type="button">
 
                   <div class="flex items-center gap-3 flex-1">
-                    @if(item.icon) {
+                    @if (item.icon) {
                       <span class="text-lg flex-shrink-0">{{ item.icon }}</span>
                     }
                     <span class="flex-1 text-left">{{ item.label }}</span>
                   </div>
 
-                  @if(hasSubmenu(item)) {
+                  @if (hasSubmenu(item)) {
                     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
@@ -148,11 +115,11 @@ import { ButtonComponent } from '../../forms/buttons/button/button.component';
                 </button>
 
                 <!-- Submenu -->
-                @if(hasSubmenu(item)) {
+                @if (hasSubmenu(item)) {
                   <div class="absolute left-full top-0 ml-1 hidden group-hover:block z-50">
                     <div [class]="submenuClasses()">
                       @for (subItem of item.children!; track subItem.id) {
-                        @if(subItem.separator) {
+                        @if (subItem.separator) {
                           <div class="my-1 border-t border-gray-200 dark:border-gray-700"></div>
                         } @else {
                           <button
@@ -163,7 +130,7 @@ import { ButtonComponent } from '../../forms/buttons/button/button.component';
                             type="button">
 
                             <div class="flex items-center gap-3">
-                              @if(subItem.icon) {
+                              @if (subItem.icon) {
                                 <span class="text-lg">{{ subItem.icon }}</span>
                               }
                               <span>{{ subItem.label }}</span>
@@ -229,31 +196,6 @@ export class MenuComponent {
   closeOnSelect = input(true);
 
   /**
-   * Text for the default ui-button trigger.
-   * @default "Menu"
-   */
-  buttonText = input<string>('Menu');
-
-  /**
-   * Variant of the default ui-button trigger.
-   * @default "outline"
-   */
-  buttonVariant = input<'primary' | 'secondary' | 'outline' | 'ghost' | 'link'>('outline');
-
-  /**
-   * Size of the default ui-button trigger.
-   * @default "md"
-   */
-  buttonSize = input<'sm' | 'md' | 'lg'>('md');
-
-  /**
-   * Whether to use a custom trigger instead of the default button.
-   * Set to true when providing custom trigger content.
-   * @default false
-   */
-  useCustomTrigger = input<boolean>(false);
-
-  /**
    * Emitted when a menu item is clicked.
    * Provides the selected menu item.
    * @event itemSelected
@@ -269,11 +211,6 @@ export class MenuComponent {
 
   protected isOpen = signal(false);
   private hoverTimeout: any = null;
-
-  protected hasCustomTrigger = computed(() => {
-    // Check if custom trigger should be used
-    return this.useCustomTrigger();
-  });
 
   protected containerClasses = computed(() => {
     const disabledClasses = this.disabled() ? 'opacity-50 pointer-events-none' : '';
@@ -318,35 +255,34 @@ export class MenuComponent {
   };
 
   protected handleTriggerClick(): void {
-    if(this.disabled()) return;
-    
-    // Handle click trigger for both custom triggers and default button
-    if(this.trigger() === 'click') {
-      this.toggleMenu();
-    }
+    if (this.disabled() || this.trigger() !== 'click') return;
+
+    this.toggleMenu();
   }
 
   protected handleTriggerMouseEnter(): void {
-    if(this.disabled() || this.trigger() !== 'hover') return;
+    if (this.disabled() || this.trigger() !== 'hover') return;
+
     this.clearHoverTimeout();
     this.openMenu();
   }
 
   protected handleTriggerMouseLeave(): void {
-    if(this.disabled() || this.trigger() !== 'hover') return;
+    if (this.disabled() || this.trigger() !== 'hover') return;
+
     this.hoverTimeout = setTimeout(() => {
       this.closeMenu();
     }, 150);
   }
 
   protected handleMenuMouseEnter(): void {
-    if(this.trigger() === 'hover') {
+    if (this.trigger() === 'hover') {
       this.clearHoverTimeout();
     }
   }
 
   protected handleMenuMouseLeave(): void {
-    if(this.trigger() === 'hover') {
+    if (this.trigger() === 'hover') {
       this.hoverTimeout = setTimeout(() => {
         this.closeMenu();
       }, 150);
@@ -354,11 +290,11 @@ export class MenuComponent {
   }
 
   protected handleItemClick(item: MenuItem): void {
-    if(item.disabled) return;
+    if (item.disabled) return;
 
     this.itemSelected.emit(item);
 
-    if(this.closeOnSelect() && !this.hasSubmenu(item)) {
+    if (this.closeOnSelect() && !this.hasSubmenu(item)) {
       this.closeMenu();
     }
   }
@@ -367,7 +303,7 @@ export class MenuComponent {
     const target = event.target as HTMLElement;
     const component = event.currentTarget as HTMLElement;
 
-    if(!component.contains(target)) {
+    if (!component.contains(target)) {
       this.closeMenu();
     }
   }
@@ -377,7 +313,7 @@ export class MenuComponent {
   }
 
   private toggleMenu(): void {
-    if(this.isOpen()) {
+    if (this.isOpen()) {
       this.closeMenu();
     } else {
       this.openMenu();
@@ -395,7 +331,7 @@ export class MenuComponent {
   }
 
   private clearHoverTimeout(): void {
-    if(this.hoverTimeout) {
+    if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
       this.hoverTimeout = null;
     }
