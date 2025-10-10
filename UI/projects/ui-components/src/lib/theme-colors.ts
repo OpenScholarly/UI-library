@@ -86,6 +86,33 @@ export interface ThemeColorSystem {
  */
 export const ThemeColorSystem: ThemeColorSystem = {
   themes: {
+    "monochrome": {
+      "name": "Monochrome",
+      "description": "Classic grayscale palette for minimal, professional, or accessibility-focused designs.",
+      "mainColor": "#6b7280",
+      "palette": {
+        "primary": {
+          "50": "#f9fafb",
+          "100": "#f3f4f6",
+          "200": "#e5e7eb",
+          "300": "#d1d5db",
+          "400": "#9ca3af",
+          "500": "#6b7280",
+          "600": "#4b5563",
+          "700": "#374151",
+          "800": "#1f2937",
+          "900": "#111827"
+        }
+      },
+      "roles": {
+        "primary": "500",
+        "primaryLight": "200",
+        "primaryDark": "700",
+        "accent": "400",
+        "surface": "50",
+        "contrast": "900"
+      }
+    },
     'ocean-blue': {
       name: 'Tech Forward - Deep Ocean Blue',
       description: 'Projects trust, innovation, and professionalism. Perfect for tech, fintech, and SaaS applications.',
