@@ -159,7 +159,7 @@ import { SelectOption, SelectVariant, SelectSize } from '../../../types';
               }
             </span>
             <svg
-              class="ui-select__chevron w-5 h-5 text-gray-400 transition-transform duration-200"
+              class="ui-select__chevron w-5 h-5 ml-2 text-gray-400 transition-transform duration-200"
               [class.rotate-180]="isOpen()"
               fill="none"
               stroke="currentColor"
