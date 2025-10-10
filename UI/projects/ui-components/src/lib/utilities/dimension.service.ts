@@ -30,12 +30,21 @@ export class DimensionService {
    */
   toCssValue(dimension: string | number): string | null {
     if (typeof dimension === 'number') {
-      return `${dimension}px`;
+      if (isFinite(dimension) && dimension >= 0) {
+        return `${dimension}px`;
+      } else {
+        return null;
+      }
     }
     if (typeof dimension === 'string' && dimension.trim() !== '') {
       const trimmed = dimension.trim();
       if (/^[0-9]+(\.[0-9]+)?$/.test(trimmed)) {
-        return `${trimmed}px`;
+        const n = Number(trimmed);
+        if (isFinite(n) && n >= 0) {
+          return `${n}px`;
+        } else {
+          return null;
+        }
       } else {
         return trimmed;
       }
