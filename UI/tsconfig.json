@@ -11,7 +11,8 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve",
+    "module": "NodeNext",
+    "forceConsistentCasingInFileNames": true,
     "paths": {
       "ui-components": [
         "./projects/ui-components/src/public-api",
