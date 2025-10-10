@@ -1,9 +1,9 @@
 import { Component, signal, effect, ChangeDetectionStrategy, input, output, computed } from '@angular/core';
-import { ThemeService } from '../../services/theme.service';
-import { getThemeInfo } from '../../theme-colors';
+import { ThemeService } from '../../../services/theme.service';
+import { getThemeInfo } from '../../../theme-colors';
 import { CommonModule } from '@angular/common';
-import { SelectComponent } from '../forms/select/select.component';
-import type { SelectOption, SelectVariant, SelectSize } from '../../types';
+import { SelectComponent } from '../select/select.component';
+import type { SelectOption, SelectVariant, SelectSize } from '../../../types';
 
 /**
  * A theme selector dropdown component for choosing color themes.
@@ -21,10 +21,28 @@ import type { SelectOption, SelectVariant, SelectSize } from '../../types';
  * <!-- Basic theme selector -->
  * <ui-theme-selector></ui-theme-selector>
  *
- * <!-- In navbar or settings panel -->
- * <div class="flex items-center gap-4">
- *   <span>Choose theme:</span>
- *   <ui-theme-selector></ui-theme-selector>
+ * <!-- With inline label and different style -->
+ * <ui-theme-selector
+ *   label="Select Theme"
+ *   labelPlacement="inline"
+ *   variant="filled"
+ *   size="sm"
+ * ></ui-theme-selector>
+ *
+ * <!-- Disabled selector -->
+ * <ui-theme-selector [disabled]="true"></ui-theme-selector>
+ *
+ * <!-- Non-searchable selector -->
+ * <ui-theme-selector [searchable]="false"></ui-theme-selector>
+ *
+ * <!-- In a form or settings panel -->
+ * <div class="flex items-center gap-4 p-4 bg-gray-100 rounded-lg">
+ *   <span class="font-medium">Theme:</span>
+ *   <ui-theme-selector
+ *     label="Interface Theme"
+ *     labelPlacement="inline"
+ *     class="w-48"
+ *   ></ui-theme-selector>
  * </div>
  * ```
  */
@@ -35,6 +53,7 @@ import type { SelectOption, SelectVariant, SelectSize } from '../../types';
   template: `
     <ui-select
       [label]="label()"
+      [labelPlacement]="labelPlacement()"
       [options]="options()"
       [placeholder]="placeholder()"
       [variant]="variant()"
@@ -48,20 +67,55 @@ import type { SelectOption, SelectVariant, SelectSize } from '../../types';
   host: { class: 'inline-block' }
 })
 export class ThemeSelectorComponent {
-  /** Label for the selector */
-  label = input<string>('Theme');
-  /** Placeholder when no theme is selected */
+  /**
+   * The label text for the theme selector dropdown.
+   * @default "Theme"
+   */
+  label = input<string>('');
+
+  /**
+   * Placement of the label relative to the select input.
+   * - `block`: Label is rendered above the field.
+   * - `inline`: Label is rendered to the left of the field.
+   * @default "block"
+   */
+  labelPlacement = input<'block' | 'inline'>('block');
+
+  /**
+   * The placeholder text displayed when no theme is selected.
+   * @default "Select theme"
+   */
   placeholder = input<string>('Select theme');
-  /** Visual variant to pass to ui-select */
+
+  /**
+   * The visual style variant of the underlying `ui-select` component.
+   * @default "default"
+   */
   variant = input<SelectVariant>('default');
-  /** Size to pass to ui-select */
+
+  /**
+   * The size of the underlying `ui-select` component.
+   * @default "md"
+   */
   size = input<SelectSize>('md');
-  /** Disable the selector */
+
+  /**
+   * Disables the theme selector, preventing interaction.
+   * @default false
+   */
   disabled = input<boolean>(false);
-  /** Enable search in the selector */
+
+  /**
+   * Enables the search input within the theme selector dropdown.
+   * @default true
+   */
   searchable = input<boolean>(true);
 
-  /** Emit when theme changes */
+  /**
+   * Emitted when the selected theme changes.
+   * The payload is the string key of the newly selected theme.
+   * @event changed
+   */
   changed = output<string>();
 
   protected selected = signal('');
