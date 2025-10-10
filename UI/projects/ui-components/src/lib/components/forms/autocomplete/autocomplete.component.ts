@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AutocompleteOption, AutocompleteSize } from '../../../types';
+import { InputComponent } from '../input/input.component';
 
 /**
  * A versatile and accessible autocomplete component for text input with suggestions.
@@ -59,25 +60,23 @@ import { AutocompleteOption, AutocompleteSize } from '../../../types';
 @Component({
   selector: 'ui-autocomplete',
   standalone: true,
+  imports: [InputComponent],
   template: `
     <div [class]="containerClasses()">
       <!-- Input Field -->
       <div class="relative">
-        <input
-          [class]="inputClasses()"
-          [value]="displayValue()"
+        <ui-input
           [placeholder]="placeholder()"
+          [size]="size()"
           [disabled]="disabled()"
           [readonly]="readonly()"
-          [attr.aria-expanded]="isOpen()"
-          [attr.aria-haspopup]="'listbox'"
-          [attr.aria-autocomplete]="'list'"
-          (input)="handleInput($event)"
-          (focus)="handleFocus()"
-          (blur)="handleBlur()"
-          (keydown)="handleKeydown($event)"
-          type="text"
-        />
+          [variant]="'default'"
+          [value]="displayValue()"
+          (valueChange)="handleInput($event)"
+          (focused)="handleFocus()"
+          (blurred)="handleBlur()"
+          (keyPressed)="handleKeydown($event)"
+        ></ui-input>
 
         @if (loading()) {
           <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -284,10 +283,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
     return `${baseClasses} ${highlightedClasses} ${selectedClasses}`;
   };
 
-  protected handleInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const value = target.value;
-
+  protected handleInput(value: string): void {
     this.searchTerm.set(value);
 
     // Clear selection if input doesn't match any option

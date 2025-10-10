@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output, signal, viewChild, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, forwardRef, input, output, signal, viewChild, ElementRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
 import { InputType, InputSize, InputVariant } from '../../../types';
@@ -206,6 +206,13 @@ export class InputComponent implements ControlValueAccessor {
    * @example "Enter your email"
    */
   placeholder = input<string>('');
+
+  /**
+   * Programmatic value for the input. When set by the parent, the component will update
+   * its internal state and the native input element.
+   * @default undefined
+   */
+  value = input<string | undefined>(undefined);
   
   /**
    * Helper text displayed below the input.
@@ -364,6 +371,19 @@ export class InputComponent implements ControlValueAccessor {
     this.inputId.set(this.ariaHelpers.generateId('input'));
     this.helperId.set(this.ariaHelpers.generateId('input-helper'));
     this.errorId.set(this.ariaHelpers.generateId('input-error'));
+    // Keep programmatic `value` input in sync with internal signal and native element
+    // Use a stored computed so the reactive system tracks changes and runs the side-effect.
+    const _valueSync = computed(() => {
+      const v = this.value();
+      if (v !== undefined && v !== this.inputValue()) {
+        this.inputValue.set(v);
+        const el = this.inputElement()?.nativeElement;
+        if (el) el.value = v;
+      }
+      return v;
+    });
+    // reference it so it isn't tree-shaken
+    void _valueSync();
   }
 
   // Computed properties
