@@ -77,12 +77,12 @@ import { BreadcrumbItem, BreadcrumbVariant, BreadcrumbSize } from '../../../type
     '[attr.aria-label]': 'ariaLabel()'
   },
   template: `
-    <ol class="ui-breadcrumbs__list flex items-center space-x-1" [class]="getListClasses()">
+    <ol class="ui-breadcrumbs__list flex items-center" [class]="getListClasses()">
       @for (item of visibleItems(); track item.label; let i = $index, isLast = $last) {
         <li class="ui-breadcrumbs__item flex items-center" [class]="getItemClasses(item, isLast)">
-          @if (!isLast && separator() === 'slash' && i > 0) {
+          @if (separator() === 'slash' && i > 0) {
             <svg
-              class="ui-breadcrumbs__separator w-4 h-4 text-gray-400 dark:text-gray-500 mx-2"
+              class="ui-breadcrumbs__separator w-4 h-4 text-gray-400 dark:text-gray-500 mx-1"
               fill="currentColor"
               viewBox="0 0 20 20"
               aria-hidden="true">
@@ -90,9 +90,9 @@ import { BreadcrumbItem, BreadcrumbVariant, BreadcrumbSize } from '../../../type
             </svg>
           }
 
-          @if (!isLast && separator() === 'chevron' && i > 0) {
+          @if (separator() === 'chevron' && i > 0) {
             <svg
-              class="ui-breadcrumbs__separator w-3 h-3 text-gray-400 dark:text-gray-500 mx-2"
+              class="ui-breadcrumbs__separator w-3 h-3 text-gray-400 dark:text-gray-500 mx-1"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -101,8 +101,8 @@ import { BreadcrumbItem, BreadcrumbVariant, BreadcrumbSize } from '../../../type
             </svg>
           }
 
-          @if (!isLast && separator() === 'dot' && i > 0) {
-            <span class="ui-breadcrumbs__separator text-gray-400 dark:text-gray-500 mx-2" aria-hidden="true">•</span>
+          @if (separator() === 'dot' && i > 0) {
+            <span class="ui-breadcrumbs__separator text-gray-400 dark:text-gray-500 mx-1" aria-hidden="true">•</span>
           }
 
           @if (item.href && !item.disabled && !isLast) {

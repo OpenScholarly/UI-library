@@ -326,7 +326,11 @@
             >
             </ui-select>
 
-            <ui-checkbox variant="primary" label="Subscribe to updates" description="Get notified about new features">
+            <ui-checkbox
+              variant="primary"
+              label="Subscribe to updates"
+              description="Get notified about new features"
+            >
             </ui-checkbox>
 
             <ui-radio-group
@@ -389,49 +393,45 @@
 
       <!-- Navigation -->
       <ui-card>
-        <div class="p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Navigation</h3>
-          <div class="space-y-4">
-            <ui-breadcrumbs [items]="breadcrumbItems()" size="sm"> </ui-breadcrumbs>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Navigation</h3>
+        <div class="flex flex-col gap-3">
+          <ui-breadcrumbs [items]="breadcrumbItems()" size="sm"> </ui-breadcrumbs>
 
-            <ui-tabs
-              [tabs]="tabItems()"
-              variant="pills"
-              size="sm"
-              (tabChanged)="onTabChange($event)"
-            ></ui-tabs>
+          <ui-tabs
+            [tabs]="tabItems()"
+            variant="pills"
+            size="sm"
+            (tabChanged)="onTabChange($event)"
+          ></ui-tabs>
 
-            <ui-pagination
-              [currentPage]="currentPage()"
-              [totalItems]="100"
-              [pageSize]="10"
-              variant="simple"
-              size="sm"
-              (pageChange)="onPageChange($event)"
-            >
-            </ui-pagination>
-          </div>
+          <ui-pagination
+            [currentPage]="currentPage()"
+            [totalItems]="100"
+            [pageSize]="10"
+            variant="simple"
+            size="sm"
+            (pageChange)="onPageChange($event)"
+          >
+          </ui-pagination>
         </div>
       </ui-card>
 
       <!-- Interactive Components -->
       <ui-card>
-        <div class="p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Interactive</h3>
-          <div class="space-y-4">
-            <ui-button (clicked)="openModal()">Open Modal</ui-button>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Interactive</h3>
+        <div class="flex flex-col gap-3">
+          <ui-button (clicked)="openModal()">Open Modal</ui-button>
 
-            <ui-tooltip content="This is a helpful tooltip!">
-              <ui-button variant="outline">Hover for Tooltip</ui-button>
-            </ui-tooltip>
+          <ui-tooltip content="This is a helpful tooltip!">
+            <ui-button variant="outline">Hover for Tooltip</ui-button>
+          </ui-tooltip>
 
-            <ui-button (clicked)="showToastNotification()">Show Toast</ui-button>
+          <ui-button (clicked)="showToastNotification()">Show Toast</ui-button>
 
-            <div class="flex items-center space-x-4">
-              <ui-avatar name="John Doe" size="sm"></ui-avatar>
-              <ui-avatar name="Jane Smith" size="sm" status="online"></ui-avatar>
-              <ui-avatar name="Bob Wilson" size="sm" status="busy" badge="3"></ui-avatar>
-            </div>
+          <div class="flex items-center space-x-4">
+            <ui-avatar name="John Doe" size="sm"></ui-avatar>
+            <ui-avatar name="Jane Smith" size="sm" status="online"></ui-avatar>
+            <ui-avatar name="Bob Wilson" size="sm" status="busy" badge="3"></ui-avatar>
           </div>
         </div>
       </ui-card>
@@ -509,125 +509,103 @@
 
     <!-- Keyboard Navigation Guide -->
     <ui-card class="mb-8 w-full">
-      <div class="p-6">
-        <ui-heading level="h3" size="lg" color="primary" class="mb-4"
-          >⌨️ Keyboard Navigation Guide</ui-heading
-        >
-        <div class="space-y-4">
-          <div>
-            <ui-text weight="semibold">General Navigation</ui-text>
-            <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
-              <li>
-                <ui-text variant="kbd">Tab</ui-text> - Move forward
-                through interactive elements
-              </li>
-              <li>
-                <ui-text variant="kbd">Shift + Tab</ui-text> - Move
-                backward
-              </li>
-              <li>
-                <ui-text variant="kbd">Enter</ui-text> or
-                <ui-text variant="kbd">Space</ui-text> - Activate
-                buttons and links
-              </li>
-              <li>
-                <ui-text variant="kbd">Esc</ui-text> - Close modals
-                and dropdowns
-              </li>
-            </ul>
-          </div>
+      <ui-heading level="h3" size="lg" color="primary" class="mb-4"
+        >⌨️ Keyboard Navigation Guide</ui-heading
+      >
+      <div class="flex flex-col gap-4">
+        <div>
+          <ui-text weight="semibold">General Navigation</ui-text>
+          <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
+            <li>
+              <ui-text variant="kbd">Tab</ui-text> - Move forward through interactive elements
+            </li>
+            <li><ui-text variant="kbd">Shift + Tab</ui-text> - Move backward</li>
+            <li>
+              <ui-text variant="kbd">Enter</ui-text> or <ui-text variant="kbd">Space</ui-text> -
+              Activate buttons and links
+            </li>
+            <li><ui-text variant="kbd">Esc</ui-text> - Close modals and dropdowns</li>
+          </ul>
+        </div>
 
-          <ui-divider />
+        <ui-divider />
 
-          <div>
-            <ui-text weight="semibold">Theme Switcher</ui-text>
-            <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
-              <li>
-                <ui-text variant="kbd">←</ui-text>
-                <ui-text variant="kbd">→</ui-text> - Navigate
-                between theme options
-              </li>
-              <li>
-                <ui-text variant="kbd">Space</ui-text> - Select
-                theme
-              </li>
-            </ul>
-          </div>
+        <div>
+          <ui-text weight="semibold">Theme Switcher</ui-text>
+          <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
+            <li>
+              <ui-text variant="kbd">←</ui-text>
+              <ui-text variant="kbd">→</ui-text> - Navigate between theme options
+            </li>
+            <li><ui-text variant="kbd">Space</ui-text> - Select theme</li>
+          </ul>
+        </div>
 
-          <ui-divider />
+        <ui-divider />
 
-          <div>
-            <ui-text weight="semibold">Form Controls</ui-text>
-            <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
-              <li>
-                <ui-text variant="kbd">↑</ui-text>
-                <ui-text variant="kbd">↓</ui-text> - Navigate
-                dropdown/select options
-              </li>
-              <li>
-                <ui-text variant="kbd">Space</ui-text> - Toggle
-                checkbox/switch
-              </li>
-              <li>
-                <ui-text variant="kbd">Home</ui-text> /
-                <ui-text variant="kbd">End</ui-text> - First/last
-                option
-              </li>
-            </ul>
-          </div>
+        <div>
+          <ui-text weight="semibold">Form Controls</ui-text>
+          <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
+            <li>
+              <ui-text variant="kbd">↑</ui-text>
+              <ui-text variant="kbd">↓</ui-text> - Navigate dropdown/select options
+            </li>
+            <li><ui-text variant="kbd">Space</ui-text> - Toggle checkbox/switch</li>
+            <li>
+              <ui-text variant="kbd">Home</ui-text> / <ui-text variant="kbd">End</ui-text> -
+              First/last option
+            </li>
+          </ul>
         </div>
       </div>
     </ui-card>
 
     <!-- WCAG Compliance Badge -->
-    <ui-card class="mb-8 w-full">
-      <div class="p-6 text-center">
-        <div
-          class="inline-flex items-center gap-3 px-6 py-3 bg-green-50 dark:bg-green-900/20 rounded-lg border-2 border-green-200 dark:border-green-700"
-        >
-          <span class="text-3xl">✓</span>
-          <div class="text-left">
-            <ui-text weight="bold" class="text-green-800 dark:text-green-200"
-              >WCAG 2.1 Level AA Compliant</ui-text
-            >
-            <ui-text size="sm" class="text-green-700 dark:text-green-300">
-              All components tested for accessibility compliance
-            </ui-text>
-          </div>
+    <ui-card class="mb-8 w-full text-center">
+      <div
+        class="inline-flex items-center gap-3 px-6 py-3 bg-green-50 dark:bg-green-900/20 rounded-lg border-2 border-green-200 dark:border-green-700"
+      >
+        <span class="text-3xl">✓</span>
+        <div class="text-left">
+          <ui-text weight="bold" class="text-green-800 dark:text-green-200"
+            >WCAG 2.1 Level AA Compliant</ui-text
+          >
+          <ui-text size="sm" class="text-green-700 dark:text-green-300">
+            All components tested for accessibility compliance
+          </ui-text>
         </div>
-        <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <ui-text weight="semibold" class="block mb-1">Color Contrast</ui-text>
-            <ui-text size="sm" color="secondary">4.5:1 minimum</ui-text>
-          </div>
-          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <ui-text weight="semibold" class="block mb-1">Touch Targets</ui-text>
-            <ui-text size="sm" color="secondary">48×48px minimum</ui-text>
-          </div>
-          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <ui-text weight="semibold" class="block mb-1">Keyboard Nav</ui-text>
-            <ui-text size="sm" color="secondary">Full support</ui-text>
-          </div>
-          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <ui-text weight="semibold" class="block mb-1">Screen Readers</ui-text>
-            <ui-text size="sm" color="secondary">ARIA compliant</ui-text>
-          </div>
+      </div>
+      <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <ui-text weight="semibold" class="block mb-1">Color Contrast</ui-text>
+          <ui-text size="sm" color="secondary">4.5:1 minimum</ui-text>
+        </div>
+        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <ui-text weight="semibold" class="block mb-1">Touch Targets</ui-text>
+          <ui-text size="sm" color="secondary">48×48px minimum</ui-text>
+        </div>
+        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <ui-text weight="semibold" class="block mb-1">Keyboard Nav</ui-text>
+          <ui-text size="sm" color="secondary">Full support</ui-text>
+        </div>
+        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <ui-text weight="semibold" class="block mb-1">Screen Readers</ui-text>
+          <ui-text size="sm" color="secondary">ARIA compliant</ui-text>
         </div>
       </div>
     </ui-card>
 
     <!-- Footer -->
-      <ui-footer
-        [sections]="footerSections()"
-        copyright="© 2024 UI Component Library. All rights reserved."
-      >
-      </ui-footer>
-
+    <ui-footer
+      [sections]="footerSections()"
+      copyright="© 2024 UI Component Library. All rights reserved."
+    >
+    </ui-footer>
   </ui-container>
 
   <!-- Modal -->
   <ui-modal [open]="isModalOpen()" title="Component Library" (close)="closeModal()">
-    <div class="space-y-4">
+    <div class="flex flex-col gap-4">
       <p class="text-gray-600 dark:text-gray-400">
         This comprehensive UI component library includes 22+ production-ready components.
       </p>
