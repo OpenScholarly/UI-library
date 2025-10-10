@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { ImageFit, ImageRounded } from '../../../types';
-import { DimensionService } from '../../../utilities';
 
 /**
  * A versatile and accessible image component with loading and error states.
@@ -73,11 +72,20 @@ import { DimensionService } from '../../../utilities';
           [src]="src()"
           [alt]="alt()"
           [loading]="loading()"
+          [style.width]="containerWidth()"
+          [style.height]="containerHeight()"
+          [style.aspect-ratio]="containerAspectRatio()"
+          [width]="containerWidth()"
+          [height]="containerHeight()"
           (load)="onLoad()"
           (error)="onError()"
         />
         @if(!isLoaded()) {
-          <div [class]="placeholderClasses()">
+          <div [class]="placeholderClasses()"
+            [style.width]="containerWidth()"
+            [style.height]="containerHeight()"
+            [style.aspect-ratio]="containerAspectRatio()"
+          >
             <ng-content select="[slot=placeholder]">
               <div class="flex items-center justify-center">
                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +201,6 @@ export class ImageComponent {
 
   protected isLoaded = signal(false);
   protected hasError = signal(false);
-  private dimensionService = inject(DimensionService);
 
   constructor() {
     if(!this.src) {
@@ -206,10 +213,16 @@ export class ImageComponent {
 
   // Container styles: single bindings with normalized values
   protected containerWidth = computed(() => {
-    return this.dimensionService.toCssValue(this.width());
+    const w = this.width();
+    if (typeof w === 'number') return `${w}px`;
+    if (typeof w === 'string' && w.trim() !== '') return w;
+    return null;
   });
   protected containerHeight = computed(() => {
-    return this.dimensionService.toCssValue(this.height());
+    const h = this.height();
+    if (typeof h === 'number') return `${h}px`;
+    if (typeof h === 'string' && h.trim() !== '') return h;
+    return null;
   });
   protected containerAspectRatio = computed(() => {
     // If explicit height set, don't apply aspect-ratio
@@ -220,7 +233,21 @@ export class ImageComponent {
     if (ar && ar.trim() !== '') return ar;
 
     // Deduce from numeric width/height inputs if possible
-    return this.dimensionService.calculateAspectRatio(this.width(), this.height());
+    const toNum = (v: unknown): number | null => {
+      if (typeof v === 'number' && isFinite(v) && v > 0) return v;
+      if (typeof v === 'string') {
+        const trimmed = v.trim();
+        if (/^[0-9]+(\.[0-9]+)?$/.test(trimmed)) {
+          const n = Number(trimmed);
+          return isFinite(n) && n > 0 ? n : null;
+        }
+      }
+      return null;
+    };
+    const w = toNum(this.width());
+    const h = toNum(this.height());
+    if (w && h) return `${w} / ${h}`;
+    return null;
   });
 
     protected containerClasses = computed(() => {

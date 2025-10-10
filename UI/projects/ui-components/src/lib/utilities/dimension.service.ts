@@ -12,7 +12,8 @@ export class DimensionService {
   /**
    * Converts a dimension input (string | number) to a CSS value string.
    * - Numbers are converted to pixel values (e.g., 300 -> "300px")
-   * - Non-empty strings are returned as-is
+   * - Numeric strings are normalized to pixel values (e.g., "300" -> "300px")
+   * - Non-numeric strings with units are returned as-is (e.g., "100%", "20rem")
    * - Empty strings or invalid values return null
    * 
    * @param dimension - The dimension value to convert
@@ -20,16 +21,24 @@ export class DimensionService {
    * 
    * @example
    * toCssValue(300) // "300px"
+   * toCssValue("300") // "300px" (normalized for consistency)
+   * toCssValue("45.5") // "45.5px"
    * toCssValue("100%") // "100%"
-   * toCssValue("") // null
    * toCssValue("20rem") // "20rem"
+   * toCssValue("auto") // "auto"
+   * toCssValue("") // null
    */
   toCssValue(dimension: string | number): string | null {
     if (typeof dimension === 'number') {
       return `${dimension}px`;
     }
     if (typeof dimension === 'string' && dimension.trim() !== '') {
-      return dimension;
+      const trimmed = dimension.trim();
+      if (/^[0-9]+(\.[0-9]+)?$/.test(trimmed)) {
+        return `${trimmed}px`;
+      } else {
+        return trimmed;
+      }
     }
     return null;
   }

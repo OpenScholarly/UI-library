@@ -495,59 +495,29 @@
 
     <ui-divider />
 
-    <ui-card class="w-full mb-8 flex flex-col gap-6">
+    <ui-card class="w-full mb-8">
       <!-- Menu / Dropdown -->
       <div>
         <ui-text weight="semibold" class="mb-3">Menu / Dropdown</ui-text>
-        <div class="flex gap-4 flex-wrap">
-          <!-- Default menu with ui-button and chevron -->
+        <div class="flex gap-4">
           <ui-menu
             [items]="menuItems()"
             trigger="click"
-            buttonText="Menu with Chevron"
-            buttonVariant="outline"
             placement="bottom-start"
             (itemSelected)="onMenuItemSelected($event)"
           >
+            <ui-button slot="trigger" variant="outline"> Actions ⌄ </ui-button>
           </ui-menu>
 
-          <!-- Custom button styling -->
-          <ui-menu
-            [items]="menuItems()"
-            trigger="click"
-            buttonText="Custom Styled"
-            buttonVariant="primary"
-            buttonSize="md"
-            placement="bottom-start"
-            (itemSelected)="onMenuItemSelected($event)"
-          >
-          </ui-menu>
-
-          <!-- Custom trigger (legacy behavior) -->
-          <ui-menu
-            [items]="menuItems()"
-            trigger="click"
-            [useCustomTrigger]="true"
-            placement="bottom-start"
-            (itemSelected)="onMenuItemSelected($event)"
-          >
-            <ui-button slot="trigger" variant="secondary">Custom Trigger</ui-button>
-          </ui-menu>
-
-          <!-- Hover menu with custom trigger -->
           <ui-menu
             [items]="menuItems()"
             trigger="hover"
-            [useCustomTrigger]="true"
             placement="bottom-start"
             (itemSelected)="onMenuItemSelected($event)"
           >
-            <ui-button slot="trigger" variant="ghost">Hover Menu</ui-button>
+            <ui-button slot="trigger" variant="secondary"> Hover Menu </ui-button>
           </ui-menu>
         </div>
-        <ui-text color="muted" size="sm" class="mt-2">
-          Menus now use ui-button by default with chevron indicators for click triggers. Custom triggers still supported.
-        </ui-text>
       </div>
 
       <ui-divider />
