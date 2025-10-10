@@ -4,6 +4,7 @@ import { DismissService } from '../../../utilities/dismiss.service';
 import { PortalService } from '../../../utilities/portal.service';
 import { AriaHelpersService } from '../../../utilities/aria-helpers.service';
 import { ModalSize, ModalVariant } from '../../../types';
+import { DimensionService } from '../../../utilities/dimension.service';
 
 /**
  * A versatile and accessible modal dialog component for overlays and popups.
@@ -128,6 +129,8 @@ import { ModalSize, ModalVariant } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalComponent {
+  private readonly dim = inject(DimensionService);
+
   /**
    * Controls whether the modal is visible.
    * @default false
@@ -162,6 +165,8 @@ export class ModalComponent {
    * @example "Confirm Action"
    */
   title = input<string>('');
+
+  bodyPadding = input<number | string>('p-6');
   
   /**
    * Shows close button in header.
@@ -301,7 +306,7 @@ export class ModalComponent {
   });
 
   protected bodyClasses = computed(() => {
-    const baseClasses = 'p-6 text-gray-900 dark:text-gray-100';
+    const baseClasses = `p-${this.dim.toCssValue(this.bodyPadding())} text-gray-900 dark:text-gray-100`;
     const scrollClasses = this.size() === 'full' ? 'overflow-y-auto flex-1' : 'max-h-96 overflow-y-auto';
     return `${baseClasses} ${scrollClasses}`;
   });
