@@ -1,7 +1,7 @@
 import { Component, input, output, computed, signal, effect, ElementRef, inject } from '@angular/core';
 import { TextComponent } from '../../primitives/typography/text.component';
 import { CommandItem } from '../../../types';
-import { ModalComponent } from 'ui-components';
+import { ModalComponent } from '../modal/modal.component';
 
 /**
  * A versatile command menu component for keyboard-driven command selection.

@@ -206,37 +206,7 @@ export class TreeViewComponent {
     return `${baseClasses} font-medium text-gray-900 dark:text-white`;
   });
 
-  chevronClasses = computed(() => {
-    // Access the signal to make this reactive
-    const expanded = this.expandedNodes();
-    return (nodeId: string) => {
-      const baseClasses = 'text-sm transform transition-transform';
-      
-      if (expanded.has(nodeId)) {
-        return `${baseClasses} rotate-90`;
-      }
-      
-      return baseClasses;
-    };
-  });
-
-  folderIcon = computed(() => {
-    // Access the signal to make this reactive
-    const expanded = this.expandedNodes();
-    return (nodeId: string) => {
-      return expanded.has(nodeId) ? '📂' : '📁';
-    };
-  });
-
-  getChevronClasses(nodeId: string): string {
-    const baseClasses = 'text-sm transform transition-transform';
-    
-    if (this.isExpanded(nodeId)) {
-      return `${baseClasses} rotate-90`;
-    }
-    
-    return baseClasses;
-  }
+  // (removed unused chevron/folder computed helpers)
 
   getFolderIcon(nodeId: string): string {
     return this.isExpanded(nodeId) ? '📂' : '📁';
