@@ -30,7 +30,7 @@ export class DimensionService {
    */
   toCssValue(dimension: string | number): string | null {
     if (typeof dimension === 'number') {
-      if (isFinite(dimension) && dimension >= 0) {
+      if (isFinite(dimension) && dimension > 0) {
         return `${dimension}px`;
       } else {
         return null;
@@ -40,7 +40,7 @@ export class DimensionService {
       const trimmed = dimension.trim();
       if (/^[0-9]+(\.[0-9]+)?$/.test(trimmed)) {
         const n = Number(trimmed);
-        if (isFinite(n) && n >= 0) {
+        if (isFinite(n) && n > 0) {
           return `${n}px`;
         } else {
           return null;
@@ -99,7 +99,7 @@ export class DimensionService {
   calculateAspectRatio(width: unknown, height: unknown): string | null {
     const w = this.toNumericValue(width);
     const h = this.toNumericValue(height);
-    if (w && h) {
+    if (w !== null && h !== null) {
       return `${w} / ${h}`;
     }
     return null;
