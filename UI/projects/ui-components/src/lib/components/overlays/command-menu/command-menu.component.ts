@@ -1,4 +1,5 @@
 import { Component, input, output, computed, signal, effect, ElementRef, inject } from '@angular/core';
+import { TextComponent } from '../../primitives/typography/text.component';
 import { CommandItem } from '../../../types';
 
 /**
@@ -46,20 +47,16 @@ import { CommandItem } from '../../../types';
  */
 @Component({
   selector: 'ui-command-menu',
+  imports: [TextComponent],
   template: `
     @if (isOpen()) {
       <div class="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">
-        <!-- Backdrop -->
-        <div
-          class="fixed inset-0 bg-black/50 backdrop-blur-sm"
-          (click)="requestClose()"
-        ></div>
 
         <!-- Command menu -->
-        <div [class]="menuClasses()" role="dialog" [attr.aria-label]="'Command menu'">
+        <div [class]="menuClasses()" role="dialog" [attr.aria-label]="'Command menu'" aria-modal="true" class="relative z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-w-2xl w-full mx-auto">
           <!-- Search input -->
           <div class="border-b border-gray-200 dark:border-gray-700">
-            <div class="flex items-center px-4 py-3">
+            <div class="flex items-center p-3">
               <span class="text-gray-400 dark:text-gray-500 mr-3 text-lg">🔍</span>
               <input
                 #searchInput
@@ -83,7 +80,7 @@ import { CommandItem } from '../../../types';
           </div>
 
           <!-- Results -->
-          <div class="max-h-80 overflow-y-auto">
+          <div class="max-h-80 overflow-y-auto px-2">
             @if (groupedResults().length > 0) {
               @for (group of groupedResults(); track group.name) {
                 <div class="py-2">
@@ -95,7 +92,7 @@ import { CommandItem } from '../../../types';
                   @for (item of group.items; track item.id; let index = $index) {
                     <button
                       type="button"
-                      [class]="itemClasses(index === selectedIndex())"
+                      [class]="itemClasses(index === selectedIndex()) + ' flex items-center px-4 py-3 text-left transition-colors'"
                       [disabled]="item.disabled"
                       (click)="selectItem(item)"
                       (mouseenter)="setSelectedIndex(index)"
@@ -118,9 +115,7 @@ import { CommandItem } from '../../../types';
                       @if (item.shortcut) {
                         <div class="ml-3 flex items-center gap-1">
                           @for (key of parseShortcut(item.shortcut); track key) {
-                            <kbd class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded border">
-                              {{ key }}
-                            </kbd>
+                            <ui-text variant="kbd" display="inline">{{ key }}</ui-text>
                           }
                         </div>
                       }
@@ -146,25 +141,30 @@ import { CommandItem } from '../../../types';
           </div>
 
           <!-- Footer -->
-          <div class="border-t border-gray-200 dark:border-gray-700 px-4 py-3">
+          <div class="border-t border-gray-200 dark:border-gray-700 p-3">
             <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
               <div class="flex items-center gap-4">
                 <span class="flex items-center gap-1">
-                  <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">↑↓</kbd>
+                  <ui-text variant="kbd" display="inline">↑↓</ui-text>
                   Navigate
                 </span>
                 <span class="flex items-center gap-1">
-                  <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">↵</kbd>
+                  <ui-text variant="kbd" display="inline">↵</ui-text>
                   Select
                 </span>
               </div>
               <span class="flex items-center gap-1">
-                <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">Esc</kbd>
+                <ui-text variant="kbd" display="inline">Esc</ui-text>
                 Close
               </span>
             </div>
           </div>
         </div>
+        <!-- Backdrop -->
+        <div
+          class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+          (click)="requestClose()"
+        ></div>
       </div>
     }
   `,
@@ -206,7 +206,7 @@ export class CommandMenuComponent {
   }
 
   menuClasses = computed(() => [
-    'relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-w-2xl w-full mx-auto'
+    'relative z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-w-2xl w-full mx-auto'
   ]);
 
   itemClasses = (isSelected: boolean) => [
