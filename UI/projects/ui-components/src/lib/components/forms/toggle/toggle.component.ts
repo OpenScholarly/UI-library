@@ -7,6 +7,7 @@ import { ToggleSize, ToggleVariant } from '../../../types';
  *
  * ## Features
  * - Multiple visual variants (default, primary, success, warning, danger)
+ * - iOS-style options (pill, modern, classic compact)
  * - Comprehensive size options (small, medium, large)
  * - Optional icons in thumb to indicate state
  * - Full keyboard navigation and screen reader support
@@ -18,12 +19,13 @@ import { ToggleSize, ToggleVariant } from '../../../types';
  *
  * @example
  * ```html
- * <!-- Basic toggle -->
+ * <!-- Basic toggle with modern iOS 26 style -->
  * <ui-toggle label="Enable notifications" />
  *
- * <!-- Toggle with description -->
+ * <!-- Toggle with classic iOS 18 style -->
  * <ui-toggle
  *   label="Dark mode"
+ *   iosStyle="classic"
  *   description="Switch between light and dark themes">
  * </ui-toggle>
  *
@@ -31,7 +33,8 @@ import { ToggleSize, ToggleVariant } from '../../../types';
  * <ui-toggle
  *   label="Auto-save"
  *   [showIcons]="true"
- *   variant="primary">
+ *   variant="primary"
+ *   iosStyle="pill">
  * </ui-toggle>
  *
  * <!-- Required toggle with validation -->
@@ -80,9 +83,9 @@ import { ToggleSize, ToggleVariant } from '../../../types';
 
         <div [class]="toggleTrackClasses()">
           <div [class]="toggleThumbClasses()">
-            @if (showIcons()) {
+            @if(showIcons()) {
               <svg [class]="iconClasses()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                @if (checked()) {
+                @if(checked()) {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 } @else {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -92,23 +95,23 @@ import { ToggleSize, ToggleVariant } from '../../../types';
           </div>
         </div>
 
-        @if (label()) {
+        @if(label()) {
           <span [class]="labelClasses()">
             {{ label() }}
-            @if (required()) {
+            @if(required()) {
               <span class="text-red-500 ml-1" aria-label="required">*</span>
             }
           </span>
         }
       </label>
 
-      @if (description()) {
+      @if(description()) {
         <p [id]="descriptionId()" [class]="descriptionClasses()">
           {{ description() }}
         </p>
       }
 
-      @if (invalid() && errorMessage()) {
+      @if(invalid() && errorMessage()) {
         <p [id]="errorId()" [class]="errorClasses()" role="alert">
           {{ errorMessage() }}
         </p>
@@ -150,9 +153,15 @@ export class ToggleComponent implements ControlValueAccessor {
   
   /**
    * Size of the toggle switch.
-   * - `sm`: Small (20px height, 36px width)
-   * - `md`: Medium (24px height, 44px width) - default
-   * - `lg`: Large (28px height, 48px width)
+   * Pill design:
+   * - `sm`: Small (24px × 48px) - 2:1 ratio
+   * - `md`: Medium (32px × 64px) - default, elongated pill shape
+   * - `lg`: Large (40px × 80px) - 2:1 ratio
+   * 
+   * Classic design:
+   * - `sm`: Small (22px × 36px)
+   * - `md`: Medium (31px × 51px)
+   * - `lg`: Large (40px × 64px)
    * @default "md"
    */
   size = input<ToggleSize>('md');
@@ -198,6 +207,14 @@ export class ToggleComponent implements ControlValueAccessor {
   showIcons = input(false);
 
   /**
+   * Visual style of the toggle switch.
+   * - `pill`: Pill shape toggle (Modern iOS style with enhanced proportions and animations)
+   * - `classic`: Classic toggle design (iOS style with traditional compact design)
+   * @default "pill"
+   */
+  design = input<'pill' | 'classic'>('pill');
+
+  /**
    * Emitted when the toggle value changes.
    * Provides the new checked state.
    * @event toggled
@@ -232,13 +249,11 @@ export class ToggleComponent implements ControlValueAccessor {
     this.errorId.set(`toggle-error-${Math.random().toString(36).substr(2, 9)}`);
   }
 
-  // Computed properties
   checked = computed(() => this.checkedState());
 
   protected wrapperClasses = computed(() => {
     return 'flex flex-col gap-1';
   });
-
   protected labelWrapperClasses = computed(() => {
     const baseClasses = 'flex items-center gap-3 cursor-pointer';
     const disabledClasses = this.disabled() ? 'cursor-not-allowed opacity-50' : '';
@@ -251,32 +266,44 @@ export class ToggleComponent implements ControlValueAccessor {
 
   protected toggleTrackClasses = computed(() => {
     const baseClasses = 'relative inline-flex items-center rounded-full ui-transition-standard ui-focus-primary';
-
-    const sizeClasses = {
-      sm: 'h-5 w-9',
-      md: 'h-6 w-11',
-      lg: 'h-7 w-12'
+    // Approximate width/height ratio of 2.28:
+    //   sm: 55/24 ≈ 2.29, md: 68/30 ≈ 2.27, lg: 91/40 ≈ 2.28
+    const pillSizeClasses = {
+      sm: 'h-[24px] w-[55px]',
+      md: 'h-[30px] w-[68px]',
+      lg: 'h-[40px] w-[91px]'
     };
+    // 1.6 ratio
+    const classicSizeClasses = {
+      sm: 'h-[22px] w-9',      // 22px × 36px
+      md: 'h-[31px] w-[51px]', // 31px × 51px
+      lg: 'h-10 w-16'          // 40px × 64px
+    };
+    const sizeClasses = this.design() === 'pill' ? pillSizeClasses : classicSizeClasses;
 
-    const stateClasses = this.checked()
-      ? this.getCheckedTrackClasses()
-      : this.getUncheckedTrackClasses();
+    const stateClasses = this.checked() ? this.getCheckedTrackClasses() : this.getUncheckedTrackClasses();
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${stateClasses}`;
   });
 
   protected toggleThumbClasses = computed(() => {
-    const baseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-sm ui-transition-transform';
-
-    const sizeClasses = {
-      sm: 'h-4 w-4',
-      md: 'h-5 w-5',
-      lg: 'h-6 w-6'
+    const pillBaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.15),0_1px_1px_rgba(0,0,0,0.16)] ui-transition-transform duration-200';
+    const classicBaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-[0_3px_1px_rgba(0,0,0,0.04),0_3px_8px_rgba(0,0,0,0.12)] ui-transition-transform duration-200';
+    const baseClasses = this.design() === 'pill' ? pillBaseClasses : classicBaseClasses;
+    // * 0.843 from track size to thumb size in height and 0.566 from track size to thumb size in width
+    const pillSizeClasses = {
+      sm: 'h-5 w-8',      // 20px × 32px (rounded from 20.2px × 31px)
+      md: 'h-6 w-10',     // 24px × 40px (rounded from 25.3px × 38.5px)
+      lg: 'h-8 w-[52px]'  // 32px × 52px (rounded from 33.7px × 51.5px)
     };
+    const classicSizeClasses = {
+      sm: 'h-[18px] w-[18px]',
+      md: 'h-[27px] w-[27px]',
+      lg: 'h-9 w-9'
+    };
+    const sizeClasses = this.design() === 'pill' ? pillSizeClasses : classicSizeClasses;
 
-    const positionClasses = this.checked()
-      ? this.getCheckedThumbPosition()
-      : 'translate-x-0.5';
+    const positionClasses = this.checked() ? this.getCheckedThumbPosition() : 'translate-x-0.5';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${positionClasses}`;
   });
@@ -315,38 +342,44 @@ export class ToggleComponent implements ControlValueAccessor {
 
   private getCheckedTrackClasses(): string {
     const variantClasses = {
-      default: 'bg-gray-600',
-      primary: 'bg-primary-600',
-      success: 'bg-green-600',
-      warning: 'bg-yellow-500',
-      danger: 'bg-red-600'
+      default: 'bg-[#34C759] dark:bg-[#32D74B]',     // iOS system green (light/dark)
+      primary: 'bg-primary-600 dark:bg-primary-500', // Theme-aware primary color
+      success: 'bg-green-600 dark:bg-green-500',     // Theme-aware green
+      warning: 'bg-yellow-500 dark:bg-yellow-400',
+      danger: 'bg-red-600 dark:bg-red-500'
     };
 
     return variantClasses[this.variant()];
   }
 
   private getUncheckedTrackClasses(): string {
-    const baseClasses = 'bg-gray-200 dark:bg-gray-700';
+    const baseClasses = 'bg-[#E5E5EA] dark:bg-gray-700';
     const invalidClasses = this.invalid() ? 'ring-2 ring-red-500 dark:ring-red-400' : '';
     return `${baseClasses} ${invalidClasses}`.trim();
   }
 
   private getCheckedThumbPosition(): string {
-    const positionClasses = {
-      sm: 'translate-x-4',
-      md: 'translate-x-5',
-      lg: 'translate-x-5'
+    const pillPositionClasses = {
+      sm: 'translate-x-[23px]',   // 55 - 31 - 1 = 23px
+      md: 'translate-x-[28.5px]', // 68 - 38.5 - 1 = 28.5px
+      lg: 'translate-x-[38.5px]'  // 91 - 51.5 - 1 = 38.5px
     };
+    const classicPositionClasses = {
+      sm: 'translate-x-[16px]',   // 36 - 18 - 2 = 16px
+      md: 'translate-x-[22px]',   // 51 - 27 - 2 = 22px
+      lg: 'translate-x-[26px]'    // 64 - 36 - 2 = 26px
+    };
+    const positionClasses = this.design() === 'pill' ? pillPositionClasses : classicPositionClasses;
 
     return positionClasses[this.size()];
   }
 
   protected getAriaDescribedBy(): string {
     const ids: string[] = [];
-    if (this.description()) {
+    if(this.description()) {
       ids.push(this.descriptionId());
     }
-    if (this.invalid() && this.errorMessage()) {
+    if(this.invalid() && this.errorMessage()) {
       ids.push(this.errorId());
     }
     return ids.join(' ') || '';
@@ -389,7 +422,7 @@ export class ToggleComponent implements ControlValueAccessor {
 
   // Public methods
   toggle(): void {
-    if (!this.disabled()) {
+    if(!this.disabled()) {
       const newValue = !this.checked();
       this.checkedState.set(newValue);
       this.toggled.emit(newValue);
@@ -398,7 +431,7 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   turnOn(): void {
-    if (!this.disabled()) {
+    if(!this.disabled()) {
       this.checkedState.set(true);
       this.toggled.emit(true);
       this.onChange(true);
@@ -406,7 +439,7 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   turnOff(): void {
-    if (!this.disabled()) {
+    if(!this.disabled()) {
       this.checkedState.set(false);
       this.toggled.emit(false);
       this.onChange(false);
