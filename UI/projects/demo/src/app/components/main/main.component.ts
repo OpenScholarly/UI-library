@@ -39,7 +39,7 @@ import {
 })
 export class MainComponent {
   private themeService = inject(ThemeService);
-  protected title = signal('UI Component Library - 50+ Components Demo');
+  title = signal('UI Component Library - 50+ Components Demo');
 
   // Component states
   isModalOpen = signal(false);

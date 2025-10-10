@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { HeadingLevel, HeadingSize, HeadingWeight } from '../../../types';
+import { CommonModule } from '@angular/common';
 
 /**
  * A versatile and accessible heading component (H1-H6) with design system integration.
@@ -20,110 +21,71 @@ import { HeadingLevel, HeadingSize, HeadingWeight } from '../../../types';
  * <ui-heading level="h1" size="3xl" weight="extrabold">
  *   Welcome to Our Site
  * </ui-heading>
- *
- * <!-- Section title (semantic h2, large size) -->
- * <ui-heading level="h2" size="2xl" weight="bold">
- *   Features
- * </ui-heading>
- *
- * <!-- Subsection (semantic h3, normal size) -->
- * <ui-heading level="h3" size="lg">
- *   Getting Started
- * </ui-heading>
- *
- * <!-- Colored heading -->
- * <ui-heading level="h2" color="primary" size="xl">
- *   Important Section
- * </ui-heading>
- *
- * <!-- Muted heading -->
- * <ui-heading level="h4" color="muted" weight="medium">
- *   Subtitle
- * </ui-heading>
- *
- * <!-- Custom styled -->
- * <ui-heading
- *   level="h2"
- *   size="2xl"
- *   customClasses="text-center mb-8">
- *   Centered Title
- * </ui-heading>
  * ```
  */
 @Component({
   selector: 'ui-heading',
   standalone: true,
   template: `
+    <ng-template #projected><ng-content></ng-content></ng-template>
     @switch (level()) {
-      @case ('h1') { <h1 [class]="headingClasses()"><ng-content /></h1> }
-      @case ('h2') { <h2 [class]="headingClasses()"><ng-content /></h2> }
-      @case ('h3') { <h3 [class]="headingClasses()"><ng-content /></h3> }
-      @case ('h4') { <h4 [class]="headingClasses()"><ng-content /></h4> }
-      @case ('h5') { <h5 [class]="headingClasses()"><ng-content /></h5> }
-      @case ('h6') { <h6 [class]="headingClasses()"><ng-content /></h6> }
-      @default { <h1 [class]="headingClasses()"><ng-content /></h1> }
+      @case ('h1') { <h1 [class]="headingClasses()"><ng-container *ngTemplateOutlet="projected"></ng-container></h1> }
+      @case ('h2') { <h2 [class]="headingClasses()"><ng-container *ngTemplateOutlet="projected"></ng-container></h2> }
+      @case ('h3') { <h3 [class]="headingClasses()"><ng-container *ngTemplateOutlet="projected"></ng-container></h3> }
+      @case ('h4') { <h4 [class]="headingClasses()"><ng-container *ngTemplateOutlet="projected"></ng-container></h4> }
+      @case ('h5') { <h5 [class]="headingClasses()"><ng-container *ngTemplateOutlet="projected"></ng-container></h5> }
+      @case ('h6') { <h6 [class]="headingClasses()"><ng-container *ngTemplateOutlet="projected"></ng-container></h6> }
+      @default { <h1 [class]="headingClasses()"><ng-container *ngTemplateOutlet="projected"></ng-container></h1> }
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  host: {
+    class: 'ui-heading block'
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule]
 })
 export class HeadingComponent {
   /**
    * Semantic heading level (h1-h6).
-   * Determines the HTML tag used.
    * @default "h1"
-   * @example "h2"
    */
   level = input<HeadingLevel>('h1');
-  
+
   /**
    * Visual size of the heading.
-   * - `xs`: Extra small
-   * - `sm`: Small
-   * - `md`: Medium
-   * - `lg`: Large (default)
-   * - `xl`: Extra large
-   * - `2xl`: 2x extra large
-   * - `3xl`: 3x extra large
+   * - `xs` | `sm` | `md` | `lg` | `xl` | `2xl` | `3xl` | `4xl`
    * @default "lg"
    */
   size = input<HeadingSize>('lg');
-  
+
   /**
    * Font weight of the heading.
-   * - `thin`: 100
-   * - `light`: 300
-   * - `normal`: 400
-   * - `medium`: 500
-   * - `semibold`: 600
-   * - `bold`: 700 (default)
-   * - `extrabold`: 800
-   * - `black`: 900
+   * - `thin`(100) | `light`(300) | `normal`(400) | `medium`(500)
+   * - `semibold`(600) | `bold`(700) | `extrabold`(800) | `black`(900)
    * @default "bold"
    */
   weight = input<HeadingWeight>('bold');
-  
+
   /**
    * Color variant of the heading.
-   * - `default`: Standard text color
+   * - `default`: Neutral text (black/white)
    * - `inherit`: Inherits from parent
-   * - `primary`: Primary brand color
-   * - `secondary`: Secondary color
-   * - `muted`: Muted/dimmed text
+   * - `primary` | `secondary` | `muted`
    * @default "default"
    */
   color = input<'default' | 'inherit' | 'primary' | 'secondary' | 'muted'>('default');
-  
+
   /**
-   * Additional Tailwind CSS classes to apply.
+   * Additional Tailwind classes. Appended last (highest priority).
    * @default ""
-   * @example "text-center mb-4"
+   * @example "text-center mb-8"
    */
   customClasses = input<string>('');
 
   protected headingClasses = computed(() => {
     const baseClasses = 'tracking-tight font-sans';
 
-    const sizeClasses = {
+    const sizeClasses: Record<string, string> = {
       xs: 'text-xs',
       sm: 'text-sm',
       md: 'text-base',
@@ -134,15 +96,18 @@ export class HeadingComponent {
       '4xl': 'text-4xl'
     };
 
-    const weightClasses = {
+    const weightClasses: Record<string, string> = {
+      thin: 'font-thin',
+      light: 'font-light',
       normal: 'font-normal',
       medium: 'font-medium',
       semibold: 'font-semibold',
       bold: 'font-bold',
-      extrabold: 'font-extrabold'
+      extrabold: 'font-extrabold',
+      black: 'font-black'
     };
 
-    const colorClasses = {
+    const colorClasses: Record<string, string> = {
       default: 'text-gray-900 dark:text-white',
       inherit: 'text-inherit dark:text-inherit',
       primary: 'text-text-primary dark:text-text-primary',
@@ -150,10 +115,12 @@ export class HeadingComponent {
       muted: 'text-text-disabled dark:text-text-disabled'
     };
 
-    const sizeClass = sizeClasses[this.size()];
-    const weightClass = weightClasses[this.weight()];
-    const colorClass = colorClasses[this.color()];
+    const sizeClass = sizeClasses[this.size()] ?? sizeClasses["lg"];
+    const weightClass = weightClasses[this.weight()] ?? weightClasses["bold"];
+    const colorClass = colorClasses[this.color()] ?? colorClasses["default"];
 
-    return [baseClasses, sizeClass, weightClass, colorClass, this.customClasses()].filter(Boolean).join(' ');
+    return [baseClasses, sizeClass, weightClass, colorClass, this.customClasses()]
+      .filter(Boolean)
+      .join(' ');
   });
 }
