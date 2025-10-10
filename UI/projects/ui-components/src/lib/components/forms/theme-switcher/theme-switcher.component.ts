@@ -49,7 +49,7 @@ import { ThemeMode } from '../../../types';
       <legend class="sr-only">Select a display theme:</legend>
 
       <!-- System Theme Option -->
-      <span class="h-full">
+      <span class="h-full flex justify-center items-center">
         <input
           [id]="systemId"
           type="radio"
@@ -81,7 +81,7 @@ import { ThemeMode } from '../../../types';
       </span>
 
       <!-- Light Theme Option -->
-      <span class="h-full">
+      <span class="h-full flex justify-center items-center">
         <input
           [id]="lightId"
           type="radio"
@@ -113,7 +113,7 @@ import { ThemeMode } from '../../../types';
       </span>
 
       <!-- Dark Theme Option -->
-      <span class="h-full">
+      <span class="h-full flex justify-center items-center">
         <input
           [id]="darkId"
           type="radio"
@@ -172,7 +172,7 @@ export class ThemeSwitcherComponent {
   protected iconSize = computed(() => this.size() === 'sm' ? '14' : '16');
 
   protected containerClasses = computed(() => {
-    const baseClasses = 'border-0 rounded-full w-fit m-0 p-1 flex shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800';
+    const baseClasses = 'rounded-full w-fit m-0 p-0 flex shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800';
     const sizeClasses = this.size() === 'sm' ? 'h-9' : 'h-12';
 
     return `${baseClasses} ${sizeClasses}`;
@@ -181,7 +181,7 @@ export class ThemeSwitcherComponent {
   protected buttonClasses = computed(() => {
     const baseClasses = 'cursor-pointer text-gray-600 dark:text-gray-400 bg-transparent rounded-full justify-center items-center m-0 flex relative transition-all duration-200';
     // Ensure minimum 44×44px touch target (48px for WCAG AAA)
-    const sizeClasses = this.size() === 'sm' ? 'min-w-[44px] min-h-[44px] w-11 h-11' : 'min-w-[48px] min-h-[48px] w-12 h-12';
+    const sizeClasses = this.size() === 'sm' ? 'min-w-[44px] min-h-[44px] w-11 h-11' : 'min-w-[48px] min-h-[48px] w-[48px] h-[48px]';
     // Enhanced focus ring for WCAG compliance
     const focusClasses = 'focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2';
 
@@ -193,8 +193,7 @@ export class ThemeSwitcherComponent {
     const isActive = this.currentTheme() === theme;
     
     if (isActive) {
-      // Enhanced active state with better contrast
-      return `${baseClasses} text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-700 shadow-inner`;
+      return `${baseClasses} shadow-inner border`;
     }
     
     return baseClasses;
