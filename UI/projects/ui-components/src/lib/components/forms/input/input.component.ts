@@ -84,19 +84,19 @@ import { InputType, InputSize, InputVariant } from '../../../types';
   standalone: true,
   template: `
     <div [class]="wrapperClasses()">
-      @if (label()) {
+      @if(label()) {
         <label
           [for]="inputId()"
           [class]="labelClasses()">
           {{ label() }}
-          @if (required()) {
+          @if(required()) {
             <span class="text-red-500 ml-1" aria-label="required">*</span>
           }
         </label>
       }
 
       <div [class]="inputContainerClasses()">
-        @if (prefixIcon()) {
+        @if(prefixIcon()) {
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <span [class]="iconClasses()">{{ prefixIcon() }}</span>
           </div>
@@ -106,8 +106,9 @@ import { InputType, InputSize, InputVariant } from '../../../types';
           #inputElement
           [id]="inputId()"
           [type]="actualType()"
+          [value]="inputValue()"
           [placeholder]="placeholder()"
-          [disabled]="disabled()"
+          [disabled]="isDisabled()"
           [readonly]="readonly()"
           [required]="required()"
           [min]="min()"
@@ -125,13 +126,13 @@ import { InputType, InputSize, InputVariant } from '../../../types';
           (keydown)="onKeyDown($event)"
         />
 
-        @if (suffixIcon()) {
+        @if(suffixIcon()) {
           <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <span [class]="iconClasses()">{{ suffixIcon() }}</span>
           </div>
         }
 
-        @if (type() === 'password' && showPasswordToggle()) {
+        @if(type() === 'password' && showPasswordToggle()) {
           <button
             type="button"
             class="absolute inset-y-0 right-0 pr-3 flex items-center ui-focus-primary rounded"
@@ -144,13 +145,13 @@ import { InputType, InputSize, InputVariant } from '../../../types';
         }
       </div>
 
-      @if (helperText() && !invalid()) {
+      @if(helperText() && !invalid()) {
         <p [id]="helperId()" [class]="helperTextClasses()">
           {{ helperText() }}
         </p>
       }
 
-      @if (invalid() && errorMessage()) {
+      @if(invalid() && errorMessage()) {
         <p [id]="errorId()" [class]="errorTextClasses()" role="alert">
           {{ errorMessage() }}
         </p>
@@ -302,9 +303,9 @@ export class InputComponent implements ControlValueAccessor {
   
   /**
    * Maximum length of input value.
-   * @default undefined
+   * @default 50
    */
-  maxlength = input<number>();
+  maxlength = input<number>(50);
   
   /**
    * Regular expression pattern for input validation.
@@ -347,11 +348,13 @@ export class InputComponent implements ControlValueAccessor {
   keyPressed = output<KeyboardEvent>();
 
   // Internal state
-  private inputValue = signal('');
+  protected inputValue = signal('');
   protected passwordVisible = signal(false);
   protected inputId = signal('');
   protected helperId = signal('');
   protected errorId = signal('');
+  private formDisabled = signal(false);
+  protected isDisabled = computed(() => this.disabled() || this.formDisabled());
 
   // ViewChild
   private inputElement = viewChild<ElementRef<HTMLInputElement>>('inputElement');
@@ -368,7 +371,7 @@ export class InputComponent implements ControlValueAccessor {
 
   // Computed properties
   protected actualType = computed(() => {
-    if (this.type() === 'password') {
+    if(this.type() === 'password') {
       return this.passwordVisible() ? 'text' : 'password';
     }
     return this.type();
@@ -383,9 +386,7 @@ export class InputComponent implements ControlValueAccessor {
 
   protected labelClasses = computed(() => {
     const baseClasses = 'block text-sm font-medium mb-1';
-    const colorClasses = this.disabled()
-      ? 'text-text-disabled'
-      : 'text-text-primary';
+    const colorClasses = this.isDisabled() ? 'text-text-disabled' : 'text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });
 
@@ -408,7 +409,7 @@ export class InputComponent implements ControlValueAccessor {
       outlined: 'border-2 border-gray-300 dark:border-gray-600 rounded-md bg-transparent'
     };
 
-    const stateClasses = this.disabled()
+    const stateClasses = this.isDisabled()
       ? 'bg-gray-50 dark:bg-gray-900 text-text-disabled cursor-not-allowed'
       : this.readonly()
       ? 'bg-gray-50 dark:bg-gray-900 cursor-default'
@@ -430,9 +431,7 @@ export class InputComponent implements ControlValueAccessor {
       lg: 'w-6 h-6'
     };
 
-    const colorClasses = this.disabled()
-      ? 'text-gray-400 dark:text-gray-500'
-      : 'text-gray-600 dark:text-gray-400';
+    const colorClasses = this.isDisabled() ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-400';
 
     return `${sizeClasses[this.size()]} ${colorClasses}`;
   });
@@ -449,7 +448,7 @@ export class InputComponent implements ControlValueAccessor {
     const hasPrefix = !!this.prefixIcon();
     const hasSuffix = !!this.suffixIcon() || (this.type() === 'password' && this.showPasswordToggle());
 
-    if (hasPrefix && hasSuffix) {
+    if(hasPrefix && hasSuffix) {
       return this.size() === 'sm' ? 'pl-9 pr-9' : this.size() === 'lg' ? 'pl-12 pr-12' : 'pl-10 pr-10';
     } else if (hasPrefix) {
       return this.size() === 'sm' ? 'pl-9' : this.size() === 'lg' ? 'pl-12' : 'pl-10';
@@ -461,10 +460,10 @@ export class InputComponent implements ControlValueAccessor {
 
   protected getAriaDescribedBy(): string {
     const ids: string[] = [];
-    if (this.helperText() && !this.invalid()) {
+    if(this.helperText() && !this.invalid()) {
       ids.push(this.helperId());
     }
-    if (this.invalid() && this.errorMessage()) {
+    if(this.invalid() && this.errorMessage()) {
       ids.push(this.errorId());
     }
     return ids.join(' ') || '';
@@ -500,7 +499,7 @@ export class InputComponent implements ControlValueAccessor {
   writeValue(value: string): void {
     this.inputValue.set(value || '');
     const inputEl = this.inputElement()?.nativeElement;
-    if (inputEl) {
+    if(inputEl) {
       inputEl.value = value || '';
     }
   }
@@ -514,7 +513,7 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    // Handled by the disabled input
+    this.formDisabled.set(!!isDisabled);
   }
 
   // Public methods
@@ -533,23 +532,4 @@ export class InputComponent implements ControlValueAccessor {
   getValue(): string {
     return this.inputValue();
   }
-
-
-  //  value = '';
-
-  // onChange = (_: any) => {};
-  // onTouched = () => {};
-
-  // writeValue(obj: any) { this.value = obj ?? ''; }
-  // registerOnChange(fn: any) { this.onChange = fn; }
-  // registerOnTouched(fn: any) { this.onTouched = fn; }
-  // setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
-
-  // onInput(e: Event) {
-  //   const v = (e.target as HTMLInputElement).value;
-  //   this.value = v;
-  //   this.onChange(v);
-  // }
-
-  // onBlur() { this.onTouched(); }
 }
