@@ -225,18 +225,20 @@ export class ThemeSwitcherComponent {
   private applyTheme(theme: ThemeMode): void {
     const root = this.document.documentElement;
 
-    // Remove existing theme classes
-    root.classList.remove('dark');
+    root.classList.remove('dark', 'light');
     root.removeAttribute('data-theme');
 
     if (theme === 'dark') {
       root.classList.add('dark');
     } else if (theme === 'light') {
+      root.classList.add('light');
       root.setAttribute('data-theme', 'light');
     } else {
       // System theme - check media query
       if (this.mediaQuery?.matches) {
         root.classList.add('dark');
+      } else {
+        root.classList.add('light');
       }
     }
   }
