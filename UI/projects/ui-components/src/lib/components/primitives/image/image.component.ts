@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
-import { NgStyle } from '@angular/common';
 import { ImageFit, ImageRounded } from '../../../types';
 
 /**
@@ -60,18 +59,19 @@ import { ImageFit, ImageRounded } from '../../../types';
  */
 @Component({
   selector: 'ui-image',
-  standalone: true,
-  imports: [NgStyle],
   template: `
-    <div [class]="containerClasses()" [ngStyle]="containerStyles()">
+    <div
+      [class]="containerClasses()"
+      [style.width]="containerWidth()"
+      [style.height]="containerHeight()"
+      [style.aspect-ratio]="containerAspectRatio()"
+    >
       @if(!hasError()) {
         <img
-          [class]="imageClasses() + (isLoaded() ? ' opacity-100' : ' opacity-0')"
+          [class]="imageClasses() + ' ' + imageSizeClasses() + (isLoaded() ? ' opacity-100' : ' opacity-0')"
           [src]="src()"
           [alt]="alt()"
           [loading]="loading()"
-          [width]="width()"
-          [height]="height()"
           (load)="onLoad()"
           (error)="onError()"
         />
@@ -174,7 +174,7 @@ export class ImageComponent {
 
   /**
    * Aspect ratio for reserving space before image load (e.g., "16 / 9").
-   * height is set, the container will reserve space using CSS aspect-ratio.
+  * If not provided, it's deduced from numeric width and height when possible.
    */
   aspectRatio = input<string | null>(null);
 
@@ -219,25 +219,48 @@ export class ImageComponent {
     return `${baseClasses} ${roundedClass}`.trim();
   });
 
-  protected containerStyles = computed(() => {
-    const styles: { [key: string]: string } = {};
-    
-    if (this.width()) {
-      styles['width'] = typeof this.width() === 'number' ? `${this.width()}px` : this.width().toString();
-      styles['min-width'] = styles['width'];
-    }
-    
-    if (this.height()) {
-      styles['height'] = typeof this.height() === 'number' ? `${this.height()}px` : this.height().toString();
-      styles['min-height'] = styles['height'];
-    }
-    
-    return styles;
+  // Container styles: single bindings with normalized values
+  protected containerWidth = computed(() => {
+    const w = this.width();
+    if (typeof w === 'number') return `${w}px`;
+    if (typeof w === 'string' && w.trim() !== '') return w;
+    return null;
+  });
+  protected containerHeight = computed(() => {
+    const h = this.height();
+    if (typeof h === 'number') return `${h}px`;
+    if (typeof h === 'string' && h.trim() !== '') return h;
+    return null;
+  });
+  protected containerAspectRatio = computed(() => {
+    // If explicit height set, don't apply aspect-ratio
+    if (this.containerHeight() !== null) return null;
+
+    // Use provided aspectRatio when available
+    const ar = this.aspectRatio();
+    if (ar && ar.trim() !== '') return ar;
+
+    // Deduce from numeric width/height inputs if possible
+    const toNum = (v: unknown): number | null => {
+      if (typeof v === 'number' && isFinite(v) && v > 0) return v;
+      if (typeof v === 'string') {
+        const trimmed = v.trim();
+        if (/^[0-9]+(\.[0-9]+)?$/.test(trimmed)) {
+          const n = Number(trimmed);
+          return isFinite(n) && n > 0 ? n : null;
+        }
+      }
+      return null;
+    };
+    const w = toNum(this.width());
+    const h = toNum(this.height());
+    if (w && h) return `${w} / ${h}`;
+    return null;
   });
 
   protected imageClasses = computed(() => {
     // Use display:block to ensure aspect-ratio mapping works reliably with lazy loading.
-    const baseClasses = 'block size-full transition-opacity duration-300';
+    const baseClasses = 'block transition-opacity duration-300';
 
     const fitClasses = {
       contain: 'object-contain',
@@ -250,6 +273,12 @@ export class ImageComponent {
     const fitClass = fitClasses[this.fit()];
 
     return `${baseClasses} ${fitClass}`;
+  });
+
+  protected imageSizeClasses = computed(() => {
+    const hasReserved = (this.containerHeight() !== null) || (this.containerAspectRatio() !== null);
+    // Fill reserved box if we have one; otherwise, keep natural height but scale by width
+    return hasReserved ? 'w-full h-full' : 'w-full h-auto';
   });
 
   protected placeholderClasses = computed(() => {
@@ -271,4 +300,5 @@ export class ImageComponent {
     this.hasError.set(true);
     this.error.emit();
   }
+
 }
