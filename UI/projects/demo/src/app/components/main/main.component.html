@@ -326,20 +326,21 @@
             >
             </ui-select>
 
-            <ui-checkbox label="Subscribe to updates" description="Get notified about new features">
+            <ui-checkbox variant="primary" label="Subscribe to updates" description="Get notified about new features">
             </ui-checkbox>
 
             <ui-radio-group
               name="rating"
               label="Rate your experience"
               description="How would you rate our component library?"
+              variant="primary"
               [options]="radioOptions()"
               value="good"
               (valueChange)="onRadioGroupChange($event)"
             >
             </ui-radio-group>
 
-            <ui-toggle label="Enable notifications"> </ui-toggle>
+            <ui-toggle variant="primary" label="Enable notifications"> </ui-toggle>
 
             <ui-textarea label="Message" placeholder="Enter your message" size="sm"> </ui-textarea>
           </div>
