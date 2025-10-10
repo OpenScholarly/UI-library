@@ -10,6 +10,7 @@ import { SelectOption, SelectVariant, SelectSize } from '../../../types';
  * ## Features
  * - Multiple visual variants (default, filled, outlined)
  * - Comprehensive size options (sm, md, lg)
+ * - Label placement: block (default) or inline
  * - Search/filter functionality
  * - Option groups support
  * - Disabled options
@@ -69,6 +70,14 @@ import { SelectOption, SelectVariant, SelectSize } from '../../../types';
  *   [options]="groupedRegions"
  *   placeholder="Choose region">
  * </ui-select>
+ *
+ * <!-- Inline label -->
+ * <ui-select
+ *   label="Theme"
+ *   labelPlacement="inline"
+ *   [options]="themes"
+ *   placeholder="Select theme">
+ * </ui-select>
  * ```
  */
 @Component({
@@ -94,9 +103,10 @@ import { SelectOption, SelectVariant, SelectSize } from '../../../types';
   template: `
     <div class="ui-select__wrapper relative" #selectWrapper>
       <!-- Label -->
-      @if (label()) {
+      @if (label() && labelPlacement() === 'block') {
         <label
           [for]="selectId"
+          [attr.id]="selectId + '-label'"
           class="ui-select__label block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
           [class.text-red-600]="hasError()"
           [class.dark:text-red-400]="hasError()">
@@ -108,7 +118,24 @@ import { SelectOption, SelectVariant, SelectSize } from '../../../types';
       }
 
       <!-- Select Container -->
-      <div class="ui-select__container relative">
+      <div
+        class="ui-select__container relative"
+        [class.flex]="label() && labelPlacement() === 'inline'"
+        [class.items-center]="label() && labelPlacement() === 'inline'"
+        [class.gap-2]="label() && labelPlacement() === 'inline'">
+        @if (label() && labelPlacement() === 'inline') {
+          <label
+            [for]="selectId"
+            [attr.id]="selectId + '-label'"
+            class="ui-select__label shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300"
+            [class.text-red-600]="hasError()"
+            [class.dark:text-red-400]="hasError()">
+            {{ label() }}
+            @if (required()) {
+              <span class="text-red-500 ml-1" aria-label="required">*</span>
+            }
+          </label>
+        }
         <button
           #selectButton
           type="button"
@@ -278,6 +305,14 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
    * @default "md"
    */
   size = input<SelectSize>('md');
+
+  /**
+   * Placement of the label.
+   * - `block`: Label is rendered above the field.
+   * - `inline`: Label is rendered inline, to the left of the field.
+   * @default "block"
+   */
+  labelPlacement = input<'block' | 'inline'>('block');
   
   /**
    * Disables the select and prevents interaction.
