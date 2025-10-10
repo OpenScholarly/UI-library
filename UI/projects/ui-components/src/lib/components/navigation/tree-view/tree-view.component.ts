@@ -65,11 +65,14 @@ import { TreeNode } from '../../../types';
                     (click)="toggleNode(node.id); $event.stopPropagation()"
                     [attr.aria-label]="isExpanded(node.id) ? 'Collapse' : 'Expand'"
                   >
-                    <span 
-                      class="text-sm transform transition-transform"
-                      [class.rotate-90]="isExpanded(node.id)">
-                      ▶
-                    </span>
+                    <svg
+                      class="w-4 h-4 text-gray-400 transform transition-transform"
+                      [class.rotate-90]="isExpanded(node.id)"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true">
+                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L9.586 11 7.293 8.707a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
                   </button>
                 } @else {
                   <div class="w-6 h-6"></div>
