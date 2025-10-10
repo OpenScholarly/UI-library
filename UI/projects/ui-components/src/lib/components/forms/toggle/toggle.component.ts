@@ -7,7 +7,7 @@ import { ToggleSize, ToggleVariant } from '../../../types';
  *
  * ## Features
  * - Multiple visual variants (default, primary, success, warning, danger)
- * - iOS-style options (ios26 modern, ios18 classic)
+ * - iOS-style options (pill modern, classic classic)
  * - Comprehensive size options (small, medium, large)
  * - Optional icons in thumb to indicate state
  * - Full keyboard navigation and screen reader support
@@ -25,7 +25,7 @@ import { ToggleSize, ToggleVariant } from '../../../types';
  * <!-- Toggle with classic iOS 18 style -->
  * <ui-toggle
  *   label="Dark mode"
- *   iosStyle="ios18"
+ *   iosStyle="classic"
  *   description="Switch between light and dark themes">
  * </ui-toggle>
  *
@@ -34,7 +34,7 @@ import { ToggleSize, ToggleVariant } from '../../../types';
  *   label="Auto-save"
  *   [showIcons]="true"
  *   variant="primary"
- *   iosStyle="ios26">
+ *   iosStyle="pill">
  * </ui-toggle>
  *
  * <!-- Required toggle with validation -->
@@ -83,9 +83,9 @@ import { ToggleSize, ToggleVariant } from '../../../types';
 
         <div [class]="toggleTrackClasses()">
           <div [class]="toggleThumbClasses()">
-            @if (showIcons()) {
+            @if(showIcons()) {
               <svg [class]="iconClasses()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                @if (checked()) {
+                @if(checked()) {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 } @else {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -95,23 +95,23 @@ import { ToggleSize, ToggleVariant } from '../../../types';
           </div>
         </div>
 
-        @if (label()) {
+        @if(label()) {
           <span [class]="labelClasses()">
             {{ label() }}
-            @if (required()) {
+            @if(required()) {
               <span class="text-red-500 ml-1" aria-label="required">*</span>
             }
           </span>
         }
       </label>
 
-      @if (description()) {
+      @if(description()) {
         <p [id]="descriptionId()" [class]="descriptionClasses()">
           {{ description() }}
         </p>
       }
 
-      @if (invalid() && errorMessage()) {
+      @if(invalid() && errorMessage()) {
         <p [id]="errorId()" [class]="errorClasses()" role="alert">
           {{ errorMessage() }}
         </p>
@@ -153,14 +153,14 @@ export class ToggleComponent implements ControlValueAccessor {
   
   /**
    * Size of the toggle switch.
-   * iOS 26 style (Modern, 2028 design - elongated pill shape):
+   * Pill design:
    * - `sm`: Small (24px × 48px) - 2:1 ratio
-   * - `md`: Medium (32px × 64px) - default, elongated iOS 26 style
+   * - `md`: Medium (32px × 64px) - default, elongated pill shape
    * - `lg`: Large (40px × 80px) - 2:1 ratio
    * 
-   * iOS 18 style (Classic, iOS 7-18 design):
+   * Classic design:
    * - `sm`: Small (22px × 36px)
-   * - `md`: Medium (31px × 51px) - authentic iOS toggle dimensions
+   * - `md`: Medium (31px × 51px)
    * - `lg`: Large (40px × 64px)
    * @default "md"
    */
@@ -208,11 +208,11 @@ export class ToggleComponent implements ControlValueAccessor {
 
   /**
    * Visual style of the toggle switch.
-   * - `ios26`: Modern iOS style with enhanced proportions and animations (default)
-   * - `ios18`: Classic iOS style with traditional compact design
-   * @default "ios26"
+   * - `pill`: Pill shape toggle (Modern iOS style with enhanced proportions and animations)
+   * - `classic`: Classic toggle design (iOS style with traditional compact design)
+   * @default "pill"
    */
-  iosStyle = input<'ios26' | 'ios18'>('ios26');
+  design = input<'pill' | 'classic'>('pill');
 
   /**
    * Emitted when the toggle value changes.
@@ -249,13 +249,11 @@ export class ToggleComponent implements ControlValueAccessor {
     this.errorId.set(`toggle-error-${Math.random().toString(36).substr(2, 9)}`);
   }
 
-  // Computed properties
   checked = computed(() => this.checkedState());
 
   protected wrapperClasses = computed(() => {
     return 'flex flex-col gap-1';
   });
-
   protected labelWrapperClasses = computed(() => {
     const baseClasses = 'flex items-center gap-3 cursor-pointer';
     const disabledClasses = this.disabled() ? 'cursor-not-allowed opacity-50' : '';
@@ -268,66 +266,43 @@ export class ToggleComponent implements ControlValueAccessor {
 
   protected toggleTrackClasses = computed(() => {
     const baseClasses = 'relative inline-flex items-center rounded-full ui-transition-standard ui-focus-primary';
-
-    // iOS 26 style: Modern iOS toggle dimensions (2028 design)
-    // More elongated pill shape with ~2:1 ratio for modern appearance
-    const ios26SizeClasses = {
-      sm: 'h-6 w-12',         // 24px × 48px (2:1 ratio, elongated)
-      md: 'h-8 w-16',         // 32px × 64px (2:1 ratio, elongated pill)
-      lg: 'h-10 w-20'         // 40px × 80px (2:1 ratio, scaled up)
+    // 2.28 ratio
+    const pillSizeClasses = {
+      sm: 'h-[24px] w-[55px]',
+      md: 'h-[30px] w-[68px]',
+      lg: 'h-[40px] w-[91px]'
     };
-
-    // iOS 18 style: Classic iOS toggle dimensions (iOS 7-18 design)
-    // Authentic 51px × 31px at medium size, maintains ~1.645:1 ratio
-    const ios18SizeClasses = {
-      sm: 'h-[22px] w-9',      // 22px × 36px (scaled down proportionally)
-      md: 'h-[31px] w-[51px]', // 31px × 51px (authentic iOS dimensions)
-      lg: 'h-10 w-16'          // 40px × 64px (scaled up proportionally)
+    // 1.6 ratio
+    const classicSizeClasses = {
+      sm: 'h-[22px] w-9',      // 22px × 36px
+      md: 'h-[31px] w-[51px]', // 31px × 51px
+      lg: 'h-10 w-16'          // 40px × 64px
     };
+    const sizeClasses = this.design() === 'pill' ? pillSizeClasses : classicSizeClasses;
 
-    const sizeClasses = this.iosStyle() === 'ios26' ? ios26SizeClasses : ios18SizeClasses;
-
-    const stateClasses = this.checked()
-      ? this.getCheckedTrackClasses()
-      : this.getUncheckedTrackClasses();
+    const stateClasses = this.checked() ? this.getCheckedTrackClasses() : this.getUncheckedTrackClasses();
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${stateClasses}`;
   });
 
   protected toggleThumbClasses = computed(() => {
-    // iOS 26 style: Enhanced shadow with proper iOS appearance
-    // Thumb is ~29px in a 32px track (28px visible + 2px padding each side)
-    // Dark mode support: bg-white in light, bg-gray-200 in dark
-    const ios26BaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.15),0_1px_1px_rgba(0,0,0,0.16)] ui-transition-transform duration-200';
-    
-    // iOS 18 style: Classic iOS shadow
-    // Thumb is ~27px in a 31px track (27px visible + 2px padding each side)
-    // Dark mode support: bg-white in light, bg-gray-200 in dark
-    const ios18BaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-[0_3px_1px_rgba(0,0,0,0.04),0_3px_8px_rgba(0,0,0,0.12)] ui-transition-transform duration-200';
-
-    const baseClasses = this.iosStyle() === 'ios26' ? ios26BaseClasses : ios18BaseClasses;
-
-    // iOS 26 style: Thumb sized to fit track with 2px padding
-    // Track: 32px, Thumb: 28px (32 - 4px padding)
-    const ios26SizeClasses = {
-      sm: 'h-5 w-5',         // 20px thumb for 24px track
-      md: 'h-7 w-7',         // 28px thumb for 32px track (authentic iOS 26)
-      lg: 'h-9 w-9'          // 36px thumb for 40px track
+    const pillBaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.15),0_1px_1px_rgba(0,0,0,0.16)] ui-transition-transform duration-200';
+    const classicBaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-[0_3px_1px_rgba(0,0,0,0.04),0_3px_8px_rgba(0,0,0,0.12)] ui-transition-transform duration-200';
+    const baseClasses = this.design() === 'pill' ? pillBaseClasses : classicBaseClasses;
+    // * 0.843 from track size to thumb size in height and 0.566 from track size to thumb size in width
+    const pillSizeClasses = {
+      sm: 'h-[20.2px] w-[31px]',
+      md: 'h-[25.3px] w-[38.5px]',
+      lg: 'h-[33.7px] w-[51.5px]'
     };
-
-    // iOS 18 style: Thumb sized to fit track with 2px padding
-    // Track: 31px, Thumb: 27px (31 - 4px padding)
-    const ios18SizeClasses = {
-      sm: 'h-[18px] w-[18px]',  // 18px thumb for 22px track
-      md: 'h-[27px] w-[27px]',  // 27px thumb for 31px track (authentic iOS)
-      lg: 'h-9 w-9'             // 36px thumb for 40px track
+    const classicSizeClasses = {
+      sm: 'h-[18px] w-[18px]',
+      md: 'h-[27px] w-[27px]',
+      lg: 'h-9 w-9'
     };
+    const sizeClasses = this.design() === 'pill' ? pillSizeClasses : classicSizeClasses;
 
-    const sizeClasses = this.iosStyle() === 'ios26' ? ios26SizeClasses : ios18SizeClasses;
-
-    const positionClasses = this.checked()
-      ? this.getCheckedThumbPosition()
-      : 'translate-x-0.5';
+    const positionClasses = this.checked() ? this.getCheckedThumbPosition() : 'translate-x-0.5';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${positionClasses}`;
   });
@@ -365,7 +340,6 @@ export class ToggleComponent implements ControlValueAccessor {
   });
 
   private getCheckedTrackClasses(): string {
-    // Maintain theme integration while supporting iOS-style appearance
     const variantClasses = {
       default: 'bg-[#34C759] dark:bg-[#32D74B]',     // iOS system green (light/dark)
       primary: 'bg-primary-600 dark:bg-primary-500', // Theme-aware primary color
@@ -378,41 +352,33 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   private getUncheckedTrackClasses(): string {
-    // iOS uses light gray in light mode, darker in dark mode
-    // Maintain theme integration with dark mode support
     const baseClasses = 'bg-[#E5E5EA] dark:bg-gray-700';
     const invalidClasses = this.invalid() ? 'ring-2 ring-red-500 dark:ring-red-400' : '';
     return `${baseClasses} ${invalidClasses}`.trim();
   }
 
   private getCheckedThumbPosition(): string {
-    // iOS 26 style: Calculate position based on track width - thumb width - padding
-    // Track: 64px, Thumb: 28px, Position: 64 - 28 - 2 = 34px (elongated modern style)
-    const ios26PositionClasses = {
-      sm: 'translate-x-[26px]',   // 48 - 20 - 2 = 26px
-      md: 'translate-x-[34px]',   // 64 - 28 - 2 = 34px (elongated iOS 26)
-      lg: 'translate-x-[42px]'    // 80 - 36 - 2 = 42px
+    const pillPositionClasses = {
+      sm: 'translate-x-[23px]',   // 55 - 31 - 1 = 23px
+      md: 'translate-x-[28.5px]', // 68 - 38.5 - 1 = 28.5px
+      lg: 'translate-x-[38.5px]'  // 91 - 51.5 - 1 = 38.5px
     };
-
-    // iOS 18 style: Calculate position based on track width - thumb width - padding
-    // Track: 51px, Thumb: 27px, Position: 51 - 27 - 2 = 22px
-    const ios18PositionClasses = {
+    const classicPositionClasses = {
       sm: 'translate-x-[16px]',   // 36 - 18 - 2 = 16px
-      md: 'translate-x-[22px]',   // 51 - 27 - 2 = 22px (authentic iOS)
+      md: 'translate-x-[22px]',   // 51 - 27 - 2 = 22px
       lg: 'translate-x-[26px]'    // 64 - 36 - 2 = 26px
     };
-
-    const positionClasses = this.iosStyle() === 'ios26' ? ios26PositionClasses : ios18PositionClasses;
+    const positionClasses = this.design() === 'pill' ? pillPositionClasses : classicPositionClasses;
 
     return positionClasses[this.size()];
   }
 
   protected getAriaDescribedBy(): string {
     const ids: string[] = [];
-    if (this.description()) {
+    if(this.description()) {
       ids.push(this.descriptionId());
     }
-    if (this.invalid() && this.errorMessage()) {
+    if(this.invalid() && this.errorMessage()) {
       ids.push(this.errorId());
     }
     return ids.join(' ') || '';
@@ -455,7 +421,7 @@ export class ToggleComponent implements ControlValueAccessor {
 
   // Public methods
   toggle(): void {
-    if (!this.disabled()) {
+    if(!this.disabled()) {
       const newValue = !this.checked();
       this.checkedState.set(newValue);
       this.toggled.emit(newValue);
@@ -464,7 +430,7 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   turnOn(): void {
-    if (!this.disabled()) {
+    if(!this.disabled()) {
       this.checkedState.set(true);
       this.toggled.emit(true);
       this.onChange(true);
@@ -472,7 +438,7 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   turnOff(): void {
-    if (!this.disabled()) {
+    if(!this.disabled()) {
       this.checkedState.set(false);
       this.toggled.emit(false);
       this.onChange(false);
