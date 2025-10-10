@@ -586,6 +586,7 @@
         <ui-tree-view
           [nodes]="treeNodes()"
           [selectable]="true"
+          [multiSelect]="false"
           (nodeClick)="onTreeNodeClick($event)"
           (nodeSelect)="onTreeNodeSelect($event)"
         >
