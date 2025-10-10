@@ -153,15 +153,15 @@ export class ToggleComponent implements ControlValueAccessor {
   
   /**
    * Size of the toggle switch.
-   * iOS 26 style:
-   * - `sm`: Small (24px height, 40px width)
-   * - `md`: Medium (28px height, 48px width) - default
-   * - `lg`: Large (32px height, 56px width)
+   * iOS 26 style (Modern, 2028 design):
+   * - `sm`: Small (24px × 40px)
+   * - `md`: Medium (32px × 52px) - default, authentic iOS 26 dimensions
+   * - `lg`: Large (40px × 64px)
    * 
-   * iOS 18 style:
-   * - `sm`: Small (20px height, 36px width)
-   * - `md`: Medium (24px height, 44px width)
-   * - `lg`: Large (28px height, 48px width)
+   * iOS 18 style (Classic, iOS 7-18 design):
+   * - `sm`: Small (22px × 36px)
+   * - `md`: Medium (31px × 51px) - authentic iOS toggle dimensions
+   * - `lg`: Large (40px × 64px)
    * @default "md"
    */
   size = input<ToggleSize>('md');
@@ -269,18 +269,20 @@ export class ToggleComponent implements ControlValueAccessor {
   protected toggleTrackClasses = computed(() => {
     const baseClasses = 'relative inline-flex items-center rounded-full ui-transition-standard ui-focus-primary';
 
-    // iOS 26 style: Modern, slightly larger dimensions
+    // iOS 26 style: Modern iOS toggle dimensions (2028 design)
+    // Approximately 52px × 32px at medium size, maintains ~1.625:1 ratio
     const ios26SizeClasses = {
-      sm: 'h-6 w-10',
-      md: 'h-7 w-12',
-      lg: 'h-8 w-14'
+      sm: 'h-6 w-10',    // 24px × 40px (scaled down proportionally)
+      md: 'h-8 w-[52px]', // 32px × 52px (authentic iOS 26 dimensions)
+      lg: 'h-10 w-16'    // 40px × 64px (scaled up proportionally)
     };
 
-    // iOS 18 style: Classic, more compact dimensions
+    // iOS 18 style: Classic iOS toggle dimensions (iOS 7-18 design)
+    // Authentic 51px × 31px at medium size, maintains ~1.645:1 ratio
     const ios18SizeClasses = {
-      sm: 'h-5 w-9',
-      md: 'h-6 w-11',
-      lg: 'h-7 w-12'
+      sm: 'h-[22px] w-9',  // 22px × 36px (scaled down proportionally)
+      md: 'h-[31px] w-[51px]', // 31px × 51px (authentic iOS dimensions)
+      lg: 'h-10 w-16'      // 40px × 64px (scaled up proportionally)
     };
 
     const sizeClasses = this.iosStyle() === 'ios26' ? ios26SizeClasses : ios18SizeClasses;
@@ -293,26 +295,30 @@ export class ToggleComponent implements ControlValueAccessor {
   });
 
   protected toggleThumbClasses = computed(() => {
-    // iOS 26 style: Enhanced shadow and slightly larger thumb
-    const ios26BaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-md ui-transition-transform';
+    // iOS 26 style: Enhanced shadow with proper iOS appearance
+    // Thumb is ~29px in a 32px track (28px visible + 2px padding each side)
+    const ios26BaseClasses = 'absolute flex items-center justify-center bg-white rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.15),0_1px_1px_rgba(0,0,0,0.16)] ui-transition-transform duration-200';
     
-    // iOS 18 style: Classic subtle shadow
-    const ios18BaseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-sm ui-transition-transform';
+    // iOS 18 style: Classic iOS shadow
+    // Thumb is ~27px in a 31px track (27px visible + 2px padding each side)
+    const ios18BaseClasses = 'absolute flex items-center justify-center bg-white rounded-full shadow-[0_3px_1px_rgba(0,0,0,0.04),0_3px_8px_rgba(0,0,0,0.12)] ui-transition-transform duration-200';
 
     const baseClasses = this.iosStyle() === 'ios26' ? ios26BaseClasses : ios18BaseClasses;
 
-    // iOS 26 style: Slightly larger thumb proportions
+    // iOS 26 style: Thumb sized to fit track with 2px padding
+    // Track: 32px, Thumb: 28px (32 - 4px padding)
     const ios26SizeClasses = {
-      sm: 'h-5 w-5',
-      md: 'h-6 w-6',
-      lg: 'h-7 w-7'
+      sm: 'h-5 w-5',         // 20px thumb for 24px track
+      md: 'h-7 w-7',         // 28px thumb for 32px track (authentic iOS 26)
+      lg: 'h-9 w-9'          // 36px thumb for 40px track
     };
 
-    // iOS 18 style: Classic compact thumb
+    // iOS 18 style: Thumb sized to fit track with 2px padding
+    // Track: 31px, Thumb: 27px (31 - 4px padding)
     const ios18SizeClasses = {
-      sm: 'h-4 w-4',
-      md: 'h-5 w-5',
-      lg: 'h-6 w-6'
+      sm: 'h-[18px] w-[18px]',  // 18px thumb for 22px track
+      md: 'h-[27px] w-[27px]',  // 27px thumb for 31px track (authentic iOS)
+      lg: 'h-9 w-9'             // 36px thumb for 40px track
     };
 
     const sizeClasses = this.iosStyle() === 'ios26' ? ios26SizeClasses : ios18SizeClasses;
@@ -357,10 +363,12 @@ export class ToggleComponent implements ControlValueAccessor {
   });
 
   private getCheckedTrackClasses(): string {
+    // Use authentic iOS green (#34C759) for success/default ON state
+    // Allow other variants for flexibility
     const variantClasses = {
-      default: 'bg-gray-600',
+      default: 'bg-[#34C759]',     // iOS system green
       primary: 'bg-primary-600',
-      success: 'bg-green-600',
+      success: 'bg-[#34C759]',     // iOS system green
       warning: 'bg-yellow-500',
       danger: 'bg-red-600'
     };
@@ -369,24 +377,27 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   private getUncheckedTrackClasses(): string {
-    const baseClasses = 'bg-gray-200 dark:bg-gray-700';
+    // iOS uses a light gray (#E5E5EA in light mode, darker in dark mode)
+    const baseClasses = 'bg-[#E5E5EA] dark:bg-gray-700';
     const invalidClasses = this.invalid() ? 'ring-2 ring-red-500 dark:ring-red-400' : '';
     return `${baseClasses} ${invalidClasses}`.trim();
   }
 
   private getCheckedThumbPosition(): string {
-    // iOS 26 style: Adjusted positions for larger dimensions
+    // iOS 26 style: Calculate position based on track width - thumb width - padding
+    // Track: 52px, Thumb: 28px, Position: 52 - 28 - 2 = 22px (translate-x-[22px])
     const ios26PositionClasses = {
-      sm: 'translate-x-4',
-      md: 'translate-x-5',
-      lg: 'translate-x-6'
+      sm: 'translate-x-[18px]',   // 40 - 20 - 2 = 18px
+      md: 'translate-x-[22px]',   // 52 - 28 - 2 = 22px (authentic iOS 26)
+      lg: 'translate-x-[26px]'    // 64 - 36 - 2 = 26px
     };
 
-    // iOS 18 style: Classic positions
+    // iOS 18 style: Calculate position based on track width - thumb width - padding
+    // Track: 51px, Thumb: 27px, Position: 51 - 27 - 2 = 22px
     const ios18PositionClasses = {
-      sm: 'translate-x-4',
-      md: 'translate-x-5',
-      lg: 'translate-x-5'
+      sm: 'translate-x-[16px]',   // 36 - 18 - 2 = 16px
+      md: 'translate-x-[22px]',   // 51 - 27 - 2 = 22px (authentic iOS)
+      lg: 'translate-x-[26px]'    // 64 - 36 - 2 = 26px
     };
 
     const positionClasses = this.iosStyle() === 'ios26' ? ios26PositionClasses : ios18PositionClasses;
