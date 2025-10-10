@@ -1,5 +1,4 @@
 import { Component, input, output, computed } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { BannerAction } from '../../../types';
 
 /**
@@ -64,7 +63,6 @@ import { BannerAction } from '../../../types';
  */
 @Component({
   selector: 'ui-banner',
-  imports: [NgClass],
   template: `
     <div [class]="containerClasses()" role="banner" [attr.aria-live]="dismissible() ? 'polite' : 'off'">
       <div class="flex items-start gap-3">

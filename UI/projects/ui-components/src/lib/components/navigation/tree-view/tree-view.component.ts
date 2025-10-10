@@ -1,5 +1,4 @@
 import { Component, input, output, computed, signal } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { TreeNode } from '../../../types';
 
 /**
@@ -45,7 +44,6 @@ import { TreeNode } from '../../../types';
  */
 @Component({
   selector: 'ui-tree-view',
-  imports: [NgClass],
   template: `
     <div [class]="containerClasses()">
       @if (nodes().length > 0) {
