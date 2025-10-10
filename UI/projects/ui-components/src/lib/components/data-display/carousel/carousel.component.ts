@@ -2,6 +2,49 @@ import { Component, input, output, computed, signal, effect, ElementRef, inject 
 import { NgClass } from '@angular/common';
 import { CarouselItem } from '../../../types';
 
+/**
+ * A versatile carousel component for displaying rotating content with images or custom content.
+ *
+ * ## Features
+ * - Image carousel with overlay text support
+ * - Content-only carousel for custom HTML
+ * - Navigation arrows with keyboard support
+ * - Indicator dots for direct slide access
+ * - Auto-play with configurable interval
+ * - Infinite loop or bounded navigation
+ * - Touch/swipe support for mobile devices
+ * - WCAG 2.1 Level AA accessibility
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Image carousel with auto-play -->
+ * <ui-carousel
+ *   [items]="heroImages"
+ *   [autoPlay]="true"
+ *   [interval]="5000"
+ *   [infinite]="true"
+ *   [showArrows]="true"
+ *   [showIndicators]="true">
+ * </ui-carousel>
+ *
+ * <!-- Content carousel without auto-play -->
+ * <ui-carousel
+ *   [items]="testimonials"
+ *   [autoPlay]="false"
+ *   [showArrows]="true"
+ *   (slideChange)="onSlideChange($event)">
+ * </ui-carousel>
+ *
+ * <!-- Compact carousel with custom height -->
+ * <ui-carousel
+ *   [items]="products"
+ *   height="300px"
+ *   [showIndicators]="false"
+ *   [infinite]="true">
+ * </ui-carousel>
+ * ```
+ */
 @Component({
   selector: 'ui-carousel',
   imports: [NgClass],
