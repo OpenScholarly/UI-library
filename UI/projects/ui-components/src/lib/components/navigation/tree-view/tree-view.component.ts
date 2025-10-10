@@ -1,4 +1,4 @@
-import { Component, input, output, computed, signal } from '@angular/core';
+import { Component, input, output, computed, signal, ChangeDetectionStrategy, effect } from '@angular/core';
 import { TreeNode } from '../../../types';
 
 /**
@@ -51,7 +51,7 @@ import { TreeNode } from '../../../types';
           @for (node of nodes(); track node.id) {
             <li [attr.role]="'treeitem'" [attr.aria-expanded]="hasChildren(node) ? isExpanded(node.id) : null">
               <div 
-                [class]="nodeClasses(node)"
+                [class]="nodeClasses()(node)"
                 [style.padding-left]="(level() * 20) + 'px'"
                 (click)="handleNodeClick(node)"
                 (keydown)="onKeyDown($event, node)"
@@ -65,8 +65,8 @@ import { TreeNode } from '../../../types';
                     (click)="toggleNode(node.id); $event.stopPropagation()"
                     [attr.aria-label]="isExpanded(node.id) ? 'Collapse' : 'Expand'"
                   >
-                    <span class="text-sm transform transition-transform" 
-                          [class.rotate-90]="isExpanded(node.id)">
+                    <span 
+                      [class]="chevronClasses()(node.id)">
                       ▶
                     </span>
                   </button>
@@ -81,12 +81,12 @@ import { TreeNode } from '../../../types';
                   <span class="flex-shrink-0 mr-2 text-gray-400 dark:text-gray-600">📄</span>
                 } @else {
                   <span class="flex-shrink-0 mr-2 text-gray-400 dark:text-gray-600">
-                    {{ isExpanded(node.id) ? '📂' : '📁' }}
+                    {{ folderIcon()(node.id) }}
                   </span>
                 }
                 
                 <!-- Node label -->
-                <span [class]="labelClasses(node)" class="flex-1 truncate">
+                <span [class]="labelClasses()(node)" class="flex-1 truncate">
                   {{ node.label }}
                 </span>
                 
@@ -121,6 +121,7 @@ import { TreeNode } from '../../../types';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'ui-tree-view block'
   }
@@ -137,49 +138,85 @@ export class TreeViewComponent {
   
   expandedNodes = signal<Set<string>>(new Set());
 
-  containerClasses = computed(() => [
-    'ui-tree-view',
-    {
-      'select-none': true
-    }
-  ]);
+  constructor() {
+    // Initialize expanded nodes based on node.expanded property
+    effect(() => {
+      const nodes = this.nodes();
+      if (nodes.length > 0) {
+        const initiallyExpanded = new Set<string>();
+        this.collectExpandedNodes(nodes, initiallyExpanded);
+        this.expandedNodes.set(initiallyExpanded);
+      }
+    });
+  }
 
-  nodeClasses = (node: TreeNode) => [
-    'flex items-center gap-1 px-2 py-1.5 rounded cursor-pointer transition-colors',
-    {
-      'bg-blue-50 dark:bg-blue-900/20 text-blue-900 dark:text-blue-100': node.selected && this.selectable(),
-      'hover:bg-gray-100 dark:hover:bg-gray-700': !node.disabled && !node.selected,
-      'text-gray-400 dark:text-gray-600 cursor-not-allowed': node.disabled,
-      'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400': !node.disabled
-    }
-  ];
+  containerClasses = computed(() => {
+    return 'ui-tree-view select-none';
+  });
 
-  labelClasses = (node: TreeNode) => [
-    'text-sm',
-    {
-      'font-medium text-gray-900 dark:text-white': !node.disabled,
-      'text-gray-400 dark:text-gray-600': node.disabled
+  nodeClasses = computed(() => (node: TreeNode) => {
+    const baseClasses = 'flex items-center gap-1 px-2 py-1.5 rounded cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400';
+    
+    if (node.disabled) {
+      return `${baseClasses} text-gray-400 dark:text-gray-600 cursor-not-allowed`;
     }
-  ];
+    
+    if (node.selected && this.selectable()) {
+      return `${baseClasses} bg-blue-50 dark:bg-blue-900/20 text-blue-900 dark:text-blue-100`;
+    }
+    
+    return `${baseClasses} hover:bg-gray-100 dark:hover:bg-gray-700`;
+  });
+
+  labelClasses = computed(() => (node: TreeNode) => {
+    const baseClasses = 'text-sm';
+    
+    if (node.disabled) {
+      return `${baseClasses} text-gray-400 dark:text-gray-600`;
+    }
+    
+    return `${baseClasses} font-medium text-gray-900 dark:text-white`;
+  });
+
+  chevronClasses = computed(() => {
+    // Access the signal to make this reactive
+    const expanded = this.expandedNodes();
+    return (nodeId: string) => {
+      const baseClasses = 'text-sm transform transition-transform';
+      
+      if (expanded.has(nodeId)) {
+        return `${baseClasses} rotate-90`;
+      }
+      
+      return baseClasses;
+    };
+  });
+
+  folderIcon = computed(() => {
+    // Access the signal to make this reactive
+    const expanded = this.expandedNodes();
+    return (nodeId: string) => {
+      return expanded.has(nodeId) ? '📂' : '📁';
+    };
+  });
 
   hasChildren(node: TreeNode): boolean {
     return !!(node.children && node.children.length > 0);
   }
 
   isExpanded(nodeId: string): boolean {
-    const expanded = this.expandedNodes().has(nodeId);
-    // Also check the node's own expanded property for initial state
-    const node = this.findNodeById(nodeId);
-    return expanded || (node?.expanded ?? false);
+    return this.expandedNodes().has(nodeId);
   }
 
   toggleNode(nodeId: string) {
     const node = this.findNodeById(nodeId);
     if (!node || !this.hasChildren(node)) return;
 
+    const wasExpanded = this.isExpanded(nodeId);
+    
     this.expandedNodes.update(expanded => {
       const newExpanded = new Set(expanded);
-      if (newExpanded.has(nodeId)) {
+      if (wasExpanded) {
         newExpanded.delete(nodeId);
       } else {
         newExpanded.add(nodeId);
@@ -187,12 +224,10 @@ export class TreeViewComponent {
       return newExpanded;
     });
 
-    if (node) {
-      this.nodeToggle.emit({ 
-        node, 
-        expanded: this.isExpanded(nodeId) 
-      });
-    }
+    this.nodeToggle.emit({ 
+      node, 
+      expanded: !wasExpanded 
+    });
   }
 
   handleNodeClick(node: TreeNode) {
@@ -201,8 +236,15 @@ export class TreeViewComponent {
     // Handle selection
     if (this.selectable()) {
       if (this.multiSelect()) {
-        // Multi-select mode
-        node.selected = !node.selected;
+        // Multi-select mode - prevent parent/child selection conflicts
+        if (node.selected) {
+          // Deselecting - just deselect this node
+          node.selected = false;
+        } else {
+          // Selecting - deselect any conflicting nodes
+          this.clearConflictingSelections(node);
+          node.selected = true;
+        }
       } else {
         // Single-select mode
         this.clearAllSelections();
@@ -257,6 +299,17 @@ export class TreeViewComponent {
     return findInNodes(this.nodes());
   }
 
+  private collectExpandedNodes(nodes: TreeNode[], expandedSet: Set<string>) {
+    for (const node of nodes) {
+      if (node.expanded) {
+        expandedSet.add(node.id);
+      }
+      if (node.children) {
+        this.collectExpandedNodes(node.children, expandedSet);
+      }
+    }
+  }
+
   private clearAllSelections() {
     const clearInNodes = (nodes: TreeNode[]) => {
       nodes.forEach(node => {
@@ -267,5 +320,66 @@ export class TreeViewComponent {
       });
     };
     clearInNodes(this.nodes());
+  }
+
+  private clearConflictingSelections(selectedNode: TreeNode) {
+    // When selecting a node, deselect any ancestors and descendants
+    // to avoid parent/child selection conflicts
+    
+    // 1. Deselect all ancestors
+    this.deselectAncestors(selectedNode);
+    
+    // 2. Deselect all descendants
+    this.deselectDescendants(selectedNode);
+  }
+
+  private deselectAncestors(node: TreeNode) {
+    // Find and deselect all parent nodes
+    const findAndDeselectParent = (nodes: TreeNode[], targetId: string): boolean => {
+      for (const n of nodes) {
+        if (n.children) {
+          // Check if any child matches our target
+          if (this.hasDescendant(n.children, targetId)) {
+            n.selected = false; // Deselect this parent
+            return true;
+          }
+          // Recursively check deeper
+          if (findAndDeselectParent(n.children, targetId)) {
+            n.selected = false; // Deselect this ancestor
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+    
+    findAndDeselectParent(this.nodes(), node.id);
+  }
+
+  private deselectDescendants(node: TreeNode) {
+    // Deselect all child nodes
+    if (node.children) {
+      const clearInNodes = (nodes: TreeNode[]) => {
+        nodes.forEach(child => {
+          child.selected = false;
+          if (child.children) {
+            clearInNodes(child.children);
+          }
+        });
+      };
+      clearInNodes(node.children);
+    }
+  }
+
+  private hasDescendant(nodes: TreeNode[], targetId: string): boolean {
+    for (const node of nodes) {
+      if (node.id === targetId) {
+        return true;
+      }
+      if (node.children && this.hasDescendant(node.children, targetId)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
