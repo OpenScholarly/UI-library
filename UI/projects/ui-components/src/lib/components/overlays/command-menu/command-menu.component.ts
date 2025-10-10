@@ -1,6 +1,7 @@
 import { Component, input, output, computed, signal, effect, ElementRef, inject } from '@angular/core';
 import { TextComponent } from '../../primitives/typography/text.component';
 import { CommandItem } from '../../../types';
+import { ModalComponent } from 'ui-components';
 
 /**
  * A versatile command menu component for keyboard-driven command selection.
@@ -47,11 +48,22 @@ import { CommandItem } from '../../../types';
  */
 @Component({
   selector: 'ui-command-menu',
-  imports: [TextComponent],
+  imports: [TextComponent, ModalComponent],
   template: `
     @if (isOpen()) {
-      <div class="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">
-
+      <ui-modal
+        [open]="isOpen()"
+        [showHeader]="false"
+        [closable]="false"
+        [closeOnBackdrop]="true"
+        [closeOnEscape]="true"
+        [bodyPadding]="'p-0'"
+        variant="centered"
+        [size]="'2xl'"
+        [preventBodyScroll]="false"
+        class="inset-0 flex items-start"
+        (closed)="requestClose()"
+        (backdropClicked)="requestClose()">
         <!-- Command menu -->
         <div [class]="menuClasses()" role="dialog" [attr.aria-label]="'Command menu'" aria-modal="true" class="relative z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-w-2xl w-full mx-auto">
           <!-- Search input -->
@@ -160,12 +172,7 @@ import { CommandItem } from '../../../types';
             </div>
           </div>
         </div>
-        <!-- Backdrop -->
-        <div
-          class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-          (click)="requestClose()"
-        ></div>
-      </div>
+      </ui-modal>
     }
   `,
   host: {

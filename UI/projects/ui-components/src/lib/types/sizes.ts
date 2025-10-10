@@ -39,7 +39,7 @@ export type ContainerSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
 export type ScrollAreaSize = 'sm' | 'md' | 'lg' | 'full';
 
 // Overlay sizes
-export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full';
 
 // Primitives sizes
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
