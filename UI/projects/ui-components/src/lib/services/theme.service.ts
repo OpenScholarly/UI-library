@@ -7,13 +7,15 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ThemeService {
-  private currentThemeKey = signal<string>('ocean-blue');
+  readonly storageKey = 'theme-color';
+  readonly defaultTheme = 'ocean-blue';
+  private currentThemeKey = signal<string>(this.defaultTheme);
   readonly currentTheme = this.currentThemeKey.asReadonly();
   readonly themeInfo = computed(() => getThemeInfo(this.currentThemeKey()));
   readonly availableThemes = getAvailableThemes();
 
   constructor() {
-    const stored = localStorage.getItem('ui-theme');
+    const stored = localStorage.getItem(this.storageKey);
     if (stored && this.availableThemes.includes(stored)) {
       this.setTheme(stored);
     } else {
@@ -24,7 +26,7 @@ export class ThemeService {
   setTheme(themeKey: string): void {
     if (applyThemeVariables(themeKey)) {
       this.currentThemeKey.set(themeKey);
-      localStorage.setItem('ui-theme', themeKey);
+      localStorage.setItem(this.storageKey, themeKey);
     }
   }
 }

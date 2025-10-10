@@ -1,6 +1,6 @@
 import { Component, signal, effect, ChangeDetectionStrategy, input, output, computed } from '@angular/core';
 import { ThemeService } from '../../../services/theme.service';
-import { getThemeInfo } from '../../../theme-colors';
+import { getThemeInfo, ThemeColors } from '../../../theme-colors';
 import { CommonModule } from '@angular/common';
 import { SelectComponent } from '../select/select.component';
 import type { SelectOption, SelectVariant, SelectSize } from '../../../types';
@@ -60,6 +60,7 @@ import type { SelectOption, SelectVariant, SelectSize } from '../../../types';
       [size]="size()"
       [disabled]="disabled()"
       [searchable]="searchable()"
+      [value]="selected()"
       (change)="handleSelect($event)">
     </ui-select>
   `,
@@ -69,7 +70,7 @@ import type { SelectOption, SelectVariant, SelectSize } from '../../../types';
 export class ThemeSelectorComponent {
   /**
    * The label text for the theme selector dropdown.
-   * @default "Theme"
+   * @default ""
    */
   label = input<string>('');
 
@@ -118,7 +119,7 @@ export class ThemeSelectorComponent {
    */
   changed = output<string>();
 
-  protected selected = signal('');
+  protected selected!: ReturnType<typeof signal<string>>;
   protected themes: string[] = [];
   protected options = computed<SelectOption[]>(() =>
     this.themes.map((key) => ({ value: key, label: getThemeInfo(key)?.name ?? key }))
@@ -126,6 +127,8 @@ export class ThemeSelectorComponent {
 
   constructor(public themeService: ThemeService) {
     this.themes = themeService.availableThemes;
+    const initialTheme = (typeof localStorage !== 'undefined' ? localStorage.getItem(this.themeService.storageKey) : null) || this.themeService.defaultTheme;
+    this.selected = signal<string>(initialTheme);
     this.selected.set(themeService.currentTheme());
     effect(() => {
       const current = this.themeService.currentTheme();

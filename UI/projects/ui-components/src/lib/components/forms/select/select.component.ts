@@ -283,6 +283,14 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
   label = input<string>('');
   
   /**
+   * Initial or controlled value for the select.
+   * Use this to set the selected option programmatically.
+   * @default undefined
+   * @example "option-1"
+   */
+  value = input<any>();
+  
+  /**
    * Placeholder text when no option is selected.
    * @default "Select an option"
    */
@@ -392,7 +400,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
   close = output<void>();
 
   // State
-  private value = signal<any>(null);
+  private internalValue = signal<any>(null);
   private selectedValues = signal<any[]>([]);
   isOpen = signal<boolean>(false);
   searchQuery = signal<string>('');
@@ -407,6 +415,14 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
   private onTouched = () => {};
 
   constructor() {
+    // Sync input value with internal state
+    effect(() => {
+      const inputValue = this.value();
+      if (inputValue !== undefined && inputValue !== this.internalValue()) {
+        this.internalValue.set(inputValue);
+      }
+    });
+
     // Handle dropdown open/close with dismiss service
     effect(() => {
       if (this.isOpen()) {
@@ -439,7 +455,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
   // Computed properties
   selectedOption = computed(() => {
     if (this.multiple()) return null;
-    return this.options().find(opt => opt.value === this.value()) || null;
+    return this.options().find(opt => opt.value === this.internalValue()) || null;
   });
 
   filteredOptions = computed(() => {
@@ -499,7 +515,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
       this.onChange(values);
       this.change.emit(values);
     } else {
-      this.value.set(option.value);
+      this.internalValue.set(option.value);
       this.onChange(option.value);
       this.change.emit(option.value);
       this.closeDropdown();
@@ -510,7 +526,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
     if (this.multiple()) {
       return this.selectedValues().includes(option.value);
     }
-    return this.value() === option.value;
+    return this.internalValue() === option.value;
   }
 
   setHighlightedIndex(index: number): void {
@@ -663,7 +679,7 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
     if (this.multiple()) {
       this.selectedValues.set(Array.isArray(value) ? value : []);
     } else {
-      this.value.set(value);
+      this.internalValue.set(value);
     }
   }
 
