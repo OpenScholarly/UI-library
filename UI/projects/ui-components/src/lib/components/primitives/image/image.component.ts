@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { ImageFit, ImageRounded } from '../../../types';
+import { DimensionService } from '../../../utilities';
 
 /**
  * A versatile and accessible image component with loading and error states.
@@ -192,6 +193,7 @@ export class ImageComponent {
 
   protected isLoaded = signal(false);
   protected hasError = signal(false);
+  private dimensionService = inject(DimensionService);
 
   constructor() {
     if(!this.src) {
@@ -204,16 +206,10 @@ export class ImageComponent {
 
   // Container styles: single bindings with normalized values
   protected containerWidth = computed(() => {
-    const w = this.width();
-    if (typeof w === 'number') return `${w}px`;
-    if (typeof w === 'string' && w.trim() !== '') return w;
-    return null;
+    return this.dimensionService.toCssValue(this.width());
   });
   protected containerHeight = computed(() => {
-    const h = this.height();
-    if (typeof h === 'number') return `${h}px`;
-    if (typeof h === 'string' && h.trim() !== '') return h;
-    return null;
+    return this.dimensionService.toCssValue(this.height());
   });
   protected containerAspectRatio = computed(() => {
     // If explicit height set, don't apply aspect-ratio
@@ -224,21 +220,7 @@ export class ImageComponent {
     if (ar && ar.trim() !== '') return ar;
 
     // Deduce from numeric width/height inputs if possible
-    const toNum = (v: unknown): number | null => {
-      if (typeof v === 'number' && isFinite(v) && v > 0) return v;
-      if (typeof v === 'string') {
-        const trimmed = v.trim();
-        if (/^[0-9]+(\.[0-9]+)?$/.test(trimmed)) {
-          const n = Number(trimmed);
-          return isFinite(n) && n > 0 ? n : null;
-        }
-      }
-      return null;
-    };
-    const w = toNum(this.width());
-    const h = toNum(this.height());
-    if (w && h) return `${w} / ${h}`;
-    return null;
+    return this.dimensionService.calculateAspectRatio(this.width(), this.height());
   });
 
     protected containerClasses = computed(() => {
