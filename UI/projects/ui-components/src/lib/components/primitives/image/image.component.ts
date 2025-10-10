@@ -72,11 +72,20 @@ import { ImageFit, ImageRounded } from '../../../types';
           [src]="src()"
           [alt]="alt()"
           [loading]="loading()"
+          [style.width]="containerWidth()"
+          [style.height]="containerHeight()"
+          [style.aspect-ratio]="containerAspectRatio()"
+          [width]="containerWidth()"
+          [height]="containerHeight()"
           (load)="onLoad()"
           (error)="onError()"
         />
         @if(!isLoaded()) {
-          <div [class]="placeholderClasses()">
+          <div [class]="placeholderClasses()"
+            [style.width]="containerWidth()"
+            [style.height]="containerHeight()"
+            [style.aspect-ratio]="containerAspectRatio()"
+          >
             <ng-content select="[slot=placeholder]">
               <div class="flex items-center justify-center">
                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
