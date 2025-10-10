@@ -266,7 +266,7 @@ export class ToggleComponent implements ControlValueAccessor {
 
   protected toggleTrackClasses = computed(() => {
     const baseClasses = 'relative inline-flex items-center rounded-full ui-transition-standard ui-focus-primary';
-    // 2.28 ratio
+    // Approximate 2.28 ratio (sm: 55/24 ≈ 2.29, md: 68/30 ≈ 2.27, lg: 91/40 ≈ 2.28)
     const pillSizeClasses = {
       sm: 'h-[24px] w-[55px]',
       md: 'h-[30px] w-[68px]',
