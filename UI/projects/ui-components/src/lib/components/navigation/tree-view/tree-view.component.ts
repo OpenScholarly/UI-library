@@ -66,7 +66,8 @@ import { TreeNode } from '../../../types';
                     [attr.aria-label]="isExpanded(node.id) ? 'Collapse' : 'Expand'"
                   >
                     <span 
-                      [class]="getChevronClasses(node.id)">
+                      class="text-sm transform transition-transform"
+                      [class.rotate-90]="isExpanded(node.id)">
                       ▶
                     </span>
                   </button>
@@ -74,15 +75,15 @@ import { TreeNode } from '../../../types';
                   <div class="w-6 h-6"></div>
                 }
                 
-                <!-- Node icon -->
-                @if (node.icon) {
-                  <span class="flex-shrink-0 mr-2 text-lg">{{ node.icon }}</span>
-                } @else if (!hasChildren(node)) {
-                  <span class="flex-shrink-0 mr-2 text-gray-400 dark:text-gray-600">📄</span>
-                } @else {
+                <!-- Node icon: dynamic for folders, optional custom for leaf, default file icon -->
+                @if (hasChildren(node)) {
                   <span class="flex-shrink-0 mr-2 text-gray-400 dark:text-gray-600">
                     {{ getFolderIcon(node.id) }}
                   </span>
+                } @else if (node.icon) {
+                  <span class="flex-shrink-0 mr-2 text-lg">{{ node.icon }}</span>
+                } @else {
+                  <span class="flex-shrink-0 mr-2 text-gray-400 dark:text-gray-600">📄</span>
                 }
                 
                 <!-- Node label -->
@@ -149,6 +150,28 @@ export class TreeViewComponent {
         this.collectExpandedNodes(nodes, initiallyExpanded);
         this.expandedNodes.set(initiallyExpanded);
       }
+    });
+
+    // Enforce single selection when multiSelect is false
+    effect(() => {
+      if (!this.selectable() || this.multiSelect()) return;
+      const nodes = this.nodes();
+      if (nodes.length === 0) return;
+
+      let found = false;
+      const walk = (arr: TreeNode[]) => {
+        for (const n of arr) {
+          if (n.selected) {
+            if (!found) {
+              found = true;
+            } else {
+              n.selected = false;
+            }
+          }
+          if (n.children) walk(n.children);
+        }
+      };
+      walk(nodes);
     });
   }
 
