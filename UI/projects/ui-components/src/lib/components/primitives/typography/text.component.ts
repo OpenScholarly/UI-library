@@ -2,21 +2,55 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { TextSize, TextWeight, TextVariant } from '../../../types';
 
 /**
- * A flexible, theme-aware text primitive for inline and block textual content.
+ * A versatile and accessible text component for inline and block content.
  *
- * Features
- * - Size and weight presets aligned with the design system
- * - Variants: body, caption, overline, code
- * - Theme-aware color tokens (primary, secondary, muted, success, warning, error)
- * - Utility toggles: truncate, italic, underline
- * - Optimized for accessibility and readable defaults
+ * ## Features
+ * - Multiple size options (xs to xl)
+ * - Weight control (thin to black)
+ * - Visual variants (body, caption, overline, code)
+ * - Theme-aware color variants
+ * - Truncation with ellipsis
+ * - Italic and underline options
+ * - Custom class support
+ * - Dark mode support
+ * - WCAG 2.1 Level AA compliance
  *
- * Examples
+ * @example
  * ```html
- * <ui-text size="sm" color="secondary">Secondary small text</ui-text>
- * <ui-text variant="overline" weight="medium">OVERLINE LABEL</ui-text>
+ * <!-- Basic body text -->
+ * <ui-text>This is standard body text</ui-text>
+ *
+ * <!-- Small secondary text -->
+ * <ui-text size="sm" color="secondary">
+ *   Supporting information
+ * </ui-text>
+ *
+ * <!-- Caption text -->
+ * <ui-text variant="caption" color="muted">
+ *   Figure 1: Chart showing data
+ * </ui-text>
+ *
+ * <!-- Overline label -->
+ * <ui-text variant="overline" weight="medium">
+ *   CATEGORY
+ * </ui-text>
+ *
+ * <!-- Inline code -->
  * <ui-text variant="code">const x = 42;</ui-text>
- * <ui-text [truncate]="true" style="max-width: 12rem">Will be truncated...</ui-text>
+ *
+ * <!-- Truncated text -->
+ * <ui-text [truncate]="true" style="max-width: 200px">
+ *   This is a long text that will be truncated with ellipsis
+ * </ui-text>
+ *
+ * <!-- Colored text -->
+ * <ui-text color="success">Success message</ui-text>
+ * <ui-text color="error">Error message</ui-text>
+ *
+ * <!-- Styled text -->
+ * <ui-text [italic]="true" [underline]="true">
+ *   Emphasized text
+ * </ui-text>
  * ```
  */
 @Component({
@@ -32,21 +66,79 @@ import { TextSize, TextWeight, TextVariant } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TextComponent {
-  /** Size of the text. */
+  /**
+   * Size of the text.
+   * - `xs`: Extra small
+   * - `sm`: Small
+   * - `md`: Medium (default)
+   * - `lg`: Large
+   * - `xl`: Extra large
+   * @default "md"
+   */
   size = input<TextSize>('md');
-  /** Font weight preset. */
+  
+  /**
+   * Font weight of the text.
+   * - `thin`: 100
+   * - `light`: 300
+   * - `normal`: 400 (default)
+   * - `medium`: 500
+   * - `semibold`: 600
+   * - `bold`: 700
+   * - `extrabold`: 800
+   * - `black`: 900
+   * @default "normal"
+   */
   weight = input<TextWeight>('normal');
-  /** Visual variant: body, caption, overline, code. */
+  
+  /**
+   * Visual variant of the text.
+   * - `body`: Standard body text (default)
+   * - `caption`: Smaller caption text
+   * - `overline`: Uppercase overline label
+   * - `code`: Monospace code text
+   * @default "body"
+   */
   variant = input<TextVariant>('body');
-  /** Theme-aware color token. */
+  
+  /**
+   * Color variant of the text.
+   * - `default`: Standard text color
+   * - `inherit`: Inherits from parent
+   * - `primary`: Primary brand color
+   * - `secondary`: Secondary color
+   * - `muted`: Muted/dimmed text
+   * - `success`: Success green
+   * - `warning`: Warning yellow
+   * - `error`: Error red
+   * @default "default"
+   */
   color = input<'default' | 'inherit' | 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error'>('default');
-  /** Truncate the text with ellipsis when it overflows (requires max-width). */
+  
+  /**
+   * Truncate text with ellipsis when it overflows.
+   * Requires a max-width to be set on the element.
+   * @default false
+   */
   truncate = input(false);
-  /** Render italic text. */
+  
+  /**
+   * Renders text in italic style.
+   * @default false
+   */
   italic = input(false);
-  /** Underline the text. */
+  
+  /**
+   * Underlines the text.
+   * @default false
+   */
   underline = input(false);
-  /** Additional Tailwind classes to merge. */
+  
+  /**
+   * Additional Tailwind CSS classes to apply.
+   * @default ""
+   * @example "font-bold text-center"
+   */
   customClasses = input<string>('');
 
   protected textClasses = computed(() => {

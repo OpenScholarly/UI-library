@@ -1,6 +1,62 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { ImageFit, ImageRounded } from '../../../types';
 
+/**
+ * A versatile and accessible image component with loading and error states.
+ *
+ * ## Features
+ * - Multiple object-fit options (cover, contain, fill, etc.)
+ * - Rounded corner options
+ * - Loading states with placeholder
+ * - Error handling with customizable error display
+ * - Lazy loading support
+ * - Aspect ratio control
+ * - Dark mode support
+ * - Full accessibility with alt text
+ *
+ * @example
+ * ```html
+ * <!-- Basic image -->
+ * <ui-image
+ *   src="/path/to/image.jpg"
+ *   alt="Description">
+ * </ui-image>
+ *
+ * <!-- Rounded image with cover -->
+ * <ui-image
+ *   src="/avatar.jpg"
+ *   alt="User avatar"
+ *   fit="cover"
+ *   rounded="full">
+ * </ui-image>
+ *
+ * <!-- With aspect ratio -->
+ * <ui-image
+ *   src="/banner.jpg"
+ *   alt="Banner"
+ *   aspectRatio="16:9">
+ * </ui-image>
+ *
+ * <!-- Lazy loaded image -->
+ * <ui-image
+ *   src="/large-image.jpg"
+ *   alt="Large image"
+ *   loading="lazy">
+ * </ui-image>
+ *
+ * <!-- With custom placeholder -->
+ * <ui-image src="/image.jpg" alt="Image">
+ *   <div slot="placeholder">Loading...</div>
+ * </ui-image>
+ *
+ * <!-- With error handler -->
+ * <ui-image
+ *   src="/image.jpg"
+ *   alt="Image"
+ *   (error)="handleImageError($event)">
+ * </ui-image>
+ * ```
+ */
 @Component({
   selector: 'ui-image',
   standalone: true,
@@ -47,16 +103,81 @@ import { ImageFit, ImageRounded } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageComponent {
+  /**
+   * Image source URL.
+   * @required
+   * @example "/images/photo.jpg" or "https://example.com/image.png"
+   */
   src = input.required<string>();
+  
+  /**
+   * Alternative text for accessibility.
+   * @default ""
+   * @example "User profile photo"
+   */
   alt = input<string>('');
+  
+  /**
+   * Width of the image.
+   * @default ""
+   * @example "300" or "100%"
+   */
   width = input<string | number>('');
+  
+  /**
+   * Height of the image.
+   * @default ""
+   * @example "200" or "auto"
+   */
   height = input<string | number>('');
+  
+  /**
+   * How the image should fit within its container.
+   * - `cover`: Scales to cover container (default)
+   * - `contain`: Scales to fit within container
+   * - `fill`: Stretches to fill container
+   * - `none`: Original size
+   * - `scale-down`: Scales down if larger
+   * @default "cover"
+   */
   fit = input<ImageFit>('cover');
+  
+  /**
+   * Border radius of the image.
+   * - `none`: No rounding
+   * - `sm`: Small rounding
+   * - `md`: Medium rounding (default)
+   * - `lg`: Large rounding
+   * - `xl`: Extra large rounding
+   * - `full`: Fully circular
+   * @default "md"
+   */
   rounded = input<ImageRounded>('md');
+  
+  /**
+   * Native image loading strategy.
+   * - `lazy`: Defers loading until visible (default)
+   * - `eager`: Loads immediately
+   * @default "lazy"
+   */
   loading = input<'lazy' | 'eager'>('lazy');
+  
+  /**
+   * Placeholder image URL or text.
+   * @default ""
+   */
   placeholder = input<string>('');
 
+  /**
+   * Emitted when the image finishes loading.
+   * @event loaded
+   */
   loaded = output<void>();
+  
+  /**
+   * Emitted when the image fails to load.
+   * @event error
+   */
   error = output<void>();
 
   private isLoaded = signal(false);

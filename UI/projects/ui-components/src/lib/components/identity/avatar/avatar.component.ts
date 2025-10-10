@@ -1,6 +1,66 @@
 import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { AvatarSize, AvatarShape, AvatarStatus } from '../../../types';
 
+/**
+ * A versatile and accessible avatar component for user profiles and identities.
+ *
+ * ## Features
+ * - Multiple sizes (xs, sm, md, lg, xl, 2xl)
+ * - Shape options (circle, square, rounded)
+ * - Image display with fallback to initials
+ * - Status indicator (online, offline, away, busy)
+ * - Badge display for notifications
+ * - Graceful image loading with error handling
+ * - Full screen reader support with ARIA labels
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Avatar with image -->
+ * <ui-avatar
+ *   src="/avatar.jpg"
+ *   alt="John Doe"
+ *   name="John Doe">
+ * </ui-avatar>
+ *
+ * <!-- Avatar with initials fallback -->
+ * <ui-avatar name="Jane Smith" />
+ *
+ * <!-- Avatar with status indicator -->
+ * <ui-avatar
+ *   src="/avatar.jpg"
+ *   name="John Doe"
+ *   status="online">
+ * </ui-avatar>
+ *
+ * <!-- Avatar with badge -->
+ * <ui-avatar
+ *   src="/avatar.jpg"
+ *   name="Admin User"
+ *   badge="5">
+ * </ui-avatar>
+ *
+ * <!-- Different sizes -->
+ * <ui-avatar name="XS" size="xs" />
+ * <ui-avatar name="SM" size="sm" />
+ * <ui-avatar name="MD" size="md" />
+ * <ui-avatar name="LG" size="lg" />
+ * <ui-avatar name="XL" size="xl" />
+ * <ui-avatar name="2XL" size="2xl" />
+ *
+ * <!-- Different shapes -->
+ * <ui-avatar name="Circle" shape="circle" />
+ * <ui-avatar name="Square" shape="square" />
+ * <ui-avatar name="Rounded" shape="rounded" />
+ *
+ * <!-- Status variants -->
+ * <ui-avatar name="Online" status="online" />
+ * <ui-avatar name="Away" status="away" />
+ * <ui-avatar name="Busy" status="busy" />
+ * <ui-avatar name="Offline" status="offline" />
+ * ```
+ */
 @Component({
   selector: 'ui-avatar',
   standalone: true,
@@ -43,13 +103,76 @@ import { AvatarSize, AvatarShape, AvatarStatus } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarComponent {
+  /**
+   * URL of the avatar image.
+   * Falls back to initials or default icon if image fails to load.
+   * @default ""
+   * @example "/avatars/user123.jpg"
+   */
   src = input<string>('');
+  
+  /**
+   * Alt text for the avatar image.
+   * Important for accessibility.
+   * @default ""
+   * @example "User profile picture"
+   */
   alt = input<string>('');
+  
+  /**
+   * Name of the user.
+   * Used to generate initials when image is not available.
+   * @default ""
+   * @example "John Doe"
+   */
   name = input<string>('');
+  
+  /**
+   * Size of the avatar.
+   * - `xs`: 24px (extra small)
+   * - `sm`: 32px (small)
+   * - `md`: 40px (medium) - default
+   * - `lg`: 48px (large)
+   * - `xl`: 64px (extra large)
+   * - `2xl`: 80px (2x extra large)
+   * @default "md"
+   */
   size = input<AvatarSize>('md');
+  
+  /**
+   * Shape of the avatar.
+   * - `circle`: Circular avatar (default)
+   * - `square`: Square avatar with no rounding
+   * - `rounded`: Square avatar with rounded corners
+   * @default "circle"
+   */
   shape = input<AvatarShape>('circle');
+  
+  /**
+   * Status indicator to display.
+   * - `online`: Green indicator
+   * - `offline`: Gray indicator
+   * - `away`: Yellow indicator
+   * - `busy`: Red indicator
+   * - `null`: No indicator (default)
+   * @default null
+   */
   status = input<AvatarStatus | null>(null);
+  
+  /**
+   * Badge content to display (usually a count).
+   * Displayed in top-right corner.
+   * @default ""
+   * @example 5 or "NEW"
+   */
   badge = input<string | number>('');
+  
+  /**
+   * Image loading strategy.
+   * - `lazy`: Lazy load the image (default)
+   * - `eager`: Load image immediately
+   * @default "lazy"
+   */
   loading = input<'lazy' | 'eager'>('lazy');
 
   protected imageError = signal(false);
@@ -59,7 +182,7 @@ export class AvatarComponent {
   });
 
   protected avatarClasses = computed(() => {
-    const baseClasses = 'flex items-center justify-center overflow-hidden bg-gray-100 text-gray-600';
+    const baseClasses = 'flex items-center justify-center overflow-hidden bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300';
 
     const sizeClasses = {
       xs: 'w-6 h-6 text-xs',

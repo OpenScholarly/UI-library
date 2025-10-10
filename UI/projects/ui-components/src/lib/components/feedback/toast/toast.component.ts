@@ -2,6 +2,61 @@ import { Component, ChangeDetectionStrategy, input, output, computed, signal, On
 import { CommonModule } from '@angular/common';
 import { ToastVariant, ToastPosition, ToastData } from '../../../types';
 
+/**
+ * A versatile and accessible toast notification component for user feedback.
+ *
+ * ## Features
+ * - Multiple visual variants (default, success, warning, danger, info)
+ * - Position control (top-left, top-center, top-right, bottom-left, etc.)
+ * - Auto-dismiss with configurable duration
+ * - Persistent toasts (no auto-dismiss)
+ * - Action button support
+ * - Dismissible with close button
+ * - Full screen reader support with ARIA attributes
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Smooth slide-in animations
+ *
+ * @example
+ * ```html
+ * <!-- Success toast -->
+ * <ui-toast
+ *   variant="success"
+ *   title="Success!"
+ *   message="Your changes have been saved."
+ *   [duration]="3000">
+ * </ui-toast>
+ *
+ * <!-- Error toast with action -->
+ * <ui-toast
+ *   variant="danger"
+ *   title="Error"
+ *   message="Failed to save changes."
+ *   [action]="{ label: 'Retry', handler: retryAction }">
+ * </ui-toast>
+ *
+ * <!-- Warning toast -->
+ * <ui-toast
+ *   variant="warning"
+ *   message="Your session will expire soon."
+ *   position="top-center">
+ * </ui-toast>
+ *
+ * <!-- Persistent info toast -->
+ * <ui-toast
+ *   variant="info"
+ *   title="New Feature"
+ *   message="Check out our latest update!"
+ *   [persistent]="true">
+ * </ui-toast>
+ *
+ * <!-- Toast without icon -->
+ * <ui-toast
+ *   message="Simple notification"
+ *   [showIcon]="false">
+ * </ui-toast>
+ * ```
+ */
 @Component({
   selector: 'ui-toast',
   standalone: true,
@@ -103,17 +158,72 @@ import { ToastVariant, ToastPosition, ToastData } from '../../../types';
   `
 })
 export class ToastComponent implements OnInit, OnDestroy {
-  // Inputs
+  /**
+   * Title text displayed in the toast.
+   * Optional - if not provided, only message is shown.
+   * @default ""
+   * @example "Success!"
+   */
   title = input<string>('');
+  
+  /**
+   * Message text displayed in the toast.
+   * @required
+   * @example "Your changes have been saved"
+   */
   message = input.required<string>();
+  
+  /**
+   * Visual style variant of the toast.
+   * - `default`: Gray toast (default)
+   * - `success`: Green success toast
+   * - `warning`: Yellow warning toast
+   * - `danger`: Red error toast
+   * - `info`: Blue informational toast
+   * @default "default"
+   */
   variant = input<ToastVariant>('default');
+  
+  /**
+   * Duration in milliseconds before auto-dismiss.
+   * Set to 0 for manual dismiss only.
+   * @default 5000
+   * @example 3000 for 3 seconds
+   */
   duration = input<number>(5000);
+  
+  /**
+   * Prevents auto-dismiss.
+   * User must manually close the toast.
+   * @default false
+   */
   persistent = input<boolean>(false);
+  
+  /**
+   * Shows a progress bar indicating remaining time.
+   * Only visible when auto-dismiss is enabled.
+   * @default false
+   */
   showProgress = input<boolean>(false);
+  
+  /**
+   * Action button configuration.
+   * Displays a clickable action in the toast.
+   * @default null
+   * @example { label: 'Retry', handler: () => retryAction() }
+   */
   action = input<{ label: string; handler: () => void } | null>(null);
 
-  // Outputs
+  /**
+   * Emitted when the toast is dismissed.
+   * @event dismiss
+   */
   dismiss = output<void>();
+  
+  /**
+   * Emitted when the action button is clicked.
+   * @event actionClick
+   */
   actionClick = output<void>();
 
   // State

@@ -1,10 +1,45 @@
 import { Component, input, computed } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { StatItem } from '../../../types';
 
+/**
+ * A versatile and accessible stats component for displaying key metrics and KPIs.
+ *
+ * ## Features
+ * - Multiple layout options (grid, row)
+ * - Icon support for each stat
+ * - Change indicators with trend arrows
+ * - Value formatting
+ * - Description support
+ * - Period display
+ * - Full screen reader support with semantic HTML
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Responsive design
+ *
+ * @example
+ * ```html
+ * <!-- Basic stats -->
+ * <ui-stats [stats]="statsData"></ui-stats>
+ *
+ * <!-- Grid layout -->
+ * <ui-stats
+ *   [stats]="[
+ *     { label: 'Total Users', value: 1234, change: { value: 5, type: 'increase' } },
+ *     { label: 'Revenue', value: 45678, icon: '💰' },
+ *     { label: 'Growth', value: 89, change: { value: 12, type: 'increase', period: 'vs last month' } }
+ *   ]"
+ *   layout="grid">
+ * </ui-stats>
+ *
+ * <!-- With custom formatting -->
+ * <ui-stats
+ *   [stats]="metrics"
+ *   variant="bordered">
+ * </ui-stats>
+ * ```
+ */
 @Component({
   selector: 'ui-stats',
-  imports: [NgClass],
   template: `
     <div [class]="containerClasses()">
       @for (stat of stats(); track stat.label) {

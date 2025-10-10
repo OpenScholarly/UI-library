@@ -1,6 +1,66 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { MenuItem, MenuTrigger, MenuPlacement } from '../../../types';
 
+/**
+ * A versatile and accessible menu component for dropdown menus and context menus.
+ *
+ * ## Features
+ * - Multiple trigger modes (click, hover, context)
+ * - Placement options (top, bottom, left, right with auto-positioning)
+ * - Nested submenus support
+ * - Separators and dividers
+ * - Icon support for menu items
+ * - Disabled items handling
+ * - Full keyboard navigation (Arrow keys, Enter, Escape)
+ * - Full screen reader support with ARIA attributes
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Auto-close on selection
+ *
+ * @example
+ * ```html
+ * <!-- Basic menu with click trigger -->
+ * <ui-menu [items]="menuItems" trigger="click">
+ *   <button slot="trigger">Menu</button>
+ * </ui-menu>
+ *
+ * <!-- Menu with hover trigger -->
+ * <ui-menu
+ *   [items]="items"
+ *   trigger="hover"
+ *   placement="bottom-start">
+ *   <span slot="trigger">Hover me</span>
+ * </ui-menu>
+ *
+ * <!-- Context menu -->
+ * <ui-menu
+ *   [items]="contextItems"
+ *   trigger="context">
+ *   <div slot="trigger">Right-click me</div>
+ * </ui-menu>
+ *
+ * <!-- Menu with nested items -->
+ * <ui-menu
+ *   [items]="[
+ *     { id: '1', label: 'File', icon: '📁', children: [
+ *       { id: '1-1', label: 'New', icon: '📄' },
+ *       { id: '1-2', label: 'Open', icon: '📂' }
+ *     ]},
+ *     { id: 'sep1', separator: true },
+ *     { id: '2', label: 'Edit', icon: '✏️' }
+ *   ]"
+ *   (itemClick)="handleMenuClick($event)">
+ *   <button slot="trigger">Actions</button>
+ * </ui-menu>
+ *
+ * <!-- Menu with disabled items -->
+ * <ui-menu
+ *   [items]="items"
+ *   [closeOnSelect]="true">
+ *   <button slot="trigger">Options</button>
+ * </ui-menu>
+ * ```
+ */
 @Component({
   selector: 'ui-menu',
   standalone: true,
@@ -94,13 +154,59 @@ import { MenuItem, MenuTrigger, MenuPlacement } from '../../../types';
   }
 })
 export class MenuComponent {
+  /**
+   * Array of menu items to display.
+   * Supports nested items via children property.
+   * @required
+   * @example [{ id: '1', label: 'Action', icon: '⚡' }]
+   */
   items = input.required<MenuItem[]>();
+  
+  /**
+   * Trigger mode for opening the menu.
+   * - `click`: Opens on click (default)
+   * - `hover`: Opens on hover
+   * - `context`: Opens on right-click
+   * @default "click"
+   */
   trigger = input<MenuTrigger>('click');
+  
+  /**
+   * Placement of the menu relative to trigger.
+   * - `bottom-start`: Below trigger, left-aligned (default)
+   * - `bottom-end`: Below trigger, right-aligned
+   * - `top-start`: Above trigger, left-aligned
+   * - `top-end`: Above trigger, right-aligned
+   * - `right-start`: Right of trigger, top-aligned
+   * - `left-start`: Left of trigger, top-aligned
+   * @default "bottom-start"
+   */
   placement = input<MenuPlacement>('bottom-start');
+  
+  /**
+   * Disables the menu and prevents interaction.
+   * @default false
+   */
   disabled = input(false);
+  
+  /**
+   * Automatically closes menu when an item is selected.
+   * @default true
+   */
   closeOnSelect = input(true);
 
+  /**
+   * Emitted when a menu item is clicked.
+   * Provides the selected menu item.
+   * @event itemSelected
+   */
   itemSelected = output<MenuItem>();
+  
+  /**
+   * Emitted when the menu is opened or closed.
+   * Provides the open state (true/false).
+   * @event menuToggled
+   */
   menuToggled = output<boolean>();
 
   protected isOpen = signal(false);
