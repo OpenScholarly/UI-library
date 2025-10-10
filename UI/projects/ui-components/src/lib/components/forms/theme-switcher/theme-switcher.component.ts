@@ -53,7 +53,7 @@ import { ThemeMode } from '../../../types';
         <input
           [id]="systemId"
           type="radio"
-          name="theme-switcher"
+          name="theme-switcher-system"
           value="system"
           [checked]="currentTheme() === 'system'"
           [attr.aria-pressed]="currentTheme() === 'system'"
@@ -85,7 +85,7 @@ import { ThemeMode } from '../../../types';
         <input
           [id]="lightId"
           type="radio"
-          name="theme-switcher"
+          name="theme-switcher-light"
           value="light"
           [checked]="currentTheme() === 'light'"
           [attr.aria-pressed]="currentTheme() === 'light'"
@@ -117,7 +117,7 @@ import { ThemeMode } from '../../../types';
         <input
           [id]="darkId"
           type="radio"
-          name="theme-switcher"
+          name="theme-switcher-dark"
           value="dark"
           [checked]="currentTheme() === 'dark'"
           [attr.aria-pressed]="currentTheme() === 'dark'"
@@ -149,7 +149,7 @@ import { ThemeMode } from '../../../types';
 })
 export class ThemeSwitcherComponent {
   size = input<'sm' | 'md'>('md');
-  storageKey = input('ui-theme');
+  storageKey = input('light-theme-preference');
   systemLabel = input('System');
   lightLabel = input('Light');
   darkLabel = input('Dark');
@@ -159,7 +159,10 @@ export class ThemeSwitcherComponent {
   private document = inject(DOCUMENT);
   private mediaQuery = this.document.defaultView?.matchMedia('(prefers-color-scheme: dark)');
 
-  protected currentTheme = signal<ThemeMode>('system');
+  // Initialize theme from localStorage immediately
+  protected currentTheme = signal<ThemeMode>(
+    (typeof localStorage !== 'undefined' ? localStorage.getItem(this.storageKey()) : null) as ThemeMode || 'system'
+  );
 
   // Generate unique IDs for radio buttons (generated once per instance)
   protected readonly systemId = `theme-switch-system-${Math.random().toString(36).substr(2, 9)}`;
@@ -198,12 +201,8 @@ export class ThemeSwitcherComponent {
   }
 
   constructor() {
-    // Initialize theme from localStorage or default to system
-    effect(() => {
-      const stored = localStorage.getItem(this.storageKey()) as ThemeMode || 'system';
-      this.currentTheme.set(stored);
-      this.applyTheme(stored);
-    }, { allowSignalWrites: true });
+    // Apply the theme on initial load
+    this.applyTheme(this.currentTheme());
 
     // Listen for system theme changes
     if (this.mediaQuery) {
@@ -213,12 +212,7 @@ export class ThemeSwitcherComponent {
         }
       };
 
-      if (this.mediaQuery.addEventListener) {
-        this.mediaQuery.addEventListener('change', handleSystemChange);
-      } else {
-        // Fallback for older browsers
-        (this.mediaQuery as any).addListener(handleSystemChange);
-      }
+      this.mediaQuery.addEventListener('change', handleSystemChange);
     }
   }
 
