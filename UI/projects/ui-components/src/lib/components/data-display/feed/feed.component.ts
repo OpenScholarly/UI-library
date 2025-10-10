@@ -1,5 +1,4 @@
 import { Component, input, output, computed } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { FeedItem } from '../../../types';
 
 /**
@@ -38,7 +37,6 @@ import { FeedItem } from '../../../types';
  */
 @Component({
   selector: 'ui-feed',
-  imports: [NgClass],
   template: `
     <div [class]="containerClasses()">
       @for (item of items(); track item.id) {

@@ -1,5 +1,4 @@
 import { Component, input, output, computed, signal } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { NavbarItem } from '../../../types';
 
 /**
@@ -46,7 +45,6 @@ import { NavbarItem } from '../../../types';
  */
 @Component({
   selector: 'ui-navbar',
-  imports: [NgClass],
   template: `
     <nav [class]="containerClasses()">
       <div class="mx-auto px-4 sm:px-6 lg:px-8">

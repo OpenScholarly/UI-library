@@ -1,5 +1,4 @@
 import { Component, input, computed } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { StatItem } from '../../../types';
 
 /**
@@ -41,7 +40,6 @@ import { StatItem } from '../../../types';
  */
 @Component({
   selector: 'ui-stats',
-  imports: [NgClass],
   template: `
     <div [class]="containerClasses()">
       @for (stat of stats(); track stat.label) {

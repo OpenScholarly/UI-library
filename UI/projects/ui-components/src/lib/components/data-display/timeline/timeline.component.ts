@@ -1,5 +1,4 @@
 import { Component, input, output, computed } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { TimelineItem } from '../../../types';
 
 /**
@@ -40,7 +39,6 @@ import { TimelineItem } from '../../../types';
  */
 @Component({
   selector: 'ui-timeline',
-  imports: [NgClass],
   template: `
     <div class="relative">
       <!-- Timeline line -->

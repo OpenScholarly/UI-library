@@ -1,5 +1,4 @@
 import { Component, input, output, computed, signal, effect, ElementRef, inject } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { CommandItem } from '../../../types';
 
 /**
@@ -47,7 +46,6 @@ import { CommandItem } from '../../../types';
  */
 @Component({
   selector: 'ui-command-menu',
-  imports: [NgClass],
   template: `
     @if (isOpen()) {
       <div class="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">

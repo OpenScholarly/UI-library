@@ -1,5 +1,4 @@
 import { Component, input, output, computed, signal, effect, ElementRef, inject } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { CarouselItem } from '../../../types';
 
 /**
@@ -47,7 +46,6 @@ import { CarouselItem } from '../../../types';
  */
 @Component({
   selector: 'ui-carousel',
-  imports: [NgClass],
   template: `
     <div [class]="containerClasses()" [attr.aria-label]="ariaLabel() || 'Carousel'">
       <!-- Main carousel content -->
