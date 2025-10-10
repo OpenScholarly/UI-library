@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { ImageFit, ImageRounded } from '../../../types';
+import { DimensionService } from '../../../utilities/dimension.service';
 
 /**
  * A versatile and accessible image component with loading and error states.
@@ -72,20 +73,13 @@ import { ImageFit, ImageRounded } from '../../../types';
           [src]="src()"
           [alt]="alt()"
           [loading]="loading()"
-          [style.width]="containerWidth()"
-          [style.height]="containerHeight()"
-          [style.aspect-ratio]="containerAspectRatio()"
-          [width]="containerWidth()"
-          [height]="containerHeight()"
+          [attr.width]="numericWidth()"
+          [attr.height]="numericHeight()"
           (load)="onLoad()"
           (error)="onError()"
         />
         @if(!isLoaded()) {
-          <div [class]="placeholderClasses()"
-            [style.width]="containerWidth()"
-            [style.height]="containerHeight()"
-            [style.aspect-ratio]="containerAspectRatio()"
-          >
+          <div [class]="placeholderClasses()">
             <ng-content select="[slot=placeholder]">
               <div class="flex items-center justify-center">
                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,6 +110,7 @@ import { ImageFit, ImageRounded } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageComponent {
+  private readonly dim = inject(DimensionService);
   /**
    * Image source URL.
    * @required
@@ -212,18 +207,8 @@ export class ImageComponent {
   }
 
   // Container styles: single bindings with normalized values
-  protected containerWidth = computed(() => {
-    const w = this.width();
-    if (typeof w === 'number') return `${w}px`;
-    if (typeof w === 'string' && w.trim() !== '') return w;
-    return null;
-  });
-  protected containerHeight = computed(() => {
-    const h = this.height();
-    if (typeof h === 'number') return `${h}px`;
-    if (typeof h === 'string' && h.trim() !== '') return h;
-    return null;
-  });
+  protected containerWidth = computed(() => this.dim.toCssValue(this.width() as string | number));
+  protected containerHeight = computed(() => this.dim.toCssValue(this.height() as string | number));
   protected containerAspectRatio = computed(() => {
     // If explicit height set, don't apply aspect-ratio
     if (this.containerHeight() !== null) return null;
@@ -250,7 +235,7 @@ export class ImageComponent {
     return null;
   });
 
-    protected containerClasses = computed(() => {
+  protected containerClasses = computed(() => {
     const baseClasses = 'relative overflow-hidden bg-gray-100 dark:bg-gray-800';
 
     const roundedClasses: Record<ImageRounded, string> = {
@@ -264,7 +249,7 @@ export class ImageComponent {
 
     const roundedClass = roundedClasses[this.rounded()];
 
-    return `${baseClasses} ${roundedClass} w-[${this.containerWidth()}px] h-[${this.containerHeight()}px]`.trim();
+    return `${baseClasses} ${roundedClass}`.trim();
   });
 
 
@@ -310,5 +295,9 @@ export class ImageComponent {
     this.hasError.set(true);
     this.error.emit();
   }
+
+  // Numeric attributes for <img> width/height: only bind when numeric
+  protected numericWidth = computed(() => this.dim.toNumericValue(this.width() as unknown));
+  protected numericHeight = computed(() => this.dim.toNumericValue(this.height() as unknown));
 
 }
