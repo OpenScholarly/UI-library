@@ -1,6 +1,63 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect } from '@angular/core';
 import { SearchResult, SearchSize, SearchVariant } from '../../../types';
 
+/**
+ * A versatile and accessible search component with autocomplete and result previews.
+ *
+ * ## Features
+ * - Real-time search with debouncing
+ * - Autocomplete dropdown with keyboard navigation
+ * - Result preview with title, description, and category
+ * - Loading state indicator
+ * - Clear button
+ * - Multiple size options (sm, md, lg)
+ * - Visual variants (default, filled, outlined)
+ * - Full keyboard navigation (Arrow keys, Enter, Escape)
+ * - Full screen reader support with ARIA attributes
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Highlighted matching text
+ *
+ * @example
+ * ```html
+ * <!-- Basic search -->
+ * <ui-search
+ *   placeholder="Search..."
+ *   (search)="onSearch($event)">
+ * </ui-search>
+ *
+ * <!-- Search with results -->
+ * <ui-search
+ *   [results]="searchResults"
+ *   [loading]="isLoading"
+ *   (resultSelected)="onResultSelected($event)">
+ * </ui-search>
+ *
+ * <!-- Search with debounce -->
+ * <ui-search
+ *   placeholder="Type to search..."
+ *   [debounceTime]="500"
+ *   [clearable]="true"
+ *   (search)="handleSearch($event)">
+ * </ui-search>
+ *
+ * <!-- Large search variant -->
+ * <ui-search
+ *   size="lg"
+ *   variant="filled"
+ *   placeholder="Search products..."
+ *   [results]="products"
+ *   [showNoResults]="true">
+ * </ui-search>
+ *
+ * <!-- With minimum characters -->
+ * <ui-search
+ *   [minChars]="3"
+ *   placeholder="Search (min 3 chars)..."
+ *   (search)="performSearch($event)">
+ * </ui-search>
+ * ```
+ */
 @Component({
   selector: 'ui-search',
   standalone: true,
@@ -134,21 +191,104 @@ import { SearchResult, SearchSize, SearchVariant } from '../../../types';
   }
 })
 export class SearchComponent {
+  /**
+   * Placeholder text displayed when input is empty.
+   * @default "Search..."
+   */
   placeholder = input<string>('Search...');
+  
+  /**
+   * Size of the search input.
+   * - `sm`: Small
+   * - `md`: Medium (default)
+   * - `lg`: Large
+   * @default "md"
+   */
   size = input<SearchSize>('md');
+  
+  /**
+   * Visual style variant of the search input.
+   * - `default`: Standard search with border
+   * - `filled`: Filled background search
+   * - `outlined`: Prominent bordered search
+   * @default "default"
+   */
   variant = input<SearchVariant>('default');
+  
+  /**
+   * Disables the search and prevents interaction.
+   * @default false
+   */
   disabled = input(false);
+  
+  /**
+   * Shows loading spinner.
+   * @default false
+   */
   loading = input(false);
+  
+  /**
+   * Shows clear button when there's text.
+   * @default true
+   */
   clearable = input(true);
+  
+  /**
+   * Array of search results to display in dropdown.
+   * @default []
+   * @example [{ id: '1', title: 'Result', description: 'Description' }]
+   */
   results = input<SearchResult[]>([]);
+  
+  /**
+   * Array of recent search terms to display.
+   * @default []
+   * @example ['previous search', 'another search']
+   */
   recentSearches = input<string[]>([]);
+  
+  /**
+   * Text displayed when no results are found.
+   * @default "No results found"
+   */
   noResultsText = input('No results found');
+  
+  /**
+   * Description text for no results state.
+   * @default "Try adjusting your search terms"
+   */
   noResultsDescription = input('Try adjusting your search terms');
+  
+  /**
+   * Minimum number of characters before triggering search.
+   * @default 1
+   */
   minSearchLength = input(1);
+  
+  /**
+   * Debounce delay in milliseconds before emitting search.
+   * @default 300
+   */
   debounceMs = input(300);
 
+  /**
+   * Emitted when the search term changes (debounced).
+   * Provides the search string.
+   * @event search
+   */
   search = output<string>();
+  
+  /**
+   * Emitted when a result is selected from the dropdown.
+   * Provides the selected result.
+   * @event resultSelected
+   */
   resultSelected = output<SearchResult>();
+  
+  /**
+   * Emitted when the search is cleared.
+   * @event cleared
+   */
   cleared = output<void>();
 
   protected searchTerm = signal<string>('');

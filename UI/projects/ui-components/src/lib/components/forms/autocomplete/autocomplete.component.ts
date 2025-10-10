@@ -2,6 +2,60 @@ import { ChangeDetectionStrategy, Component, computed, input, output, signal, ef
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AutocompleteOption, AutocompleteSize } from '../../../types';
 
+/**
+ * A versatile and accessible autocomplete component for text input with suggestions.
+ *
+ * ## Features
+ * - Real-time filtering of options as user types
+ * - Keyboard navigation (Arrow keys, Enter, Escape)
+ * - Loading state indicator
+ * - Clear button
+ * - Multiple size options (sm, md, lg)
+ * - Disabled and readonly states
+ * - Full screen reader support with ARIA attributes
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Reactive forms support (ControlValueAccessor)
+ *
+ * @example
+ * ```html
+ * <!-- Basic autocomplete -->
+ * <ui-autocomplete
+ *   [options]="countries"
+ *   placeholder="Select country"
+ *   (selectionChange)="onCountrySelect($event)">
+ * </ui-autocomplete>
+ *
+ * <!-- With loading state -->
+ * <ui-autocomplete
+ *   [options]="searchResults"
+ *   [loading]="isSearching"
+ *   placeholder="Search...">
+ * </ui-autocomplete>
+ *
+ * <!-- With clearable option -->
+ * <ui-autocomplete
+ *   [options]="items"
+ *   [clearable]="true"
+ *   placeholder="Type to search">
+ * </ui-autocomplete>
+ *
+ * <!-- Large size with readonly -->
+ * <ui-autocomplete
+ *   [options]="options"
+ *   size="lg"
+ *   [readonly]="true"
+ *   placeholder="Read only">
+ * </ui-autocomplete>
+ *
+ * <!-- With reactive forms -->
+ * <ui-autocomplete
+ *   [formControl]="countryControl"
+ *   [options]="countries"
+ *   placeholder="Select your country">
+ * </ui-autocomplete>
+ * ```
+ */
 @Component({
   selector: 'ui-autocomplete',
   standalone: true,
@@ -82,18 +136,83 @@ import { AutocompleteOption, AutocompleteSize } from '../../../types';
   }
 })
 export class AutocompleteComponent implements ControlValueAccessor {
+  /**
+   * Array of options to display and filter.
+   * @required
+   * @example [{ value: 'us', label: 'United States' }]
+   */
   options = input.required<AutocompleteOption[]>();
+  
+  /**
+   * Placeholder text displayed when input is empty.
+   * @default "Search..."
+   */
   placeholder = input<string>('Search...');
+  
+  /**
+   * Size of the autocomplete input.
+   * - `sm`: Small
+   * - `md`: Medium (default)
+   * - `lg`: Large
+   * @default "md"
+   */
   size = input<AutocompleteSize>('md');
+  
+  /**
+   * Disables the autocomplete and prevents interaction.
+   * @default false
+   */
   disabled = input(false);
+  
+  /**
+   * Makes the autocomplete read-only.
+   * @default false
+   */
   readonly = input(false);
+  
+  /**
+   * Shows loading spinner.
+   * @default false
+   */
   loading = input(false);
+  
+  /**
+   * Shows clear button when there's a selection.
+   * @default true
+   */
   clearable = input(true);
+  
+  /**
+   * Text displayed when no options match the search.
+   * @default "No results found"
+   */
   noResultsText = input('No results found');
+  
+  /**
+   * Minimum number of characters before showing options.
+   * @default 0
+   */
   minSearchLength = input(0);
 
+  /**
+   * Emitted when the selected value changes.
+   * Provides the selected value string.
+   * @event valueChange
+   */
   valueChange = output<string>();
+  
+  /**
+   * Emitted when an option is selected.
+   * Provides the selected option object.
+   * @event selectionChange
+   */
   selectionChange = output<AutocompleteOption | null>();
+  
+  /**
+   * Emitted when the search term changes.
+   * Provides the search string.
+   * @event searchChange
+   */
   searchChange = output<string>();
 
   protected selectedValue = signal<string>('');

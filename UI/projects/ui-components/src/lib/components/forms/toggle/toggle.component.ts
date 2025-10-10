@@ -2,6 +2,62 @@ import { ChangeDetectionStrategy, Component, computed, forwardRef, input, output
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ToggleSize, ToggleVariant } from '../../../types';
 
+/**
+ * A versatile and accessible toggle switch component for binary selections.
+ *
+ * ## Features
+ * - Multiple visual variants (default, primary, success, warning, danger)
+ * - Comprehensive size options (small, medium, large)
+ * - Optional icons in thumb to indicate state
+ * - Full keyboard navigation and screen reader support
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Disabled and error state handling
+ * - Dark mode support
+ * - Smooth animations and transitions
+ * - Seamless integration with Angular Reactive Forms
+ *
+ * @example
+ * ```html
+ * <!-- Basic toggle -->
+ * <ui-toggle label="Enable notifications" />
+ *
+ * <!-- Toggle with description -->
+ * <ui-toggle
+ *   label="Dark mode"
+ *   description="Switch between light and dark themes">
+ * </ui-toggle>
+ *
+ * <!-- Toggle with icons -->
+ * <ui-toggle
+ *   label="Auto-save"
+ *   [showIcons]="true"
+ *   variant="primary">
+ * </ui-toggle>
+ *
+ * <!-- Required toggle with validation -->
+ * <ui-toggle
+ *   label="Accept terms"
+ *   [required]="true"
+ *   [invalid]="!termsAccepted && submitted"
+ *   errorMessage="You must accept the terms">
+ * </ui-toggle>
+ *
+ * <!-- Reactive forms integration -->
+ * <ui-toggle
+ *   formControlName="notifications"
+ *   label="Email notifications"
+ *   variant="success"
+ *   size="lg">
+ * </ui-toggle>
+ *
+ * <!-- Disabled toggle -->
+ * <ui-toggle
+ *   label="Premium feature"
+ *   [disabled]="true"
+ *   description="Upgrade to enable this feature">
+ * </ui-toggle>
+ * ```
+ */
 @Component({
   selector: 'ui-toggle',
   standalone: true,
@@ -69,20 +125,95 @@ import { ToggleSize, ToggleVariant } from '../../../types';
   ]
 })
 export class ToggleComponent implements ControlValueAccessor {
-  // Input properties
+  /**
+   * Label text displayed next to the toggle switch.
+   * @default ""
+   * @example "Enable notifications"
+   */
   label = input<string>('');
+  
+  /**
+   * Helper text displayed below the toggle.
+   * Provides additional context or instructions.
+   * @default ""
+   * @example "Receive updates via email"
+   */
   description = input<string>('');
+  
+  /**
+   * Error message displayed when toggle is invalid.
+   * Only shown when `invalid` is true.
+   * @default ""
+   * @example "This option is required"
+   */
   errorMessage = input<string>('');
+  
+  /**
+   * Size of the toggle switch.
+   * - `sm`: Small (20px height, 36px width)
+   * - `md`: Medium (24px height, 44px width) - default
+   * - `lg`: Large (28px height, 48px width)
+   * @default "md"
+   */
   size = input<ToggleSize>('md');
+  
+  /**
+   * Visual style variant of the toggle switch.
+   * - `default`: Gray toggle (default)
+   * - `primary`: Primary color toggle
+   * - `success`: Green success toggle
+   * - `warning`: Yellow warning toggle
+   * - `danger`: Red danger toggle
+   * @default "default"
+   */
   variant = input<ToggleVariant>('default');
+  
+  /**
+   * Disables the toggle and prevents interaction.
+   * Applies disabled styling and prevents value changes.
+   * @default false
+   */
   disabled = input(false);
+  
+  /**
+   * Marks the toggle as required.
+   * Displays asterisk (*) next to label.
+   * @default false
+   */
   required = input(false);
+  
+  /**
+   * Marks the toggle as invalid.
+   * Applies error styling and shows error message if provided.
+   * Typically used with form validation.
+   * @default false
+   */
   invalid = input(false);
+  
+  /**
+   * Shows icons inside the toggle thumb.
+   * Checkmark when on, X when off.
+   * @default false
+   */
   showIcons = input(false);
 
-  // Outputs
+  /**
+   * Emitted when the toggle value changes.
+   * Provides the new checked state.
+   * @event toggled
+   */
   toggled = output<boolean>();
+  
+  /**
+   * Emitted when the toggle receives focus.
+   * @event focused
+   */
   focused = output<void>();
+  
+  /**
+   * Emitted when the toggle loses focus.
+   * @event blurred
+   */
   blurred = output<void>();
 
   // Internal state
@@ -135,7 +266,7 @@ export class ToggleComponent implements ControlValueAccessor {
   });
 
   protected toggleThumbClasses = computed(() => {
-    const baseClasses = 'absolute flex items-center justify-center bg-white rounded-full shadow-sm ui-transition-transform';
+    const baseClasses = 'absolute flex items-center justify-center bg-white dark:bg-gray-200 rounded-full shadow-sm ui-transition-transform';
 
     const sizeClasses = {
       sm: 'h-4 w-4',
@@ -158,8 +289,8 @@ export class ToggleComponent implements ControlValueAccessor {
     };
 
     const colorClasses = this.checked()
-      ? 'text-white'
-      : 'text-gray-400';
+      ? 'text-primary-600 dark:text-primary-500'
+      : 'text-gray-400 dark:text-gray-500';
 
     return `${sizeClasses[this.size()]} ${colorClasses}`;
   });
@@ -167,18 +298,18 @@ export class ToggleComponent implements ControlValueAccessor {
   protected labelClasses = computed(() => {
     const baseClasses = 'text-sm font-medium select-none';
     const colorClasses = this.disabled()
-      ? 'text-text-disabled'
-      : 'text-text-primary';
+      ? 'text-gray-400 dark:text-gray-500'
+      : 'text-gray-900 dark:text-gray-100';
     return `${baseClasses} ${colorClasses}`;
   });
 
   protected descriptionClasses = computed(() => {
-    const baseClasses = 'text-xs text-text-secondary ml-14';
+    const baseClasses = 'text-xs text-gray-600 dark:text-gray-400 ml-14';
     return baseClasses;
   });
 
   protected errorClasses = computed(() => {
-    return 'text-xs text-red-600 ml-14';
+    return 'text-xs text-red-600 dark:text-red-400 ml-14';
   });
 
   private getCheckedTrackClasses(): string {
@@ -194,8 +325,8 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   private getUncheckedTrackClasses(): string {
-    const baseClasses = 'bg-gray-200';
-    const invalidClasses = this.invalid() ? 'ring-2 ring-red-500' : '';
+    const baseClasses = 'bg-gray-200 dark:bg-gray-700';
+    const invalidClasses = this.invalid() ? 'ring-2 ring-red-500 dark:ring-red-400' : '';
     return `${baseClasses} ${invalidClasses}`.trim();
   }
 

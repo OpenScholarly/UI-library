@@ -1,10 +1,50 @@
 import { Component, input, output, computed, signal } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { NavbarItem } from '../../../types';
 
+/**
+ * A versatile navigation bar component for site-wide navigation.
+ *
+ * ## Features
+ * - Brand logo and text display
+ * - Desktop and mobile responsive layouts
+ * - Nested dropdown menu support
+ * - Badge indicators for notifications
+ * - Sticky and fixed positioning options
+ * - Active item highlighting
+ * - Mobile hamburger menu
+ * - Multiple visual variants (default, transparent, solid)
+ * - WCAG 2.1 Level AA accessibility
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Basic navbar -->
+ * <ui-navbar
+ *   brandText="Company"
+ *   brandIcon="🏢"
+ *   [items]="navItems"
+ *   (itemClick)="handleNavigation($event)">
+ * </ui-navbar>
+ *
+ * <!-- Sticky navbar with dropdown menus -->
+ * <ui-navbar
+ *   brandText="My App"
+ *   [items]="menuItems"
+ *   variant="solid"
+ *   sticky="top"
+ *   (itemClick)="navigate($event)">
+ * </ui-navbar>
+ *
+ * <!-- Transparent navbar for hero sections -->
+ * <ui-navbar
+ *   variant="transparent"
+ *   [items]="links"
+ *   brandIcon="✨">
+ * </ui-navbar>
+ * ```
+ */
 @Component({
   selector: 'ui-navbar',
-  imports: [NgClass],
   template: `
     <nav [class]="containerClasses()">
       <div class="mx-auto px-4 sm:px-6 lg:px-8">

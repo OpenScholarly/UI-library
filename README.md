@@ -56,7 +56,97 @@ npm install @your-scope/my-ui
 * Update `peerDependencies` to require compatible Angular versions.
 
 
+<https://medium.com/@rootsn221/angular-google-maps-22d316eaf605>
 
+### Rendering strategies
+- SSR + Hydration: Ensure every component renders stable HTML on the server and hydrates cleanly on the client.
+- SSG/Prerender for the demo: Faster docs site, SEO-friendly examples.
+- Deferrable views (@defer) for heavy/low-priority widgets (carousel, charts, large tables).
+- Progressive enhancement: Components should still look correct with CSS only; JS augments behavior.
+
+In the demo:
+`npx ng add @angular/ssr --project demo`
+```typescript
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideClientHydration } from '@angular/platform-browser';
+
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideClientHydration() // enables hydration when SSR is active
+  ]
+};
+```
+Dev: `npx ng serve —ssr`
+Prod build: `npx ng build && npx ng run demo:server && npx ng run demo:serve-ssr`
+
+
+Discover and prerender routes:
+npx ng run demo:prerender
+Ensure routes include: "/", "/theme-selector", "/big-features"
+Use deferrable views to reduce hydration/JS cost
+Defer heavy or below-the-fold components in demo pages. This cuts hydration work on initial paint and simulates “progressive hydration.”
+```html
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
+  <ui-container [size]="'2xl'" [centerContent]="true" [padding]="'md'" [stack]="true" [gap]="'lg'">
+    <header class="text-center mb-12 w-full">
+      <!-- critical content renders immediately -->
+    </header>
+
+    <!-- Defer big sections until visible -->
+    @defer (on viewport) {
+      <ui-grid cols="3" gap="lg" [responsive]="true">
+        <!-- heavy cards/list -->
+      </ui-grid>
+    } @placeholder {
+      <ui-skeleton variant="rectangular" [height]="'200px'"></ui-skeleton>
+    } @loading {
+      <ui-skeleton variant="rectangular" [height]="'200px'"></ui-skeleton>
+    } @error {
+      <ui-text variant="body2">Failed to load section.</ui-text>
+    }
+
+    <ui-divider />
+
+    @defer (on viewport) {
+      <ui-carousel></ui-carousel>
+    } @placeholder {
+      <ui-skeleton variant="rectangular" [height]="'320px'"></ui-skeleton>
+    }
+  </ui-container>
+</div>
+```
+
+If a component renders differently server vs client (e.g., randomized content, time), opt it out of hydration to prevent mismatch:
+<ui-carousel ngSkipHydration></ui-carousel>
+Make library components SSR/hydration-safe
+Guard browser-only APIs:
+Inject DOCUMENT and check for existence before calling document APIs.
+For window, use typeof window !== 'undefined'.
+Avoid non-determinism in templates during SSR:
+No Math.random() or Date.now() directly in templates/host bindings. Compute once in a stable way or on client-only hooks.
+Stable IDs:
+If you need unique IDs, derive from inputs or generate once in a constructor and reuse. Do not regenerate on render.
+Overlays/portals:
+Render nothing server-side or render inert placeholders; initialize on client only. ngSkipHydration is useful here.
+Theming and dark mode:
+Ensure CSS variables include light/dark defaults at :root and [data-theme="dark"] so SSR markup looks correct without JS.
+TypographyService:
+You already load fonts post-bootstrap. Keep it non-blocking and avoid affecting SSR markup to prevent mismatches.
+Streaming SSR
+No extra code in components; Angular’s SSR server streams chunks by default (Angular 17+).
+For best UX, render lightweight server HTML, then @defer non-critical widgets.
+Which strategies to adopt for this library
+
+Must-have: SPA, SSR + Hydration, SSG (for docs/demo), Progressive Enhancement.
+Strongly consider: Deferrable Views (@defer) to reduce hydration/JS cost.
+Optional/advanced: Streaming SSR (already on), selective ngSkipHydration for overlays or non-deterministic widgets.
+Not recommended to chase now: Islands, ISR, Resumability, unless you introduce non-Angular tooling.
 
 
 ## Installation

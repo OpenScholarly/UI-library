@@ -1,10 +1,51 @@
 import { Component, input, output, computed, signal, effect, ElementRef, inject } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { CommandItem } from '../../../types';
 
+/**
+ * A versatile command menu component for keyboard-driven command selection.
+ *
+ * ## Features
+ * - Quick command search with keyboard navigation
+ * - Grouped command organization
+ * - Fuzzy search filtering
+ * - Keyboard shortcuts (Cmd+K / Ctrl+K to open)
+ * - Arrow key navigation with selection highlighting
+ * - Enter to select, Escape to close
+ * - Modal backdrop with click-outside dismiss
+ * - Recent commands tracking
+ * - WCAG 2.1 Level AA accessibility
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Basic command menu -->
+ * <ui-command-menu
+ *   [isOpen]="commandMenuOpen"
+ *   [items]="commands"
+ *   (itemSelected)="executeCommand($event)"
+ *   (closed)="commandMenuOpen = false">
+ * </ui-command-menu>
+ *
+ * <!-- With grouped commands -->
+ * <ui-command-menu
+ *   [isOpen]="showCommands"
+ *   [items]="groupedCommands"
+ *   placeholder="Search actions..."
+ *   (itemSelected)="runAction($event)">
+ * </ui-command-menu>
+ *
+ * <!-- Triggered by keyboard shortcut -->
+ * <ui-command-menu
+ *   [isOpen]="menuVisible"
+ *   [items]="appCommands"
+ *   [recentItems]="recentlyUsed"
+ *   (itemSelected)="handleCommand($event)"
+ *   (closed)="menuVisible = false">
+ * </ui-command-menu>
+ * ```
+ */
 @Component({
   selector: 'ui-command-menu',
-  imports: [NgClass],
   template: `
     @if (isOpen()) {
       <div class="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">

@@ -2,18 +2,52 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { HeadingLevel, HeadingSize, HeadingWeight } from '../../../types';
 
 /**
- * Semantic heading component (H1–H6) with design-system sizes and weights.
+ * A versatile and accessible heading component (H1-H6) with design system integration.
  *
- * Features
- * - Level-driven semantic tag: h1–h6 via level input
- * - Theme-aware colors and tracking-tight typography
- * - Size and weight presets aligned with the design system
- * - Custom class merging for advanced layout control
+ * ## Features
+ * - Semantic HTML heading levels (h1-h6)
+ * - Multiple size options independent of semantic level
+ * - Weight control (thin to black)
+ * - Theme-aware color variants
+ * - Custom class support for advanced styling
+ * - Dark mode support
+ * - Tight tracking for better readability
+ * - WCAG 2.1 Level AA compliance
  *
- * Examples
+ * @example
  * ```html
- * <ui-heading level="h2" size="3xl" weight="extrabold">Section Title</ui-heading>
- * <ui-heading level="h4" color="secondary">Subsection</ui-heading>
+ * <!-- Page title (semantic h1, display size) -->
+ * <ui-heading level="h1" size="3xl" weight="extrabold">
+ *   Welcome to Our Site
+ * </ui-heading>
+ *
+ * <!-- Section title (semantic h2, large size) -->
+ * <ui-heading level="h2" size="2xl" weight="bold">
+ *   Features
+ * </ui-heading>
+ *
+ * <!-- Subsection (semantic h3, normal size) -->
+ * <ui-heading level="h3" size="lg">
+ *   Getting Started
+ * </ui-heading>
+ *
+ * <!-- Colored heading -->
+ * <ui-heading level="h2" color="primary" size="xl">
+ *   Important Section
+ * </ui-heading>
+ *
+ * <!-- Muted heading -->
+ * <ui-heading level="h4" color="muted" weight="medium">
+ *   Subtitle
+ * </ui-heading>
+ *
+ * <!-- Custom styled -->
+ * <ui-heading
+ *   level="h2"
+ *   size="2xl"
+ *   customClasses="text-center mb-8">
+ *   Centered Title
+ * </ui-heading>
  * ```
  */
 @Component({
@@ -33,15 +67,57 @@ import { HeadingLevel, HeadingSize, HeadingWeight } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeadingComponent {
-  /** Semantic heading level. */
+  /**
+   * Semantic heading level (h1-h6).
+   * Determines the HTML tag used.
+   * @default "h1"
+   * @example "h2"
+   */
   level = input<HeadingLevel>('h1');
-  /** Heading size preset. */
+  
+  /**
+   * Visual size of the heading.
+   * - `xs`: Extra small
+   * - `sm`: Small
+   * - `md`: Medium
+   * - `lg`: Large (default)
+   * - `xl`: Extra large
+   * - `2xl`: 2x extra large
+   * - `3xl`: 3x extra large
+   * @default "lg"
+   */
   size = input<HeadingSize>('lg');
-  /** Heading weight preset. */
+  
+  /**
+   * Font weight of the heading.
+   * - `thin`: 100
+   * - `light`: 300
+   * - `normal`: 400
+   * - `medium`: 500
+   * - `semibold`: 600
+   * - `bold`: 700 (default)
+   * - `extrabold`: 800
+   * - `black`: 900
+   * @default "bold"
+   */
   weight = input<HeadingWeight>('bold');
-  /** Theme-aware color token. */
+  
+  /**
+   * Color variant of the heading.
+   * - `default`: Standard text color
+   * - `inherit`: Inherits from parent
+   * - `primary`: Primary brand color
+   * - `secondary`: Secondary color
+   * - `muted`: Muted/dimmed text
+   * @default "default"
+   */
   color = input<'default' | 'inherit' | 'primary' | 'secondary' | 'muted'>('default');
-  /** Additional Tailwind classes to merge. */
+  
+  /**
+   * Additional Tailwind CSS classes to apply.
+   * @default ""
+   * @example "text-center mb-4"
+   */
   customClasses = input<string>('');
 
   protected headingClasses = computed(() => {

@@ -1,6 +1,59 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { SplitButtonAction, SplitButtonVariant, SplitButtonSize } from '../../../../types';
 
+/**
+ * A versatile split button component combining a primary action with a dropdown menu.
+ *
+ * ## Features
+ * - Primary action button with dropdown menu for secondary actions
+ * - Multiple visual variants (primary, secondary, outline, ghost, destructive)
+ * - Comprehensive size options (sm, md, lg)
+ * - Icon support for main action and menu items
+ * - Keyboard navigation and screen reader support
+ * - Click-outside detection for dropdown dismissal
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Basic split button -->
+ * <ui-split-button
+ *   mainLabel="Save"
+ *   [actions]="saveActions"
+ *   (mainAction)="save()"
+ *   (actionSelected)="handleSaveAction($event)">
+ * </ui-split-button>
+ *
+ * <!-- With icon and variant -->
+ * <ui-split-button
+ *   mainLabel="Download"
+ *   mainIcon="⬇️"
+ *   variant="primary"
+ *   size="md"
+ *   [actions]="downloadFormats"
+ *   (mainAction)="downloadDefault()"
+ *   (actionSelected)="downloadAs($event)">
+ * </ui-split-button>
+ *
+ * <!-- Destructive action with confirmation options -->
+ * <ui-split-button
+ *   mainLabel="Delete"
+ *   variant="destructive"
+ *   [actions]="deleteOptions"
+ *   (mainAction)="deleteItem()"
+ *   (actionSelected)="handleDeleteOption($event)">
+ * </ui-split-button>
+ *
+ * <!-- With disabled state -->
+ * <ui-split-button
+ *   mainLabel="Export"
+ *   [actions]="exportActions"
+ *   [disabled]="!hasData"
+ *   (mainAction)="exportData()"
+ *   (actionSelected)="handleExport($event)">
+ * </ui-split-button>
+ * ```
+ */
 @Component({
   selector: 'ui-split-button',
   standalone: true,
@@ -56,14 +109,66 @@ import { SplitButtonAction, SplitButtonVariant, SplitButtonSize } from '../../..
   }
 })
 export class SplitButtonComponent {
+  /**
+   * Label text for the main action button.
+   * @required
+   * @example "Save", "Download", "Export"
+   */
   mainLabel = input.required<string>();
+  
+  /**
+   * Icon to display before the main label (emoji or icon class).
+   * @default ""
+   * @example "💾", "⬇️", "📤"
+   */
   mainIcon = input<string>('');
+  
+  /**
+   * Array of secondary actions to display in the dropdown menu.
+   * Each action has label, value, optional icon, and disabled state.
+   * @required
+   * @example [{ label: 'Save as PDF', value: 'pdf', icon: '📄' }, { label: 'Save as Word', value: 'docx', icon: '📝' }]
+   */
   actions = input.required<SplitButtonAction[]>();
+  
+  /**
+   * Visual style variant of the button.
+   * - `primary`: Primary brand-colored button
+   * - `secondary`: Neutral gray button
+   * - `outline`: Transparent with border
+   * - `ghost`: Text-only button
+   * - `destructive`: Red for destructive actions
+   * @default "primary"
+   */
   variant = input<SplitButtonVariant>('primary');
+  
+  /**
+   * Size of the button affecting padding and text size.
+   * - `sm`: Small (px-3 py-1.5)
+   * - `md`: Medium (px-4 py-2)
+   * - `lg`: Large (px-6 py-3)
+   * @default "md"
+   */
   size = input<SplitButtonSize>('md');
+  
+  /**
+   * Disables both the main button and dropdown, preventing all interactions.
+   * @default false
+   */
   disabled = input(false);
 
+  /**
+   * Emitted when the main action button is clicked.
+   * Use this for the primary action of the split button.
+   * @event mainAction
+   */
   mainAction = output<void>();
+  
+  /**
+   * Emitted when a secondary action from the dropdown is selected.
+   * Provides the selected action object.
+   * @event actionSelected
+   */
   actionSelected = output<SplitButtonAction>();
 
   protected isOpen = signal(false);

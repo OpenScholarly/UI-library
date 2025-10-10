@@ -1,6 +1,61 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal, OnInit, effect } from '@angular/core';
 import { SegmentedButtonOption, SegmentedButtonSize, SegmentedButtonVariant } from '../../../../types';
 
+/**
+ * A versatile and accessible segmented button component for single-choice selection.
+ *
+ * ## Features
+ * - Single selection from multiple options
+ * - Multiple visual variants (default, filled, outlined)
+ * - Comprehensive size options (sm, md, lg)
+ * - Icon support for each option
+ * - Disabled option handling
+ * - Allow empty selection option
+ * - Full keyboard navigation and screen reader support
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Smooth selection animations
+ *
+ * @example
+ * ```html
+ * <!-- Basic segmented button -->
+ * <ui-segmented-button
+ *   [options]="viewOptions"
+ *   (valueChange)="onViewChange($event)">
+ * </ui-segmented-button>
+ *
+ * <!-- With icons -->
+ * <ui-segmented-button
+ *   [options]="[
+ *     { value: 'list', label: 'List', icon: '☰' },
+ *     { value: 'grid', label: 'Grid', icon: '⊞' },
+ *     { value: 'card', label: 'Card', icon: '▭' }
+ *   ]"
+ *   value="list">
+ * </ui-segmented-button>
+ *
+ * <!-- Filled variant -->
+ * <ui-segmented-button
+ *   [options]="alignOptions"
+ *   variant="filled"
+ *   size="lg">
+ * </ui-segmented-button>
+ *
+ * <!-- With disabled options -->
+ * <ui-segmented-button
+ *   [options]="[
+ *     { value: 'edit', label: 'Edit' },
+ *     { value: 'delete', label: 'Delete', disabled: true }
+ *   ]">
+ * </ui-segmented-button>
+ *
+ * <!-- Allow deselection -->
+ * <ui-segmented-button
+ *   [options]="filterOptions"
+ *   [allowEmpty]="true">
+ * </ui-segmented-button>
+ * ```
+ */
 @Component({
   selector: 'ui-segmented-button',
   standalone: true,
@@ -24,15 +79,69 @@ import { SegmentedButtonOption, SegmentedButtonSize, SegmentedButtonVariant } fr
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SegmentedButtonComponent implements OnInit {
+  /**
+   * Array of options to display as segments.
+   * @required
+   * @example [{ value: 'left', label: 'Left' }, { value: 'center', label: 'Center' }]
+   */
   options = input.required<SegmentedButtonOption[]>();
+  
+  /**
+   * Currently selected value.
+   * @default ""
+   * @example "left"
+   */
   value = input<string>('');
+  
+  /**
+   * Size of the segmented button.
+   * - `sm`: Small
+   * - `md`: Medium (default)
+   * - `lg`: Large
+   * @default "md"
+   */
   size = input<SegmentedButtonSize>('md');
+  
+  /**
+   * Visual style variant of the segmented button.
+   * - `default`: Standard with borders
+   * - `filled`: Filled background for selected
+   * - `outlined`: Prominent outlined style
+   * @default "default"
+   */
   variant = input<SegmentedButtonVariant>('default');
+  
+  /**
+   * Disables the entire segmented button.
+   * @default false
+   */
   disabled = input(false);
+  
+  /**
+   * Allows deselecting the current option by clicking it again.
+   * @default false
+   */
   allowEmpty = input(false);
+  
+  /**
+   * ARIA label for the button group.
+   * @default ""
+   * @example "View mode selection"
+   */
   ariaLabel = input<string>('');
 
+  /**
+   * Emitted when the selected value changes.
+   * Provides the selected value string.
+   * @event valueChange
+   */
   valueChange = output<string>();
+  
+  /**
+   * Emitted when the selection changes.
+   * Provides the selected option object or null.
+   * @event selectionChange
+   */
   selectionChange = output<SegmentedButtonOption | null>();
 
   private selectedValue = signal('');

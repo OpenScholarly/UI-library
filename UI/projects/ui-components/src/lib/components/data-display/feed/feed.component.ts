@@ -1,10 +1,42 @@
 import { Component, input, output, computed } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { FeedItem } from '../../../types';
 
+/**
+ * A versatile and accessible feed component for displaying social media-style posts.
+ *
+ * ## Features
+ * - Author information with avatar and username
+ * - Timestamps with relative time formatting
+ * - Rich content with images
+ * - Engagement metrics (likes, comments, shares)
+ * - Action buttons
+ * - Full screen reader support with semantic HTML
+ * - WCAG 2.1 Level AA color contrast compliance
+ * - Dark mode support
+ * - Responsive grid for images
+ *
+ * @example
+ * ```html
+ * <!-- Basic feed -->
+ * <ui-feed [items]="feedItems"></ui-feed>
+ *
+ * <!-- With item click handler -->
+ * <ui-feed
+ *   [items]="posts"
+ *   (itemClick)="handlePostClick($event)">
+ * </ui-feed>
+ *
+ * <!-- With action handlers -->
+ * <ui-feed
+ *   [items]="items"
+ *   (like)="handleLike($event)"
+ *   (comment)="handleComment($event)"
+ *   (share)="handleShare($event)">
+ * </ui-feed>
+ * ```
+ */
 @Component({
   selector: 'ui-feed',
-  imports: [NgClass],
   template: `
     <div [class]="containerClasses()">
       @for (item of items(); track item.id) {
