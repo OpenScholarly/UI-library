@@ -1,6 +1,9 @@
-import { Component, signal, effect } from '@angular/core';
+import { Component, signal, effect, ChangeDetectionStrategy, input, output, computed } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
 import { getThemeInfo } from '../../theme-colors';
+import { CommonModule } from '@angular/common';
+import { SelectComponent } from '../forms/select/select.component';
+import type { SelectOption, SelectVariant, SelectSize } from '../../types';
 
 /**
  * A theme selector dropdown component for choosing color themes.
@@ -27,37 +30,59 @@ import { getThemeInfo } from '../../theme-colors';
  */
 @Component({
   selector: 'ui-theme-selector',
+  standalone: true,
+  imports: [CommonModule, SelectComponent],
   template: `
-    <label for="theme-select">Theme:</label>
-    <select id="theme-select" [value]="selected()" (change)="onChange($event)">
-      @for(key of themes; track key) {
-        <option [value]="key">{{ getThemeInfo(key)?.name || key }}</option>
-      }
-    </select>
+    <ui-select
+      [label]="label()"
+      [options]="options()"
+      [placeholder]="placeholder()"
+      [variant]="variant()"
+      [size]="size()"
+      [disabled]="disabled()"
+      [searchable]="searchable()"
+      (change)="handleSelect($event)">
+    </ui-select>
   `,
-  styles: [`
-    :host { display: inline-block; margin: 0 1rem; }
-    select { padding: 0.25rem 0.5rem; border-radius: 4px; }
-  `]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'inline-block' }
 })
 export class ThemeSelectorComponent {
-  themes: string[];
-  selected = signal('');
+  /** Label for the selector */
+  label = input<string>('Theme');
+  /** Placeholder when no theme is selected */
+  placeholder = input<string>('Select theme');
+  /** Visual variant to pass to ui-select */
+  variant = input<SelectVariant>('default');
+  /** Size to pass to ui-select */
+  size = input<SelectSize>('md');
+  /** Disable the selector */
+  disabled = input<boolean>(false);
+  /** Enable search in the selector */
+  searchable = input<boolean>(true);
+
+  /** Emit when theme changes */
+  changed = output<string>();
+
+  protected selected = signal('');
+  protected themes: string[] = [];
+  protected options = computed<SelectOption[]>(() =>
+    this.themes.map((key) => ({ value: key, label: getThemeInfo(key)?.name ?? key }))
+  );
 
   constructor(public themeService: ThemeService) {
     this.themes = themeService.availableThemes;
     this.selected.set(themeService.currentTheme());
     effect(() => {
-      this.selected.set(themeService.currentTheme());
+      const current = this.themeService.currentTheme();
+      this.selected.set(current);
     });
   }
 
-  getThemeInfo(key: string) {
-    return getThemeInfo(key);
-  }
-
-  onChange(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
+  handleSelect(value: string) {
+    if (!value || value === this.selected()) return;
+    this.selected.set(value);
     this.themeService.setTheme(value);
+    this.changed.emit(value);
   }
 }
