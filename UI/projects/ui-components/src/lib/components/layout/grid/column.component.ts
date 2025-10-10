@@ -1,6 +1,39 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { ColumnSpan } from '../../../types';
 
+/**
+ * A flexible column component for use within grid layouts.
+ *
+ * ## Features
+ * - Configurable column span (1-12, auto, full)
+ * - Column offset support for positioning
+ * - Works with ui-grid parent component
+ * - Content projection for column content
+ * - Responsive column sizing
+ * - Dark mode compatible
+ *
+ * @example
+ * ```html
+ * <!-- Grid with columns -->
+ * <ui-grid cols="12" gap="md">
+ *   <ui-column span="6">Half width</ui-column>
+ *   <ui-column span="6">Half width</ui-column>
+ * </ui-grid>
+ *
+ * <!-- Column with offset -->
+ * <ui-grid cols="12">
+ *   <ui-column span="4" offset="2">
+ *     Offset by 2 columns
+ *   </ui-column>
+ * </ui-grid>
+ *
+ * <!-- Full-width column -->
+ * <ui-grid cols="4">
+ *   <ui-column span="2">Item 1</ui-column>
+ *   <ui-column span="full">Full width item</ui-column>
+ * </ui-grid>
+ * ```
+ */
 @Component({
   selector: 'ui-column',
   standalone: true,
@@ -12,7 +45,22 @@ import { ColumnSpan } from '../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ColumnComponent {
+  /**
+   * Number of columns to span (1-12, auto, or full).
+   * - `1-12`: Specific column count
+   * - `auto`: Automatic sizing
+   * - `full`: Full grid width
+   * @default "auto"
+   * @example "6", "4", "full"
+   */
   span = input<ColumnSpan>('auto');
+  
+  /**
+   * Number of columns to offset from the start (1-12).
+   * Creates empty space before the column.
+   * @default "auto"
+   * @example "2", "4"
+   */
   offset = input<ColumnSpan>('auto');
 
   protected columnClasses = computed(() => {
