@@ -206,7 +206,7 @@ export class InputComponent implements ControlValueAccessor {
    * @example "Enter your email"
    */
   placeholder = input<string>('');
-  
+
   /**
    * Helper text displayed below the input.
    * Provides additional context or instructions.
@@ -384,8 +384,8 @@ export class InputComponent implements ControlValueAccessor {
   protected labelClasses = computed(() => {
     const baseClasses = 'block text-sm font-medium mb-1';
     const colorClasses = this.disabled()
-      ? 'text-gray-400 dark:text-gray-500'
-      : 'text-gray-900 dark:text-gray-100';
+      ? 'text-text-disabled'
+      : 'text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });
 
@@ -403,16 +403,16 @@ export class InputComponent implements ControlValueAccessor {
     };
 
     const variantClasses = {
-      default: 'border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800',
+      default: 'border border-gray-300 dark:border-gray-600 rounded-md bg-surface',
       filled: 'border-0 rounded-md bg-gray-100 dark:bg-gray-700',
       outlined: 'border-2 border-gray-300 dark:border-gray-600 rounded-md bg-transparent'
     };
 
     const stateClasses = this.disabled()
-      ? 'bg-gray-50 dark:bg-gray-900 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+      ? 'bg-gray-50 dark:bg-gray-900 text-text-disabled cursor-not-allowed'
       : this.readonly()
       ? 'bg-gray-50 dark:bg-gray-900 cursor-default'
-      : 'text-gray-900 dark:text-gray-100';
+      : 'text-text-primary';
 
     const invalidClasses = this.invalid()
       ? 'border-red-500 dark:border-red-400 ui-focus-danger'
