@@ -74,12 +74,12 @@ import { TextareaSize, TextareaVariant, TextareaResize } from '../../../types';
   standalone: true,
   template: `
     <div [class]="wrapperClasses()">
-      @if (label()) {
+      @if(label()) {
         <label
           [for]="textareaId()"
           [class]="labelClasses()">
           {{ label() }}
-          @if (required()) {
+          @if(required()) {
             <span class="text-red-500 ml-1" aria-label="required">*</span>
           }
         </label>
@@ -89,8 +89,9 @@ import { TextareaSize, TextareaVariant, TextareaResize } from '../../../types';
         <textarea
           #textareaElement
           [id]="textareaId()"
+          [value]="textareaValue()"
           [placeholder]="placeholder()"
-          [disabled]="disabled()"
+          [disabled]="isDisabled()"
           [readonly]="readonly()"
           [required]="required()"
           [rows]="rows()"
@@ -107,20 +108,20 @@ import { TextareaSize, TextareaVariant, TextareaResize } from '../../../types';
           (paste)="onPaste($event)"
         ></textarea>
 
-        @if (showCharacterCount() && maxlength()) {
+        @if(showCharacterCount() && maxlength()) {
           <div [class]="characterCountClasses()">
             {{ currentLength() }}/{{ maxlength() }}
           </div>
         }
       </div>
 
-      @if (helperText() && !invalid()) {
+      @if(helperText() && !invalid()) {
         <p [id]="helperId()" [class]="helperTextClasses()">
           {{ helperText() }}
         </p>
       }
 
-      @if (invalid() && errorMessage()) {
+      @if(invalid() && errorMessage()) {
         <p [id]="errorId()" [class]="errorTextClasses()" role="alert">
           {{ errorMessage() }}
         </p>
@@ -258,9 +259,9 @@ export class TextareaComponent implements ControlValueAccessor {
   
   /**
    * Maximum length of input value.
-   * @default undefined
+   * @default 500
    */
-  maxlength = input<number>();
+  maxlength = input<number>(500);
   
   /**
    * Minimum length of input value.
@@ -302,10 +303,13 @@ export class TextareaComponent implements ControlValueAccessor {
   pasted = output<ClipboardEvent>();
 
   // Internal state
-  private textareaValue = signal('');
+  protected textareaValue = signal('');
   protected textareaId = signal('');
   protected helperId = signal('');
   protected errorId = signal('');
+  // Merge reactive form disabled state with external [disabled] input
+  private formDisabled = signal(false);
+  protected isDisabled = computed(() => this.disabled() || this.formDisabled());
 
   // ViewChild
   private textareaElement = viewChild<ElementRef<HTMLTextAreaElement>>('textareaElement');
@@ -331,9 +335,9 @@ export class TextareaComponent implements ControlValueAccessor {
 
   protected labelClasses = computed(() => {
     const baseClasses = 'block text-sm font-medium mb-1';
-    const colorClasses = this.disabled()
-      ? 'text-gray-400 dark:text-gray-500'
-      : 'text-gray-900 dark:text-gray-100';
+    const colorClasses = this.isDisabled()
+      ? 'text-text-disabled dark:text-text-disabled'
+      : 'text-text-primary dark:text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });
 
@@ -363,11 +367,11 @@ export class TextareaComponent implements ControlValueAccessor {
       both: 'resize'
     };
 
-    const stateClasses = this.disabled()
-      ? 'bg-gray-50 dark:bg-gray-900 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+    const stateClasses = this.isDisabled()
+      ? 'bg-gray-50 dark:bg-gray-900 text-text-disabled cursor-not-allowed'
       : this.readonly()
       ? 'bg-gray-50 dark:bg-gray-900 cursor-default'
-      : 'text-gray-900 dark:text-gray-100';
+      : 'text-text-primary dark:text-text-primary';
 
     const invalidClasses = this.invalid()
       ? 'border-red-500 dark:border-red-400 ui-focus-danger'
@@ -398,10 +402,10 @@ export class TextareaComponent implements ControlValueAccessor {
 
   protected getAriaDescribedBy(): string {
     const ids: string[] = [];
-    if (this.helperText() && !this.invalid()) {
+    if(this.helperText() && !this.invalid()) {
       ids.push(this.helperId());
     }
-    if (this.invalid() && this.errorMessage()) {
+    if(this.invalid() && this.errorMessage()) {
       ids.push(this.errorId());
     }
     return ids.join(' ') || '';
@@ -415,7 +419,7 @@ export class TextareaComponent implements ControlValueAccessor {
     this.valueChanged.emit(value);
     this.onChange(value);
 
-    if (this.autoResize()) {
+    if(this.autoResize()) {
       this.adjustHeight();
     }
   }
@@ -433,7 +437,7 @@ export class TextareaComponent implements ControlValueAccessor {
     this.keyPressed.emit(event);
 
     // Handle keyboard shortcuts
-    if (event.ctrlKey || event.metaKey) {
+    if(event.ctrlKey || event.metaKey) {
       switch (event.key) {
         case 'a':
           // Allow Ctrl+A (select all)
@@ -451,7 +455,7 @@ export class TextareaComponent implements ControlValueAccessor {
     this.pasted.emit(event);
 
     // Adjust height after paste if auto-resize is enabled
-    if (this.autoResize()) {
+    if(this.autoResize()) {
       setTimeout(() => this.adjustHeight(), 0);
     }
   }
@@ -467,7 +471,7 @@ export class TextareaComponent implements ControlValueAccessor {
 
   private adjustHeight(): void {
     const textarea = this.textareaElement()?.nativeElement;
-    if (!textarea) return;
+    if(!textarea) return;
 
     // Reset height to recalculate
     textarea.style.height = 'auto';
@@ -491,9 +495,9 @@ export class TextareaComponent implements ControlValueAccessor {
   writeValue(value: string): void {
     this.textareaValue.set(value || '');
     const textareaEl = this.textareaElement()?.nativeElement;
-    if (textareaEl) {
+    if(textareaEl) {
       textareaEl.value = value || '';
-      if (this.autoResize()) {
+      if(this.autoResize()) {
         setTimeout(() => this.adjustHeight(), 0);
       }
     }
@@ -508,7 +512,7 @@ export class TextareaComponent implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    // Handled by the disabled input
+    this.formDisabled.set(!!isDisabled);
   }
 
   // Public methods
@@ -526,14 +530,14 @@ export class TextareaComponent implements ControlValueAccessor {
 
   selectRange(start: number, end: number): void {
     const textarea = this.textareaElement()?.nativeElement;
-    if (textarea) {
+    if(textarea) {
       textarea.setSelectionRange(start, end);
     }
   }
 
   insertAtCursor(text: string): void {
     const textarea = this.textareaElement()?.nativeElement;
-    if (!textarea) return;
+    if(!textarea) return;
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
@@ -548,7 +552,7 @@ export class TextareaComponent implements ControlValueAccessor {
     textarea.value = newValue;
     textarea.setSelectionRange(start + text.length, start + text.length);
 
-    if (this.autoResize()) {
+    if(this.autoResize()) {
       this.adjustHeight();
     }
   }
@@ -563,9 +567,9 @@ export class TextareaComponent implements ControlValueAccessor {
     this.onChange('');
 
     const textarea = this.textareaElement()?.nativeElement;
-    if (textarea) {
+    if(textarea) {
       textarea.value = '';
-      if (this.autoResize()) {
+      if(this.autoResize()) {
         this.adjustHeight();
       }
     }
