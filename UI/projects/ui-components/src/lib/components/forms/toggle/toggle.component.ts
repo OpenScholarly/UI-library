@@ -153,10 +153,10 @@ export class ToggleComponent implements ControlValueAccessor {
   
   /**
    * Size of the toggle switch.
-   * iOS 26 style (Modern, 2028 design):
-   * - `sm`: Small (24px × 40px)
-   * - `md`: Medium (32px × 52px) - default, authentic iOS 26 dimensions
-   * - `lg`: Large (40px × 64px)
+   * iOS 26 style (Modern, 2028 design - elongated pill shape):
+   * - `sm`: Small (24px × 48px) - 2:1 ratio
+   * - `md`: Medium (32px × 64px) - default, elongated iOS 26 style
+   * - `lg`: Large (40px × 80px) - 2:1 ratio
    * 
    * iOS 18 style (Classic, iOS 7-18 design):
    * - `sm`: Small (22px × 36px)
@@ -270,19 +270,19 @@ export class ToggleComponent implements ControlValueAccessor {
     const baseClasses = 'relative inline-flex items-center rounded-full ui-transition-standard ui-focus-primary';
 
     // iOS 26 style: Modern iOS toggle dimensions (2028 design)
-    // Approximately 52px × 32px at medium size, maintains ~1.625:1 ratio
+    // More elongated pill shape with ~2:1 ratio for modern appearance
     const ios26SizeClasses = {
-      sm: 'h-6 w-10',    // 24px × 40px (scaled down proportionally)
-      md: 'h-8 w-[52px]', // 32px × 52px (authentic iOS 26 dimensions)
-      lg: 'h-10 w-16'    // 40px × 64px (scaled up proportionally)
+      sm: 'h-6 w-12',         // 24px × 48px (2:1 ratio, elongated)
+      md: 'h-8 w-16',         // 32px × 64px (2:1 ratio, elongated pill)
+      lg: 'h-10 w-20'         // 40px × 80px (2:1 ratio, scaled up)
     };
 
     // iOS 18 style: Classic iOS toggle dimensions (iOS 7-18 design)
     // Authentic 51px × 31px at medium size, maintains ~1.645:1 ratio
     const ios18SizeClasses = {
-      sm: 'h-[22px] w-9',  // 22px × 36px (scaled down proportionally)
+      sm: 'h-[22px] w-9',      // 22px × 36px (scaled down proportionally)
       md: 'h-[31px] w-[51px]', // 31px × 51px (authentic iOS dimensions)
-      lg: 'h-10 w-16'      // 40px × 64px (scaled up proportionally)
+      lg: 'h-10 w-16'          // 40px × 64px (scaled up proportionally)
     };
 
     const sizeClasses = this.iosStyle() === 'ios26' ? ios26SizeClasses : ios18SizeClasses;
@@ -387,11 +387,11 @@ export class ToggleComponent implements ControlValueAccessor {
 
   private getCheckedThumbPosition(): string {
     // iOS 26 style: Calculate position based on track width - thumb width - padding
-    // Track: 52px, Thumb: 28px, Position: 52 - 28 - 2 = 22px (translate-x-[22px])
+    // Track: 64px, Thumb: 28px, Position: 64 - 28 - 2 = 34px (elongated modern style)
     const ios26PositionClasses = {
-      sm: 'translate-x-[18px]',   // 40 - 20 - 2 = 18px
-      md: 'translate-x-[22px]',   // 52 - 28 - 2 = 22px (authentic iOS 26)
-      lg: 'translate-x-[26px]'    // 64 - 36 - 2 = 26px
+      sm: 'translate-x-[26px]',   // 48 - 20 - 2 = 26px
+      md: 'translate-x-[34px]',   // 64 - 28 - 2 = 34px (elongated iOS 26)
+      lg: 'translate-x-[42px]'    // 80 - 36 - 2 = 42px
     };
 
     // iOS 18 style: Calculate position based on track width - thumb width - padding
