@@ -58,7 +58,7 @@ import { CardVariant } from '../../../types';
   selector: 'ui-card',
   standalone: true,
   template: `
-    <div [class]="cardClasses()">
+    <div [class]="cardClasses()" [style]="cardStyles()">
       <ng-content />
     </div>
   `,
@@ -95,8 +95,67 @@ export class CardComponent {
    */
   rounded = input<'none' | 'sm' | 'md' | 'lg'>('md');
 
+
+  /**
+   * Background color variant of the card.
+   * - `default`: Standard white/gray-800 background
+   * - `primary`: Primary brand color background
+   * - `secondary`: Secondary color background
+   * - `accent`: Accent color background
+   * - `surface`: Surface color variant
+   * - `success`: Success green background
+   * - `warning`: Warning yellow background
+   * - `error`: Error red background
+   * @default "default"
+   */
+  background = input<'default' | 'primary' | 'secondary' | 'accent' | 'surface' | 'success' | 'warning' | 'error'>('default');
+
+  /**
+   * Additional Tailwind CSS classes to apply.
+   * @default ""
+   * @example "shadow-xl border-blue-500"
+   */
+  customClasses = input<string>('');
+
+  /**
+   * URL for an image to be used as the card's background.
+   * When provided, this will override the `background` color property.
+   * The image will be displayed with `background-size: cover` and `background-position: center`.
+   * @default null
+   */
+  imageUrl = input<string | null>(null);
+
+  /**
+   * Consumer-provided CSS classes via the `class` attribute on the component.
+   * This allows using `<ui-card class="custom-class">` and have it merge correctly.
+   */
+  hostClasses = input<string>('', { alias: 'class' });
+
+  protected cardStyles = computed(() => {
+    const url = this.imageUrl();
+    if (url) {
+      return {
+        'background-image': `url('${url}')`,
+        'background-size': 'cover',
+        'background-position': 'center'
+      };
+    }
+    return {};
+  });
+
   protected cardClasses = computed(() => {
-    const baseClasses = 'bg-white dark:bg-gray-800 transition-all duration-200';
+    const baseClasses = 'transition-all duration-200';
+
+    const backgrounds = {
+      default: 'bg-white dark:bg-gray-800',
+      primary: 'bg-primary-500 text-white',
+      secondary: 'bg-secondary-500 text-white',
+      accent: 'bg-accent-500 text-white',
+      surface: 'bg-gray-100 dark:bg-gray-700',
+      success: 'bg-success-500 text-white',
+      warning: 'bg-warning-500 text-black',
+      error: 'bg-error-500 text-white'
+    };
 
     const variants = {
       default: 'border border-gray-200 dark:border-gray-700',
@@ -119,10 +178,20 @@ export class CardComponent {
       lg: 'rounded-lg'
     };
 
+    // If an image URL is provided, don't apply a background color class
+    const backgroundClass = this.imageUrl() ? '' : backgrounds[this.background()];
     const variantClass = variants[this.variant()];
     const paddingClass = paddings[this.padding()];
     const roundedClass = roundedClasses[this.rounded()];
 
-    return `${baseClasses} ${variantClass} ${paddingClass} ${roundedClass}`;
+    return [
+      baseClasses,
+      backgroundClass,
+      variantClass,
+      paddingClass,
+      roundedClass,
+      this.customClasses(),
+      this.hostClasses()
+    ].filter(Boolean).join(' ');
   });
 }

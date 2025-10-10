@@ -59,20 +59,17 @@ import { TextSize, TextWeight, TextVariant } from '../../../types';
 @Component({
   selector: 'ui-text',
   standalone: true,
-  template: `
-    @if (variant() === 'kbd') {
-      <kbd><ng-content /></kbd>
-    } @else {
-      <ng-content />
-    }
-  `,
+  template: `<ng-content />`,
   host: {
     'class': 'ui-text',
-    '[class]': 'textClasses()'
+    '[class]': 'textClasses()',
+    '[attr.data-variant]': 'variant() === "kbd" ? "kbd" : null'
   },
   styles: [`
-    :host kbd {
-      @apply bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 rounded text-xs font-mono shadow-sm inline-block;
+    :host([data-variant="kbd"]) {
+      @apply px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-base font-mono inline-block;
+      color: inherit;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -172,7 +169,11 @@ export class TextComponent {
     const isCode = this.variant() === 'code';
     const isKbd = this.variant() === 'kbd';
     const baseClasses = (isCode || isKbd) ? 'font-mono' : 'font-sans';
-    const displayClass = this.display() === 'inline' ? 'inline' : 'block';
+    
+    // Kbd elements should default to inline, but allow override
+    const displayClass = this.variant() === 'kbd' 
+      ? (this.display() === 'block' ? 'block' : 'inline')
+      : (this.display() === 'inline' ? 'inline' : 'block');
 
     const sizeClasses = {
       xs: 'text-xs',

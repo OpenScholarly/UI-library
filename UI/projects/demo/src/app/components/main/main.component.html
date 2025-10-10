@@ -121,16 +121,13 @@
               <!-- Glass variant (new) -->
               <div>
                 <ui-text variant="caption" class="mb-2">Glass Variant with Backdrop</ui-text>
-                <div
-                  class="p-6 rounded-lg"
-                  style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                >
+                <ui-card imageUrl="https://picsum.photos/800/400?random=1" class="p-6">
                   <div class="flex flex-wrap gap-3">
                     <ui-button variant="glass" size="md">Glass Effect</ui-button>
                     <ui-button variant="glass" size="md" [loading]="true">Loading...</ui-button>
                     <ui-button variant="glass" size="md" [disabled]="true">Disabled</ui-button>
                   </div>
-                </div>
+                </ui-card>
               </div>
             </div>
           </div>
@@ -520,20 +517,20 @@
             <ui-text weight="semibold">General Navigation</ui-text>
             <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Tab</kbd> - Move forward
+                <ui-text variant="kbd">Tab</ui-text> - Move forward
                 through interactive elements
               </li>
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Shift + Tab</kbd> - Move
+                <ui-text variant="kbd">Shift + Tab</ui-text> - Move
                 backward
               </li>
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Enter</kbd> or
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Space</kbd> - Activate
+                <ui-text variant="kbd">Enter</ui-text> or
+                <ui-text variant="kbd">Space</ui-text> - Activate
                 buttons and links
               </li>
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Esc</kbd> - Close modals
+                <ui-text variant="kbd">Esc</ui-text> - Close modals
                 and dropdowns
               </li>
             </ul>
@@ -545,12 +542,12 @@
             <ui-text weight="semibold">Theme Switcher</ui-text>
             <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">←</kbd>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">→</kbd> - Navigate
+                <ui-text variant="kbd">←</ui-text>
+                <ui-text variant="kbd">→</ui-text> - Navigate
                 between theme options
               </li>
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Space</kbd> - Select
+                <ui-text variant="kbd">Space</ui-text> - Select
                 theme
               </li>
             </ul>
@@ -562,17 +559,17 @@
             <ui-text weight="semibold">Form Controls</ui-text>
             <ul class="list-disc list-inside space-y-1 mt-2 text-gray-700 dark:text-gray-300">
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">↑</kbd>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">↓</kbd> - Navigate
+                <ui-text variant="kbd">↑</ui-text>
+                <ui-text variant="kbd">↓</ui-text> - Navigate
                 dropdown/select options
               </li>
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Space</kbd> - Toggle
+                <ui-text variant="kbd">Space</ui-text> - Toggle
                 checkbox/switch
               </li>
               <li>
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">Home</kbd> /
-                <kbd class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">End</kbd> - First/last
+                <ui-text variant="kbd">Home</ui-text> /
+                <ui-text variant="kbd">End</ui-text> - First/last
                 option
               </li>
             </ul>
