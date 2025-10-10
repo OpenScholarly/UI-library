@@ -298,14 +298,15 @@ export class ToggleComponent implements ControlValueAccessor {
   protected labelClasses = computed(() => {
     const baseClasses = 'text-sm font-medium select-none';
     const colorClasses = this.disabled()
-      ? 'text-gray-400 dark:text-gray-500'
-      : 'text-gray-900 dark:text-gray-100';
+      ? 'text-text-disabled dark:text-text-disabled'
+      : 'text-text-primary dark:text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });
 
   protected descriptionClasses = computed(() => {
-    const baseClasses = 'text-xs text-gray-600 dark:text-gray-400 ml-14';
-    return baseClasses;
+    const baseClasses = 'text-xs ml-14';
+    const colorClasses = 'text-text-secondary dark:text-text-secondary';
+    return `${baseClasses} ${colorClasses}`;
   });
 
   protected errorClasses = computed(() => {

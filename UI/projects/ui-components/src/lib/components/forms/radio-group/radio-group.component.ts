@@ -277,11 +277,11 @@ export class RadioGroupComponent implements ControlValueAccessor {
   });
 
   protected legendClasses = computed(() => {
-    return 'text-sm font-medium text-gray-900 dark:text-gray-100 mb-2';
+    return 'text-sm font-medium text-text-primary dark:text-text-primary mb-2';
   });
 
   protected descriptionClasses = computed(() => {
-    return 'text-xs text-gray-600 dark:text-gray-400 mb-3';
+    return 'text-xs text-text-secondary dark:text-text-secondary mb-3';
   });
 
   protected radioGroupClasses = computed(() => {
@@ -330,22 +330,22 @@ export class RadioGroupComponent implements ControlValueAccessor {
       lg: 'w-2.5 h-2.5'
     };
 
-    return `bg-white rounded-full ${sizeClasses[this.size()]}`;
+    return `bg-text-on-primary dark:bg-text-on-primary rounded-full ${sizeClasses[this.size()]}`;
   });
 
   protected getLabelClasses(option: RadioOption): string {
     const baseClasses = 'text-sm font-medium select-none';
     const colorClasses = (this.disabled() || option.disabled)
-      ? 'text-gray-400 dark:text-gray-500'
-      : 'text-gray-900 dark:text-gray-100';
+      ? 'text-text-disabled dark:text-text-disabled'
+      : 'text-text-primary dark:text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   }
 
   protected getOptionDescriptionClasses(option: RadioOption): string {
     const baseClasses = 'text-xs mt-1 select-none';
     const colorClasses = (this.disabled() || option.disabled)
-      ? 'text-gray-400 dark:text-gray-500'
-      : 'text-gray-600 dark:text-gray-400';
+      ? 'text-text-disabled dark:text-text-disabled'
+      : 'text-text-secondary dark:text-text-secondary';
     return `${baseClasses} ${colorClasses}`;
   }
 
@@ -366,7 +366,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
   }
 
   private getUnselectedClasses(): string {
-    const baseClasses = 'bg-white dark:bg-gray-800';
+  const baseClasses = 'bg-surface dark:bg-surface';
     const borderClasses = this.invalid()
       ? 'border-red-500 dark:border-red-400'
       : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500';

@@ -274,16 +274,16 @@ export class CheckboxComponent implements ControlValueAccessor {
   protected labelClasses = computed(() => {
     const baseClasses = 'text-sm font-medium select-none';
     const colorClasses = this.disabled()
-      ? 'text-gray-400 dark:text-gray-500'
-      : 'text-gray-900 dark:text-gray-100';
+      ? 'text-text-disabled dark:text-text-disabled'
+      : 'text-text-primary dark:text-text-primary';
     return `${baseClasses} ${colorClasses}`;
   });
 
   protected descriptionClasses = computed(() => {
     const baseClasses = 'text-xs mt-1 select-none';
     const colorClasses = this.disabled()
-      ? 'text-gray-400 dark:text-gray-500'
-      : 'text-gray-600 dark:text-gray-400';
+      ? 'text-text-disabled dark:text-text-disabled'
+      : 'text-text-secondary dark:text-text-secondary';
     return `${baseClasses} ${colorClasses}`;
   });
 
@@ -304,7 +304,7 @@ export class CheckboxComponent implements ControlValueAccessor {
   }
 
   private getUncheckedClasses(): string {
-    const baseClasses = 'bg-white dark:bg-gray-800 border-2';
+    const baseClasses = 'bg-surface dark:bg-surface border-2';
     const borderClasses = this.invalid()
       ? 'border-red-500 dark:border-red-400'
       : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500';
