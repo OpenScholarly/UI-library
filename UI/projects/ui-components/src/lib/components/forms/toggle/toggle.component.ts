@@ -292,9 +292,9 @@ export class ToggleComponent implements ControlValueAccessor {
     const baseClasses = this.design() === 'pill' ? pillBaseClasses : classicBaseClasses;
     // * 0.843 from track size to thumb size in height and 0.566 from track size to thumb size in width
     const pillSizeClasses = {
-      sm: 'h-[20.2px] w-[31px]',
-      md: 'h-[25.3px] w-[38.5px]',
-      lg: 'h-[33.7px] w-[51.5px]'
+      sm: 'h-5 w-8',      // 20px × 32px (rounded from 20.2px × 31px)
+      md: 'h-6 w-10',     // 24px × 40px (rounded from 25.3px × 38.5px)
+      lg: 'h-8 w-[52px]'  // 32px × 52px (rounded from 33.7px × 51.5px)
     };
     const classicSizeClasses = {
       sm: 'h-[18px] w-[18px]',
