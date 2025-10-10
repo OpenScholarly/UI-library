@@ -38,6 +38,9 @@ import { TextSize, TextWeight, TextVariant } from '../../../types';
  * <!-- Inline code -->
  * <ui-text variant="code">const x = 42;</ui-text>
  *
+ * <!-- Keyboard key -->
+ * <ui-text variant="kbd">Ctrl</ui-text>
+ *
  * <!-- Truncated text -->
  * <ui-text [truncate]="true" style="max-width: 200px">
  *   This is a long text that will be truncated with ellipsis
@@ -57,12 +60,21 @@ import { TextSize, TextWeight, TextVariant } from '../../../types';
   selector: 'ui-text',
   standalone: true,
   template: `
-    <ng-content />
+    @if (variant() === 'kbd') {
+      <kbd><ng-content /></kbd>
+    } @else {
+      <ng-content />
+    }
   `,
   host: {
-    'class': 'ui-text inline',
+    'class': 'ui-text',
     '[class]': 'textClasses()'
   },
+  styles: [`
+    :host kbd {
+      @apply bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 rounded text-xs font-mono shadow-sm inline-block;
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TextComponent {
@@ -97,10 +109,19 @@ export class TextComponent {
    * - `caption`: Smaller caption text
    * - `overline`: Uppercase overline label
    * - `code`: Monospace code text
+   * - `kbd`: Keyboard key styling
    * @default "body"
    */
   variant = input<TextVariant>('body');
   
+  /**
+   * Display behavior of the text element.
+   * - `block`: Renders as a block element (default), allowing vertical margins (mt/mb)
+   * - `inline`: Renders inline, flowing with surrounding text
+   * @default "block"
+   */
+  display = input<'block' | 'inline'>('block');
+
   /**
    * Color variant of the text.
    * - `default`: Standard text color
@@ -140,11 +161,18 @@ export class TextComponent {
    * @example "font-bold text-center"
    */
   customClasses = input<string>('');
+  /**
+   * Consumer-provided CSS classes via the `class` attribute on the component.
+   * This allows using `<ui-text class="mb-3">` and have it merge correctly.
+   */
+  hostClasses = input<string>('', { alias: 'class' });
 
   protected textClasses = computed(() => {
     // Base font family uses Tailwind's font-sans mapping to CSS var(--font-family-base)
     const isCode = this.variant() === 'code';
-    const baseClasses = isCode ? 'font-mono' : 'font-sans';
+    const isKbd = this.variant() === 'kbd';
+    const baseClasses = (isCode || isKbd) ? 'font-mono' : 'font-sans';
+    const displayClass = this.display() === 'inline' ? 'inline' : 'block';
 
     const sizeClasses = {
       xs: 'text-xs',
@@ -165,7 +193,8 @@ export class TextComponent {
       body: '',
       caption: 'text-xs text-text-secondary dark:text-text-secondary',
       overline: 'text-xs uppercase tracking-wider text-text-secondary dark:text-text-secondary',
-      code: 'bg-surface-light dark:bg-surface-dark px-1 py-0.5 rounded text-sm'
+      code: 'bg-surface-light dark:bg-surface-dark px-1 py-0.5 rounded text-sm',
+      kbd: ''  // Styling will be applied to the inner <kbd> element via CSS
     };
 
     const colorClasses = {
@@ -188,6 +217,7 @@ export class TextComponent {
     const underlineClass = this.underline() ? 'underline' : '';
 
     return [
+      displayClass,
       baseClasses,
       sizeClass,
       weightClass,
@@ -196,7 +226,8 @@ export class TextComponent {
       truncateClass,
       italicClass,
       underlineClass,
-      this.customClasses()
+      this.customClasses(),
+      this.hostClasses()
     ].filter(Boolean).join(' ');
   });
 }
