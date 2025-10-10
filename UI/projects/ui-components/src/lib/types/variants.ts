@@ -45,7 +45,7 @@ export type TooltipVariant = 'default' | 'dark' | 'light' | 'error' | 'warning' 
 
 // Primitives variants
 export type IconVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
-export type TextVariant = 'body' | 'caption' | 'overline' | 'code';
+export type TextVariant = 'body' | 'caption' | 'overline' | 'code' | 'kbd';
 
 // Table variants
 export type TableVariant = 'default' | 'striped' | 'bordered';
