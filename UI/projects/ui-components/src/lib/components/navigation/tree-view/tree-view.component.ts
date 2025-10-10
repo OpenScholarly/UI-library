@@ -66,7 +66,7 @@ import { TreeNode } from '../../../types';
                     [attr.aria-label]="isExpanded(node.id) ? 'Collapse' : 'Expand'"
                   >
                     <span 
-                      [class]="chevronClasses()(node.id)">
+                      [class]="getChevronClasses(node.id)">
                       ▶
                     </span>
                   </button>
@@ -81,7 +81,7 @@ import { TreeNode } from '../../../types';
                   <span class="flex-shrink-0 mr-2 text-gray-400 dark:text-gray-600">📄</span>
                 } @else {
                   <span class="flex-shrink-0 mr-2 text-gray-400 dark:text-gray-600">
-                    {{ folderIcon()(node.id) }}
+                    {{ getFolderIcon(node.id) }}
                   </span>
                 }
                 
@@ -106,6 +106,7 @@ import { TreeNode } from '../../../types';
                   (nodeClick)="nodeClick.emit($event)"
                   (nodeToggle)="nodeToggle.emit($event)"
                   (nodeSelect)="nodeSelect.emit($event)"
+                  (clearSelections)="onClearSelections()"
                 ></ui-tree-view>
               }
             </li>
@@ -135,6 +136,7 @@ export class TreeViewComponent {
   nodeClick = output<TreeNode>();
   nodeToggle = output<{ node: TreeNode; expanded: boolean }>();
   nodeSelect = output<{ node: TreeNode; selected: boolean }>();
+  clearSelections = output<void>();
   
   expandedNodes = signal<Set<string>>(new Set());
 
@@ -200,6 +202,20 @@ export class TreeViewComponent {
     };
   });
 
+  getChevronClasses(nodeId: string): string {
+    const baseClasses = 'text-sm transform transition-transform';
+    
+    if (this.isExpanded(nodeId)) {
+      return `${baseClasses} rotate-90`;
+    }
+    
+    return baseClasses;
+  }
+
+  getFolderIcon(nodeId: string): string {
+    return this.isExpanded(nodeId) ? '📂' : '📁';
+  }
+
   hasChildren(node: TreeNode): boolean {
     return !!(node.children && node.children.length > 0);
   }
@@ -246,8 +262,14 @@ export class TreeViewComponent {
           node.selected = true;
         }
       } else {
-        // Single-select mode
-        this.clearAllSelections();
+        // Single-select mode - emit clear event to coordinate with parent/children
+        if (this.level() === 0) {
+          // Root level - clear all selections in this tree
+          this.clearAllSelections();
+        } else {
+          // Child level - emit to parent to clear all selections
+          this.clearSelections.emit();
+        }
         node.selected = true;
       }
       this.nodeSelect.emit({ node, selected: node.selected ?? false });
@@ -259,6 +281,15 @@ export class TreeViewComponent {
     }
 
     this.nodeClick.emit(node);
+  }
+
+  onClearSelections() {
+    // Handle clear selections event from child components
+    this.clearAllSelections();
+    if (this.level() > 0) {
+      // Propagate to parent
+      this.clearSelections.emit();
+    }
   }
 
   onKeyDown(event: KeyboardEvent, node: TreeNode) {
@@ -313,7 +344,9 @@ export class TreeViewComponent {
   private clearAllSelections() {
     const clearInNodes = (nodes: TreeNode[]) => {
       nodes.forEach(node => {
-        node.selected = false;
+        if (node.selected) {
+          node.selected = false;
+        }
         if (node.children) {
           clearInNodes(node.children);
         }
