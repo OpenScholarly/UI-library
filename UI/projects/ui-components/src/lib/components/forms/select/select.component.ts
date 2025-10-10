@@ -650,9 +650,9 @@ export class SelectComponent implements ControlValueAccessor, OnDestroy {
     if (option.disabled) {
       classes.push('opacity-50 cursor-not-allowed');
     } else if (isHighlighted) {
-      classes.push('bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300');
+      classes.push('bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'); //TODO fix contrast in dark mode
     } else if (this.isOptionSelected(option)) {
-      classes.push('bg-primary-100 dark:bg-primary-900/40 text-primary-800 dark:text-primary-200');
+      classes.push('bg-primary-100 dark:bg-primary-900/40 text-primary-800 dark:text-primary-200'); //TODO fix
     } else {
       classes.push('text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700');
     }
