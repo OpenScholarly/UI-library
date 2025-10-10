@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 })
 export class ThemeService {
   readonly storageKey = 'theme-color';
-  readonly defaultTheme = 'ocean-blue';
+  readonly defaultTheme = 'monochrome';
   private currentThemeKey = signal<string>(this.defaultTheme);
   readonly currentTheme = this.currentThemeKey.asReadonly();
   readonly themeInfo = computed(() => getThemeInfo(this.currentThemeKey()));
