@@ -2,6 +2,45 @@ import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { ThemeMode } from '../../../types';
 
+/**
+ * A versatile theme switcher component for toggling between light, dark, and system themes.
+ *
+ * ## Features
+ * - Three theme options: light, dark, system (follows OS preference)
+ * - Visual icon indicators for each theme mode
+ * - Persists theme preference to localStorage
+ * - System theme automatically syncs with OS changes
+ * - Accessible radio button group with labels
+ * - Multiple size options (sm, md, lg)
+ * - Smooth transitions between themes
+ * - WCAG 2.1 Level AA accessibility
+ * - Dark mode aware
+ *
+ * @example
+ * ```html
+ * <!-- Basic theme switcher -->
+ * <ui-theme-switcher
+ *   [currentTheme]="theme"
+ *   (themeChange)="onThemeChange($event)">
+ * </ui-theme-switcher>
+ *
+ * <!-- Small size in navbar -->
+ * <ui-theme-switcher
+ *   size="sm"
+ *   [currentTheme]="currentTheme"
+ *   (themeChange)="setTheme($event)">
+ * </ui-theme-switcher>
+ *
+ * <!-- With custom labels -->
+ * <ui-theme-switcher
+ *   [currentTheme]="theme"
+ *   systemLabel="Auto"
+ *   lightLabel="Day"
+ *   darkLabel="Night"
+ *   (themeChange)="updateTheme($event)">
+ * </ui-theme-switcher>
+ * ```
+ */
 @Component({
   selector: 'ui-theme-switcher',
   standalone: true,

@@ -1,6 +1,53 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 import { NavigationItem, LayoutSidebarPosition, LayoutSidebarBehavior } from '../../../types';
 
+/**
+ * A comprehensive app layout component with top navbar and drawer sidebar.
+ *
+ * ## Features
+ * - Top navigation bar with brand, center content, and actions
+ * - Collapsible drawer sidebar with overlay or push behavior
+ * - Left or right sidebar positioning
+ * - Responsive mobile/desktop layouts
+ * - Content projection slots for custom content
+ * - Sidebar navigation menu support
+ * - Mobile hamburger menu toggle
+ * - WCAG 2.1 Level AA accessibility
+ * - Dark mode support
+ *
+ * @example
+ * ```html
+ * <!-- Basic app layout -->
+ * <ui-layout
+ *   [showNavbar]="true"
+ *   [showSidebar]="true"
+ *   sidebarTitle="Navigation">
+ *   
+ *   <div slot="navbar-brand">
+ *     <h1>My App</h1>
+ *   </div>
+ *   
+ *   <div slot="navbar-actions">
+ *     <ui-theme-switcher></ui-theme-switcher>
+ *   </div>
+ *   
+ *   <div slot="sidebar-content">
+ *     <nav><!-- Navigation menu --></nav>
+ *   </div>
+ *   
+ *   <main>
+ *     <!-- Main content -->
+ *   </main>
+ * </ui-layout>
+ *
+ * <!-- With right sidebar -->
+ * <ui-layout
+ *   sidebarPosition="right"
+ *   sidebarBehavior="push">
+ *   <!-- Content with slots -->
+ * </ui-layout>
+ * ```
+ */
 @Component({
   selector: 'ui-layout',
   standalone: true,
