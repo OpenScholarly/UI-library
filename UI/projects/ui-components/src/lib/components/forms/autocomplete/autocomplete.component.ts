@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect, forwardRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal, effect, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AutocompleteOption, AutocompleteSize } from '../../../types';
-import { InputComponent } from '../input/input.component';
 
 /**
  * A versatile and accessible autocomplete component for text input with suggestions.
@@ -60,35 +59,35 @@ import { InputComponent } from '../input/input.component';
 @Component({
   selector: 'ui-autocomplete',
   standalone: true,
-  imports: [InputComponent],
   template: `
     <div [class]="containerClasses()">
       <!-- Input Field -->
       <div class="relative">
-        <ui-input
-          #inputComponent
-          [type]="'text'"
+        <input
+          [class]="inputClasses()"
+          [value]="displayValue()"
           [placeholder]="placeholder()"
           [disabled]="disabled()"
           [readonly]="readonly()"
-          [size]="size()"
-          [fullWidth]="true"
-          (valueChange)="handleInputChange($event)"
-          (focused)="handleFocus()"
-          (blurred)="handleBlur()"
-          (keyPressed)="handleKeydown($event)"
+          [attr.aria-expanded]="isOpen()"
+          [attr.aria-haspopup]="'listbox'"
+          [attr.aria-autocomplete]="'list'"
+          (input)="handleInput($event)"
+          (focus)="handleFocus()"
+          (blur)="handleBlur()"
+          (keydown)="handleKeydown($event)"
+          type="text"
         />
 
         @if (loading()) {
-          <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+          <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
             <div class="animate-spin rounded-full h-4 w-4 border-2 border-primary-600 border-t-transparent"></div>
           </div>
         } @else if (clearable() && displayValue()) {
           <button
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 focus:outline-none z-10"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
             (click)="clearValue()"
-            type="button"
-            aria-label="Clear selection">
+            type="button">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
@@ -220,9 +219,6 @@ export class AutocompleteComponent implements ControlValueAccessor {
   protected searchTerm = signal<string>('');
   protected isOpen = signal(false);
   protected highlightedIndex = signal(-1);
-  
-  // ViewChild reference to the input component
-  private inputComponentRef = viewChild<InputComponent>('inputComponent');
 
   // ControlValueAccessor
   private onChange = (value: string) => {};
@@ -239,15 +235,6 @@ export class AutocompleteComponent implements ControlValueAccessor {
         this.highlightedIndex.set(0);
       } else {
         this.isOpen.set(false);
-      }
-    });
-    
-    // Sync display value with input component
-    effect(() => {
-      const display = this.displayValue();
-      const inputComp = this.inputComponentRef();
-      if (inputComp && display !== inputComp.getValue()) {
-        inputComp.writeValue(display);
       }
     });
   }
@@ -270,6 +257,21 @@ export class AutocompleteComponent implements ControlValueAccessor {
     return 'relative w-full';
   });
 
+  protected inputClasses = computed(() => {
+    const baseClasses = 'w-full border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors';
+
+    const sizeClasses = {
+      sm: 'px-3 py-2 text-sm',
+      md: 'px-4 py-2.5 text-sm',
+      lg: 'px-4 py-3 text-base'
+    };
+
+    const disabledClasses = this.disabled() ? 'opacity-50 cursor-not-allowed' : '';
+    const sizeClass = sizeClasses[this.size()];
+
+    return `${baseClasses} ${sizeClass} ${disabledClasses}`;
+  });
+
   protected dropdownClasses = computed(() => {
     return 'absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg';
   });
@@ -282,7 +284,10 @@ export class AutocompleteComponent implements ControlValueAccessor {
     return `${baseClasses} ${highlightedClasses} ${selectedClasses}`;
   };
 
-  protected handleInputChange(value: string): void {
+  protected handleInput(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
+
     this.searchTerm.set(value);
 
     // Clear selection if input doesn't match any option
@@ -352,12 +357,6 @@ export class AutocompleteComponent implements ControlValueAccessor {
     this.isOpen.set(false);
     this.highlightedIndex.set(-1);
 
-    // Update the input component's value
-    const inputComp = this.inputComponentRef();
-    if (inputComp) {
-      inputComp.writeValue(option.label);
-    }
-
     this.onChange(option.value);
     this.valueChange.emit(option.value);
     this.selectionChange.emit(option);
@@ -367,12 +366,6 @@ export class AutocompleteComponent implements ControlValueAccessor {
     this.selectedValue.set('');
     this.searchTerm.set('');
     this.isOpen.set(false);
-
-    // Clear the input component's value
-    const inputComp = this.inputComponentRef();
-    if (inputComp) {
-      inputComp.writeValue('');
-    }
 
     this.onChange('');
     this.valueChange.emit('');
@@ -392,14 +385,7 @@ export class AutocompleteComponent implements ControlValueAccessor {
   writeValue(value: string): void {
     this.selectedValue.set(value || '');
     const option = this.options().find(opt => opt.value === value);
-    const displayText = option ? option.label : '';
-    this.searchTerm.set(displayText);
-    
-    // Update the input component's value
-    const inputComp = this.inputComponentRef();
-    if (inputComp) {
-      inputComp.writeValue(displayText);
-    }
+    this.searchTerm.set(option ? option.label : '');
   }
 
   registerOnChange(fn: (value: string) => void): void {
