@@ -128,7 +128,7 @@ import { DimensionService } from '../../../utilities/dimension.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ModalComponent {
+export class ModalComponent { //TODO add header section and footer section to make command menu easier
   private readonly dim = inject(DimensionService);
 
   /**
@@ -144,6 +144,9 @@ export class ModalComponent {
    * - `md`: Medium (512px) - default
    * - `lg`: Large (640px)
    * - `xl`: Extra large (768px)
+   * - `2xl`: Double extra large (896px)
+   * - `3xl`: Triple extra large (1024px)
+   * - `4xl`: 1280px
    * - `full`: Full screen
    * @default "md"
    */
@@ -272,23 +275,24 @@ export class ModalComponent {
   protected modalClasses = computed(() => {
     const baseClasses = 'relative ui-transition-transform-opacity bg-white dark:bg-gray-800 rounded-lg shadow-4 max-h-full overflow-hidden';
 
-    const sizeClasses = {
+    const sizeClasses: Record<ModalSize, string> = {
       sm: 'w-full max-w-sm',
       md: 'w-full max-w-md',
       lg: 'w-full max-w-lg',
       xl: 'w-full max-w-xl',
+      '2xl': 'w-full max-w-2xl',
+      '3xl': 'w-full max-w-3xl',
+      '4xl': 'w-full max-w-4xl',
       full: 'w-full h-full max-w-none rounded-none'
     };
 
-    const variantClasses = {
+    const variantClasses: Record<ModalVariant, string> = {
       default: 'mx-4 my-8',
       centered: 'mx-4',
       glass: 'ui-glass mx-4 my-8'
     };
 
-    const positionClasses = this.variant() === 'centered'
-      ? ''
-      : 'fixed top-0 left-1/2 transform -translate-x-1/2';
+    const positionClasses = this.variant() === 'centered' ? '' : 'fixed top-0 left-1/2 transform -translate-x-1/2';
 
     return `${baseClasses} ${sizeClasses[this.size()]} ${variantClasses[this.variant()]} ${positionClasses}`;
   });
@@ -307,7 +311,7 @@ export class ModalComponent {
 
   protected bodyClasses = computed(() => {
     const baseClasses = `p-${this.dim.toCssValue(this.bodyPadding())} text-gray-900 dark:text-gray-100`;
-    const scrollClasses = this.size() === 'full' ? 'overflow-y-auto flex-1' : 'max-h-96 overflow-y-auto';
+    const scrollClasses = this.size() === 'full' ? 'overflow-y-auto flex-1' : 'max-h-3/4 overflow-y-auto';
     return `${baseClasses} ${scrollClasses}`;
   });
 
