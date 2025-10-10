@@ -7,7 +7,7 @@ import { ToggleSize, ToggleVariant } from '../../../types';
  *
  * ## Features
  * - Multiple visual variants (default, primary, success, warning, danger)
- * - iOS-style options (pill modern, classic classic)
+ * - iOS-style options (pill, modern, classic compact)
  * - Comprehensive size options (small, medium, large)
  * - Optional icons in thumb to indicate state
  * - Full keyboard navigation and screen reader support
