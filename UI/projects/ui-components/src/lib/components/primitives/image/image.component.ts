@@ -102,7 +102,7 @@ import { ImageFit, ImageRounded } from '../../../types';
     </div>
   `,
   host: {
-    class: 'inline-block flex-shrink-0'
+    class: 'block flex-shrink-0'
   },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -202,23 +202,6 @@ export class ImageComponent {
 
   }
 
-  protected containerClasses = computed(() => {
-    const baseClasses = 'relative overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0';
-
-    const roundedClasses: Record<ImageRounded, string> = {
-      none: '',
-      sm: 'rounded-sm',
-      md: 'rounded-md',
-      lg: 'rounded-lg',
-      xl: 'rounded-xl',
-      full: 'rounded-full'
-    };
-
-    const roundedClass = roundedClasses[this.rounded()];
-
-    return `${baseClasses} ${roundedClass}`.trim();
-  });
-
   // Container styles: single bindings with normalized values
   protected containerWidth = computed(() => {
     const w = this.width();
@@ -257,6 +240,24 @@ export class ImageComponent {
     if (w && h) return `${w} / ${h}`;
     return null;
   });
+
+    protected containerClasses = computed(() => {
+    const baseClasses = 'relative overflow-hidden bg-gray-100 dark:bg-gray-800';
+
+    const roundedClasses: Record<ImageRounded, string> = {
+      none: '',
+      sm: 'rounded-sm',
+      md: 'rounded-md',
+      lg: 'rounded-lg',
+      xl: 'rounded-xl',
+      full: 'rounded-full'
+    };
+
+    const roundedClass = roundedClasses[this.rounded()];
+
+    return `${baseClasses} ${roundedClass} w-[${this.containerWidth()}px] h-[${this.containerHeight()}px]`.trim();
+  });
+
 
   protected imageClasses = computed(() => {
     // Use display:block to ensure aspect-ratio mapping works reliably with lazy loading.
