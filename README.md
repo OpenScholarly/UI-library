@@ -1,6 +1,10 @@
 # UI-library
 
-![GitHub Profile Trophy](https://github-profile-trophy.vercel.app/?username=Wubpooz&theme=light)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-profile-trophy.vercel.app/?username=Wubpooz&theme=darkhub">
+  <source media="(prefers-color-scheme: light)" srcset="https://github-profile-trophy.vercel.app/?username=Wubpooz&theme=flat">
+  <img src="https://github-profile-trophy.vercel.app/?username=Wubpooz&theme=flat" alt="GitHub Profile Trophy">
+</picture>
 
 ## Requirements
 - Angular 20+
