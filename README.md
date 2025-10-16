@@ -1,4 +1,7 @@
 # UI-library
+
+![GitHub Profile Trophy](https://github-profile-trophy.vercel.app/?username=Wubpooz&theme=light)
+
 ## Requirements
 - Angular 20+
 - TailwindCSS 3.4+
