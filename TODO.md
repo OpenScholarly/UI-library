@@ -236,9 +236,9 @@
 - [ ] Add transition customization
 
 #### Avatar Enhancements
-- [ ] Add avatar group/stack
+- [x] Add avatar group/stack
 - [ ] Add avatar with ring/border
-- [ ] Add avatar with status indicator
+- [x] Add avatar with status indicator
 - [ ] Add avatar with tooltip
 - [ ] Add avatar fallback icon
 - [ ] Add avatar initials generation
@@ -247,7 +247,27 @@
 
 ### New Supporting Components
 
-- [ ] **List / Virtual List**: Efficient large list rendering
+- [x] **Alert / Banner**: Inline notifications
+  - [x] Info, success, warning, error variants
+  - [x] Dismissible option
+  - [x] Icons
+  - [x] Action buttons
+  - [x] Expand/collapse for long content
+
+- [x] **Empty State**: Placeholder for no data
+  - [x] Custom illustration
+  - [x] Title and description
+  - [x] Call-to-action button
+  - [x] Multiple variants
+  - [x] Animation on appear
+
+- [x] **Rating**: Star rating component
+  - [x] Half-star support
+  - [x] Custom icons (stars, hearts, etc.)
+  - [x] Read-only mode
+  - [x] Hover preview
+  - [x] Keyboard input
+  - [x] Size variants
   - [ ] Simple list with dividers
   - [ ] Virtual scrolling for performance
   - [ ] Infinite scroll support

@@ -12,6 +12,7 @@ import {
   IconButtonComponent, ButtonGroupComponent, FabComponent,
   SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent,
   ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
+  AlertComponent, EmptyStateComponent, RatingComponent, AvatarGroupComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
@@ -33,7 +34,8 @@ import {
     HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
     IconButtonComponent, ButtonGroupComponent, FabComponent,
     SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent, 
-    ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent
+    ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
+    AlertComponent, EmptyStateComponent, RatingComponent, AvatarGroupComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -547,5 +549,42 @@ export class MainComponent {
 
   onTreeNodeSelect(event: { node: TreeNode; selected: boolean }) {
     console.log('Tree node selected:', event.node.label, event.selected);
+  }
+
+  // NEW COMPONENTS DATA
+  // Rating component
+  ratingValue = signal(4);
+  
+  onRatingChange(value: number) {
+    this.ratingValue.set(value);
+    console.log('Rating changed to:', value);
+  }
+
+  // Avatar group data
+  avatarGroupMembers = signal([
+    { name: 'John Doe', src: '', status: 'online' as const },
+    { name: 'Jane Smith', src: '', status: 'away' as const },
+    { name: 'Bob Johnson', src: '' },
+    { name: 'Alice Brown', src: '', status: 'busy' as const },
+    { name: 'Charlie Wilson', src: '' },
+  ]);
+
+  // Alert data
+  showAlert = signal(true);
+  
+  onAlertDismissed() {
+    this.showAlert.set(false);
+  }
+
+  onAlertAction() {
+    console.log('Alert action clicked');
+  }
+
+  // Empty state
+  showEmptyState = signal(false);
+  
+  onCreateItem() {
+    console.log('Create new item');
+    this.showEmptyState.set(false);
   }
 }
