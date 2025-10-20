@@ -12,7 +12,7 @@ import {
   IconButtonComponent, ButtonGroupComponent, FabComponent,
   SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent,
   ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
-  AlertComponent, EmptyStateComponent, RatingComponent, AvatarGroupComponent,
+  FormFieldComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
@@ -35,7 +35,7 @@ import {
     IconButtonComponent, ButtonGroupComponent, FabComponent,
     SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent, 
     ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
-    AlertComponent, EmptyStateComponent, RatingComponent, AvatarGroupComponent
+    FormFieldComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -551,40 +551,24 @@ export class MainComponent {
     console.log('Tree node selected:', event.node.label, event.selected);
   }
 
-  // NEW COMPONENTS DATA
-  // Rating component
-  ratingValue = signal(4);
-  
-  onRatingChange(value: number) {
-    this.ratingValue.set(value);
-    console.log('Rating changed to:', value);
+  // Form Field demo data
+  formFieldEmail = signal('');
+  formFieldEmailError = signal(false);
+  formFieldPassword = signal('');
+  formFieldUsername = signal('');
+  formFieldUsernameSuccess = signal(false);
+
+  onFormFieldEmailChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.formFieldEmail.set(value);
+    // Simple validation
+    this.formFieldEmailError.set(value.length > 0 && !value.includes('@'));
   }
 
-  // Avatar group data
-  avatarGroupMembers = signal([
-    { name: 'John Doe', src: '', status: 'online' as const },
-    { name: 'Jane Smith', src: '', status: 'away' as const },
-    { name: 'Bob Johnson', src: '' },
-    { name: 'Alice Brown', src: '', status: 'busy' as const },
-    { name: 'Charlie Wilson', src: '' },
-  ]);
-
-  // Alert data
-  showAlert = signal(true);
-  
-  onAlertDismissed() {
-    this.showAlert.set(false);
-  }
-
-  onAlertAction() {
-    console.log('Alert action clicked');
-  }
-
-  // Empty state
-  showEmptyState = signal(false);
-  
-  onCreateItem() {
-    console.log('Create new item');
-    this.showEmptyState.set(false);
+  onFormFieldUsernameChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.formFieldUsername.set(value);
+    // Show success if username is valid
+    this.formFieldUsernameSuccess.set(value.length >= 3);
   }
 }

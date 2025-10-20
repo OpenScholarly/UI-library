@@ -33,6 +33,7 @@ export * from './lib/components/primitives/image/image.component';
 export * from './lib/components/layout/scroll-area/scroll-area.component';
 
 // Form components
+export * from './lib/components/forms/form-field/form-field.component';
 export * from './lib/components/forms/input/input.component';
 export * from './lib/components/forms/autocomplete/autocomplete.component';
 export * from './lib/components/forms/search/search.component';
@@ -42,12 +43,10 @@ export * from './lib/components/forms/toggle/toggle.component';
 export * from './lib/components/forms/textarea/textarea.component';
 export * from './lib/components/forms/select/select.component';
 export * from './lib/components/forms/slider/slider.component';
-export * from './lib/components/forms/rating/rating.component';
 
 // Display components
 export * from './lib/components/identity/badge/badge.component';
 export * from './lib/components/identity/avatar/avatar.component';
-export * from './lib/components/identity/avatar/avatar-group.component';
 export * from './lib/components/identity/chip/chip.component';
 export * from './lib/components/data-display/table/table.component';
 export * from './lib/components/feedback/skeleton/skeleton.component';
@@ -66,8 +65,6 @@ export * from './lib/components/navigation/pagination/pagination.component';
 // Feedback components
 export * from './lib/components/feedback/loader/loader.component';
 export * from './lib/components/feedback/progress/progress.component';
-export * from './lib/components/feedback/alert/alert.component';
-export * from './lib/components/feedback/empty-state/empty-state.component';
 
 // Utility components
 export * from './lib/components/forms/theme-switcher/theme-switcher.component';

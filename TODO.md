@@ -1,10 +1,10 @@
 ## P0 - Critical Missing Features
-- [ ] **Form Field Wrapper**: Core infrastructure for consistent form layouts
-  - [ ] Label positioning (top, left, floating)
-  - [ ] Helper text and validation messages
-  - [ ] Prefix/suffix icon support
-  - [ ] Required indicators with proper ARIA
-  - [ ] Error state styling and announcements
+- [x] **Form Field Wrapper**: Core infrastructure for consistent form layouts
+  - [x] Label positioning (top, left, floating)
+  - [x] Helper text and validation messages
+  - [x] Prefix/suffix icon support
+  - [x] Required indicators with proper ARIA
+  - [x] Error state styling and announcements
 
 ## P1 - Essential Components
 ### Forms & Inputs
@@ -236,9 +236,9 @@
 - [ ] Add transition customization
 
 #### Avatar Enhancements
-- [x] Add avatar group/stack
+- [ ] Add avatar group/stack
 - [ ] Add avatar with ring/border
-- [x] Add avatar with status indicator
+- [ ] Add avatar with status indicator
 - [ ] Add avatar with tooltip
 - [ ] Add avatar fallback icon
 - [ ] Add avatar initials generation
@@ -247,27 +247,7 @@
 
 ### New Supporting Components
 
-- [x] **Alert / Banner**: Inline notifications
-  - [x] Info, success, warning, error variants
-  - [x] Dismissible option
-  - [x] Icons
-  - [x] Action buttons
-  - [x] Expand/collapse for long content
-
-- [x] **Empty State**: Placeholder for no data
-  - [x] Custom illustration
-  - [x] Title and description
-  - [x] Call-to-action button
-  - [x] Multiple variants
-  - [x] Animation on appear
-
-- [x] **Rating**: Star rating component
-  - [x] Half-star support
-  - [x] Custom icons (stars, hearts, etc.)
-  - [x] Read-only mode
-  - [x] Hover preview
-  - [x] Keyboard input
-  - [x] Size variants
+- [ ] **List / Virtual List**: Efficient large list rendering
   - [ ] Simple list with dividers
   - [ ] Virtual scrolling for performance
   - [ ] Infinite scroll support
