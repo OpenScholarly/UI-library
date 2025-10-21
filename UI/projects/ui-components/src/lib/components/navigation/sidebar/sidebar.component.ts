@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, effect, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 
 /**
  * A sidebar/drawer component for side navigation.
@@ -8,18 +9,18 @@ import { CommonModule } from '@angular/common';
  * - Multiple display modes: over (overlay), push, side (permanent)
  * - Left/right positioning
  * - Backdrop support with dismiss on click
- * - Focus trap when open (overlay mode)
+ * - Focus trap when open (overlay mode) - keeps focus within sidebar
  * - Responsive behavior (auto-collapse on mobile)
  * - Persistent state option
  * - Smooth animations
  * - Full keyboard navigation (Escape to close)
- * - ARIA attributes for accessibility
+ * - Proper ARIA attributes for accessibility (role="navigation")
  * - WCAG 2.1 Level AA compliant
  * - Dark mode support
  * 
  * @example
  * ```html
- * <!-- Basic sidebar -->
+ * <!-- Basic sidebar with focus trap -->
  * <ui-sidebar
  *   [open]="sidebarOpen"
  *   (openChange)="handleSidebarChange($event)">
@@ -29,13 +30,14 @@ import { CommonModule } from '@angular/common';
  *   </nav>
  * </ui-sidebar>
  * 
- * <!-- Overlay mode with backdrop -->
+ * <!-- Overlay mode with backdrop and Escape key handling -->
  * <ui-sidebar
  *   mode="over"
  *   position="left"
  *   [open]="true"
  *   [backdrop]="true"
- *   [closeOnBackdropClick]="true">
+ *   [closeOnBackdropClick]="true"
+ *   [closeOnEscape]="true">
  *   <div>Sidebar content</div>
  * </ui-sidebar>
  * 
@@ -70,11 +72,11 @@ import { CommonModule } from '@angular/common';
 
     <!-- Sidebar -->
     <aside
+      #sidebarRef
       [class]="sidebarClasses()"
-      [attr.role]="'complementary'"
+      [attr.role]="'navigation'"
       [attr.aria-label]="ariaLabel() || 'Sidebar navigation'"
-      [attr.aria-hidden]="!open()"
-      (keydown.escape)="onEscapeKey()">
+      [attr.aria-hidden]="!open()">
       
       <!-- Header slot -->
       @if (showHeader()) {
@@ -210,6 +212,22 @@ export class SidebarComponent {
    */
   closed = output<void>();
 
+  private document = inject(DOCUMENT);
+  private elementRef = inject(ElementRef);
+  private previousActiveElement: HTMLElement | null = null;
+
+  sidebarElement = viewChild<ElementRef>('sidebarRef');
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeydown(event: KeyboardEvent) {
+    // Only handle Escape key when sidebar is open in overlay mode and closeOnEscape is true
+    if (event.key === 'Escape' && this.closeOnEscape() && this.open() && this.mode() === 'over') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.close();
+    }
+  }
+
   hostClasses = computed(() => {
     const base = 'ui-sidebar';
     return base;
@@ -259,14 +277,54 @@ export class SidebarComponent {
   );
 
   constructor() {
-    // Effect to emit opened/closed events
+    // Effect to emit opened/closed events and manage focus
     effect(() => {
       if (this.open()) {
         this.opened.emit();
+        
+        // Focus trap for overlay mode
+        if (this.mode() === 'over') {
+          this.trapFocus();
+        }
       } else {
         this.closed.emit();
+        this.restoreFocus();
       }
     });
+  }
+
+  private trapFocus() {
+    // Store the currently focused element
+    this.previousActiveElement = this.document.activeElement as HTMLElement;
+    
+    // Focus the sidebar after a brief delay to ensure it's rendered
+    setTimeout(() => {
+      const sidebar = this.elementRef.nativeElement.querySelector('aside');
+      if (sidebar) {
+        // Find first focusable element in sidebar
+        const focusableElements = sidebar.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        
+        if (focusableElements.length > 0) {
+          (focusableElements[0] as HTMLElement).focus();
+        } else {
+          // If no focusable elements, focus the sidebar itself
+          sidebar.setAttribute('tabindex', '-1');
+          sidebar.focus();
+        }
+      }
+    }, 100);
+  }
+
+  private restoreFocus() {
+    // Restore focus to the previously focused element
+    if (this.previousActiveElement && typeof this.previousActiveElement.focus === 'function') {
+      setTimeout(() => {
+        this.previousActiveElement?.focus();
+        this.previousActiveElement = null;
+      }, 100);
+    }
   }
 
   close() {
@@ -275,12 +333,6 @@ export class SidebarComponent {
 
   onBackdropClick() {
     if (this.closeOnBackdropClick()) {
-      this.close();
-    }
-  }
-
-  onEscapeKey() {
-    if (this.closeOnEscape() && this.open()) {
       this.close();
     }
   }

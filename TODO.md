@@ -45,10 +45,10 @@
   - [x] Multiple modes: over, push, side
   - [x] Left/right positioning
   - [x] Backdrop support
-  - [x] Focus trap when open
+  - [ ] Focus trap when open
   - [ ] Responsive behavior (auto-collapse on mobile)
   - [x] Persistent state option
-  - [ ] Keyboard shortcuts (Esc to close)
+  - [x] Keyboard shortcuts (Esc to close)
   - [ ] ARIA role="navigation" and proper labeling
 
 - [ ] **Stepper / Steps**: Multi-step process guide

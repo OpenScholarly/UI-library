@@ -15,6 +15,13 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
  * - Dark mode support
  * - Responsive layout
  * 
+ * ## Important Notes
+ * - **Floating labels**: Input must have `class="peer"` and `placeholder=" "` (single space)
+ * - **Prefix/suffix icons**: Input must have appropriate padding classes:
+ *   - `pl-10` for prefix icons (sm size: `pl-8`, lg size: `pl-12`)
+ *   - `pr-10` for suffix icons (sm size: `pr-8`, lg size: `pr-12`)
+ * - The form field wrapper provides positioning for icons but styling the input is the consumer's responsibility
+ * 
  * @example
  * ```html
  * <!-- Basic form field with top label -->
@@ -34,11 +41,14 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
  * </ui-form-field>
  * 
  * <!-- Form field with floating label -->
+ * <!-- IMPORTANT: For floating labels to work properly, the input MUST have: -->
+ * <!-- 1. class="peer" to enable Tailwind's peer selector -->
+ * <!-- 2. A placeholder=" " (single space) to enable :placeholder-shown pseudo-class -->
  * <ui-form-field
  *   label="Password"
  *   labelPosition="floating"
  *   [required]="true">
- *   <input type="password">
+ *   <input type="password" class="peer" placeholder=" ">
  * </ui-form-field>
  * 
  * <!-- Form field with error state -->
@@ -51,20 +61,34 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
  * </ui-form-field>
  * 
  * <!-- Form field with prefix icon -->
+ * <!-- NOTE: When using prefix/suffix icons, add appropriate padding to your input -->
  * <ui-form-field
  *   label="Search"
  *   prefixIcon="🔍">
- *   <input type="search">
+ *   <input type="search" class="pl-10 ...other-classes">
  * </ui-form-field>
  * 
  * <!-- Form field with suffix icon -->
  * <ui-form-field
  *   label="Amount"
  *   suffixIcon="💵">
- *   <input type="number">
+ *   <input type="number" class="pr-10 ...other-classes">
  * </ui-form-field>
  * 
- * <!-- Form field with success state -->
+ * <!-- Form field with both prefix and suffix icons -->
+ * <ui-form-field
+ *   label="Amount"
+ *   prefixIcon="💵"
+ *   suffixIcon="✓">
+ *   <input type="number" class="pl-10 pr-10 ...other-classes">
+ * </ui-form-field>
+ * 
+ * <!-- Using the inputPaddingClasses helper in TypeScript -->
+ * <!-- In your component: -->
+ * <!-- @ViewChild(FormFieldComponent) formField!: FormFieldComponent; -->
+ * <!-- Then access: formField.inputPaddingClasses().combined -->
+ * 
+ * <!-- Form field with error state -->
  * <ui-form-field
  *   label="Email"
  *   [success]="true"
@@ -272,6 +296,28 @@ export class FormFieldComponent {
   helperId = computed(() => `${this.fieldId()}-helper`);
   errorId = computed(() => `${this.fieldId()}-error`);
 
+  /**
+   * Computed helper to get the recommended padding classes for the input element.
+   * Consumers can use this in their input styling.
+   * @returns Object with paddingLeft and paddingRight classes
+   */
+  inputPaddingClasses = computed(() => {
+    const sizes = {
+      sm: { left: 'pl-8', right: 'pr-8' },
+      md: { left: 'pl-10', right: 'pr-10' },
+      lg: { left: 'pl-12', right: 'pr-12' }
+    };
+    
+    return {
+      paddingLeft: this.prefixIcon() ? sizes[this.size()].left : '',
+      paddingRight: this.suffixIcon() ? sizes[this.size()].right : '',
+      combined: [
+        this.prefixIcon() ? sizes[this.size()].left : '',
+        this.suffixIcon() ? sizes[this.size()].right : ''
+      ].filter(Boolean).join(' ')
+    };
+  });
+
   containerClasses = computed(() => {
     const base = 'flex w-full';
     const layout = {
@@ -310,7 +356,8 @@ export class FormFieldComponent {
   floatingLabelClasses = computed(() => {
     const base = 'absolute left-3 transition-all duration-200 pointer-events-none font-medium';
     const colors = 'text-gray-500 dark:text-gray-400 peer-focus:text-blue-600 dark:peer-focus:text-blue-400';
-    const transform = 'top-2.5 peer-focus:-top-2.5 peer-focus:text-xs peer-focus:bg-white dark:peer-focus:bg-gray-900 peer-focus:px-1';
+    // The label floats up when input is focused OR when it has content (not showing placeholder)
+    const transform = 'top-2.5 peer-focus:-top-2.5 peer-[:not(:placeholder-shown)]:-top-2.5 peer-focus:text-xs peer-[:not(:placeholder-shown)]:text-xs peer-focus:bg-white dark:peer-focus:bg-gray-900 peer-[:not(:placeholder-shown)]:bg-white dark:peer-[:not(:placeholder-shown)]:bg-gray-900 peer-focus:px-1 peer-[:not(:placeholder-shown)]:px-1';
     const state = {
       error: this.error() ? 'text-red-700 dark:text-red-400 peer-focus:text-red-700 dark:peer-focus:text-red-400' : '',
       success: this.success() ? 'text-green-700 dark:text-green-400 peer-focus:text-green-700 dark:peer-focus:text-green-400' : ''
@@ -325,12 +372,7 @@ export class FormFieldComponent {
   });
 
   inputContainerClasses = computed(() => {
-    const base = 'relative flex-1';
-    const padding = {
-      prefix: this.prefixIcon() ? 'pl-10' : '',
-      suffix: this.suffixIcon() ? 'pr-10' : ''
-    };
-    return `${base} ${padding.prefix} ${padding.suffix}`;
+    return 'relative flex-1';
   });
 
   prefixIconClasses = computed(() => {
