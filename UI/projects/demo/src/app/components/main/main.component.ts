@@ -14,10 +14,12 @@ import {
   ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
   FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent,
   AlertComponent, EmptyStateComponent, RatingComponent,
+  BottomNavComponent, ContextMenuComponent, ComboboxComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
   type BannerAction, type CarouselItem, type NavbarItem, type CommandItem, type TreeNode, type RadioOption,
+  type BottomNavItem, type ContextMenuItem, type ComboboxOption,
   ThemeService
 } from 'ui-components';
 
@@ -37,7 +39,8 @@ import {
     SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent, 
     ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
     FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent,
-    AlertComponent, EmptyStateComponent, RatingComponent
+    AlertComponent, EmptyStateComponent, RatingComponent,
+    BottomNavComponent, ContextMenuComponent, ComboboxComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -663,5 +666,75 @@ export class MainComponent {
 
   onPopoverHoverOpenChange(open: boolean) {
     this.popoverHoverOpen.set(open);
+  }
+
+  // Bottom Navigation demo data
+  bottomNavItems = signal<BottomNavItem[]>([
+    { id: 'home', label: 'Home', icon: '🏠' },
+    { id: 'search', label: 'Search', icon: '🔍' },
+    { id: 'add', label: 'Add', icon: '➕' },
+    { id: 'notifications', label: 'Alerts', icon: '🔔', badge: '5', badgeVariant: 'error' as const },
+    { id: 'profile', label: 'Profile', icon: '👤' }
+  ]);
+  activeBottomNavId = signal('home');
+
+  onBottomNavItemClick(item: BottomNavItem) {
+    this.activeBottomNavId.set(item.id);
+    console.log('Bottom nav item clicked:', item.label);
+  }
+
+  // Context Menu demo data
+  contextMenuOpen = signal(false);
+  contextMenuX = signal(0);
+  contextMenuY = signal(0);
+  contextMenuItems = signal<ContextMenuItem[]>([
+    { id: 'cut', label: 'Cut', icon: '✂️', shortcut: 'Ctrl+X' },
+    { id: 'copy', label: 'Copy', icon: '📋', shortcut: 'Ctrl+C' },
+    { id: 'paste', label: 'Paste', icon: '📌', shortcut: 'Ctrl+V' },
+    { id: 'divider1', label: '', divider: true },
+    { id: 'share', label: 'Share', icon: '🔗', children: [
+      { id: 'email', label: 'Email', icon: '📧' },
+      { id: 'social', label: 'Social', icon: '📱' }
+    ]},
+    { id: 'divider2', label: '', divider: true },
+    { id: 'delete', label: 'Delete', icon: '🗑️', shortcut: 'Del' }
+  ]);
+
+  onContextMenu(event: MouseEvent) {
+    event.preventDefault();
+    this.contextMenuX.set(event.clientX);
+    this.contextMenuY.set(event.clientY);
+    this.contextMenuOpen.set(true);
+  }
+
+  onContextMenuOpenChange(open: boolean) {
+    this.contextMenuOpen.set(open);
+  }
+
+  onContextMenuItemClick(item: ContextMenuItem) {
+    console.log('Context menu item clicked:', item.label);
+  }
+
+  // Combobox demo data
+  comboboxOptions = signal<ComboboxOption[]>([
+    { value: 'apple', label: 'Apple 🍎' },
+    { value: 'banana', label: 'Banana 🍌' },
+    { value: 'cherry', label: 'Cherry 🍒' },
+    { value: 'date', label: 'Date 🌴' },
+    { value: 'elderberry', label: 'Elderberry 🫐' },
+    { value: 'fig', label: 'Fig 🌳' },
+    { value: 'grape', label: 'Grape 🍇' },
+    { value: 'honeydew', label: 'Honeydew 🍈' }
+  ]);
+  comboboxValue = signal('');
+  comboboxMultiValue = signal<string[]>([]);
+
+  onComboboxValueChange(value: string | string[]) {
+    if (Array.isArray(value)) {
+      this.comboboxMultiValue.set(value);
+    } else {
+      this.comboboxValue.set(value);
+    }
+    console.log('Combobox value changed:', value);
   }
 }

@@ -63,13 +63,13 @@
   - [x] Keyboard navigation (arrow keys)
   - [x] ARIA role="group" with step status announcements
 
-- [ ] **Bottom Navigation**: Mobile navigation bar
-  - [ ] 3-5 navigation items
-  - [ ] Active state indicator
-  - [ ] Badge support
-  - [ ] Icons with labels
-  - [ ] Smooth transitions
-  - [ ] Fixed positioning at bottom
+- [x] **Bottom Navigation**: Mobile navigation bar
+  - [x] 3-5 navigation items
+  - [x] Active state indicator
+  - [x] Badge support
+  - [x] Icons with labels
+  - [x] Smooth transitions
+  - [x] Fixed positioning at bottom
 
 - [ ] **Navigation Rail**: Compact side navigation
   - [ ] Collapsible labels
@@ -78,12 +78,12 @@
   - [ ] FAB integration
   - [ ] Tooltip labels on hover
 
-- [ ] **Context Menu**: Right-click menu
-  - [ ] Trigger on contextmenu event
-  - [ ] Nested menu support
-  - [ ] Icons and shortcuts display
-  - [ ] Keyboard navigation
-  - [ ] Accessibility (Esc to close, arrow keys)
+- [x] **Context Menu**: Right-click menu
+  - [x] Trigger on contextmenu event
+  - [x] Nested menu support (structure ready)
+  - [x] Icons and shortcuts display
+  - [x] Keyboard navigation
+  - [x] Accessibility (Esc to close, arrow keys)
 
 ### Overlays
 - [x] **Popover**: Rich contextual content overlay
@@ -293,12 +293,12 @@
   - [x] Keyboard input
   - [x] Size variants
 
-- [ ] **Combobox**: Combination of input and dropdown
-  - [ ] Autocomplete with suggestions
-  - [ ] Multi-select support
+- [x] **Combobox**: Combination of input and dropdown
+  - [x] Autocomplete with suggestions
+  - [x] Multi-select support
   - [ ] Creatable options
   - [ ] Async data loading
-  - [ ] Keyboard navigation
+  - [x] Keyboard navigation
   - [ ] Custom rendering
 
 - [ ] **Transfer List**: Move items between lists

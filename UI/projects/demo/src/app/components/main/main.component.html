@@ -1310,4 +1310,107 @@
       </div>
     </div>
   </ui-sidebar>
+
+  <!-- NEW COMPONENTS SECTION -->
+  <ui-container>
+    <!-- Bottom Navigation -->
+    <section class="demo-section">
+      <ui-heading level="h2" size="2xl" class="mb-6">Bottom Navigation (P1)</ui-heading>
+      <ui-text class="mb-4">Mobile-optimized navigation bar with badges and active states.</ui-text>
+      
+      <div class="space-y-4">
+        <ui-card>
+          <div style="height: 200px; position: relative; background: #f3f4f6; border-radius: 0.5rem;">
+            <div class="p-4 text-center text-gray-600">
+              <p class="mb-2">📱 Mobile Navigation Preview</p>
+              <p class="text-sm">Active: {{ activeBottomNavId() }}</p>
+            </div>
+            <ui-bottom-nav
+              [navItems]="bottomNavItems()"
+              [active]="activeBottomNavId()"
+              (itemClick)="onBottomNavItemClick($event)">
+            </ui-bottom-nav>
+          </div>
+        </ui-card>
+        <ui-text size="sm" class="text-gray-600 dark:text-gray-400">
+          ✨ Features: Badge support, active indicators, touch-friendly, auto-hides on desktop
+        </ui-text>
+      </div>
+    </section>
+
+    <!-- Context Menu -->
+    <section class="demo-section">
+      <ui-heading level="h2" size="2xl" class="mb-6">Context Menu (P1)</ui-heading>
+      <ui-text class="mb-4">Right-click menu with keyboard navigation and shortcuts.</ui-text>
+      
+      <div class="space-y-4">
+        <ui-card>
+          <div 
+            (contextmenu)="onContextMenu($event)"
+            class="p-12 text-center bg-gray-50 dark:bg-gray-800 rounded border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-context-menu">
+            <p class="text-lg mb-2">🖱️ Right-click here</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Try the context menu with keyboard navigation</p>
+          </div>
+        </ui-card>
+        
+        <ui-context-menu
+          [menuItems]="contextMenuItems()"
+          [isOpen]="contextMenuOpen()"
+          [posX]="contextMenuX()"
+          [posY]="contextMenuY()"
+          (openChange)="onContextMenuOpenChange($event)"
+          (itemClick)="onContextMenuItemClick($event)">
+        </ui-context-menu>
+        
+        <ui-text size="sm" class="text-gray-600 dark:text-gray-400">
+          ✨ Features: Icons, shortcuts, nested menus, keyboard navigation, Escape to close
+        </ui-text>
+      </div>
+    </section>
+
+    <!-- Combobox -->
+    <section class="demo-section">
+      <ui-heading level="h2" size="2xl" class="mb-6">Combobox (P2)</ui-heading>
+      <ui-text class="mb-4">Autocomplete dropdown with filtering and multi-select support.</ui-text>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Single Select -->
+        <ui-card>
+          <ui-heading level="h4" size="lg" class="mb-4">Single Select</ui-heading>
+          <ui-combobox
+            [comboOptions]="comboboxOptions()"
+            [selectedValue]="comboboxValue()"
+            placeholderText="Select a fruit..."
+            [canFilter]="true"
+            label="Fruit selector"
+            (valueChange)="onComboboxValueChange($event)">
+          </ui-combobox>
+          <ui-text size="sm" class="mt-2 text-gray-600 dark:text-gray-400">
+            Selected: {{ comboboxValue() || 'None' }}
+          </ui-text>
+        </ui-card>
+
+        <!-- Multi Select -->
+        <ui-card>
+          <ui-heading level="h4" size="lg" class="mb-4">Multi Select</ui-heading>
+          <ui-combobox
+            [comboOptions]="comboboxOptions()"
+            [selectedValue]="comboboxMultiValue()"
+            placeholderText="Select multiple fruits..."
+            [isMultiSelect]="true"
+            [canFilter]="true"
+            label="Multi-select fruit selector"
+            (valueChange)="onComboboxValueChange($event)">
+          </ui-combobox>
+          <ui-text size="sm" class="mt-2 text-gray-600 dark:text-gray-400">
+            Selected: {{ comboboxMultiValue().length }} items
+          </ui-text>
+        </ui-card>
+      </div>
+      
+      <ui-text size="sm" class="mt-4 text-gray-600 dark:text-gray-400">
+        ✨ Features: Autocomplete filtering, multi-select, keyboard navigation, clear button
+      </ui-text>
+    </section>
+  </ui-container>
 </div>
