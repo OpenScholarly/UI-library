@@ -12,7 +12,7 @@ import {
   IconButtonComponent, ButtonGroupComponent, FabComponent,
   SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent,
   ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
-  FormFieldComponent, FileUploadComponent, SidebarComponent,
+  FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
@@ -35,7 +35,7 @@ import {
     IconButtonComponent, ButtonGroupComponent, FabComponent,
     SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent, 
     ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
-    FormFieldComponent, FileUploadComponent, SidebarComponent
+    FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -605,5 +605,54 @@ export class MainComponent {
 
   onRightSidebarOpenChange(open: boolean) {
     this.sidebarRightOpen.set(open);
+  }
+
+  // Stepper demo data
+  stepperSteps = signal<any[]>([
+    { label: 'Account Setup', description: 'Create your account', completed: true },
+    { label: 'Personal Info', description: 'Add your details', completed: true },
+    { label: 'Preferences', description: 'Customize settings', optional: true },
+    { label: 'Review', description: 'Confirm information' },
+  ]);
+  currentStepperStep = signal(2);
+
+  onStepChange(step: number) {
+    this.currentStepperStep.set(step);
+    console.log('Step changed to:', step);
+  }
+
+  onStepComplete(step: number) {
+    const steps = this.stepperSteps();
+    steps[step].completed = true;
+    this.stepperSteps.set([...steps]);
+    console.log('Step completed:', step);
+  }
+
+  nextStep() {
+    if (this.currentStepperStep() < this.stepperSteps().length - 1) {
+      this.onStepChange(this.currentStepperStep() + 1);
+    }
+  }
+
+  previousStep() {
+    if (this.currentStepperStep() > 0) {
+      this.onStepChange(this.currentStepperStep() - 1);
+    }
+  }
+
+  // Popover demo data
+  popoverOpen = signal(false);
+  popoverHoverOpen = signal(false);
+
+  togglePopover() {
+    this.popoverOpen.update(v => !v);
+  }
+
+  onPopoverOpenChange(open: boolean) {
+    this.popoverOpen.set(open);
+  }
+
+  onPopoverHoverOpenChange(open: boolean) {
+    this.popoverHoverOpen.set(open);
   }
 }

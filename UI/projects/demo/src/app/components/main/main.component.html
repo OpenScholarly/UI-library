@@ -632,6 +632,154 @@
         </div>
       </ui-card>
 
+      <!-- P1: Stepper & Popover Components -->
+      <ui-card>
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-2">
+            🎯 P1: Stepper & Popover Components
+          </ui-heading>
+          <ui-text color="secondary" class="mb-6">
+            Multi-step processes and contextual overlays for enhanced user experience.
+          </ui-text>
+
+          <div class="space-y-8">
+            <!-- Stepper Component -->
+            <div>
+              <ui-text weight="semibold" class="mb-3">Stepper Component</ui-text>
+              
+              <div class="space-y-6">
+                <!-- Horizontal Stepper -->
+                <div>
+                  <ui-text variant="caption" class="mb-2">Horizontal Stepper (Linear)</ui-text>
+                  <ui-stepper
+                    [steps]="stepperSteps()"
+                    [currentStep]="currentStepperStep()"
+                    orientation="horizontal"
+                    [linear]="true"
+                    (stepChange)="onStepChange($event)">
+                    
+                    <div step="0" class="p-4 border rounded-lg dark:border-gray-700">
+                      <h4 class="font-semibold mb-2">Step 1: Account Setup</h4>
+                      <p class="text-sm text-gray-600 dark:text-gray-400">Create your account information.</p>
+                    </div>
+                    
+                    <div step="1" class="p-4 border rounded-lg dark:border-gray-700">
+                      <h4 class="font-semibold mb-2">Step 2: Personal Info</h4>
+                      <p class="text-sm text-gray-600 dark:text-gray-400">Add your personal details.</p>
+                    </div>
+                    
+                    <div step="2" class="p-4 border rounded-lg dark:border-gray-700">
+                      <h4 class="font-semibold mb-2">Step 3: Preferences (Optional)</h4>
+                      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Customize your settings.</p>
+                      <div class="flex gap-2">
+                        <ui-button variant="secondary" size="sm" (clicked)="previousStep()">
+                          Previous
+                        </ui-button>
+                        <ui-button variant="primary" size="sm" (clicked)="nextStep()">
+                          Next
+                        </ui-button>
+                      </div>
+                    </div>
+                    
+                    <div step="3" class="p-4 border rounded-lg dark:border-gray-700">
+                      <h4 class="font-semibold mb-2">Step 4: Review</h4>
+                      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Review and confirm your information.</p>
+                      <div class="flex gap-2">
+                        <ui-button variant="secondary" size="sm" (clicked)="previousStep()">
+                          Previous
+                        </ui-button>
+                        <ui-button variant="success" size="sm">
+                          Complete
+                        </ui-button>
+                      </div>
+                    </div>
+                  </ui-stepper>
+                </div>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Popover Component -->
+            <div>
+              <ui-text weight="semibold" class="mb-3">Popover Component</ui-text>
+              
+              <div class="space-y-4">
+                <div class="flex gap-4 flex-wrap">
+                  <!-- Click trigger -->
+                  <ui-popover
+                    [open]="popoverOpen()"
+                    placement="top"
+                    [showArrow]="true"
+                    (openChange)="onPopoverOpenChange($event)">
+                    <ui-button trigger variant="primary" size="sm">
+                      Click for Popover
+                    </ui-button>
+                    <div content class="w-64">
+                      <h4 class="font-semibold mb-2">Popover Title</h4>
+                      <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                        This is a rich popover with custom content. You can add any HTML here.
+                      </p>
+                      <div class="flex gap-2">
+                        <ui-button size="xs" variant="primary">Action</ui-button>
+                        <ui-button size="xs" variant="ghost" (clicked)="onPopoverOpenChange(false)">
+                          Close
+                        </ui-button>
+                      </div>
+                    </div>
+                  </ui-popover>
+
+                  <!-- Hover trigger -->
+                  <ui-popover
+                    [open]="popoverHoverOpen()"
+                    placement="bottom"
+                    trigger="hover"
+                    [showArrow]="true"
+                    [closable]="false"
+                    (openChange)="onPopoverHoverOpenChange($event)">
+                    <ui-button trigger variant="secondary" size="sm">
+                      Hover for Info
+                    </ui-button>
+                    <div content class="w-48">
+                      <p class="text-sm">
+                        This popover appears on hover and disappears when you move away.
+                      </p>
+                    </div>
+                  </ui-popover>
+
+                  <!-- Different placements -->
+                  <ui-popover
+                    placement="right"
+                    [showArrow]="true">
+                    <ui-button trigger variant="outline" size="sm">
+                      Right Placement
+                    </ui-button>
+                    <div content class="w-40">
+                      <p class="text-sm">Positioned on the right side</p>
+                    </div>
+                  </ui-popover>
+
+                  <ui-popover
+                    placement="left"
+                    [showArrow]="true">
+                    <ui-button trigger variant="outline" size="sm">
+                      Left Placement
+                    </ui-button>
+                    <div content class="w-40">
+                      <p class="text-sm">Positioned on the left side</p>
+                    </div>
+                  </ui-popover>
+                </div>
+
+                <ui-text variant="caption" color="secondary">
+                  Popovers support click, hover, and focus triggers with 12 placement options.
+                </ui-text>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
       <!-- Badges & Chips -->
       <ui-card>
         <div class="p-6">

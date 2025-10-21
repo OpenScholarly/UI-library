@@ -51,17 +51,17 @@
   - [x] Keyboard shortcuts (Esc to close)
   - [ ] ARIA role="navigation" and proper labeling
 
-- [ ] **Stepper / Steps**: Multi-step process guide
-  - [ ] Horizontal and vertical layouts
-  - [ ] Linear vs. non-linear navigation
-  - [ ] Step validation
-  - [ ] Completed/error/active states
-  - [ ] Custom icons per step
-  - [ ] Optional steps support
-  - [ ] Edit completed steps
-  - [ ] Mobile-friendly design
-  - [ ] Keyboard navigation (arrow keys)
-  - [ ] ARIA role="group" with step status announcements
+- [x] **Stepper / Steps**: Multi-step process guide
+  - [x] Horizontal and vertical layouts
+  - [x] Linear vs. non-linear navigation
+  - [x] Step validation
+  - [x] Completed/error/active states
+  - [x] Custom icons per step
+  - [x] Optional steps support
+  - [x] Edit completed steps
+  - [x] Mobile-friendly design
+  - [x] Keyboard navigation (arrow keys)
+  - [x] ARIA role="group" with step status announcements
 
 - [ ] **Bottom Navigation**: Mobile navigation bar
   - [ ] 3-5 navigation items
@@ -86,15 +86,15 @@
   - [ ] Accessibility (Esc to close, arrow keys)
 
 ### Overlays
-- [ ] **Popover**: Rich contextual content overlay
-  - [ ] Click/hover/focus triggers
-  - [ ] Multiple placement options (12 positions)
-  - [ ] Arrow indicator
-  - [ ] Close on outside click/Escape
-  - [ ] Focus management
-  - [ ] Content slots (header, body, footer)
+- [x] **Popover**: Rich contextual content overlay
+  - [x] Click/hover/focus triggers
+  - [x] Multiple placement options (12 positions)
+  - [x] Arrow indicator
+  - [x] Close on outside click/Escape
+  - [x] Focus management
+  - [x] Content slots (header, body, footer)
   - [ ] Auto-positioning to stay in viewport
-  - [ ] ARIA role="dialog" or "tooltip" depending on use
+  - [x] ARIA role="dialog" or "tooltip" depending on use
 
 - [ ] **Bottom Sheet**: Mobile-optimized modal
   - [ ] Slide up animation
