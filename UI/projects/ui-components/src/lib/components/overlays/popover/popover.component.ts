@@ -63,7 +63,7 @@ export type PopoverTrigger = 'click' | 'hover' | 'focus';
   selector: 'ui-popover',
   imports: [CommonModule],
   template: `
-    <div class="ui-popover-wrapper inline-block">
+    <div class="ui-popover-wrapper inline-block relative">
       <!-- Trigger -->
       <div
         #triggerElement
@@ -83,6 +83,8 @@ export type PopoverTrigger = 'click' | 'hover' | 'focus';
           #popoverElement
           [id]="popoverId()"
           [class]="popoverClasses()"
+          [style.width]="width()"
+          [style.max-width]="maxWidth()"
           [attr.role]="role()"
           [attr.aria-label]="ariaLabel()"
           (mouseenter)="onPopoverMouseEnter()"
@@ -249,31 +251,86 @@ export class PopoverComponent {
   }
 
   popoverClasses = computed(() => {
-    const base = 'fixed z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg';
+    const base = 'absolute z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg';
     const animate = 'transition-all duration-200';
-    return `${base} ${animate}`;
+    const positioning = this.getPositioningClasses();
+    return `${base} ${animate} ${positioning}`;
   });
+
+  private getPositioningClasses(): string {
+    const placement = this.placement();
+    
+    // Position based on placement
+    if (placement.startsWith('top')) {
+      if (placement === 'top-start') return 'bottom-full left-0 mb-2';
+      if (placement === 'top-end') return 'bottom-full right-0 mb-2';
+      return 'bottom-full left-1/2 -translate-x-1/2 mb-2';
+    }
+    
+    if (placement.startsWith('bottom')) {
+      if (placement === 'bottom-start') return 'top-full left-0 mt-2';
+      if (placement === 'bottom-end') return 'top-full right-0 mt-2';
+      return 'top-full left-1/2 -translate-x-1/2 mt-2';
+    }
+    
+    if (placement.startsWith('left')) {
+      if (placement === 'left-start') return 'right-full top-0 mr-2';
+      if (placement === 'left-end') return 'right-full bottom-0 mr-2';
+      return 'right-full top-1/2 -translate-y-1/2 mr-2';
+    }
+    
+    if (placement.startsWith('right')) {
+      if (placement === 'right-start') return 'left-full top-0 ml-2';
+      if (placement === 'right-end') return 'left-full bottom-0 ml-2';
+      return 'left-full top-1/2 -translate-y-1/2 ml-2';
+    }
+    
+    return 'top-full left-1/2 -translate-x-1/2 mt-2';
+  }
 
   arrowClasses = computed(() => {
     const base = 'absolute w-3 h-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rotate-45';
     const placement = this.placement();
     
     let position = '';
+    let align = '';
+    
     if (placement.startsWith('top')) {
       position = 'bottom-[-6px] border-b border-r';
+      if (placement === 'top-start') {
+        align = 'left-4';
+      } else if (placement === 'top-end') {
+        align = 'right-4';
+      } else {
+        align = 'left-1/2 -translate-x-1/2';
+      }
     } else if (placement.startsWith('bottom')) {
       position = 'top-[-6px] border-t border-l';
+      if (placement === 'bottom-start') {
+        align = 'left-4';
+      } else if (placement === 'bottom-end') {
+        align = 'right-4';
+      } else {
+        align = 'left-1/2 -translate-x-1/2';
+      }
     } else if (placement.startsWith('left')) {
       position = 'right-[-6px] border-r border-t';
+      if (placement === 'left-start') {
+        align = 'top-4';
+      } else if (placement === 'left-end') {
+        align = 'bottom-4';
+      } else {
+        align = 'top-1/2 -translate-y-1/2';
+      }
     } else if (placement.startsWith('right')) {
       position = 'left-[-6px] border-l border-b';
-    }
-
-    let align = 'left-1/2 -translate-x-1/2';
-    if (placement.includes('start')) {
-      align = 'left-4';
-    } else if (placement.includes('end')) {
-      align = 'right-4';
+      if (placement === 'right-start') {
+        align = 'top-4';
+      } else if (placement === 'right-end') {
+        align = 'bottom-4';
+      } else {
+        align = 'top-1/2 -translate-y-1/2';
+      }
     }
 
     return `${base} ${position} ${align}`;
