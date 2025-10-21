@@ -12,7 +12,7 @@ import {
   IconButtonComponent, ButtonGroupComponent, FabComponent,
   SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent,
   ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
-  FormFieldComponent,
+  FormFieldComponent, FileUploadComponent, SidebarComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
@@ -35,7 +35,7 @@ import {
     IconButtonComponent, ButtonGroupComponent, FabComponent,
     SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent, 
     ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
-    FormFieldComponent
+    FormFieldComponent, FileUploadComponent, SidebarComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -570,5 +570,40 @@ export class MainComponent {
     this.formFieldUsername.set(value);
     // Show success if username is valid
     this.formFieldUsernameSuccess.set(value.length >= 3);
+  }
+
+  // File Upload demo data
+  onFilesSelected(files: File[]) {
+    console.log('Files selected:', files);
+  }
+
+  onFileRemoved(fileId: string) {
+    console.log('File removed:', fileId);
+  }
+
+  customUploadFn = async (file: File): Promise<void> => {
+    // Simulate upload delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    console.log('File uploaded:', file.name);
+  };
+
+  // Sidebar demo data
+  sidebarOpen = signal(false);
+  sidebarRightOpen = signal(false);
+
+  toggleSidebar() {
+    this.sidebarOpen.update(v => !v);
+  }
+
+  toggleRightSidebar() {
+    this.sidebarRightOpen.update(v => !v);
+  }
+
+  onSidebarOpenChange(open: boolean) {
+    this.sidebarOpen.set(open);
+  }
+
+  onRightSidebarOpenChange(open: boolean) {
+    this.sidebarRightOpen.set(open);
   }
 }

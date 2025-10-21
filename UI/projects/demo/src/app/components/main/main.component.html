@@ -554,6 +554,84 @@
         </div>
       </ui-card>
 
+      <!-- P1: NEW COMPONENTS -->
+      <ui-card>
+        <div class="p-6">
+          <ui-heading level="h3" size="lg" color="primary" class="mb-2">
+            🚀 P1: File Upload & Sidebar Components
+          </ui-heading>
+          <ui-text color="secondary" class="mb-6">
+            Essential components for file management and navigation.
+          </ui-text>
+
+          <div class="space-y-8">
+            <!-- File Upload Component -->
+            <div>
+              <ui-text weight="semibold" class="mb-3">File Upload Component</ui-text>
+              
+              <div class="space-y-6">
+                <!-- Single file upload -->
+                <div>
+                  <ui-text variant="caption" class="mb-2">Single File Upload (Images only)</ui-text>
+                  <ui-file-upload
+                    accept="image/*"
+                    [maxSize]="5242880"
+                    [showPreview]="true"
+                    (filesSelected)="onFilesSelected($event)"
+                    (fileRemoved)="onFileRemoved($event)">
+                  </ui-file-upload>
+                </div>
+
+                <!-- Multiple file upload -->
+                <div>
+                  <ui-text variant="caption" class="mb-2">Multiple Files Upload (Documents)</ui-text>
+                  <ui-file-upload
+                    [multiple]="true"
+                    accept=".pdf,.doc,.docx,.txt"
+                    [maxSize]="10485760"
+                    dropZoneText="Drop documents here or click to browse"
+                    (filesSelected)="onFilesSelected($event)">
+                  </ui-file-upload>
+                </div>
+
+                <!-- With custom upload function -->
+                <div>
+                  <ui-text variant="caption" class="mb-2">With Auto-Upload (Any file type)</ui-text>
+                  <ui-file-upload
+                    [multiple]="true"
+                    [uploadFn]="customUploadFn"
+                    [showPreview]="true"
+                    dropZoneText="Files will be automatically uploaded">
+                  </ui-file-upload>
+                </div>
+              </div>
+            </div>
+
+            <ui-divider />
+
+            <!-- Sidebar Component -->
+            <div>
+              <ui-text weight="semibold" class="mb-3">Sidebar / Drawer Component</ui-text>
+              
+              <div class="space-y-4">
+                <div class="flex gap-3">
+                  <ui-button variant="primary" (clicked)="toggleSidebar()">
+                    Toggle Left Sidebar
+                  </ui-button>
+                  <ui-button variant="secondary" (clicked)="toggleRightSidebar()">
+                    Toggle Right Sidebar
+                  </ui-button>
+                </div>
+
+                <ui-text variant="caption" color="secondary">
+                  Click buttons to open sidebars. Press Escape or click backdrop to close.
+                </ui-text>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
       <!-- Badges & Chips -->
       <ui-card>
         <div class="p-6">
@@ -910,4 +988,50 @@
     (close)="closeCommandMenu()"
   >
   </ui-command-menu>
+
+  <!-- Left Sidebar Demo -->
+  <ui-sidebar
+    [open]="sidebarOpen()"
+    mode="over"
+    position="left"
+    [backdrop]="true"
+    [showHeader]="true"
+    (openChange)="onSidebarOpenChange($event)">
+    <div slot="header">
+      <ui-heading level="h4" size="lg">Navigation Menu</ui-heading>
+    </div>
+    <nav class="space-y-2">
+      <a href="#" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Dashboard</a>
+      <a href="#" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Profile</a>
+      <a href="#" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Settings</a>
+      <a href="#" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Help</a>
+    </nav>
+  </ui-sidebar>
+
+  <!-- Right Sidebar Demo -->
+  <ui-sidebar
+    [open]="sidebarRightOpen()"
+    mode="over"
+    position="right"
+    [backdrop]="true"
+    [showHeader]="true"
+    (openChange)="onRightSidebarOpenChange($event)">
+    <div slot="header">
+      <ui-heading level="h4" size="lg">Notifications</ui-heading>
+    </div>
+    <div class="space-y-4">
+      <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded">
+        <p class="font-medium text-sm">New message received</p>
+        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">2 minutes ago</p>
+      </div>
+      <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded">
+        <p class="font-medium text-sm">Task completed</p>
+        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">1 hour ago</p>
+      </div>
+      <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded">
+        <p class="font-medium text-sm">System update available</p>
+        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">3 hours ago</p>
+      </div>
+    </div>
+  </ui-sidebar>
 </div>

@@ -43,6 +43,7 @@ export * from './lib/components/forms/toggle/toggle.component';
 export * from './lib/components/forms/textarea/textarea.component';
 export * from './lib/components/forms/select/select.component';
 export * from './lib/components/forms/slider/slider.component';
+export * from './lib/components/forms/file-upload/file-upload.component';
 
 // Display components
 export * from './lib/components/identity/badge/badge.component';
@@ -61,6 +62,7 @@ export * from './lib/components/overlays/menu/menu.component';
 export * from './lib/components/navigation/tabs/tabs.component';
 export * from './lib/components/navigation/breadcrumbs/breadcrumbs.component';
 export * from './lib/components/navigation/pagination/pagination.component';
+export * from './lib/components/navigation/sidebar/sidebar.component';
 
 // Feedback components
 export * from './lib/components/feedback/loader/loader.component';

@@ -28,26 +28,26 @@
   - [ ] Clear button
   - [ ] ARIA time announcements
 
-- [ ] **File Upload**: File selection with drag & drop
-  - [ ] Single/multiple file upload
+- [x] **File Upload**: File selection with drag & drop
+  - [x] Single/multiple file upload
   - [ ] Directory upload support
-  - [ ] Drag & drop zone
-  - [ ] File type restrictions (accept attribute)
-  - [ ] File size validation
-  - [ ] Preview for images/documents
-  - [ ] Progress bar during upload
-  - [ ] Custom upload function support
-  - [ ] Error handling and retry
-  - [ ] ARIA live regions for upload status
+  - [x] Drag & drop zone
+  - [x] File type restrictions (accept attribute)
+  - [x] File size validation
+  - [x] Preview for images/documents
+  - [x] Progress bar during upload
+  - [x] Custom upload function support
+  - [x] Error handling and retry
+  - [x] ARIA live regions for upload status
 
 ### Navigation
-- [ ] **Sidebar / Drawer**: Side navigation panel
-  - [ ] Multiple modes: over, push, side
-  - [ ] Left/right positioning
-  - [ ] Backdrop support
-  - [ ] Focus trap when open
+- [x] **Sidebar / Drawer**: Side navigation panel
+  - [x] Multiple modes: over, push, side
+  - [x] Left/right positioning
+  - [x] Backdrop support
+  - [x] Focus trap when open
   - [ ] Responsive behavior (auto-collapse on mobile)
-  - [ ] Persistent state option
+  - [x] Persistent state option
   - [ ] Keyboard shortcuts (Esc to close)
   - [ ] ARIA role="navigation" and proper labeling
 
