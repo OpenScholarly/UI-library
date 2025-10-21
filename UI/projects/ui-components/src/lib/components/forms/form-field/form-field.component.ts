@@ -252,7 +252,7 @@ export class FormFieldComponent {
    * ID for the form field.
    * @default undefined
    */
-  fieldId = input<string>(`form-field-${Math.random().toString(36).substr(2, 9)}`);
+  fieldId = input<string>(`form-field-${Math.random().toString(36).substring(2, 11)}`);
 
   /**
    * ARIA label for the field (overrides label).
