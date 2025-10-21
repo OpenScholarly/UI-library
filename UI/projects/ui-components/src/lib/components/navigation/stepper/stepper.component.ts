@@ -273,7 +273,7 @@ export class StepperComponent {
     // 2. Next step if current is completed
     // 3. Completed steps if editable
     if (index < this.currentStep()) {
-      return this.editable() || true;
+      return this.editable();
     }
 
     if (index === this.currentStep() + 1) {
