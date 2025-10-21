@@ -44,6 +44,7 @@ export * from './lib/components/forms/textarea/textarea.component';
 export * from './lib/components/forms/select/select.component';
 export * from './lib/components/forms/slider/slider.component';
 export * from './lib/components/forms/file-upload/file-upload.component';
+export * from './lib/components/forms/rating/rating.component';
 
 // Display components
 export * from './lib/components/identity/badge/badge.component';
@@ -69,6 +70,8 @@ export * from './lib/components/navigation/stepper/stepper.component';
 // Feedback components
 export * from './lib/components/feedback/loader/loader.component';
 export * from './lib/components/feedback/progress/progress.component';
+export * from './lib/components/feedback/alert/alert.component';
+export * from './lib/components/feedback/empty-state/empty-state.component';
 
 // Utility components
 export * from './lib/components/forms/theme-switcher/theme-switcher.component';

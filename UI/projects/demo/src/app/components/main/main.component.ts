@@ -13,6 +13,7 @@ import {
   SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent,
   ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
   FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent,
+  AlertComponent, EmptyStateComponent, RatingComponent,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
@@ -35,7 +36,8 @@ import {
     IconButtonComponent, ButtonGroupComponent, FabComponent,
     SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent, 
     ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
-    FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent
+    FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent,
+    AlertComponent, EmptyStateComponent, RatingComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -50,6 +52,7 @@ export class MainComponent {
   showToast = signal(false);
   sliderValue = signal(50);
   isCommandMenuOpen = signal(false);
+  ratingValue = signal(4.5);
 
   // NEW COMPONENT DATA
   // Feed data
@@ -513,6 +516,12 @@ export class MainComponent {
   // Carousel handlers
   onCarouselSlideChange(event: { index: number; item: CarouselItem }) {
     console.log('Carousel slide changed:', event);
+  }
+
+  // Rating handler
+  onRatingChange(value: number) {
+    this.ratingValue.set(value);
+    console.log('Rating changed to:', value);
   }
 
   // Navbar handlers

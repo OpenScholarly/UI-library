@@ -780,6 +780,134 @@
         </div>
       </ui-card>
 
+      <!-- Alert, Empty State & Rating Components -->
+      <ui-card>
+        <div class="p-6">
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                🎨 P2: Alert, Empty State & Rating Components
+              </h3>
+              <ui-text variant="caption" color="secondary">
+                Essential feedback and user interaction components for better UX.
+              </ui-text>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Alert Component -->
+              <div class="space-y-3">
+                <ui-text variant="body" color="primary" class="font-semibold">Alert / Banner Component</ui-text>
+                
+                <div class="space-y-3">
+                  <ui-alert variant="info" title="Information">
+                    This is an informational message about system updates.
+                  </ui-alert>
+
+                  <ui-alert variant="success" title="Success!" [dismissible]="true">
+                    Your changes have been saved successfully.
+                  </ui-alert>
+
+                  <ui-alert 
+                    variant="warning" 
+                    title="Warning"
+                    actionLabel="Review"
+                    [dismissible]="true">
+                    Please review your security settings before continuing.
+                  </ui-alert>
+
+                  <ui-alert 
+                    variant="error" 
+                    title="Error"
+                    actionLabel="Retry">
+                    Failed to save changes. Please try again.
+                  </ui-alert>
+                </div>
+
+                <ui-text variant="caption" color="secondary">
+                  Alerts support info, success, warning, and error variants with optional actions.
+                </ui-text>
+              </div>
+
+              <!-- Rating Component -->
+              <div class="space-y-3">
+                <ui-text variant="body" color="primary" class="font-semibold">Rating Component</ui-text>
+                
+                <div class="space-y-4">
+                  <div>
+                    <ui-text variant="caption" color="secondary" class="mb-2 block">
+                      Interactive Rating (click stars):
+                    </ui-text>
+                    <ui-rating 
+                      [value]="ratingValue()"
+                      [showLabel]="true"
+                      size="lg"
+                      (valueChange)="onRatingChange($event)">
+                    </ui-rating>
+                  </div>
+
+                  <div>
+                    <ui-text variant="caption" color="secondary" class="mb-2 block">
+                      Read-only with half stars:
+                    </ui-text>
+                    <div class="space-y-2">
+                      <ui-rating [value]="4.5" [readonly]="true" [allowHalf]="true" [showLabel]="true"></ui-rating>
+                      <ui-rating [value]="3.7" [readonly]="true" [allowHalf]="true" [showLabel]="true" size="sm"></ui-rating>
+                    </div>
+                  </div>
+
+                  <div>
+                    <ui-text variant="caption" color="secondary" class="mb-2 block">
+                      Custom icon (hearts):
+                    </ui-text>
+                    <ui-rating [value]="5" [readonly]="true" customIcon="❤️"></ui-rating>
+                  </div>
+                </div>
+
+                <ui-text variant="caption" color="secondary">
+                  Supports interactive and read-only modes with full keyboard navigation.
+                </ui-text>
+              </div>
+            </div>
+
+            <!-- Empty State Component -->
+            <div class="space-y-3">
+              <ui-text variant="body" color="primary" class="font-semibold">Empty State Component</ui-text>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <ui-empty-state
+                  icon="📭"
+                  title="No messages"
+                  description="You don't have any messages yet."
+                  primaryActionLabel="Send Message"
+                  size="sm">
+                </ui-empty-state>
+
+                <ui-empty-state
+                  icon="🔍"
+                  title="No results found"
+                  description="Try adjusting your search terms."
+                  primaryActionLabel="Clear Filters"
+                  secondaryActionLabel="View All"
+                  size="md">
+                </ui-empty-state>
+
+                <ui-empty-state
+                  icon="📄"
+                  title="No documents"
+                  description="Get started by uploading your first document."
+                  primaryActionLabel="Upload Document"
+                  size="md">
+                </ui-empty-state>
+              </div>
+
+              <ui-text variant="caption" color="secondary">
+                Empty states provide helpful guidance when there's no content to display.
+              </ui-text>
+            </div>
+          </div>
+        </div>
+      </ui-card>
+
       <!-- Badges & Chips -->
       <ui-card>
         <div class="p-6">

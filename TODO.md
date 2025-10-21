@@ -285,13 +285,13 @@
   - [ ] Markdown support
   - [ ] HTML export
 
-- [ ] **Rating**: Star rating component
-  - [ ] Half-star support
-  - [ ] Custom icons (stars, hearts, etc.)
-  - [ ] Read-only mode
-  - [ ] Hover preview
-  - [ ] Keyboard input
-  - [ ] Size variants
+- [x] **Rating**: Star rating component
+  - [x] Half-star support
+  - [x] Custom icons (stars, hearts, etc.)
+  - [x] Read-only mode
+  - [x] Hover preview
+  - [x] Keyboard input
+  - [x] Size variants
 
 - [ ] **Combobox**: Combination of input and dropdown
   - [ ] Autocomplete with suggestions
@@ -327,18 +327,18 @@
   - [ ] Captions
   - [ ] Keyboard controls
 
-- [ ] **Empty State**: Placeholder for no data
-  - [ ] Custom illustration
-  - [ ] Title and description
-  - [ ] Call-to-action button
-  - [ ] Multiple variants
+- [x] **Empty State**: Placeholder for no data
+  - [x] Custom illustration
+  - [x] Title and description
+  - [x] Call-to-action button
+  - [x] Multiple variants
   - [ ] Animation on appear
 
-- [ ] **Alert / Banner**: Inline notifications
-  - [ ] Info, success, warning, error variants
-  - [ ] Dismissible option
-  - [ ] Icons
-  - [ ] Action buttons
+- [x] **Alert / Banner**: Inline notifications
+  - [x] Info, success, warning, error variants
+  - [x] Dismissible option
+  - [x] Icons
+  - [x] Action buttons
   - [ ] Expand/collapse for long content
 
 - [ ] **Statistic**: Display of key metrics
