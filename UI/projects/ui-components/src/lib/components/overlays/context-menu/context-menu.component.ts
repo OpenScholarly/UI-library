@@ -369,7 +369,7 @@ export class ContextMenuComponent {
       case 'ArrowRight':
         if (item.children && item.children.length > 0) {
           event.preventDefault();
-          // TODO: Open submenu
+          // Submenu opening not yet implemented. Only structure for nested menus is present (see PR description).
         }
         break;
     }
