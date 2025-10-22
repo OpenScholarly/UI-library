@@ -272,29 +272,29 @@ export class FormFieldComponent {
    */
   suffixIcon = input<string>();
 
-  /**
-   * ID for the form field.
-   * @default undefined
-   */
-  fieldId = input<string>(`form-field-${Math.random().toString(36).substring(2, 11)}`);
-
+  
   /**
    * ARIA label for the field (overrides label).
    * @default undefined
-   */
-  ariaLabel = input<string>();
-
-  /**
+  */
+ ariaLabel = input<string>();
+ 
+ /**
    * Size variant of the form field.
    * - `sm`: Small
    * - `md`: Medium (default)
    * - `lg`: Large
    * @default "md"
-   */
+  */
   size = input<'sm' | 'md' | 'lg'>('md');
 
+  fieldId = computed(() => this.generateId('form-field'));
   helperId = computed(() => `${this.fieldId()}-helper`);
   errorId = computed(() => `${this.fieldId()}-error`);
+
+  private generateId(prefix = 'id') {
+    return `${prefix}-${Math.random().toString(36).substring(2, 11)}`;
+  }
 
   /**
    * Computed helper to get the recommended padding classes for the input element.

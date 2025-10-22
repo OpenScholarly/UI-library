@@ -15,6 +15,7 @@ import {
   FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent,
   AlertComponent, EmptyStateComponent, RatingComponent,
   BottomNavComponent, ContextMenuComponent, ComboboxComponent,
+  type Step,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
@@ -620,7 +621,7 @@ export class MainComponent {
   }
 
   // Stepper demo data
-  stepperSteps = signal<any[]>([
+  stepperSteps = signal<Step[]>([
     { label: 'Account Setup', description: 'Create your account', completed: true },
     { label: 'Personal Info', description: 'Add your details', completed: true },
     { label: 'Preferences', description: 'Customize settings', optional: true },

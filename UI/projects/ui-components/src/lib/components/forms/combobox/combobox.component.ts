@@ -424,7 +424,18 @@ export class ComboboxComponent {
   ariaLabel = signal<string>('Combobox');
 
   /** Signal for component ID */
-  id = signal<string>(`combobox-${Math.random().toString(36).substring(2, 11)}`);
+  id = signal<string>('');
+
+  private generateId(prefix = 'combobox') {
+    return `${prefix}-${Math.random().toString(36).substring(2, 11)}`;
+  }
+
+  constructor() {
+    // Ensure a stable unique id per instance
+    if (!this.id()) {
+      this.id.set(this.generateId());
+    }
+  }
 
   /** Computed filtered options */
   filteredOptions = computed(() => {

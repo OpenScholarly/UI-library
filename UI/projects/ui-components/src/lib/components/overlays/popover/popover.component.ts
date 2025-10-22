@@ -199,12 +199,6 @@ export class PopoverComponent {
   maxWidth = input<string>('320px');
 
   /**
-   * Unique ID for the popover.
-   * @default generated
-   */
-  popoverId = input<string>(`popover-${Math.random().toString(36).substr(2, 9)}`);
-
-  /**
    * Emitted when open state changes.
    * @event openChange
    */
@@ -224,6 +218,11 @@ export class PopoverComponent {
 
   private hoverTimeout: any;
   private isMouseOverPopover = signal(false);
+
+  popoverId = computed(() => this.generateId('popover'));
+  private generateId(prefix = 'id') {
+    return `${prefix}-${Math.random().toString(36).substring(2, 11)}`;
+  }
 
   constructor() {
     // Handle keyboard events

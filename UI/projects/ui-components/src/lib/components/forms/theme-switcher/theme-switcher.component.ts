@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { generateId } from '../../../util/id';
 import { ThemeMode } from '../../../types';
 
 /**
@@ -164,10 +165,10 @@ export class ThemeSwitcherComponent {
     (typeof localStorage !== 'undefined' ? localStorage.getItem(this.storageKey()) : null) as ThemeMode || 'system'
   );
 
-  // Generate unique IDs for radio buttons (generated once per instance)
-  protected readonly systemId = `theme-switch-system-${Math.random().toString(36).substr(2, 9)}`;
-  protected readonly lightId = `theme-switch-light-${Math.random().toString(36).substr(2, 9)}`;
-  protected readonly darkId = `theme-switch-dark-${Math.random().toString(36).substr(2, 9)}`;
+  // Unique IDs for radio buttons (set in constructor)
+  protected systemId = '';
+  protected lightId = '';
+  protected darkId = '';
 
   protected iconSize = computed(() => this.size() === 'sm' ? '14' : '16');
 
@@ -200,6 +201,10 @@ export class ThemeSwitcherComponent {
   }
 
   constructor() {
+    // Generate stable IDs per instance
+    this.systemId = generateId('theme-switch-system');
+    this.lightId = generateId('theme-switch-light');
+    this.darkId = generateId('theme-switch-dark');
     // Apply the theme on initial load
     this.applyTheme(this.currentTheme());
 

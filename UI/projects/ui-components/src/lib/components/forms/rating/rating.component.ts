@@ -10,6 +10,7 @@ export type RatingSize = 'sm' | 'md' | 'lg';
  * - Interactive and read-only modes
  * - Half-star support for decimal ratings
  * - Customizable icons (stars, hearts, etc.)
+ * - Optional custom half-icon or opacity-based half-fill
  * - Three size variants (sm, md, lg)
  * - Hover preview for interactive ratings
  * - Full keyboard navigation support
@@ -34,6 +35,21 @@ export type RatingSize = 'sm' | 'md' | 'lg';
  *   [readonly]="true"
  *   [allowHalf]="true"
  *   customIcon="❤️">
+ * </ui-rating>
+ * 
+ * <!-- Custom icons with dedicated half icon -->
+ * <ui-rating
+ *   [value]="3.5"
+ *   [allowHalf]="true"
+ *   customIcon="❤️"
+ *   customHalfIcon="🤍">
+ * </ui-rating>
+ * 
+ * <!-- Custom icon with opacity-based half-fill (no customHalfIcon) -->
+ * <ui-rating
+ *   [value]="4.5"
+ *   [allowHalf]="true"
+ *   customIcon="⭐">
  * </ui-rating>
  * ```
  */
@@ -113,6 +129,13 @@ export class RatingComponent {
   customIcon = input<string>('★');
 
   /**
+   * Custom icon for half-filled state (optional).
+   * If not provided, uses opacity-based half-fill effect.
+   * @default undefined
+   */
+  customHalfIcon = input<string | undefined>(undefined);
+
+  /**
    * Size variant of the rating.
    * @default "md"
    */
@@ -161,13 +184,21 @@ export class RatingComponent {
     const half = this.allowHalf() && star === Math.ceil(displayValue) && displayValue % 1 !== 0;
     
     let color = '';
-    if (filled || half) {
+    let opacity = '';
+    
+    if (filled) {
       color = 'text-yellow-400';
+      opacity = 'opacity-100';
+    } else if (half) {
+      color = 'text-yellow-400';
+      // Use half opacity for half-stars when no custom half icon is provided
+      opacity = !this.customHalfIcon() ? 'opacity-50' : 'opacity-100';
     } else {
       color = 'text-gray-300 dark:text-gray-600';
+      opacity = 'opacity-100';
     }
     
-    return `${size} ${color} transition-colors`;
+    return `${size} ${color} ${opacity} transition-all`;
   }
 
   getStarIcon(star: number): string {
@@ -178,11 +209,23 @@ export class RatingComponent {
     if (filled) {
       return this.customIcon();
     } else if (half) {
-      // Use half-filled version if available, otherwise use empty
-      return this.customIcon() === '★' ? '½' : this.customIcon();
+      // Use custom half icon if provided, otherwise use the filled icon with opacity
+      if (this.customHalfIcon()) {
+        return this.customHalfIcon()!;
+      }
+      // For built-in star, use half character
+      if (this.customIcon() === '★') {
+        return '⯨'; // Half star character
+      }
+      // For other custom icons, the opacity in CSS will handle the half state
+      return this.customIcon();
     } else {
       // Empty star
-      return this.customIcon() === '★' ? '☆' : this.customIcon();
+      if (this.customIcon() === '★') {
+        return '☆';
+      }
+      // For custom icons, return the same icon (opacity will make it appear empty)
+      return this.customIcon();
     }
   }
 

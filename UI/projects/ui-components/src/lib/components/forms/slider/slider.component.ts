@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, input, output, computed, signal, ViewChild, ElementRef, forwardRef } from '@angular/core';
+import { generateId } from '../../../util/id';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SliderVariant, SliderSize } from '../../../types';
@@ -235,8 +236,12 @@ export class SliderComponent implements ControlValueAccessor {
   private value = signal<number>(0);
   hasError = signal<boolean>(false);
 
-  // Generate unique ID
-  sliderId = `ui-slider-${Math.random().toString(36).substr(2, 9)}`;
+  // Generate unique ID (set in constructor)
+  sliderId = '';
+
+  constructor() {
+    this.sliderId = generateId('ui-slider');
+  }
 
   // ControlValueAccessor
   private onChange = (value: number) => {};
