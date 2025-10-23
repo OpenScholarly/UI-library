@@ -12,10 +12,15 @@ import {
   IconButtonComponent, ButtonGroupComponent, FabComponent,
   SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent,
   ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
+  FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent,
+  AlertComponent, EmptyStateComponent, RatingComponent,
+  BottomNavComponent, ContextMenuComponent, ComboboxComponent,
+  type Step,
   type AccordionItem, type FooterSection, type TabItem, type SelectOption, type BreadcrumbItem,
   type SegmentedButtonOption, type SplitButtonAction, type AutocompleteOption, type SearchResult, type NavigationItem,
   type TableColumn, type MenuItem, type ThemeMode, type FeedItem, type StatItem, type TimelineItem,
   type BannerAction, type CarouselItem, type NavbarItem, type CommandItem, type TreeNode, type RadioOption,
+  type BottomNavItem, type ContextMenuItem, type ComboboxOption,
   ThemeService
 } from 'ui-components';
 
@@ -33,7 +38,10 @@ import {
     HeadingComponent, TextComponent, IconComponent, LinkComponent, ImageComponent, ScrollAreaComponent,
     IconButtonComponent, ButtonGroupComponent, FabComponent,
     SegmentedButtonComponent, SplitButtonComponent, AutocompleteComponent, SearchComponent, MenuComponent, SkeletonComponent, 
-    ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent
+    ThemeSwitcherComponent, CommandMenuComponent, TreeViewComponent, ThemeSelectorComponent,
+    FormFieldComponent, FileUploadComponent, SidebarComponent, StepperComponent, PopoverComponent,
+    AlertComponent, EmptyStateComponent, RatingComponent,
+    BottomNavComponent, ContextMenuComponent, ComboboxComponent
   ],
   templateUrl: './main.component.html',
 })
@@ -48,6 +56,7 @@ export class MainComponent {
   showToast = signal(false);
   sliderValue = signal(50);
   isCommandMenuOpen = signal(false);
+  ratingValue = signal(4.5);
 
   // NEW COMPONENT DATA
   // Feed data
@@ -513,6 +522,12 @@ export class MainComponent {
     console.log('Carousel slide changed:', event);
   }
 
+  // Rating handler
+  onRatingChange(value: number) {
+    this.ratingValue.set(value);
+    console.log('Rating changed to:', value);
+  }
+
   // Navbar handlers
   onNavbarItemClick(item: NavbarItem) {
     console.log('Navbar item clicked:', item.label);
@@ -547,5 +562,180 @@ export class MainComponent {
 
   onTreeNodeSelect(event: { node: TreeNode; selected: boolean }) {
     console.log('Tree node selected:', event.node.label, event.selected);
+  }
+
+  // Form Field demo data
+  formFieldEmail = signal('');
+  formFieldEmailError = signal(false);
+  formFieldPassword = signal('');
+  formFieldUsername = signal('');
+  formFieldUsernameSuccess = signal(false);
+
+  onFormFieldEmailChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.formFieldEmail.set(value);
+    // Simple validation
+    this.formFieldEmailError.set(value.length > 0 && !value.includes('@'));
+  }
+
+  onFormFieldUsernameChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.formFieldUsername.set(value);
+    // Show success if username is valid
+    this.formFieldUsernameSuccess.set(value.length >= 3);
+  }
+
+  // File Upload demo data
+  onFilesSelected(files: File[]) {
+    console.log('Files selected:', files);
+  }
+
+  onFileRemoved(fileId: string) {
+    console.log('File removed:', fileId);
+  }
+
+  customUploadFn = async (file: File): Promise<void> => {
+    // Simulate upload delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    console.log('File uploaded:', file.name);
+  };
+
+  // Sidebar demo data
+  sidebarOpen = signal(false);
+  sidebarRightOpen = signal(false);
+
+  toggleSidebar() {
+    this.sidebarOpen.update(v => !v);
+  }
+
+  toggleRightSidebar() {
+    this.sidebarRightOpen.update(v => !v);
+  }
+
+  onSidebarOpenChange(open: boolean) {
+    this.sidebarOpen.set(open);
+  }
+
+  onRightSidebarOpenChange(open: boolean) {
+    this.sidebarRightOpen.set(open);
+  }
+
+  // Stepper demo data
+  stepperSteps = signal<Step[]>([
+    { label: 'Account Setup', description: 'Create your account', completed: true },
+    { label: 'Personal Info', description: 'Add your details', completed: true },
+    { label: 'Preferences', description: 'Customize settings', optional: true },
+    { label: 'Review', description: 'Confirm information' },
+  ]);
+  currentStepperStep = signal(2);
+
+  onStepChange(step: number) {
+    this.currentStepperStep.set(step);
+    console.log('Step changed to:', step);
+  }
+
+  onStepComplete(step: number) {
+    const steps = this.stepperSteps();
+    steps[step].completed = true;
+    this.stepperSteps.set([...steps]);
+    console.log('Step completed:', step);
+  }
+
+  nextStep() {
+    if (this.currentStepperStep() < this.stepperSteps().length - 1) {
+      this.onStepChange(this.currentStepperStep() + 1);
+    }
+  }
+
+  previousStep() {
+    if (this.currentStepperStep() > 0) {
+      this.onStepChange(this.currentStepperStep() - 1);
+    }
+  }
+
+  // Popover demo data
+  popoverOpen = signal(false);
+  popoverHoverOpen = signal(false);
+
+  togglePopover() {
+    this.popoverOpen.update(v => !v);
+  }
+
+  onPopoverOpenChange(open: boolean) {
+    this.popoverOpen.set(open);
+  }
+
+  onPopoverHoverOpenChange(open: boolean) {
+    this.popoverHoverOpen.set(open);
+  }
+
+  // Bottom Navigation demo data
+  bottomNavItems = signal<BottomNavItem[]>([
+    { id: 'home', label: 'Home', icon: '🏠' },
+    { id: 'search', label: 'Search', icon: '🔍' },
+    { id: 'add', label: 'Add', icon: '➕' },
+    { id: 'notifications', label: 'Alerts', icon: '🔔', badge: '5', badgeVariant: 'error' as const },
+    { id: 'profile', label: 'Profile', icon: '👤' }
+  ]);
+  activeBottomNavId = signal('home');
+
+  onBottomNavItemClick(item: BottomNavItem) {
+    this.activeBottomNavId.set(item.id);
+    console.log('Bottom nav item clicked:', item.label);
+  }
+
+  // Context Menu demo data
+  contextMenuOpen = signal(false);
+  contextMenuX = signal(0);
+  contextMenuY = signal(0);
+  contextMenuItems = signal<ContextMenuItem[]>([
+    { id: 'cut', label: 'Cut', icon: '✂️', shortcut: 'Ctrl+X' },
+    { id: 'copy', label: 'Copy', icon: '📋', shortcut: 'Ctrl+C' },
+    { id: 'paste', label: 'Paste', icon: '📌', shortcut: 'Ctrl+V' },
+    { id: 'divider1', label: '', divider: true },
+    { id: 'share', label: 'Share', icon: '🔗', children: [
+      { id: 'email', label: 'Email', icon: '📧' },
+      { id: 'social', label: 'Social', icon: '📱' }
+    ]},
+    { id: 'divider2', label: '', divider: true },
+    { id: 'delete', label: 'Delete', icon: '🗑️', shortcut: 'Del' }
+  ]);
+
+  onContextMenu(event: MouseEvent) {
+    event.preventDefault();
+    this.contextMenuX.set(event.clientX);
+    this.contextMenuY.set(event.clientY);
+    this.contextMenuOpen.set(true);
+  }
+
+  onContextMenuOpenChange(open: boolean) {
+    this.contextMenuOpen.set(open);
+  }
+
+  onContextMenuItemClick(item: ContextMenuItem) {
+    console.log('Context menu item clicked:', item.label);
+  }
+
+  // Combobox demo data
+  comboboxOptions = signal<ComboboxOption[]>([
+    { value: 'apple', label: 'Apple 🍎' },
+    { value: 'banana', label: 'Banana 🍌' },
+    { value: 'cherry', label: 'Cherry 🍒' },
+    { value: 'date', label: 'Date 🌴' },
+    { value: 'elderberry', label: 'Elderberry 🫐' },
+    { value: 'fig', label: 'Fig 🌳' },
+    { value: 'grape', label: 'Grape 🍇' },
+    { value: 'honeydew', label: 'Honeydew 🍈' }
+  ]);
+  comboboxValue = signal('');
+  comboboxMultiValue = signal<string[]>([]);
+
+  onComboboxValueChange(value: string | string[]) {
+    if (Array.isArray(value)) {
+      this.comboboxMultiValue.set(value);
+    } else {
+      this.comboboxValue.set(value);
+    }
+    console.log('Combobox value changed:', value);
   }
 }
