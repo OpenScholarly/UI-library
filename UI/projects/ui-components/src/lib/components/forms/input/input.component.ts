@@ -126,13 +126,33 @@ import { InputType, InputSize, InputVariant } from '../../../types';
           (keydown)="onKeyDown($event)"
         />
 
-        @if(suffixIcon()) {
+        @if(suffixIcon() && !showClear() && !showCopy()) {
           <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <span [class]="iconClasses()">{{ suffixIcon() }}</span>
           </div>
         }
 
-        @if(type() === 'password' && showPasswordToggle()) {
+        @if(showClear()) {
+          <button
+            type="button"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center ui-focus-primary rounded hover:text-red-600 dark:hover:text-red-400"
+            (click)="clearInput()"
+            [attr.aria-label]="'Clear input'">
+            <span [class]="iconClasses()">✕</span>
+          </button>
+        }
+
+        @if(showCopy()) {
+          <button
+            type="button"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center ui-focus-primary rounded hover:text-blue-600 dark:hover:text-blue-400"
+            (click)="copyToClipboard()"
+            [attr.aria-label]="'Copy to clipboard'">
+            <span [class]="iconClasses()">📋</span>
+          </button>
+        }
+
+        @if(type() === 'password' && showPasswordToggle() && !showClear() && !showCopy()) {
           <button
             type="button"
             class="absolute inset-y-0 right-0 pr-3 flex items-center ui-focus-primary rounded"
@@ -144,6 +164,26 @@ import { InputType, InputSize, InputVariant } from '../../../types';
           </button>
         }
       </div>
+
+      @if(showPasswordStrength() && type() === 'password' && passwordStrength()) {
+        <div class="mt-2 flex items-center gap-2">
+          <div class="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div 
+              [class]="'h-full transition-all duration-300 ' + passwordStrength()!.color"
+              [style.width]="passwordStrength()!.level === 'weak' ? '33%' : passwordStrength()!.level === 'medium' ? '66%' : '100%'">
+            </div>
+          </div>
+          <span [class]="'text-xs font-medium ' + (passwordStrength()!.level === 'weak' ? 'text-red-600' : passwordStrength()!.level === 'medium' ? 'text-yellow-600' : 'text-green-600')">
+            {{ passwordStrength()!.text }}
+          </span>
+        </div>
+      }
+
+      @if(showCharCount()) {
+        <p class="mt-1 text-xs text-right" [class]="characterCount() > maxlength() ? 'text-red-600' : 'text-gray-500'">
+          {{ characterCount() }} / {{ maxlength() }}
+        </p>
+      }
 
       @if(helperText() && !invalid()) {
         <p [id]="helperId()" [class]="helperTextClasses()">
@@ -322,6 +362,35 @@ export class InputComponent implements ControlValueAccessor {
   autocomplete = input<string>('');
 
   /**
+   * Shows character counter below the input.
+   * Displays current length / maxlength.
+   * @default false
+   */
+  showCharacterCounter = input(false);
+
+  /**
+   * Shows clear button (X) to empty the input.
+   * Only shown when input has value and is not disabled/readonly.
+   * @default false
+   */
+  showClearButton = input(false);
+
+  /**
+   * Shows copy-to-clipboard button for readonly inputs.
+   * Allows easy copying of non-editable values.
+   * @default false
+   */
+  showCopyButton = input(false);
+
+  /**
+   * Shows password strength meter for password inputs.
+   * Displays weak/medium/strong indicator with color coding.
+   * Only applies when type is "password".
+   * @default false
+   */
+  showPasswordStrength = input(false);
+
+  /**
    * Emitted when the input value changes.
    * Provides the new input value.
    * @event valueChange
@@ -355,6 +424,35 @@ export class InputComponent implements ControlValueAccessor {
   protected errorId = signal('');
   private formDisabled = signal(false);
   protected isDisabled = computed(() => this.disabled() || this.formDisabled());
+
+  // P2 Enhancements - computed properties
+  protected characterCount = computed(() => this.inputValue().length);
+  protected showCharCount = computed(() => this.showCharacterCounter() && this.maxlength() > 0);
+  protected showClear = computed(() => 
+    this.showClearButton() && this.inputValue().length > 0 && !this.isDisabled() && !this.readonly()
+  );
+  protected showCopy = computed(() => 
+    this.showCopyButton() && this.inputValue().length > 0
+  );
+  
+  protected passwordStrength = computed(() => {
+    if (this.type() !== 'password' || !this.showPasswordStrength()) {
+      return null;
+    }
+    const password = this.inputValue();
+    if (password.length === 0) return null;
+    
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.length >= 12) strength++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[^a-zA-Z0-9]/.test(password)) strength++;
+    
+    if (strength <= 2) return { level: 'weak', color: 'bg-red-500', text: 'Weak' };
+    if (strength <= 3) return { level: 'medium', color: 'bg-yellow-500', text: 'Medium' };
+    return { level: 'strong', color: 'bg-green-500', text: 'Strong' };
+  });
 
   // ViewChild
   private inputElement = viewChild<ElementRef<HTMLInputElement>>('inputElement');
@@ -531,5 +629,25 @@ export class InputComponent implements ControlValueAccessor {
 
   getValue(): string {
     return this.inputValue();
+  }
+
+  // P2 Enhancement methods
+  protected clearInput(): void {
+    this.inputValue.set('');
+    this.onChange('');
+    this.valueChange.emit('');
+    this.inputElement()?.nativeElement?.focus();
+  }
+
+  protected async copyToClipboard(): Promise<void> {
+    const value = this.inputValue();
+    if (!value) return;
+    
+    try {
+      await navigator.clipboard.writeText(value);
+      // Could emit an event or show a toast notification
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
   }
 }

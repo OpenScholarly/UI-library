@@ -129,13 +129,13 @@
 #### Input Enhancements
 - [ ] Add input masking support (phone, credit card, etc.)
 - [ ] Add OTP/PIN input component
-- [ ] Add character counter
-- [ ] Add clear button for all text inputs
+- [x] Add character counter
+- [x] Add clear button for all text inputs
 - [ ] Add autocomplete suggestions
 - [ ] Add input groups (prepend/append elements)
 - [ ] Add floating label animation
-- [ ] Add password strength meter
-- [ ] Add copy-to-clipboard button
+- [x] Add password strength meter
+- [x] Add copy-to-clipboard button
 - [ ] Improve error message animations
 
 #### Select Enhancements
