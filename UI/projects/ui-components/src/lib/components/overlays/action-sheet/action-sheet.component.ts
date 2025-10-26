@@ -204,7 +204,7 @@ export class ActionSheetComponent {
 
   private destroyRef = inject(DestroyRef);
 
-  titleId = computed(() => `action-sheet-title-${Math.random().toString(36).substr(2, 9)}`);
+  readonly titleId = `action-sheet-title-${Math.random().toString(36).substr(2, 9)}`;
 
   constructor() {
     effect(() => {
