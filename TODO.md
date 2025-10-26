@@ -118,13 +118,13 @@
 ### Existing Component Improvements
 
 #### Button Enhancements
-- [ ] Add ripple effect animation (Material Design)
-- [ ] Add pulse variant for attention-grabbing CTAs
+- [x] Add ripple effect animation (Material Design)
+- [x] Add pulse variant for attention-grabbing CTAs
 - [ ] Add gradient variant option
 - [ ] Add icon animation on hover/click
-- [ ] Add button width variants (auto, full, fit-content)
+- [x] Add button width variants (auto, full, fit-content)
 - [ ] Add compound button (with subtitle/description)
-- [ ] Add aria-haspopup for buttons that open menus
+- [x] Add aria-haspopup for buttons that open menus
 
 #### Input Enhancements
 - [ ] Add input masking support (phone, credit card, etc.)

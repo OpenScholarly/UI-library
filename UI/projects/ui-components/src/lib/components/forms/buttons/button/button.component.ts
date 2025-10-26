@@ -67,6 +67,7 @@ import { ButtonVariant, ButtonSize } from '../../../../types';
       [attr.aria-label]="ariaLabel()"
       [attr.aria-pressed]="ariaPressed()"
       [attr.aria-expanded]="ariaExpanded()"
+      [attr.aria-haspopup]="ariaHasPopup() !== false ? ariaHasPopup() : null"
       [attr.aria-busy]="loading()"
       [attr.aria-disabled]="disabled()"
       (click)="handleClick($event)"
@@ -82,8 +83,58 @@ import { ButtonVariant, ButtonSize } from '../../../../types';
       @if (icon() && iconPosition() === 'right' && !loading()) {
         <span [innerHTML]="icon()" aria-hidden="true"></span>
       }
+      @if (ripple() && !disabled() && !loading()) {
+        <span class="absolute inset-0 overflow-hidden rounded-[inherit] pointer-events-none">
+          <span class="ripple" aria-hidden="true"></span>
+        </span>
+      }
     </button>
   `,
+  styles: [`
+    :host {
+      display: inline-block;
+    }
+    
+    button {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Ripple effect */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: scale(0);
+      pointer-events: none;
+    }
+    
+    button:active .ripple {
+      animation: ripple-effect 0.6s ease-out;
+    }
+    
+    @keyframes ripple-effect {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    
+    /* Pulse animation */
+    .pulse-animation {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.02);
+      }
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'hostClasses()'
@@ -177,10 +228,39 @@ export class ButtonComponent {
   
   /**
    * Enables Material Design ripple effect on click.
-   * Currently visual flag for future implementation.
+   * Creates an animated circular ripple from click point.
    * @default true
    */
   ripple = input(true);
+  
+  /**
+   * Enables pulse animation for attention-grabbing CTAs.
+   * Applies a subtle pulsing scale effect to draw user attention.
+   * @default false
+   */
+  pulse = input(false);
+  
+  /**
+   * Width behavior of the button.
+   * - `auto`: Button width fits content (default)
+   * - `full`: Button takes full width of container
+   * - `fit`: Button width fits content with padding
+   * @default "auto"
+   */
+  width = input<'auto' | 'full' | 'fit'>('auto');
+  
+  /**
+   * ARIA haspopup attribute for buttons that open menus/dialogs.
+   * - `true`: Generic popup (default for menus)
+   * - `menu`: Opens a menu
+   * - `listbox`: Opens a listbox
+   * - `tree`: Opens a tree
+   * - `grid`: Opens a grid
+   * - `dialog`: Opens a dialog
+   * - `false`: Does not open a popup (default)
+   * @default false
+   */
+  ariaHasPopup = input<boolean | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog'>(false);
   
   /**
    * Shadow elevation level (0-4).
@@ -282,8 +362,8 @@ export class ButtonComponent {
 
 
   protected buttonClasses = computed(() => {
-    // Enhanced base classes with better focus visibility
-    const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed';
+    // Enhanced base classes with better focus visibility and relative positioning for ripple
+    const baseClasses = 'relative inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variants: Record<ButtonVariant, string> = {
       primary: `bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus-visible:ring-primary-500`,
@@ -314,13 +394,22 @@ export class ButtonComponent {
     const variantClass = variants[variant] ? variants[variant] : variants['primary'];
     const sizeClass = sizes[this.size()];
     const customClass = this.customClasses();
+    const pulseClass = this.pulse() ? 'pulse-animation' : '';
 
-    return `${baseClasses} ${variantClass} ${sizeClass} ${customClass}`.trim();
+    return `${baseClasses} ${variantClass} ${sizeClass} ${pulseClass} ${customClass}`.trim();
   });
 
-  protected hostClasses = computed(() =>
-    this.fullWidth() ? 'w-full' : ''
-  );
+  protected hostClasses = computed(() => {
+    const width = this.width();
+    const fullWidth = this.fullWidth(); // Legacy support
+    
+    if (fullWidth || width === 'full') {
+      return 'w-full';
+    } else if (width === 'fit') {
+      return 'w-fit';
+    }
+    return '';
+  });
 
   protected handleClick(event: MouseEvent): void {
     if (this.disabled() || this.loading()) { 
