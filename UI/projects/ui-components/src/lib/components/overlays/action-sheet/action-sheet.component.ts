@@ -249,7 +249,6 @@ export class ActionSheetComponent {
 
   private setupDismissHandlers(): void {
     if (this.closeOnEscape()) {
-      const id = 'action-sheet-' + Math.random().toString(36).substr(2, 9);
       const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
           event.preventDefault();
