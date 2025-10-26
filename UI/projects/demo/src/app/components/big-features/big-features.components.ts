@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import {
   TableComponent, MenuComponent, SkeletonComponent, DividerComponent, CardComponent, HeadingComponent, TextComponent, ButtonComponent, TreeViewComponent, NavbarComponent, FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent, FooterComponent, ModalComponent, ToastComponent, CommandMenuComponent,
-  DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent, InputComponent,
+  DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent, InputComponent, BadgeComponent,
   FooterSection, NavigationRailItem, ActionSheetAction
 } from 'ui-components';
 
@@ -10,7 +10,7 @@ import {
   standalone: true,
   imports: [
     TableComponent, CardComponent, HeadingComponent, TextComponent, ButtonComponent, NavbarComponent, FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent, FooterComponent, ModalComponent, ToastComponent, CommandMenuComponent,
-    DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent, InputComponent
+    DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent, InputComponent, BadgeComponent
   ],
   templateUrl: './big-features.components.html',
 })

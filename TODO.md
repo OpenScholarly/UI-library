@@ -209,12 +209,12 @@
 - [ ] Add stat card template
 
 #### Badge Enhancements
-- [ ] Add animated badge (pulse, bounce)
-- [ ] Add positioned badge (corner, overlap)
-- [ ] Add badge on avatar
-- [ ] Add badge on icon
-- [ ] Add badge max value (99+)
-- [ ] Add badge hide when zero
+- [x] Add animated badge (pulse, bounce)
+- [x] Add positioned badge (corner, overlap)
+- [x] Add badge on avatar
+- [x] Add badge on icon
+- [x] Add badge max value (99+)
+- [x] Add badge hide when zero
 
 #### Tabs Enhancements
 - [ ] Add tab overflow handling (scroll, dropdown)

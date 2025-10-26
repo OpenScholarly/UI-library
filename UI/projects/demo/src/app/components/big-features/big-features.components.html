@@ -408,6 +408,70 @@
       </ui-text>
     </div>
   </ui-card>
+
+  <!-- Badge Enhancements -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6">Badge Enhancements</ui-heading>
+
+      <!-- Animated Badges -->
+      <div class="mb-6">
+        <ui-text weight="semibold" class="mb-3">Animated Badges</ui-text>
+        <div class="flex flex-wrap gap-4">
+          <ui-badge variant="danger" animation="pulse">
+            🔴 Live
+          </ui-badge>
+          <ui-badge variant="warning" animation="bounce">
+            ⚠️ Alert
+          </ui-badge>
+          <ui-badge variant="info" animation="pulse">
+            📢 New
+          </ui-badge>
+        </div>
+      </div>
+
+      <!-- Positioned Badges -->
+      <div class="mb-6">
+        <ui-text weight="semibold" class="mb-3">Positioned Badges (on Avatar/Icon)</ui-text>
+        <div class="flex flex-wrap gap-8">
+          <!-- Badge on Avatar -->
+          <div class="relative inline-block">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-xl">
+              JD
+            </div>
+            <ui-badge variant="success" size="xs" position="top-right" shape="pill">
+              9
+            </ui-badge>
+          </div>
+
+          <!-- Badge on Icon -->
+          <div class="relative inline-block">
+            <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-2xl">
+              🔔
+            </div>
+            <ui-badge variant="danger" size="xs" position="top-right" shape="pill" animation="pulse">
+              5
+            </ui-badge>
+          </div>
+
+          <!-- Badge on Button -->
+          <div class="relative inline-block">
+            <div class="px-4 py-2 bg-primary-600 text-white rounded-lg">
+              Messages
+            </div>
+            <ui-badge variant="danger" size="xs" position="top-right" shape="pill">
+              99+
+            </ui-badge>
+          </div>
+        </div>
+      </div>
+
+      <ui-text color="secondary" size="sm">
+        Badge enhancements include pulse and bounce animations, flexible positioning (top-right, top-left, etc.), 
+        max value display (e.g., 99+), and hide-when-zero functionality for cleaner UIs.
+      </ui-text>
+    </div>
+  </ui-card>
 </div>
 
 <!-- Footer -->
