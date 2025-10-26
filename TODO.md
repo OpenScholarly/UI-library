@@ -8,25 +8,25 @@
 
 ## P1 - Essential Components
 ### Forms & Inputs
-- [ ] **Date Picker**: Calendar-based date selection
-  - [ ] Single date selection
-  - [ ] Date range selection
-  - [ ] Multiple dates selection
-  - [ ] Min/max date constraints
-  - [ ] Disabled dates support
-  - [ ] Week numbers display
-  - [ ] Custom date formatting
-  - [ ] Keyboard navigation (arrow keys, Enter, Escape)
-  - [ ] ARIA labels and live regions for screen readers
+- [x] **Date Picker**: Calendar-based date selection
+  - [x] Single date selection
+  - [x] Date range selection
+  - [x] Multiple dates selection
+  - [x] Min/max date constraints
+  - [x] Disabled dates support
+  - [x] Week numbers display
+  - [x] Custom date formatting
+  - [x] Keyboard navigation (arrow keys, Enter, Escape)
+  - [x] ARIA labels and live regions for screen readers
 
-- [ ] **Time Picker**: Time selection interface
-  - [ ] 12h/24h format support
-  - [ ] Minute step configuration
-  - [ ] Seconds support (optional)
-  - [ ] Keyboard input support
-  - [ ] Dropdown/scroll wheel UI
-  - [ ] Clear button
-  - [ ] ARIA time announcements
+- [x] **Time Picker**: Time selection interface
+  - [x] 12h/24h format support
+  - [x] Minute step configuration
+  - [x] Seconds support (optional)
+  - [x] Keyboard input support
+  - [x] Dropdown/scroll wheel UI
+  - [x] Clear button
+  - [x] ARIA time announcements
 
 - [x] **File Upload**: File selection with drag & drop
   - [x] Single/multiple file upload
@@ -71,12 +71,12 @@
   - [x] Smooth transitions
   - [x] Fixed positioning at bottom
 
-- [ ] **Navigation Rail**: Compact side navigation
-  - [ ] Collapsible labels
-  - [ ] Icon-only compact mode
-  - [ ] Active indicator
-  - [ ] FAB integration
-  - [ ] Tooltip labels on hover
+- [x] **Navigation Rail**: Compact side navigation
+  - [x] Collapsible labels
+  - [x] Icon-only compact mode
+  - [x] Active indicator
+  - [x] FAB integration
+  - [x] Tooltip labels on hover
 
 - [x] **Context Menu**: Right-click menu
   - [x] Trigger on contextmenu event
@@ -96,23 +96,23 @@
   - [ ] Auto-positioning to stay in viewport
   - [x] ARIA role="dialog" or "tooltip" depending on use
 
-- [ ] **Bottom Sheet**: Mobile-optimized modal
-  - [ ] Slide up animation
-  - [ ] Drag to dismiss gesture
-  - [ ] Snap points support
-  - [ ] Backdrop support
-  - [ ] Scrollable content
-  - [ ] Handle for dragging
-  - [ ] Keyboard dismissal
-  - [ ] ARIA modal semantics
+- [x] **Bottom Sheet**: Mobile-optimized modal
+  - [x] Slide up animation
+  - [x] Drag to dismiss gesture
+  - [x] Snap points support
+  - [x] Backdrop support
+  - [x] Scrollable content
+  - [x] Handle for dragging
+  - [x] Keyboard dismissal
+  - [x] ARIA modal semantics
 
-- [ ] **Action Sheet**: iOS-style action menu
-  - [ ] List of actions
-  - [ ] Destructive action styling
-  - [ ] Cancel button
-  - [ ] Slide-up animation
-  - [ ] Backdrop support
-  - [ ] Touch-friendly targets
+- [x] **Action Sheet**: iOS-style action menu
+  - [x] List of actions
+  - [x] Destructive action styling
+  - [x] Cancel button
+  - [x] Slide-up animation
+  - [x] Backdrop support
+  - [x] Touch-friendly targets
 
 ## P2 - Important Enhancements
 ### Existing Component Improvements
