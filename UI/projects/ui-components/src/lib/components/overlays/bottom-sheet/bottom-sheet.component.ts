@@ -226,7 +226,7 @@ export class BottomSheetComponent {
   hasCustomTitle = signal<boolean>(false);
   hasFooter = signal<boolean>(false);
 
-  titleId = computed(() => `bottom-sheet-title-${Math.random().toString(36).substr(2, 9)}`);
+  titleId = signal(`bottom-sheet-title-${Math.random().toString(36).substr(2, 9)}`);
 
   backdropClasses = computed(() => {
     return 'fixed inset-0 bg-black/50 transition-opacity duration-300 ease-out z-40';
