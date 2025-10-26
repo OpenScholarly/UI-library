@@ -79,7 +79,7 @@ export type BottomSheetSize = 'sm' | 'md' | 'lg' | 'full';
         [style.transform]="'translateY(' + dragOffset() + 'px)'"
         role="dialog"
         [attr.aria-modal]="'true'"
-        [attr.aria-labelledby]="titleId()"
+        [attr.aria-labelledby]="titleId"
         (touchstart)="onTouchStart($event)"
         (touchmove)="onTouchMove($event)"
         (touchend)="onTouchEnd()"
@@ -97,7 +97,7 @@ export type BottomSheetSize = 'sm' | 'md' | 'lg' | 'full';
         <!-- Header -->
         @if (showHeader()) {
           <div [class]="headerClasses()">
-            <h2 [id]="titleId()" class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <h2 [id]="titleId" class="text-lg font-semibold text-gray-900 dark:text-gray-100">
               <ng-content select="[slot=title]" />
               @if (!hasCustomTitle()) {
                 {{ title() }}
@@ -226,7 +226,8 @@ export class BottomSheetComponent {
   hasCustomTitle = signal<boolean>(false);
   hasFooter = signal<boolean>(false);
 
-  titleId = signal(`bottom-sheet-title-${Math.random().toString(36).substr(2, 9)}`);
+  readonly titleId = `bottom-sheet-title-${Math.random().toString(36).substr(2, 9)}`;
+  private readonly dismissId = `bottom-sheet-${Math.random().toString(36).substr(2, 9)}`;
 
   backdropClasses = computed(() => {
     return 'fixed inset-0 bg-black/50 transition-opacity duration-300 ease-out z-40';
@@ -384,13 +385,12 @@ export class BottomSheetComponent {
 
   private setupDismissHandlers(): void {
     if (this.closeOnEscape() && this.closable()) {
-      const id = 'bottom-sheet-' + Math.random().toString(36).substr(2, 9);
       const element = this.sheetElement()?.nativeElement;
       if (element) {
-        this.dismissService.register(id, element, () => {
+        this.dismissService.register(this.dismissId, element, () => {
           this.close.emit();
         }, { clickOutside: false, escapeKey: true });
-        this.destroyRef.onDestroy(() => this.dismissService.unregister(id));
+        this.destroyRef.onDestroy(() => this.dismissService.unregister(this.dismissId));
       }
     }
   }

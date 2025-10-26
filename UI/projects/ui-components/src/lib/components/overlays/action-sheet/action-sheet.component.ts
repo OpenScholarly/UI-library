@@ -81,7 +81,7 @@ export interface ActionSheetAction {
         class="fixed bottom-0 left-0 right-0 z-50 animate-slide-up"
         role="dialog"
         [attr.aria-modal]="'true'"
-        [attr.aria-labelledby]="titleId()">
+        [attr.aria-labelledby]="titleId">
         
         <!-- Actions Container -->
         <div class="bg-white dark:bg-gray-800 rounded-t-2xl mx-2 mb-2 overflow-hidden shadow-2xl">
@@ -90,7 +90,7 @@ export interface ActionSheetAction {
             <div class="px-6 py-4 text-center border-b border-gray-200 dark:border-gray-700">
               @if (title()) {
                 <h2
-                  [id]="titleId()"
+                  [id]="titleId"
                   class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
                   {{ title() }}
                 </h2>

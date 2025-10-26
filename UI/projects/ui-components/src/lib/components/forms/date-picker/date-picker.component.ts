@@ -6,6 +6,8 @@ import {
   output,
   signal,
   effect,
+  viewChild,
+  ElementRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -66,7 +68,7 @@ interface DateRange {
   selector: 'ui-date-picker',
   imports: [CommonModule],
   template: `
-    <div [class]="containerClasses()" role="group" [attr.aria-label]="ariaLabel()">
+    <div #calendarContainer [class]="containerClasses()" role="group" [attr.aria-label]="ariaLabel()">
       <!-- Calendar Header -->
       <div class="flex items-center justify-between mb-4 px-2">
         <button
@@ -245,6 +247,7 @@ export class DatePickerComponent {
   // Internal state
   private currentDate = signal<Date>(new Date());
   private focusedDate = signal<Date>(new Date());
+  private calendarContainer = viewChild<ElementRef>('calendarContainer');
 
   months = [
     'January',
@@ -485,10 +488,13 @@ export class DatePickerComponent {
       }
       // Focus the new date button
       setTimeout(() => {
-        const button = document.querySelector(
-          `button[tabindex="0"]`
-        ) as HTMLElement;
-        button?.focus();
+        const container = this.calendarContainer()?.nativeElement;
+        if (container) {
+          const button = container.querySelector(
+            'button[tabindex="0"]'
+          ) as HTMLElement;
+          button?.focus();
+        }
       }, 0);
     }
   }
