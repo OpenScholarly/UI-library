@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import {
   TableComponent, MenuComponent, SkeletonComponent, DividerComponent, CardComponent, HeadingComponent, TextComponent, ButtonComponent, TreeViewComponent, NavbarComponent, FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent, FooterComponent, ModalComponent, ToastComponent, CommandMenuComponent,
-  DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent,
+  DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent, InputComponent,
   FooterSection, NavigationRailItem, ActionSheetAction
 } from 'ui-components';
 
@@ -10,7 +10,7 @@ import {
   standalone: true,
   imports: [
     TableComponent, CardComponent, HeadingComponent, TextComponent, ButtonComponent, NavbarComponent, FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent, FooterComponent, ModalComponent, ToastComponent, CommandMenuComponent,
-    DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent
+    DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent, InputComponent
   ],
   templateUrl: './big-features.components.html',
 })
@@ -232,4 +232,9 @@ export class BigFeaturesComponent {
     console.log('Action sheet action:', action.label);
     this.closeActionSheet();
   }
+
+  // P2 Enhancements Demo
+  passwordInput = signal('');
+  apiKeyValue = signal('sk-1234567890abcdef');
+  bioInput = signal('');
 }

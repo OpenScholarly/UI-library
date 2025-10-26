@@ -324,6 +324,92 @@
   </ui-card>
 </div>
 
+<!-- P2 ENHANCEMENTS SHOWCASE -->
+<div class="mb-12">
+  <ui-heading level="h2" size="2xl" color="primary" class="mb-8">⚡ P2 Enhancements</ui-heading>
+
+  <!-- Button & Input Enhancements -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6">Button & Input Enhancements</ui-heading>
+
+      <!-- Button Enhancements -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Enhanced Buttons</ui-text>
+        <div class="flex flex-wrap gap-4">
+          <!-- Ripple Effect -->
+          <ui-button variant="primary" [ripple]="true">
+            Ripple Effect
+          </ui-button>
+
+          <!-- Pulse Animation -->
+          <ui-button variant="success" [pulse]="true">
+            🎯 Pulsing CTA
+          </ui-button>
+
+          <!-- Width Variants -->
+          <div class="w-full max-w-md">
+            <ui-button variant="primary" width="full">
+              Full Width Button
+            </ui-button>
+          </div>
+
+          <!-- With aria-haspopup -->
+          <ui-button variant="secondary" [ariaHasPopup]="'menu'">
+            Open Menu ▾
+          </ui-button>
+        </div>
+      </div>
+
+      <!-- Input Enhancements -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Enhanced Inputs</ui-text>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Character Counter -->
+          <ui-input
+            label="Bio"
+            placeholder="Tell us about yourself"
+            [maxlength]="100"
+            [showCharacterCounter]="true"
+            helperText="Maximum 100 characters">
+          </ui-input>
+
+          <!-- Clear Button -->
+          <ui-input
+            label="Search"
+            placeholder="Type to search..."
+            [showClearButton]="true"
+            prefixIcon="🔍">
+          </ui-input>
+
+          <!-- Password Strength -->
+          <ui-input
+            label="New Password"
+            type="password"
+            [showPasswordStrength]="true"
+            [showPasswordToggle]="true"
+            helperText="Use 8+ characters with mix of letters, numbers & symbols">
+          </ui-input>
+
+          <!-- Copy Button -->
+          <ui-input
+            label="API Key"
+            [readonly]="true"
+            [showCopyButton]="true"
+            placeholder="sk-1234567890abcdef"
+            helperText="Click copy icon to copy API key">
+          </ui-input>
+        </div>
+      </div>
+
+      <ui-text color="secondary" size="sm">
+        New P2 enhancements include Material Design ripple effects, pulse animations for CTAs, character counters, 
+        password strength meters, clear buttons, and copy-to-clipboard functionality—all with full accessibility support.
+      </ui-text>
+    </div>
+  </ui-card>
+</div>
+
 <!-- Footer -->
 <div class="mt-16">
   <ui-footer
