@@ -1,14 +1,16 @@
 import { Component, signal } from '@angular/core';
 import {
   TableComponent, MenuComponent, SkeletonComponent, DividerComponent, CardComponent, HeadingComponent, TextComponent, ButtonComponent, TreeViewComponent, NavbarComponent, FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent, FooterComponent, ModalComponent, ToastComponent, CommandMenuComponent,
-  FooterSection
+  DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent,
+  FooterSection, NavigationRailItem, ActionSheetAction
 } from 'ui-components';
 
 @Component({
   selector: 'app-big-features',
   standalone: true,
   imports: [
-    TableComponent, CardComponent, HeadingComponent, TextComponent, ButtonComponent, NavbarComponent, FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent, FooterComponent, ModalComponent, ToastComponent, CommandMenuComponent
+    TableComponent, CardComponent, HeadingComponent, TextComponent, ButtonComponent, NavbarComponent, FeedComponent, StatsComponent, TimelineComponent, BannerComponent, CarouselComponent, FooterComponent, ModalComponent, ToastComponent, CommandMenuComponent,
+    DatePickerComponent, TimePickerComponent, NavigationRailComponent, BottomSheetComponent, ActionSheetComponent
   ],
   templateUrl: './big-features.components.html',
 })
@@ -168,4 +170,66 @@ export class BigFeaturesComponent {
       ]
     }
   ]);
+
+  // Date Picker
+  selectedDate = signal<Date | null>(new Date());
+  selectedDateRange = signal<{ start: Date | null; end: Date | null }>({ start: null, end: null });
+  selectedDates = signal<Date[]>([]);
+  onDateChange(date: Date) {
+    this.selectedDate.set(date);
+    console.log('Date changed:', date);
+  }
+  onDateRangeChange(range: { start: Date | null; end: Date | null }) {
+    this.selectedDateRange.set(range);
+    console.log('Date range changed:', range);
+  }
+  onMultipleDatesChange(dates: Date[]) {
+    this.selectedDates.set(dates);
+    console.log('Multiple dates changed:', dates);
+  }
+
+  // Time Picker
+  selectedTime = signal<{ hours: number; minutes: number; seconds?: number } | null>({ hours: 14, minutes: 30 });
+  onTimeChange(time: { hours: number; minutes: number; seconds?: number }) {
+    this.selectedTime.set(time);
+    console.log('Time changed:', time);
+  }
+
+  // Navigation Rail
+  navRailItems = signal<NavigationRailItem[]>([
+    { id: 'home', icon: '🏠', label: 'Home' },
+    { id: 'explore', icon: '🔍', label: 'Explore', badge: 5 },
+    { id: 'notifications', icon: '🔔', label: 'Notifications', badge: 12 },
+    { id: 'messages', icon: '💬', label: 'Messages', badge: 3 },
+    { id: 'profile', icon: '👤', label: 'Profile' },
+  ]);
+  activeNavRailId = signal('home');
+  navRailExpanded = signal(false);
+  onNavRailItemClick(item: NavigationRailItem) {
+    this.activeNavRailId.set(item.id);
+    console.log('Navigation rail item clicked:', item.label);
+  }
+  onNavRailFabClick() {
+    console.log('Navigation rail FAB clicked');
+  }
+
+  // Bottom Sheet
+  isBottomSheetOpen = signal(false);
+  openBottomSheet() { this.isBottomSheetOpen.set(true); }
+  closeBottomSheet() { this.isBottomSheetOpen.set(false); }
+
+  // Action Sheet
+  isActionSheetOpen = signal(false);
+  actionSheetActions = signal<ActionSheetAction[]>([
+    { id: 'share', label: 'Share', icon: '🔗' },
+    { id: 'edit', label: 'Edit', icon: '✏️' },
+    { id: 'duplicate', label: 'Duplicate', icon: '📋' },
+    { id: 'delete', label: 'Delete', icon: '🗑️', destructive: true },
+  ]);
+  openActionSheet() { this.isActionSheetOpen.set(true); }
+  closeActionSheet() { this.isActionSheetOpen.set(false); }
+  onActionSheetAction(action: ActionSheetAction) {
+    console.log('Action sheet action:', action.label);
+    this.closeActionSheet();
+  }
 }
