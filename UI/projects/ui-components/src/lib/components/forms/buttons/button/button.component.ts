@@ -100,7 +100,7 @@ import { ButtonVariant, ButtonSize } from '../../../../types';
       overflow: hidden;
     }
     
-    /* Ripple effect */
+    /* Ripple effect using Tailwind-compatible approach */
     .ripple {
       position: absolute;
       border-radius: 50%;
@@ -117,21 +117,6 @@ import { ButtonVariant, ButtonSize } from '../../../../types';
       to {
         transform: scale(4);
         opacity: 0;
-      }
-    }
-    
-    /* Pulse animation */
-    .pulse-animation {
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.8;
-        transform: scale(1.02);
       }
     }
   `],
@@ -394,7 +379,8 @@ export class ButtonComponent {
     const variantClass = variants[variant] ? variants[variant] : variants['primary'];
     const sizeClass = sizes[this.size()];
     const customClass = this.customClasses();
-    const pulseClass = this.pulse() ? 'pulse-animation' : '';
+    // Use Tailwind's animate-pulse utility for pulse effect
+    const pulseClass = this.pulse() ? 'animate-pulse' : '';
 
     return `${baseClasses} ${variantClass} ${sizeClass} ${pulseClass} ${customClass}`.trim();
   });
