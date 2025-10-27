@@ -302,17 +302,17 @@ export class ButtonComponent {
 
     // Ensure minimum 48×48px touch target for WCAG AAA (44×44px for AA)
     const sizes = {
-      xs: 'min-h-[44px] h-9 px-3 text-xs gap-1',
-      sm: 'min-h-[44px] h-10 px-4 text-sm gap-1.5',
-      md: 'min-h-[48px] h-12 px-6 text-base gap-2',
-      lg: 'min-h-[48px] h-14 px-8 text-lg gap-2.5',
-      xl: 'min-h-[48px] h-16 px-10 text-xl gap-3'
+      xs: 'min-h-[44px] h-9 px-3 py-1 text-xs gap-1',
+      sm: 'min-h-[44px] h-10 px-4 py-1 text-sm gap-1.5',
+      md: 'min-h-[48px] h-12 px-6 py-1 text-base gap-2',
+      lg: 'min-h-[48px] h-14 px-8 py-1 text-lg gap-2.5',
+      xl: 'min-h-[48px] h-16 px-10 py-1 text-xl gap-3'
     };
 
     const variant = this.variant() as ButtonVariant;
 
     const variantClass = variants[variant] ? variants[variant] : variants['primary'];
-    const sizeClass = sizes[this.size()];
+    const sizeClass = `${sizes[this.size()]} h-fit w-fit`;
     const customClass = this.customClasses();
 
     return `${baseClasses} ${variantClass} ${sizeClass} ${customClass}`.trim();
