@@ -199,6 +199,17 @@ import { InputType, InputSize, InputVariant } from '../../../types';
           {{ errorMessage() }}
         </p>
       }
+
+      <!-- Copy status announcement for screen readers -->
+      @if(copyStatus() !== 'idle') {
+        <div class="sr-only" role="status" aria-live="polite">
+          @if(copyStatus() === 'success') {
+            Copied to clipboard
+          } @else {
+            Failed to copy to clipboard
+          }
+        </div>
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -411,6 +422,18 @@ export class InputComponent implements ControlValueAccessor {
    * @event blurred
    */
   blurred = output<void>();
+
+  /**
+   * Emitted when copy to clipboard succeeds.
+   * @event copySuccess
+   */
+  copySuccess = output<string>();
+
+  /**
+   * Emitted when copy to clipboard fails.
+   * @event copyError
+   */
+  copyError = output<Error>();
   
   /**
    * Emitted when a key is pressed in the input.
@@ -427,6 +450,7 @@ export class InputComponent implements ControlValueAccessor {
   protected errorId = signal('');
   private formDisabled = signal(false);
   protected isDisabled = computed(() => this.disabled() || this.formDisabled());
+  protected copyStatus = signal<'idle' | 'success' | 'error'>('idle');
 
   // P2 Enhancements - computed properties
   protected characterCount = computed(() => this.inputValue().length);
@@ -648,9 +672,16 @@ export class InputComponent implements ControlValueAccessor {
     
     try {
       await navigator.clipboard.writeText(value);
-      // Could emit an event or show a toast notification
+      this.copyStatus.set('success');
+      this.copySuccess.emit(value);
+      // Reset status after 2 seconds
+      setTimeout(() => this.copyStatus.set('idle'), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
+      this.copyStatus.set('error');
+      this.copyError.emit(err as Error);
+      // Reset status after 2 seconds
+      setTimeout(() => this.copyStatus.set('idle'), 2000);
     }
   }
 }

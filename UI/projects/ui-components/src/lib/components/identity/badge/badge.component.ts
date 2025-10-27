@@ -61,7 +61,11 @@ import { BadgeVariant, BadgeSize, BadgeShape } from '../../../types';
         @if (dot()) {
           <span class="badge-dot" [class]="dotClasses()"></span>
         }
-        <ng-content />
+        @if (displayValue()) {
+          {{ displayValue() }}
+        } @else {
+          <ng-content />
+        }
         @if (dismissible()) {
           <button
             type="button"
@@ -164,9 +168,16 @@ export class BadgeComponent {
 
   /**
    * Hide the badge when the value/content is zero or empty.
+   * Works with the `value` input to determine visibility.
    * @default false
    */
   hideWhenZero = input(false);
+
+  /**
+   * Numeric value for the badge. Used with maxValue and hideWhenZero.
+   * @default null
+   */
+  value = input<number | null>(null);
 
   /**
    * Emitted when the dismiss button is clicked.
@@ -228,9 +239,17 @@ export class BadgeComponent {
 
   protected shouldHide = computed(() => {
     if (!this.hideWhenZero()) return false;
-    // Hide if content appears to be zero or empty
-    // This is a simple check - consumers should manage content visibility
-    return false; // Let consumer control via content projection
+    const val = this.value();
+    // Hide if value is explicitly 0, null, or undefined
+    return val === 0 || val === null || val === undefined;
+  });
+
+  protected displayValue = computed(() => {
+    const val = this.value();
+    const max = this.maxValue();
+    if (val === null || val === undefined) return null;
+    if (max !== null && val > max) return `${max}+`;
+    return val.toString();
   });
 
   protected dotClasses = computed(() => {
