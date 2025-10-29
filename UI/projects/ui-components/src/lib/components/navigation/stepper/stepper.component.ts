@@ -59,6 +59,7 @@ export interface Step {
   template: `
     <div 
       [class]="containerClasses()"
+      [ngStyle]="containerStyles()"
       role="group"
       [attr.aria-label]="ariaLabel() || 'Stepper navigation'">
       
@@ -106,11 +107,11 @@ export interface Step {
           }
 
           <!-- Vertical content area -->
-          @if (orientation() === 'vertical' && $index === currentStep()) {
+          <!-- @if (orientation() === 'vertical' && $index === currentStep()) {
             <div class="ml-12 mt-4 pb-6">
               <ng-content [select]="'[step=' + $index + ']'" />
             </div>
-          }
+          } -->
         </div>
       }
 
@@ -190,15 +191,41 @@ export class StepperComponent {
   ariaLiveMessage = signal('');
 
   containerClasses = computed(() => {
-    const base = 'flex';
-    const orientation = this.orientation() === 'vertical' ? 'flex-col space-y-2' : 'items-center justify-between';
-    return `${base} ${orientation}`;
+    const orientation = this.orientation();
+    
+    if (orientation === 'vertical') {
+      // Vertical: Flexbox with consistent spacing
+      return 'flex flex-col space-y-2';
+    } else {
+      // Horizontal: CSS Grid ensures equal heights for all steps
+      return 'grid gap-2 items-stretch';
+    }
+  });
+
+  containerStyles = computed(() => {
+    const orientation = this.orientation();
+    
+    if (orientation === 'horizontal') {
+      // Dynamic grid columns based on number of steps
+      const stepCount = this.steps().length;
+      return {
+        'grid-template-columns': `repeat(${stepCount}, 1fr)`
+      };
+    }
+    
+    return {};
   });
 
   stepWrapperClasses = computed(() => {
-    const base = 'flex';
-    const orientation = this.orientation() === 'vertical' ? 'flex-col' : 'flex-col items-center flex-1';
-    return `${base} ${orientation}`;
+    const orientation = this.orientation();
+    
+    if (orientation === 'vertical') {
+      // Vertical: Full width, flex column layout
+      return 'flex flex-col w-full';
+    } else {
+      // Horizontal: Flex column, centered items, fills grid cell equally, relative positioning for connector
+      return 'flex flex-col items-center justify-start h-full relative';
+    }
   });
 
   stepButtonClasses(index: number): string {
@@ -245,16 +272,24 @@ export class StepperComponent {
 
   connectorClasses(index: number): string {
     const base = 'transition-all';
-    const orientation = this.orientation() === 'vertical'
-      ? 'h-12 w-0.5 ml-5 my-1'
-      : 'flex-1 h-0.5 mx-2';
     
-    const isCompleted = this.steps()[index]?.completed;
-    const color = isCompleted
-      ? 'bg-green-500 dark:bg-green-400'
-      : 'bg-gray-300 dark:bg-gray-600';
-    
-    return `${base} ${orientation} ${color}`;
+    if (this.orientation() === 'vertical') {
+      // Vertical connector: positioned below the step icon
+      const position = 'h-12 w-0.5 ml-5 my-1';
+      const isCompleted = this.steps()[index]?.completed;
+      const color = isCompleted
+        ? 'bg-green-500 dark:bg-green-400'
+        : 'bg-gray-300 dark:bg-gray-600';
+      return `${base} ${position} ${color}`;
+    } else {
+      // Horizontal connector: absolutely positioned to connect steps
+      const position = 'absolute top-5 left-[calc(50%+1.25rem)] w-[calc(100%-1.25rem)] h-0.5 -z-10';
+      const isCompleted = this.steps()[index]?.completed;
+      const color = isCompleted
+        ? 'bg-green-500 dark:bg-green-400'
+        : 'bg-gray-300 dark:bg-gray-600';
+      return `${base} ${position} ${color}`;
+    }
   }
 
   canNavigateTo(index: number): boolean {
