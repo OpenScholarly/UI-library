@@ -183,7 +183,7 @@ import { InputType, InputSize, InputVariant } from '../../../types';
         <p class="mt-1 text-xs text-right" 
            [class]="characterCount() > maxlength() ? 'text-red-600' : 'text-gray-500'"
            role="status" 
-           aria-live="polite">
+           [attr.aria-live]="characterCount() > maxlength() ? 'assertive' : 'polite'">
           {{ characterCount() }} / {{ maxlength() }}
         </p>
       }
