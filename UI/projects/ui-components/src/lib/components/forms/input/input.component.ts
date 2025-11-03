@@ -677,7 +677,9 @@ export class InputComponent implements ControlValueAccessor {
       // Reset status after 2 seconds
       setTimeout(() => this.copyStatus.set('idle'), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+        console.error('Failed to copy:', err);
+      }
       this.copyStatus.set('error');
       this.copyError.emit(err as Error);
       // Reset status after 2 seconds
