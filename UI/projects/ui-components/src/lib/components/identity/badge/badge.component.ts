@@ -241,7 +241,7 @@ export class BadgeComponent {
     if (!this.hideWhenZero()) return false;
     const val = this.value();
     // Hide if value is explicitly 0, null, or undefined
-    return val === 0 || val === null || val === undefined;
+    return val === 0 || val == null;
   });
 
   protected displayValue = computed(() => {
