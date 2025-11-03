@@ -178,16 +178,16 @@
             <div>
               <ui-text weight="semibold" class="mb-2">Icon Buttons</ui-text>
               <div class="flex flex-wrap gap-2 items-center">
-                <ui-icon-button variant="primary" size="sm" ariaLabel="Settings" shape="circle"
+                <ui-icon-button variant="primary" size="sm" ariaLabel="Settings" shape="circular"
                   >⚙️</ui-icon-button
                 >
                 <ui-icon-button variant="secondary" size="md" ariaLabel="Edit" shape="rounded"
                   >✏️</ui-icon-button
                 >
-                <ui-icon-button variant="outline" size="lg" ariaLabel="Delete" shape="square"
+                <ui-icon-button variant="outline" size="lg" ariaLabel="Delete" shape="squared"
                   >🗑️</ui-icon-button
                 >
-                <ui-icon-button variant="ghost" size="md" ariaLabel="Info" shape="circle"
+                <ui-icon-button variant="ghost" size="md" ariaLabel="Info" shape="circular"
                   >ℹ️</ui-icon-button
                 >
               </div>
@@ -429,7 +429,7 @@
                   [required]="true"
                   size="md"
                 >
-                  <input
+                  <ui-input
                     type="password"
                     class="peer w-full px-3 py-2 pt-6 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                     placeholder=" "
@@ -442,7 +442,19 @@
                   [required]="true"
                   size="md"
                 >
-                  <input
+                  <ui-input
+                    type="password"
+                    class="peer w-full px-3 py-2 pt-6 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    placeholder=" "
+                  />
+                </ui-form-field>
+
+                <ui-form-field
+                  label="Confirm Password"
+                  labelPosition="floating"
+                  [required]="true"
+                >
+                  <ui-input
                     type="password"
                     class="peer w-full px-3 py-2 pt-6 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                     placeholder=" "
@@ -495,9 +507,9 @@
                   helperText="Cannot be changed"
                   size="md"
                 >
-                  <input
+                  <ui-input
                     type="text"
-                    disabled
+                    [disabled]="true"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                     value="Premium"
                   />
