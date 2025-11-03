@@ -226,8 +226,8 @@ export class BottomSheetComponent {
   hasCustomTitle = signal<boolean>(false);
   hasFooter = signal<boolean>(false);
 
-  readonly titleId = `bottom-sheet-title-${Math.random().toString(36).substr(2, 9)}`;
-  private readonly dismissId = `bottom-sheet-${Math.random().toString(36).substr(2, 9)}`;
+  readonly titleId = `bottom-sheet-title-${crypto.randomUUID()}`;
+  private readonly dismissId = `bottom-sheet-${crypto.randomUUID()}`;
 
   backdropClasses = computed(() => {
     return 'fixed inset-0 bg-black/50 transition-opacity duration-300 ease-out z-40';
