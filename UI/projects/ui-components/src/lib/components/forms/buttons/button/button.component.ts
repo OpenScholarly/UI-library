@@ -67,7 +67,7 @@ import { ButtonVariant, ButtonSize } from '../../../../types';
       [attr.aria-label]="ariaLabel()"
       [attr.aria-pressed]="ariaPressed()"
       [attr.aria-expanded]="ariaExpanded()"
-      [attr.aria-haspopup]="ariaHasPopup() !== false ? ariaHasPopup() : null"
+      [attr.aria-haspopup]="ariaHasPopup() || null"
       [attr.aria-busy]="loading()"
       [attr.aria-disabled]="disabled()"
       (click)="handleClick($event)"
