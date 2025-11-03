@@ -169,7 +169,7 @@ import { InputType, InputSize, InputVariant } from '../../../types';
         <div class="mt-2 flex items-center gap-2" role="status" aria-live="polite">
           <div class="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div 
-              [class]="'h-full transition-all duration-300 ' + passwordStrength()!.color"
+              [class]=`h-full transition-all duration-300 ${passwordStrength()!.color}`
               [style.width]="passwordStrength()!.level === 'weak' ? '33%' : passwordStrength()!.level === 'medium' ? '66%' : '100%'">
             </div>
           </div>
