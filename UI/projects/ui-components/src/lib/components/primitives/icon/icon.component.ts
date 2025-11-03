@@ -92,7 +92,7 @@ export class IconComponent {
    * @default "default"
    */
   variant = input<IconVariant>('default');
-  
+
   /**
    * SVG viewBox attribute.
    * @default "0 0 24 24"
@@ -129,6 +129,8 @@ export class IconComponent {
    * @example "img"
    */
   role = input<string | null>(null);
+
+
 
   protected sizeValue = computed(() => {
     const sizes = {

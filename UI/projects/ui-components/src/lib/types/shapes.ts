@@ -8,4 +8,4 @@ export type BadgeShape = 'rounded' | 'pill' | 'square';
 export type AvatarShape = 'circle' | 'square' | 'rounded';
 
 // Button shapes
-export type IconButtonShape = 'square' | 'rounded' | 'circle';
+export type IconButtonShape = 'squared' | 'rounded' | 'circular';

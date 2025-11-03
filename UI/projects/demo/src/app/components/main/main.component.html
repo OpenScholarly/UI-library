@@ -15,7 +15,6 @@
 
     <!-- Accessibility Showcase -->
     <ui-card class="mb-8 w-full">
-      <div class="p-6">
         <ui-heading level="h3" size="lg" color="primary" class="mb-4"
           >♿ Accessibility Features</ui-heading
         >
@@ -132,14 +131,12 @@
             </div>
           </div>
         </div>
-      </div>
     </ui-card>
 
     <!-- Component Showcase Grid -->
     <ui-grid cols="3" gap="lg" [responsive]="true">
       <!-- Buttons Section -->
       <ui-card>
-        <div class="p-6">
           <ui-heading level="h3" size="lg" color="primary" class="mb-4">Button Family</ui-heading>
           <div class="space-y-4">
             <!-- Regular Buttons with new sizes -->
@@ -177,19 +174,144 @@
             <!-- Icon Buttons -->
             <div>
               <ui-text weight="semibold" class="mb-2">Icon Buttons</ui-text>
-              <div class="flex flex-wrap gap-2 items-center">
-                <ui-icon-button variant="primary" size="sm" ariaLabel="Settings" shape="circle"
-                  >⚙️</ui-icon-button
-                >
-                <ui-icon-button variant="secondary" size="md" ariaLabel="Edit" shape="rounded"
-                  >✏️</ui-icon-button
-                >
-                <ui-icon-button variant="outline" size="lg" ariaLabel="Delete" shape="square"
-                  >🗑️</ui-icon-button
-                >
-                <ui-icon-button variant="ghost" size="md" ariaLabel="Info" shape="circle"
-                  >ℹ️</ui-icon-button
-                >
+              <div class="flex flex-col gap-4">
+                <div>
+                  <ui-text variant="caption" class="mb-2">Basic Variants</ui-text>
+                  <div class="flex flex-wrap gap-2 items-center">
+                    <ui-icon-button variant="primary" size="sm" ariaLabel="Settings" shape="circular"
+                      >⚙️</ui-icon-button
+                    >
+                    <ui-icon-button variant="secondary" size="md" ariaLabel="Edit" shape="rounded"
+                      >✏️</ui-icon-button
+                    >
+                    <ui-icon-button variant="outline" size="lg" ariaLabel="Delete" shape="squared"
+                      >🗑️</ui-icon-button
+                    >
+                    <ui-icon-button variant="ghost" size="md" ariaLabel="Info" shape="circular"
+                      >ℹ️</ui-icon-button
+                    >
+                  </div>
+                </div>
+
+                <!-- Color styles (Material Design 3) -->
+                <div>
+                  <ui-text variant="caption" class="mb-2">Color Styles</ui-text>
+                  <div class="grid grid-cols-4 gap-3">
+                    <!-- Filled -->
+                    <div class="text-center">
+                      <ui-text size="xs" color="muted" class="mb-2 block">Filled</ui-text>
+                      <div class="flex flex-col gap-2 items-center">
+                        <ui-icon-button variant="primary" color="filled" ariaLabel="Save" size="md">💾</ui-icon-button>
+                        <ui-icon-button variant="destructive" color="filled" ariaLabel="Delete" size="md">🗑️</ui-icon-button>
+                      </div>
+                    </div>
+                    
+                    <!-- Tonal -->
+                    <div class="text-center">
+                      <ui-text size="xs" color="muted" class="mb-2 block">Tonal</ui-text>
+                      <div class="flex flex-col gap-2 items-center">
+                        <ui-icon-button variant="primary" color="tonal" ariaLabel="Favorite" size="md">⭐</ui-icon-button>
+                        <ui-icon-button variant="destructive" color="tonal" ariaLabel="Remove" size="md">❌</ui-icon-button>
+                      </div>
+                    </div>
+                    
+                    <!-- Outlined -->
+                    <div class="text-center">
+                      <ui-text size="xs" color="muted" class="mb-2 block">Outlined</ui-text>
+                      <div class="flex flex-col gap-2 items-center">
+                        <ui-icon-button variant="primary" color="outlined" ariaLabel="Share" size="md">📤</ui-icon-button>
+                        <ui-icon-button variant="secondary" color="outlined" ariaLabel="More" size="md">⋯</ui-icon-button>
+                      </div>
+                    </div>
+                    
+                    <!-- Standard -->
+                    <div class="text-center">
+                      <ui-text size="xs" color="muted" class="mb-2 block">Standard</ui-text>
+                      <div class="flex flex-col gap-2 items-center">
+                        <ui-icon-button variant="ghost" color="standard" ariaLabel="Close" size="md">✕</ui-icon-button>
+                        <ui-icon-button variant="primary" color="standard" ariaLabel="Search" size="md">🔍</ui-icon-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Width styles -->
+                <div>
+                  <ui-text variant="caption" class="mb-2">Width Variations</ui-text>
+                    <div class="flex gap-2 flex-col items-start flex-wrap">
+                      <ui-text size="xs" color="muted" class="mb-2 block">Small Size</ui-text>
+                      <div class="flex gap-3 items-center">
+                        <div class="text-center">
+                          <ui-icon-button variant="outline" color="outlined" width="narrow" size="sm" ariaLabel="Narrow" shape="rounded">📱</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Narrow</ui-text>
+                        </div>
+                        <div class="text-center">
+                          <ui-icon-button variant="outline" color="outlined" width="default" size="sm" ariaLabel="Default" shape="rounded">💻</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Default</ui-text>
+                        </div>
+                        <div class="text-center">
+                          <ui-icon-button variant="outline" color="outlined" width="wide" size="sm" ariaLabel="Wide" shape="rounded">🖥️</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Wide</ui-text>
+                        </div>
+                    </div>
+
+                    <!-- Medium size widths -->
+                    <div>
+                      <ui-text size="xs" color="muted" class="mb-2 block">Medium Size</ui-text>
+                      <div class="flex gap-3 items-center flex-wrap">
+                        <div class="text-center">
+                          <ui-icon-button variant="primary" color="tonal" width="narrow" size="md" ariaLabel="Narrow" shape="rounded">📱</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Narrow</ui-text>
+                        </div>
+                        <div class="text-center">
+                          <ui-icon-button variant="primary" color="tonal" width="default" size="md" ariaLabel="Default" shape="rounded">💻</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Default</ui-text>
+                        </div>
+                        <div class="text-center">
+                          <ui-icon-button variant="primary" color="tonal" width="wide" size="md" ariaLabel="Wide" shape="rounded">🖥️</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Wide</ui-text>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Large size widths -->
+                    <div>
+                      <ui-text size="xs" color="muted" class="mb-2 block">Large Size</ui-text>
+                      <div class="flex gap-3 items-center flex-wrap">
+                        <div class="text-center">
+                          <ui-icon-button variant="secondary" color="filled" width="narrow" size="lg" ariaLabel="Narrow" shape="rounded">📱</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Narrow</ui-text>
+                        </div>
+                        <div class="text-center">
+                          <ui-icon-button variant="secondary" color="filled" width="default" size="lg" ariaLabel="Default" shape="rounded">💻</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Default</ui-text>
+                        </div>
+                        <div class="text-center">
+                          <ui-icon-button variant="secondary" color="filled" width="wide" size="lg" ariaLabel="Wide" shape="rounded">🖥️</ui-icon-button>
+                          <ui-text size="xs" color="muted" class="block mt-1">Wide</ui-text>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Combined showcase -->
+                <div>
+                  <ui-text variant="caption" class="mb-2">Combined Features Showcase</ui-text>
+                  <div class="flex flex-wrap gap-3 items-center">
+                    <!-- Circular tonal buttons -->
+                    <ui-icon-button variant="primary" color="tonal" width="default" size="md" ariaLabel="Like" shape="circular">❤️</ui-icon-button>
+                    <ui-icon-button variant="secondary" color="tonal" width="wide" size="md" ariaLabel="Share" shape="circular">📢</ui-icon-button>
+                    
+                    <!-- Outlined narrow buttons -->
+                    <ui-icon-button variant="ghost" color="outlined" width="narrow" size="sm" ariaLabel="Menu" shape="rounded">☰</ui-icon-button>
+                    <ui-icon-button variant="ghost" color="outlined" width="narrow" size="md" ariaLabel="Options" shape="rounded">⚙️</ui-icon-button>
+                    
+                    <!-- Standard style wide buttons -->
+                    <ui-icon-button variant="primary" color="standard" width="wide" size="lg" ariaLabel="Add" shape="rounded">➕</ui-icon-button>
+                    <ui-icon-button variant="destructive" color="standard" width="wide" size="lg" ariaLabel="Remove" shape="rounded">➖</ui-icon-button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -268,7 +390,6 @@
               </div>
             </div>
           </div>
-        </div>
       </ui-card>
 
       <!-- New Advanced Components Section -->
