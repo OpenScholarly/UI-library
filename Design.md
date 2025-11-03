@@ -578,7 +578,6 @@ The library includes advanced "liquid glass" components with:
 - [ReactBits](https://reactbits.dev/text-animations/circular-text)
 - [GSAP](https://greensock.com/gsap/)
 - [Framer Motion](https://www.framer.com/motion/)
-- [Motion.dev](https://motion.dev/docs/style-effect)
 
 Use ["spring" physics](https://m3.material.io/styles/motion/overview/how-it-works) for micro-interactions (buttons, toggles) and standard easing for transitions.
 

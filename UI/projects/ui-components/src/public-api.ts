@@ -33,6 +33,7 @@ export * from './lib/components/primitives/image/image.component';
 export * from './lib/components/layout/scroll-area/scroll-area.component';
 
 // Form components
+export * from './lib/components/forms/form-field/form-field.component';
 export * from './lib/components/forms/input/input.component';
 export * from './lib/components/forms/autocomplete/autocomplete.component';
 export * from './lib/components/forms/search/search.component';
@@ -42,6 +43,9 @@ export * from './lib/components/forms/toggle/toggle.component';
 export * from './lib/components/forms/textarea/textarea.component';
 export * from './lib/components/forms/select/select.component';
 export * from './lib/components/forms/slider/slider.component';
+export * from './lib/components/forms/file-upload/file-upload.component';
+export * from './lib/components/forms/rating/rating.component';
+export * from './lib/components/forms/combobox/combobox.component';
 
 // Display components
 export * from './lib/components/identity/badge/badge.component';
@@ -55,15 +59,22 @@ export * from './lib/components/overlays/modal/modal.component';
 export * from './lib/components/overlays/tooltip/tooltip.component';
 export * from './lib/components/feedback/toast/toast.component';
 export * from './lib/components/overlays/menu/menu.component';
+export * from './lib/components/overlays/popover/popover.component';
+export * from './lib/components/overlays/context-menu/context-menu.component';
 
 // Navigation components
 export * from './lib/components/navigation/tabs/tabs.component';
 export * from './lib/components/navigation/breadcrumbs/breadcrumbs.component';
 export * from './lib/components/navigation/pagination/pagination.component';
+export * from './lib/components/navigation/sidebar/sidebar.component';
+export * from './lib/components/navigation/stepper/stepper.component';
+export * from './lib/components/navigation/bottom-nav/bottom-nav.component';
 
 // Feedback components
 export * from './lib/components/feedback/loader/loader.component';
 export * from './lib/components/feedback/progress/progress.component';
+export * from './lib/components/feedback/alert/alert.component';
+export * from './lib/components/feedback/empty-state/empty-state.component';
 
 // Utility components
 export * from './lib/components/forms/theme-switcher/theme-switcher.component';
