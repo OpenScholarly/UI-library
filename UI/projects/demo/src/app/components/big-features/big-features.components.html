@@ -147,6 +147,339 @@
   </ui-card>
 </div>
 
+<!-- NEW P1 COMPONENTS SHOWCASE -->
+<div class="mb-12">
+  <ui-heading level="h2" size="2xl" color="primary" class="mb-8">🆕 New P1 Components</ui-heading>
+
+  <!-- Forms: Date & Time Pickers -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6">Forms: Date & Time Pickers</ui-heading>
+
+      <!-- Date Picker -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Date Picker</ui-text>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Single Date -->
+          <div>
+            <ui-text size="sm" color="secondary" class="mb-2">Single Date Selection</ui-text>
+            <ui-date-picker
+              mode="single"
+              [value]="selectedDate()"
+              (valueChange)="onDateChange($event)"
+              size="md">
+            </ui-date-picker>
+          </div>
+
+          <!-- Date Range -->
+          <div>
+            <ui-text size="sm" color="secondary" class="mb-2">Date Range Selection</ui-text>
+            <ui-date-picker
+              mode="range"
+              [rangeValue]="selectedDateRange()"
+              (rangeValueChange)="onDateRangeChange($event)"
+              size="md">
+            </ui-date-picker>
+          </div>
+
+          <!-- Multiple Dates -->
+          <div>
+            <ui-text size="sm" color="secondary" class="mb-2">Multiple Dates Selection</ui-text>
+            <ui-date-picker
+              mode="multiple"
+              [multipleValue]="selectedDates()"
+              (multipleValueChange)="onMultipleDatesChange($event)"
+              [showWeekNumbers]="true"
+              size="md">
+            </ui-date-picker>
+          </div>
+        </div>
+      </div>
+
+      <!-- Time Picker -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Time Picker</ui-text>
+        <div class="flex flex-wrap gap-6">
+          <!-- 12-hour format -->
+          <div>
+            <ui-text size="sm" color="secondary" class="mb-2">12-Hour Format</ui-text>
+            <ui-time-picker
+              format="12h"
+              [value]="selectedTime()"
+              (valueChange)="onTimeChange($event)"
+              size="md">
+            </ui-time-picker>
+          </div>
+
+          <!-- 24-hour format with seconds -->
+          <div>
+            <ui-text size="sm" color="secondary" class="mb-2">24-Hour Format with Seconds</ui-text>
+            <ui-time-picker
+              format="24h"
+              [showSeconds]="true"
+              [value]="selectedTime()"
+              (valueChange)="onTimeChange($event)"
+              size="md">
+            </ui-time-picker>
+          </div>
+
+          <!-- With minute step -->
+          <div>
+            <ui-text size="sm" color="secondary" class="mb-2">15-Minute Intervals</ui-text>
+            <ui-time-picker
+              format="12h"
+              [minuteStep]="15"
+              [value]="selectedTime()"
+              (valueChange)="onTimeChange($event)"
+              size="md">
+            </ui-time-picker>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ui-card>
+
+  <!-- Navigation: Navigation Rail -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6">Navigation Rail</ui-heading>
+
+      <div class="flex gap-8">
+        <!-- Compact Mode -->
+        <div>
+          <ui-text size="sm" color="secondary" class="mb-2">Compact Mode</ui-text>
+          <div class="h-96 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <ui-navigation-rail
+              [items]="navRailItems()"
+              [activeId]="activeNavRailId()"
+              [expanded]="false"
+              [showFab]="true"
+              fabIcon="+"
+              fabLabel="Create new"
+              (itemClick)="onNavRailItemClick($event)"
+              (fabClick)="onNavRailFabClick()">
+            </ui-navigation-rail>
+          </div>
+        </div>
+
+        <!-- Expanded Mode -->
+        <div>
+          <ui-text size="sm" color="secondary" class="mb-2">Expanded Mode</ui-text>
+          <div class="h-96 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <ui-navigation-rail
+              [items]="navRailItems()"
+              [activeId]="activeNavRailId()"
+              [expanded]="true"
+              [showFab]="true"
+              fabIcon="+"
+              fabLabel="Create new"
+              (itemClick)="onNavRailItemClick($event)"
+              (fabClick)="onNavRailFabClick()">
+            </ui-navigation-rail>
+          </div>
+        </div>
+
+        <!-- Compact with Labels -->
+        <div>
+          <ui-text size="sm" color="secondary" class="mb-2">Compact with Labels</ui-text>
+          <div class="h-96 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <ui-navigation-rail
+              [items]="navRailItems()"
+              [activeId]="activeNavRailId()"
+              [expanded]="false"
+              [showLabels]="true"
+              (itemClick)="onNavRailItemClick($event)">
+            </ui-navigation-rail>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ui-card>
+
+  <!-- Overlays: Bottom Sheet & Action Sheet -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6">Mobile-Optimized Overlays</ui-heading>
+
+      <div class="flex flex-wrap gap-4">
+        <!-- Bottom Sheet Trigger -->
+        <div>
+          <ui-button variant="primary" (clicked)="openBottomSheet()">
+            Open Bottom Sheet
+          </ui-button>
+        </div>
+
+        <!-- Action Sheet Trigger -->
+        <div>
+          <ui-button variant="secondary" (clicked)="openActionSheet()">
+            Open Action Sheet
+          </ui-button>
+        </div>
+      </div>
+
+      <ui-text color="secondary" size="sm" class="mt-4">
+        Bottom Sheet features drag-to-dismiss and snap points. Action Sheet provides iOS-style action menus.
+      </ui-text>
+    </div>
+  </ui-card>
+</div>
+
+<!-- P2 ENHANCEMENTS SHOWCASE -->
+<div class="mb-12">
+  <ui-heading level="h2" size="2xl" color="primary" class="mb-8">⚡ P2 Enhancements</ui-heading>
+
+  <!-- Button & Input Enhancements -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6">Button & Input Enhancements</ui-heading>
+
+      <!-- Button Enhancements -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Enhanced Buttons</ui-text>
+        <div class="flex flex-wrap gap-4">
+          <!-- Ripple Effect -->
+          <ui-button variant="primary" [ripple]="true">
+            Ripple Effect
+          </ui-button>
+
+          <!-- Pulse Animation -->
+          <ui-button variant="success" [pulse]="true">
+            🎯 Pulsing CTA
+          </ui-button>
+
+          <!-- Width Variants -->
+          <div class="w-full max-w-md">
+            <ui-button variant="primary" width="full">
+              Full Width Button
+            </ui-button>
+          </div>
+
+          <!-- With aria-haspopup -->
+          <ui-button variant="secondary" [ariaHasPopup]="'menu'">
+            Open Menu ▾
+          </ui-button>
+        </div>
+      </div>
+
+      <!-- Input Enhancements -->
+      <div class="mb-8">
+        <ui-text weight="semibold" class="mb-3">Enhanced Inputs</ui-text>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Character Counter -->
+          <ui-input
+            label="Bio"
+            placeholder="Tell us about yourself"
+            [maxlength]="100"
+            [showCharacterCounter]="true"
+            helperText="Maximum 100 characters">
+          </ui-input>
+
+          <!-- Clear Button -->
+          <ui-input
+            label="Search"
+            placeholder="Type to search..."
+            [showClearButton]="true"
+            prefixIcon="🔍">
+          </ui-input>
+
+          <!-- Password Strength -->
+          <ui-input
+            label="New Password"
+            type="password"
+            [showPasswordStrength]="true"
+            [showPasswordToggle]="true"
+            helperText="Use 8+ characters with mix of letters, numbers & symbols">
+          </ui-input>
+
+          <!-- Copy Button -->
+          <ui-input
+            label="API Key"
+            [readonly]="true"
+            [showCopyButton]="true"
+            placeholder="sk-1234567890abcdef"
+            helperText="Click copy icon to copy API key">
+          </ui-input>
+        </div>
+      </div>
+
+      <ui-text color="secondary" size="sm">
+        New P2 enhancements include Material Design ripple effects, pulse animations for CTAs, character counters, 
+        password strength meters, clear buttons, and copy-to-clipboard functionality—all with full accessibility support.
+      </ui-text>
+    </div>
+  </ui-card>
+
+  <!-- Badge Enhancements -->
+  <ui-card class="mb-8">
+    <div class="p-6">
+      <ui-heading level="h3" size="lg" color="primary" class="mb-6">Badge Enhancements</ui-heading>
+
+      <!-- Animated Badges -->
+      <div class="mb-6">
+        <ui-text weight="semibold" class="mb-3">Animated Badges</ui-text>
+        <div class="flex flex-wrap gap-4">
+          <ui-badge variant="danger" animation="pulse">
+            🔴 Live
+          </ui-badge>
+          <ui-badge variant="warning" animation="bounce">
+            ⚠️ Alert
+          </ui-badge>
+          <ui-badge variant="info" animation="pulse">
+            📢 New
+          </ui-badge>
+        </div>
+      </div>
+
+      <!-- Positioned Badges -->
+      <div class="mb-6">
+        <ui-text weight="semibold" class="mb-3">Positioned Badges (on Avatar/Icon)</ui-text>
+        <div class="flex flex-wrap gap-8">
+          <!-- Badge on Avatar with value -->
+          <div class="relative inline-block">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-xl">
+              JD
+            </div>
+            <ui-badge variant="success" size="xs" position="top-right" shape="pill" [value]="9">
+            </ui-badge>
+          </div>
+
+          <!-- Badge on Icon with value -->
+          <div class="relative inline-block">
+            <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-2xl">
+              🔔
+            </div>
+            <ui-badge variant="danger" size="xs" position="top-right" shape="pill" animation="pulse" [value]="5">
+            </ui-badge>
+          </div>
+
+          <!-- Badge on Button with max value -->
+          <div class="relative inline-block">
+            <div class="px-4 py-2 bg-primary-600 text-white rounded-lg">
+              Messages
+            </div>
+            <ui-badge variant="danger" size="xs" position="top-right" shape="pill" [value]="125" [maxValue]="99">
+            </ui-badge>
+          </div>
+
+          <!-- Badge with hide-when-zero (hidden when value is 0) -->
+          <div class="relative inline-block">
+            <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-2xl">
+              ✉️
+            </div>
+            <ui-badge variant="info" size="xs" position="top-right" shape="pill" [value]="0" [hideWhenZero]="true">
+            </ui-badge>
+          </div>
+        </div>
+      </div>
+
+      <ui-text color="secondary" size="sm">
+        Badge enhancements include pulse and bounce animations, flexible positioning (top-right, top-left, etc.), 
+        max value display (e.g., 99+ when value exceeds maxValue), and hide-when-zero functionality for cleaner UIs.
+      </ui-text>
+    </div>
+  </ui-card>
+</div>
+
 <!-- Footer -->
 <div class="mt-16">
   <ui-footer
@@ -187,6 +520,38 @@
   [items]="commandItems()"
   [isOpen]="isCommandMenuOpen()"
   (select)="onCommandSelect($event)"
-  (close)="closeCommandMenu()"
->
+  (close)="closeCommandMenu()">
 </ui-command-menu>
+
+<!-- Bottom Sheet -->
+<ui-bottom-sheet
+  [open]="isBottomSheetOpen()"
+  title="Bottom Sheet Example"
+  [dragToDismiss]="true"
+  [snapPoints]="[0.3, 0.6, 1]"
+  size="md"
+  (close)="closeBottomSheet()">
+  <div class="space-y-4">
+    <ui-text>
+      This is a mobile-optimized bottom sheet. You can drag the handle to dismiss or snap to different heights.
+    </ui-text>
+    <ui-text color="secondary" size="sm">
+      • Drag the handle up or down<br>
+      • Tap the backdrop to close<br>
+      • Press Escape to dismiss
+    </ui-text>
+    <div class="pt-4">
+      <ui-button variant="primary" (clicked)="closeBottomSheet()">Got it!</ui-button>
+    </div>
+  </div>
+</ui-bottom-sheet>
+
+<!-- Action Sheet -->
+<ui-action-sheet
+  [open]="isActionSheetOpen()"
+  title="Choose an Action"
+  message="Select one of the following actions to proceed"
+  [actions]="actionSheetActions()"
+  (actionClick)="onActionSheetAction($event)"
+  (cancel)="closeActionSheet()">
+</ui-action-sheet>

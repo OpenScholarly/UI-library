@@ -56,23 +56,29 @@ import { BadgeVariant, BadgeSize, BadgeShape } from '../../../types';
   selector: 'ui-badge',
   standalone: true,
   template: `
-    <span [class]="badgeClasses()" [attr.aria-label]="ariaLabel()">
-      @if (dot()) {
-        <span class="badge-dot" [class]="dotClasses()"></span>
-      }
-      <ng-content />
-      @if (dismissible()) {
-        <button
-          type="button"
-          class="badge-dismiss ml-1 hover:bg-black/10 rounded-full p-0.5 ui-transition-fast ui-focus-primary"
-          (click)="onDismiss()"
-          aria-label="Remove badge">
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      }
-    </span>
+    @if (!shouldHide()) {
+      <span [class]="badgeClasses()" [attr.aria-label]="ariaLabel()" [style]="positionStyles()">
+        @if (dot()) {
+          <span class="badge-dot" [class]="dotClasses()"></span>
+        }
+        @if (displayValue()) {
+          {{ displayValue() }}
+        } @else {
+          <ng-content />
+        }
+        @if (dismissible()) {
+          <button
+            type="button"
+            class="badge-dismiss ml-1 hover:bg-black/10 rounded-full p-0.5 ui-transition-fast ui-focus-primary"
+            (click)="onDismiss()"
+            aria-label="Remove badge">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        }
+      </span>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -133,6 +139,47 @@ export class BadgeComponent {
   ariaLabel = input<string>('');
 
   /**
+   * Animation style for the badge.
+   * - `none`: No animation (default)
+   * - `pulse`: Pulsing animation for attention
+   * - `bounce`: Bouncing animation for notifications
+   * @default "none"
+   */
+  animation = input<'none' | 'pulse' | 'bounce'>('none');
+
+  /**
+   * Position the badge relative to a parent element.
+   * - `none`: No special positioning (default, inline)
+   * - `top-right`: Top right corner of parent
+   * - `top-left`: Top left corner of parent
+   * - `bottom-right`: Bottom right corner of parent
+   * - `bottom-left`: Bottom left corner of parent
+   * @default "none"
+   */
+  position = input<'none' | 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'>('none');
+
+  /**
+   * Maximum value to display before showing "max+" format.
+   * Useful for notification counts.
+   * @default null (no max)
+   * @example 99 will display "99+" for values > 99
+   */
+  maxValue = input<number | null>(null);
+
+  /**
+   * Hide the badge when the value/content is zero or empty.
+   * Works with the `value` input to determine visibility.
+   * @default false
+   */
+  hideWhenZero = input(false);
+
+  /**
+   * Numeric value for the badge. Used with maxValue and hideWhenZero.
+   * @default null
+   */
+  value = input<number | null>(null);
+
+  /**
    * Emitted when the dismiss button is clicked.
    * Only emitted when `dismissible` is true.
    * @event dismissed
@@ -166,9 +213,43 @@ export class BadgeComponent {
       outline: 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
     };
 
+    const animationClasses = {
+      none: '',
+      pulse: 'animate-pulse',
+      bounce: 'animate-bounce'
+    };
+
+    const positionClasses = this.position() !== 'none' ? 'absolute' : '';
     const dismissibleClasses = this.dismissible() ? 'pr-1' : '';
 
-    return `${baseClasses} ${sizeClasses[this.size()]} ${shapeClasses[this.shape()]} ${variantClasses[this.variant()]} ${dismissibleClasses}`;
+    return `${baseClasses} ${sizeClasses[this.size()]} ${shapeClasses[this.shape()]} ${variantClasses[this.variant()]} ${animationClasses[this.animation()]} ${positionClasses} ${dismissibleClasses}`;
+  });
+
+  protected positionStyles = computed(() => {
+    const position = this.position();
+    const positionMap = {
+      'none': {},
+      'top-right': { top: '0', right: '0', transform: 'translate(50%, -50%)' },
+      'top-left': { top: '0', left: '0', transform: 'translate(-50%, -50%)' },
+      'bottom-right': { bottom: '0', right: '0', transform: 'translate(50%, 50%)' },
+      'bottom-left': { bottom: '0', left: '0', transform: 'translate(-50%, 50%)' }
+    };
+    return positionMap[position] || {};
+  });
+
+  protected shouldHide = computed(() => {
+    if (!this.hideWhenZero()) return false;
+    const val = this.value();
+    // Hide if value is explicitly 0, null, or undefined
+    return val === 0 || val == null;
+  });
+
+  protected displayValue = computed(() => {
+    const val = this.value();
+    const max = this.maxValue();
+    if (val === null || val === undefined) return null;
+    if (max !== null && val > max) return `${max}+`;
+    return val.toString();
   });
 
   protected dotClasses = computed(() => {

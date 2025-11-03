@@ -46,6 +46,8 @@ export * from './lib/components/forms/slider/slider.component';
 export * from './lib/components/forms/file-upload/file-upload.component';
 export * from './lib/components/forms/rating/rating.component';
 export * from './lib/components/forms/combobox/combobox.component';
+export * from './lib/components/forms/date-picker/date-picker.component';
+export * from './lib/components/forms/time-picker/time-picker.component';
 
 // Display components
 export * from './lib/components/identity/badge/badge.component';
@@ -61,6 +63,8 @@ export * from './lib/components/feedback/toast/toast.component';
 export * from './lib/components/overlays/menu/menu.component';
 export * from './lib/components/overlays/popover/popover.component';
 export * from './lib/components/overlays/context-menu/context-menu.component';
+export * from './lib/components/overlays/bottom-sheet/bottom-sheet.component';
+export * from './lib/components/overlays/action-sheet/action-sheet.component';
 
 // Navigation components
 export * from './lib/components/navigation/tabs/tabs.component';
@@ -69,6 +73,7 @@ export * from './lib/components/navigation/pagination/pagination.component';
 export * from './lib/components/navigation/sidebar/sidebar.component';
 export * from './lib/components/navigation/stepper/stepper.component';
 export * from './lib/components/navigation/bottom-nav/bottom-nav.component';
+export * from './lib/components/navigation/navigation-rail/navigation-rail.component';
 
 // Feedback components
 export * from './lib/components/feedback/loader/loader.component';
