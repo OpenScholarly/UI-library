@@ -104,8 +104,7 @@ export type NavigationRailSize = 'sm' | 'md' | 'lg';
                 <!-- Label (shown when expanded or always if showLabels is true) -->
                 <span
                   [class]="labelClasses()"
-                  [class.sr-only]="!expanded() && !showLabels()">
-                  {{ item.label }}
+                    [class]="labelClasses()">
                 </span>
               </div>
             </button>
