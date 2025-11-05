@@ -142,3 +142,5 @@ dist
 
 # Screenshots (documented in PR/issues)
 *.png
+
+.npmrc

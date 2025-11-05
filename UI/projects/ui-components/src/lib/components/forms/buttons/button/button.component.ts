@@ -348,7 +348,7 @@ export class ButtonComponent {
 
   protected buttonClasses = computed(() => {
     // Enhanced base classes with better focus visibility and relative positioning for ripple
-    const baseClasses = 'relative inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed';
+    const baseClasses = 'relative inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed text-nowrap';
 
     const variants: Record<ButtonVariant, string> = {
       primary: `bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus-visible:ring-primary-500`,
